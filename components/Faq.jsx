@@ -12,7 +12,7 @@ function FaqRow({ question, answer, slug }) {
 
   return (
     <details
-      className="faqCard p-4 open:shadow-sm border border-gray-200 rounded-lg bg-white"
+      className="faqCard p-4 open:shadow-sm border border-gray-200 rounded-lg bg-white mb-4"
       open={open}
       onToggle={(e) => setOpen(e.currentTarget.open)}
       itemScope
@@ -23,19 +23,20 @@ function FaqRow({ question, answer, slug }) {
         aria-controls={panelId}
         aria-expanded={open}
         className="
-          faqSummary cursor-pointer rounded-md
-          px-4 py-4 min-h-14
+          cursor-pointer rounded-md
+          px-4 py-4 min-h-[44px] /* ✅ WCAG uyumlu dokunma hedefi */
           focus-visible:outline-2 focus-visible:outline-[#6d28d9] focus-visible:outline-offset-2
           hover:bg-gray-50 transition-colors duration-200
           flex items-center justify-between
+          text-lg font-semibold text-gray-900 /* ✅ Yeterli kontrast */
         "
         itemProp="name"
       >
-        <span className="font-semibold text-neutral-900 text-lg pr-4">
+        <span className="pr-4">
           {question}
         </span>
         <svg
-          className="ml-2 h-6 w-6 shrink-0 text-neutral-600 transition-transform duration-300 data-[open=true]:rotate-90"
+          className="ml-2 h-6 w-6 shrink-0 text-gray-700 transition-transform duration-300 data-[open=true]:rotate-90"
           data-open={open}
           viewBox="0 0 24 24"
           fill="none"
@@ -52,13 +53,13 @@ function FaqRow({ question, answer, slug }) {
 
       <div 
         id={panelId} 
-        className="faqAnim mt-3 text-neutral-700 px-4 pb-3"
+        className="faqAnim mt-3 text-gray-700 px-4 pb-4"
         itemScope
         itemType="https://schema.org/Answer"
         itemProp="acceptedAnswer"
       >
-        <div itemProp="text" className="leading-relaxed">
-          <p className="text-base">{answer}</p>
+        <div itemProp="text" className="leading-relaxed text-base">
+          <p>{answer}</p>
         </div>
       </div>
     </details>
@@ -104,50 +105,55 @@ export default function Faq() {
         >
           Sıkça Sorulan Sorular
         </h2>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+        <p className="text-lg text-gray-700 max-w-2xl mx-auto">
           Sahne, podyum, LED ekran kiralama ve kurulum hizmetlerimiz hakkında 
           en çok merak edilen sorular ve cevapları
         </p>
       </div>
 
-      <div className="mx-auto max-w-4xl space-y-4">
+      <div className="mx-auto max-w-4xl">
         {FAQ_ITEMS.map((item) => (
           <FaqRow key={item.slug} {...item} />
         ))}
       </div>
 
-      {/* ✅ İYİLEŞTİRİLMİŞ: CTA Bölümü */}
+      {/* ✅ DÜZELTİLDİ: Erişilebilir CTA Bölümü */}
       <div className="mt-12 text-center">
         <div className="bg-white rounded-2xl shadow-lg p-8 max-w-2xl mx-auto border border-gray-100">
           <h3 className="text-2xl font-bold text-gray-900 mb-3">
             🌟 Cevabını Bulamadığınız Soru mu Var?
           </h3>
-          <p className="text-gray-600 mb-6 text-lg">
+          <p className="text-gray-700 mb-6 text-lg">
             Uzman ekibimiz size en doğru çözümü sunmaktan mutluluk duyacaktır. 
             7/24 destek hattımızla iletişime geçebilirsiniz.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
               href="/sss"
               className="inline-flex items-center justify-center rounded-lg bg-[#6d28d9] px-8 py-4 font-semibold text-white shadow-lg
-                         transition-all hover:bg-[#5b21b6] hover:shadow-xl transform hover:-translate-y-1
+                         transition-all hover:bg-[#5b21b6] hover:shadow-xl 
                          focus-visible:ring-4 focus-visible:ring-[#6d28d9] focus-visible:ring-offset-2 
-                         focus-visible:outline-none min-h-[56px] text-lg"
+                         focus-visible:outline-none
+                         min-h-[44px] min-w-[44px] text-lg" /* ✅ WCAG dokunma hedefi */
               aria-label="Tüm sık sorulan soruları görüntüle - Sahneva SSS sayfası"
               title="Sahneva hizmetleri hakkında tüm soru ve cevapları görüntüle"
+              style={{ lineHeight: '1.2' }}
             >
               📋 Tüm Soruları Gör
             </a>
             
             <a
               href="/iletisim"
-              className="inline-flex items-center justify-center rounded-lg border-2 border-[#6d28d9] px-8 py-4 font-semibold text-[#6d28d9] 
-                         transition-all hover:bg-[#6d28d9] hover:text-white hover:shadow-lg transform hover:-translate-y-1
+              className="inline-flex items-center justify-center rounded-lg border-2 border-[#6d28d9] px-8 py-4 
+                         font-semibold text-[#6d28d9] bg-white
+                         transition-all hover:bg-[#6d28d9] hover:text-white hover:shadow-lg
                          focus-visible:ring-4 focus-visible:ring-[#6d28d9] focus-visible:ring-offset-2 
-                         focus-visible:outline-none min-h-[56px] text-lg"
+                         focus-visible:outline-none
+                         min-h-[44px] min-w-[44px] text-lg" /* ✅ WCAG dokunma hedefi */
               aria-label="Canlı destek ekibimizle iletişime geçin - Sahneva iletişim"
               title="Sahneva canlı destek ve iletişim sayfası"
+              style={{ lineHeight: '1.2' }}
             >
               💬 Canlı Destek
             </a>
@@ -155,44 +161,55 @@ export default function Faq() {
         </div>
       </div>
 
-      {/* ✅ YENİ: Hızlı İletişim Bilgileri */}
+      {/* ✅ DÜZELTİLDİ: Erişilebilir İletişim Bilgileri */}
       <div className="mt-8 text-center">
-        <div className="inline-flex flex-wrap gap-6 justify-center items-center text-sm text-gray-500">
-          <div className="flex items-center gap-2">
-            <span className="text-green-600">📞</span>
-            <a 
-              href="tel:+905453048671" 
-              className="hover:text-[#6d28d9] hover:underline font-medium"
-              title="Sahneva telefon iletişim"
-            >
-              +90 545 304 8671
-            </a>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-green-600">💬</span>
-            <a 
-              href="https://wa.me/905453048671" 
-              className="hover:text-[#6d28d9] hover:underline font-medium"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Sahneva WhatsApp iletişim"
-            >
-              WhatsApp
-            </a>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-green-600">✉️</span>
-            <a 
-              href="mailto:info@sahneva.com" 
-              className="hover:text-[#6d28d9] hover:underline font-medium"
-              title="Sahneva e-posta iletişim"
-            >
-              info@sahneva.com
-            </a>
-          </div>
-        </div>
+        <nav aria-label="Hızlı iletişim seçenekleri">
+          <ul className="inline-flex flex-wrap gap-4 justify-center items-center">
+            <li>
+              <a 
+                href="tel:+905453048671"
+                className="inline-flex items-center gap-2 px-4 py-3 rounded-lg bg-gray-100 hover:bg-gray-200
+                           transition-colors min-h-[44px] text-gray-900 font-medium text-sm
+                           focus-visible:ring-2 focus-visible:ring-[#6d28d9] focus-visible:outline-none"
+                aria-label="Telefon ile iletişim - +90 545 304 86 71"
+                title="Sahneva telefon iletişim"
+              >
+                <span aria-hidden="true">📞</span>
+                +90 545 304 8671
+              </a>
+            </li>
+            <li>
+              <a 
+                href="https://wa.me/905453048671"
+                className="inline-flex items-center gap-2 px-4 py-3 rounded-lg bg-green-50 hover:bg-green-100
+                           transition-colors min-h-[44px] text-gray-900 font-medium text-sm
+                           focus-visible:ring-2 focus-visible:ring-[#6d28d9] focus-visible:outline-none"
+                aria-label="WhatsApp üzerinden iletişim"
+                title="Sahneva WhatsApp iletişim"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span aria-hidden="true">💬</span>
+                WhatsApp
+              </a>
+            </li>
+            <li>
+              <a 
+                href="mailto:info@sahneva.com"
+                className="inline-flex items-center gap-2 px-4 py-3 rounded-lg bg-blue-50 hover:bg-blue-100
+                           transition-colors min-h-[44px] text-gray-900 font-medium text-sm
+                           focus-visible:ring-2 focus-visible:ring-[#6d28d9] focus-visible:outline-none"
+                aria-label="E-posta gönder - info@sahneva.com"
+                title="Sahneva e-posta iletişim"
+              >
+                <span aria-hidden="true">✉️</span>
+                E-posta
+              </a>
+            </li>
+          </ul>
+        </nav>
         
-        <p className="text-xs text-gray-400 mt-4 max-w-md mx-auto">
+        <p className="text-xs text-gray-600 mt-4 max-w-md mx-auto">
           <strong>Hızlı Yanıt:</strong> Müşteri temsilcilerimiz ortalama 5 dakika içinde dönüş yapmaktadır
         </p>
       </div>
