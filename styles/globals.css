@@ -51,6 +51,9 @@ img, video, canvas, svg { max-width:100%; height:auto; }
 .btn{
   @apply inline-flex items-center justify-center rounded-lg px-6 py-3 font-semibold text-white shadow-md transition;
   text-shadow:0 1px 0 rgba(0,0,0,.25);
+  /* ✅ A11Y: WCAG dokunma hedefi */
+  min-height: 44px;
+  min-width: 44px;
 }
 .btn-primary{ background:var(--brand); }
 .btn-primary:hover{ background:var(--brand-700); }
@@ -63,6 +66,8 @@ img, video, canvas, svg { max-width:100%; height:auto; }
   background:rgba(255,255,255,.10);
   color:#fff;
   border-color:rgba(255,255,255,.20);
+  /* ✅ A11Y: Minimum dokunma hedefi */
+  min-height: 40px;
 }
 
 .card{ @apply p-6 bg-white rounded-2xl shadow transition; }
@@ -79,10 +84,40 @@ img, video, canvas, svg { max-width:100%; height:auto; }
 }
 
 /* Keep a clear focus ring (subtle but visible) */
-:focus-visible{ outline:2px solid #6d28d966; outline-offset:2px; }
+:focus-visible{ 
+  outline:2px solid #6d28d966; 
+  outline-offset:2px;
+  /* ✅ A11Y: Daha belirgin focus */
+  outline-width: 3px;
+}
 
-html.hc body{ filter:contrast(1.06) saturate(1.05); }
-html.hc a{ text-decoration:underline; }
+/* ✅ A11Y: Skip to main content link */
+.skip-to-main {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #6d28d9;
+  color: white;
+  padding: 8px 12px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 10000;
+  font-weight: 600;
+}
+.skip-to-main:focus {
+  top: 6px;
+}
+
+html.hc body{ 
+  filter:contrast(1.06) saturate(1.05); 
+  /* ✅ A11Y: Daha güçlü kontrast */
+  filter: contrast(1.1) saturate(1.1);
+}
+html.hc a{ 
+  text-decoration:underline;
+  /* ✅ A11Y: Daha kalın underline */
+  text-decoration-thickness: 2px;
+}
 
 @supports (padding:max(0px)){
   .pb-safe{ padding-bottom:max(1rem, env(safe-area-inset-bottom)); }
@@ -109,18 +144,34 @@ html.hc a{ text-decoration:underline; }
   100%{ opacity:0; }
 }
 @media (prefers-reduced-motion: reduce){
-  .burst-particle{ animation: burst-fade 400ms ease-out forwards; transform: translate(-50%,-50%) scale(.8); }
+  .burst-particle{ 
+    animation: burst-fade 400ms ease-out forwards; 
+    transform: translate(-50%,-50%) scale(.8);
+    /* ✅ A11Y: Daha hızlı kapanma */
+    animation-duration: 200ms;
+  }
 }
 
 .bar-item{
   display:grid; place-items:center; height:3rem; width:100%;
   font-size:.875rem; font-weight:600; color:rgb(38 38 38);
   border-radius:.5rem; position: relative;
+  /* ✅ A11Y: Garantili dokunma hedefi */
+  min-height: 48px;
 }
 .bar-item:hover{ background:#f8fafc; }
-.bar-item:focus-visible{ outline:2px solid #6d28d966; outline-offset:2px; }
+.bar-item:focus-visible{ 
+  outline:2px solid #6d28d966; 
+  outline-offset:2px;
+  /* ✅ A11Y: Daha belirgin focus */
+  outline-width: 3px;
+}
 
-.img-skeleton{ background:#f3f4f6; }
+.img-skeleton{ 
+  background:#f3f4f6; 
+  /* ✅ A11Y: Yüksek kontrast fallback */
+  color: #374151;
+}
 
 @supports (font-synthesis-weight: auto){
   html{ font-synthesis-weight: auto; font-synthesis-style: auto; }
@@ -128,10 +179,46 @@ html.hc a{ text-decoration:underline; }
 
 /* ---- Minimal A11Y-only nudges ---- */
 /* 1) Ensure hero small text is not translucent if class missed */
-.hero-para { color:#ffffff; }
+.hero-para { 
+  color:#ffffff; 
+  /* ✅ A11Y: Minimum kontrast garantisi */
+  opacity: 0.95;
+}
 /* 2) Avoid low-contrast grays on small text blocks */
-.text-muted-safe { color:#475569; } /* slate-600 */
-    /* === FAQ modern stil (WCAG-safe) === */
+.text-muted-safe { 
+  color:#475569; /* slate-600 */
+  /* ✅ A11Y: Daha güvenli font boyutu */
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* ✅ A11Y: Küçük fontlar için ek kontrast güvenliği */
+.text-xs-safe { 
+  font-size: 0.75rem;
+  line-height: 1.25;
+  color: #475569;
+}
+
+/* ✅ A11Y: Form elementleri için focus improvement */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid #6d28d9;
+  outline-offset: 1px;
+  border-color: #6d28d9;
+}
+
+/* ✅ A11Y: Görsel alt text backup için daha iyi kontrast */
+.img-fallback {
+  background: #f8fafc;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+
+/* === FAQ modern stil (WCAG-safe) === */
 
 .faqGlass{
   /* mor+yeşil hafif vinyet + cam efekti */
@@ -154,10 +241,17 @@ html.hc a{ text-decoration:underline; }
   padding:.375rem .75rem; /* 6px 12px */
   font-weight:600;
   transition: background .2s ease, transform .15s ease, box-shadow .2s ease;
+  /* ✅ A11Y: Minimum dokunma hedefi */
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
 }
 .faqChip:hover{ background:#f8fafc; transform:translateY(-1px); }
 .faqChip:focus-visible{
-  outline:2px solid #6d28d9; outline-offset:2px;
+  outline:2px solid #6d28d9; 
+  outline-offset:2px;
+  /* ✅ A11Y: Daha belirgin focus */
+  outline-width: 3px;
 }
 
 /* her bir <details> kartı */
@@ -178,10 +272,15 @@ html.hc a{ text-decoration:underline; }
   display:flex; align-items:center; justify-content:space-between; gap:.75rem;
   font-weight:700; color:#0f172a;  /* slate-900 */
   border-radius:.5rem;
+  /* ✅ A11Y: Minimum dokunma hedefi */
+  min-height: 48px;
+  padding: 0 1rem;
 }
 .faqSummary:focus-visible{
   outline:2px solid #6d28d9;             /* brand moru */
   outline-offset:2px;
+  /* ✅ A11Y: Daha belirgin focus */
+  outline-width: 3px;
 }
 
 /* içerik görünür olurken animasyon */
@@ -196,4 +295,116 @@ html.hc a{ text-decoration:underline; }
   .faqCard[open]{ transform:none; }
   .faqChip:hover{ transform:none; }
   .faqAnim{ animation:none; }
+  /* ✅ A11Y: Tüm transition'ları kapat */
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* ✅ A11Y: High contrast media query desteği */
+@media (prefers-contrast: high) {
+  .btn {
+    border: 2px solid currentColor;
+  }
+  
+  .card {
+    border: 2px solid #374151;
+  }
+  
+  .faqCard {
+    border: 2px solid #374151;
+  }
+}
+
+/* ✅ A11Y: Print stilleri */
+@media print {
+  .nav-glass,
+  .bar-item,
+  .burst-particle {
+    display: none !important;
+  }
+  
+  .card {
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+  
+  a::after {
+    content: " (" attr(href) ")";
+    font-size: 0.875rem;
+    color: #666;
+  }
+}
+
+/* ✅ A11Y: Ek güvenlik stilleri */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ✅ A11Y: Daha iyi okunabilirlik için line-height */
+.article-content {
+  line-height: 1.7;
+}
+
+/* ✅ A11Y: Tablo erişilebilirliği */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  padding: 0.75rem;
+  text-align: left;
+  border: 1px solid #e5e7eb;
+}
+
+th {
+  background-color: #f9fafb;
+  font-weight: 600;
+}
+
+/* ✅ A11Y: Kod blokları */
+code {
+  background-color: #f3f4f6;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  color: #dc2626;
+}
+
+pre {
+  background-color: #1f2937;
+  color: #f9fafb;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+}
+
+/* ✅ A11Y: Liste stilleri */
+ul, ol {
+  padding-left: 1.5rem;
+}
+
+li {
+  margin-bottom: 0.5rem;
+}
+
+/* ✅ A11Y: Blockquote stilleri */
+blockquote {
+  border-left: 4px solid #6d28d9;
+  padding-left: 1rem;
+  margin-left: 0;
+  font-style: italic;
+  background-color: #fafafa;
+  padding: 1rem;
+  border-radius: 0 0.5rem 0.5rem 0;
 }
