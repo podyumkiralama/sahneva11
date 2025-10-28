@@ -12,10 +12,9 @@ export default function Footer() {
       
       const x = e?.clientX ?? window.innerWidth / 2;
       const y = e?.clientY ?? window.innerHeight - 80;
-      const n = 8; // ✅ Optimize: 10'dan 8'e
-      const life = 500; // ✅ Optimize: 600ms'den 500ms'ye
+      const n = 8;
+      const life = 500;
 
-      // ✅ İYİLEŞTİRİLDİ: DocumentFragment kullanımı
       const fragment = document.createDocumentFragment();
       
       for (let i = 0; i < n; i++) {
@@ -25,7 +24,7 @@ export default function Footer() {
         el.setAttribute("role", "presentation");
         
         const angle = (Math.PI * 2 * i) / n + Math.random() * 0.25;
-        const dist = 30 + Math.random() * 28; // ✅ Optimize: mesafe azaltıldı
+        const dist = 30 + Math.random() * 28;
         el.style.setProperty("--dx", Math.cos(angle) * dist + "px");
         el.style.setProperty("--dy", Math.sin(angle) * dist + "px");
         el.style.setProperty("--dr", `${(Math.random() * 50 - 25).toFixed(1)}deg`);
@@ -33,7 +32,7 @@ export default function Footer() {
         el.style.setProperty("--burst-c1", i % 2 === 0 ? "#6d28d9" : "#22c55e");
         el.style.setProperty("--burst-c2", i % 2 === 0 ? "#22c55e" : "#6d28d9");
         
-        const s = 5 + Math.random() * 5; // ✅ Optimize: boyut küçültüldü
+        const s = 5 + Math.random() * 5;
         el.style.width = el.style.height = `${s}px`;
         el.style.left = `${x}px`;
         el.style.top = `${y}px`;
@@ -41,7 +40,7 @@ export default function Footer() {
         fragment.appendChild(el);
         setTimeout(() => {
           if (el.parentNode) el.parentNode.removeChild(el);
-        }, life + 40); // ✅ Optimize: timeout azaltıldı
+        }, life + 40);
       }
       
       document.body.appendChild(fragment);
@@ -56,7 +55,7 @@ export default function Footer() {
       itemType="https://schema.org/Organization"
     >
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 py-12 px-6">
-        {/* ✅ İYİLEŞTİRİLDİ: Marka bölümü SEO optimizasyonu */}
+        {/* Marka bölümü */}
         <section aria-labelledby="ft-brand" itemProp="brand" itemScope itemType="https://schema.org/Brand">
           <h2 id="ft-brand" className="sr-only">
             Sahneva Hakkında
@@ -71,7 +70,7 @@ export default function Footer() {
             Sahne, podyum, LED ekran, ses-ışık sistemleri ve anahtar teslim kurulum çözümleri.
           </p>
 
-          {/* ✅ İYİLEŞTİRİLDİ: Sosyal medya linkleri SEO optimizasyonu */}
+          {/* Sosyal medya linkleri */}
           <div className="flex gap-3 mt-5">
             <a
               href="https://www.instagram.com/sahnevaorganizasyon"
@@ -100,7 +99,7 @@ export default function Footer() {
           </div>
         </section>
 
-        {/* ✅ İYİLEŞTİRİLDİ: Hizmetler navigasyonu SEO optimizasyonu */}
+        {/* Hizmetler navigasyonu */}
         <nav aria-labelledby="ft-services">
           <h2 id="ft-services" className="text-white font-semibold mb-4 tracking-wide text-lg">
             Hizmetlerimiz
@@ -127,7 +126,7 @@ export default function Footer() {
           </ul>
         </nav>
 
-        {/* ✅ İYİLEŞTİRİLDİ: Hızlı erişim SEO optimizasyonu */}
+        {/* Hızlı erişim */}
         <nav aria-labelledby="ft-quick">
           <h2 id="ft-quick" className="text-white font-semibold mb-4 tracking-wide text-lg">
             Hızlı Erişim
@@ -150,7 +149,7 @@ export default function Footer() {
               </li>
             ))}
 
-            {/* ✅ İYİLEŞTİRİLDİ: Google Business bağlantıları SEO optimizasyonu */}
+            {/* Google Business bağlantıları */}
             <li>
               <a
                 href="https://g.page/r/CZhkMzkNOdgnEBI"
@@ -178,7 +177,7 @@ export default function Footer() {
           </ul>
         </nav>
 
-        {/* ✅ İYİLEŞTİRİLDİ: İletişim bölümü SEO optimizasyonu */}
+        {/* İletişim bölümü */}
         <section aria-labelledby="ft-contact">
           <h2 id="ft-contact" className="text-white font-semibold mb-4 tracking-wide text-lg">
             İletişim Bilgileri
@@ -230,11 +229,11 @@ export default function Footer() {
             </div>
           </address>
 
-          {/* ✅ İYİLEŞTİRİLDİ: CTA butonları SEO optimizasyonu */}
+          {/* ✅ DEĞİŞTİRİLDİ: Hero ile aynı buton renkleri */}
           <div className="flex flex-col gap-3 mt-6">
             <a
               href="tel:+905453048671"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-5 py-3 transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1115] min-h-[48px]"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-indigo-700 hover:bg-indigo-800 text-white text-sm font-semibold px-5 py-3 transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1115] min-h-[48px]"
               onClick={burst}
               aria-label="Hemen Ara – Telefon: +90 545 304 8671"
               title="Hemen arayın - Ücretsiz danışmanlık"
@@ -247,7 +246,7 @@ export default function Footer() {
               href="https://wa.me/905453048671?text=Merhaba%2C+sahne+ve+etkinlik+ekipmanları+için+teklif+almak+istiyorum."
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-5 py-3 transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1115] min-h-[48px]"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold px-5 py-3 transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1115] min-h-[48px]"
               onClick={burst}
               aria-label="WhatsApp Teklif – üzerinden teklif iste (yeni sekmede açılır)"
               title="WhatsApp'tan anında teklif alın"
@@ -259,7 +258,7 @@ export default function Footer() {
         </section>
       </div>
 
-      {/* ✅ İYİLEŞTİRİLDİ: Alt bar SEO optimizasyonu */}
+      {/* Alt bar */}
       <div className="border-t border-white/10 text-center text-sm text-gray-400 py-6 bg-[#0a0c0f]">
         <div className="container mx-auto px-6">
           <p className="mb-2">
