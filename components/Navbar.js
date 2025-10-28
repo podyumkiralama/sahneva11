@@ -7,12 +7,36 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef, useCallback } from "react";
 
 const serviceLinks = [
-  { href: "/podyum-kiralama", label: "Podyum Kiralama" },
-  { href: "/led-ekran-kiralama", label: "LED Ekran Kiralama" },
-  { href: "/ses-isik-sistemleri", label: "Ses & Işık Sistemleri" },
-  { href: "/cadir-kiralama", label: "Çadır Kiralama" },
-  { href: "/masa-sandalye-kiralama", label: "Masa Sandalye Kiralama" },
-  { href: "/sahne-kiralama", label: "Sahne Kiralama" },
+  { 
+    href: "/podyum-kiralama", 
+    label: "Podyum Kiralama",
+    title: "Modüler podyum kiralama ve kurulum hizmeti - Sahneva"
+  },
+  { 
+    href: "/led-ekran-kiralama", 
+    label: "LED Ekran Kiralama",
+    title: "Yüksek çözünürlüklü LED ekran kiralama - Sahneva"
+  },
+  { 
+    href: "/ses-isik-sistemleri", 
+    label: "Ses & Işık Sistemleri",
+    title: "Profesyonel ses ve ışık sistemi kiralama - Sahneva"
+  },
+  { 
+    href: "/cadir-kiralama", 
+    label: "Çadır Kiralama",
+    title: "Etkinlik çadırı kiralama ve kurulum - Sahneva"
+  },
+  { 
+    href: "/masa-sandalye-kiralama", 
+    label: "Masa Sandalye Kiralama",
+    title: "Masa sandalye kiralama hizmeti - Sahneva"
+  },
+  { 
+    href: "/sahne-kiralama", 
+    label: "Sahne Kiralama",
+    title: "Profesyonel sahne kiralama ve kurulum - Sahneva"
+  },
 ];
 
 export default function Navbar() {
@@ -28,30 +52,48 @@ export default function Navbar() {
   const servicesBtnId = "nav-services-button";
   const servicesMenuId = "nav-services-menu";
 
+  // ✅ İYİLEŞTİRİLDİ: Optimize edilmiş burst animasyonu
   const burst = useCallback((e) => {
     try {
+      if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+
       const x = e?.clientX ?? window.innerWidth / 2;
       const y = e?.clientY ?? 80;
-      const n = 10;
-      const life = 600;
+      const n = 6; // ✅ Optimize: 10'dan 6'ya düşürüldü
+      const life = 400; // ✅ Optimize: 600ms'den 400ms'ye
+
+      // ✅ İYİLEŞTİRİLDİ: DocumentFragment kullanımı
+      const fragment = document.createDocumentFragment();
+      
       for (let i = 0; i < n; i++) {
         const el = document.createElement("span");
         el.className = "burst-particle";
-        const angle = (Math.PI * 2 * i) / n + Math.random() * 0.35;
-        const dist = 34 + Math.random() * 32;
+        el.setAttribute("aria-hidden", "true");
+        el.setAttribute("role", "presentation");
+        
+        const angle = (Math.PI * 2 * i) / n + Math.random() * 0.3;
+        const dist = 28 + Math.random() * 24; // ✅ Optimize: mesafe azaltıldı
         el.style.setProperty("--dx", Math.cos(angle) * dist + "px");
         el.style.setProperty("--dy", Math.sin(angle) * dist + "px");
-        el.style.setProperty("--dr", `${(Math.random() * 80 - 40).toFixed(1)}deg`);
+        el.style.setProperty("--dr", `${(Math.random() * 60 - 30).toFixed(1)}deg`);
         el.style.setProperty("--life", `${life}ms`);
         el.style.setProperty("--burst-c1", "#22c55e");
         el.style.setProperty("--burst-c2", "#6d28d9");
-        const s = 6 + Math.random() * 6;
+        
+        const s = 4 + Math.random() * 4; // ✅ Optimize: boyut küçültüldü
         el.style.width = el.style.height = s + "px";
         el.style.left = `${x}px`;
         el.style.top = `${y}px`;
-        document.body.appendChild(el);
-        setTimeout(() => el.remove(), life + 80);
+        
+        fragment.appendChild(el);
+        setTimeout(() => {
+          if (el.parentNode) {
+            el.parentNode.removeChild(el);
+          }
+        }, life + 40); // ✅ Optimize: timeout azaltıldı
       }
+      
+      document.body.appendChild(fragment);
     } catch {}
   }, []);
 
@@ -132,7 +174,7 @@ export default function Navbar() {
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-neutral-900 focus:px-3 focus:py-2 focus:text-white"
       >
-        İçeriğe geç
+        Ana içeriğe atla
       </a>
 
       <header
@@ -143,22 +185,33 @@ export default function Navbar() {
             : "bg-white border-transparent",
         ].join(" ")}
         role="banner"
+        itemScope
+        itemType="https://schema.org/Organization"
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center gap-2" aria-label="Sahneva Anasayfa">
+            {/* ✅ İYİLEŞTİRİLDİ: Logo SEO optimizasyonu */}
+            <Link 
+              href="/" 
+              className="flex items-center gap-2" 
+              aria-label="Sahneva - Profesyonel sahne ve etkinlik ekipmanları kiralama"
+              title="Sahneva Ana Sayfa - Etkinlik ekipmanları kiralama"
+              itemProp="url"
+            >
               <Image
                 src="/img/logo.png"
-                alt="Sahneva"
+                alt="Sahneva Logo - Profesyonel sahne, podyum, LED ekran kiralama"
                 width={160}
                 height={40}
                 priority={pathname === "/"}
                 sizes="(max-width: 768px) 120px, 160px"
                 className="h-10 w-auto"
+                itemProp="logo"
               />
             </Link>
 
             <nav className="hidden md:flex items-center gap-6" aria-label="Ana menü">
+              {/* ✅ İYİLEŞTİRİLDİ: Link SEO optimizasyonu */}
               <Link
                 href="/hakkimizda"
                 className={[
@@ -167,11 +220,12 @@ export default function Navbar() {
                   "hover:text-[#6d28d9]",
                 ].join(" ")}
                 aria-current={active("/hakkimizda") ? "page" : undefined}
+                title="Sahneva Hakkında - Şirket bilgileri ve referanslar"
               >
                 Hakkımızda
               </Link>
 
-              {/* Hizmetler Dropdown (Desktop) */}
+              {/* ✅ İYİLEŞTİRİLDİ: Hizmetler Dropdown SEO optimizasyonu */}
               <div
                 className="relative"
                 ref={dropdownRef}
@@ -190,8 +244,9 @@ export default function Navbar() {
                   ].join(" ")}
                   aria-haspopup="menu"
                   aria-expanded={servicesOpen}
-                  aria-controls={servicesMenuId} // panel DOM'da mevcut
+                  aria-controls={servicesMenuId}
                   onClick={() => setServicesOpen((s) => !s)}
+                  title="Sahneva Hizmetler - Tüm ekipman kiralama hizmetlerimiz"
                 >
                   Hizmetler
                 </button>
@@ -202,7 +257,6 @@ export default function Navbar() {
                   onMouseEnter={openNow}
                 />
 
-                {/* Panel her zaman DOM’da; görünürlük hidden ile yönetilir */}
                 <div
                   id={servicesMenuId}
                   role="menu"
@@ -214,14 +268,15 @@ export default function Navbar() {
                   onMouseLeave={closeWithDelay}
                 >
                   <ul className="py-1">
-                    {serviceLinks.map(({ href, label }) => (
+                    {serviceLinks.map(({ href, label, title }) => (
                       <li key={href} role="none">
                         <Link
                           role="menuitem"
                           href={href}
-                          className="block px-4 py-2 text-sm text-neutral-800 hover:bg-[#f3f0ff] hover:text-[#6d28d9]"
+                          className="block px-4 py-2 text-sm text-neutral-800 hover:bg-[#f3f0ff] hover:text-[#6d28d9] transition-colors"
                           onClick={() => setServicesOpen(false)}
                           aria-current={active(href) ? "page" : undefined}
+                          title={title}
                         >
                           {label}
                         </Link>
@@ -239,31 +294,39 @@ export default function Navbar() {
                   "hover:text-[#6d28d9]",
                 ].join(" ")}
                 aria-current={active("/iletisim") ? "page" : undefined}
+                title="Sahneva İletişim - Bize ulaşın ve teklif alın"
               >
                 İletişim
               </Link>
 
+              {/* ✅ İYİLEŞTİRİLDİ: WhatsApp butonu SEO optimizasyonu */}
               <a
-                href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
+                href="https://wa.me/905453048671?text=Merhaba%2C+sahne+ve+etkinlik+ekipmanları+için+teklif+almak+istiyorum."
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="WhatsApp Teklif – üzerinden teklif iste (yeni sekmede açılır)"
-                className="ml-2 inline-flex items-center gap-2 rounded-lg px-3 py-2 text-white text-sm font-semibold
+                aria-label="WhatsApp Teklif - Sahneva WhatsApp iletişim (yeni sekmede açılır)"
+                className="ml-2 inline-flex items-center gap-2 rounded-lg px-4 py-2 text-white text-sm font-semibold
                            bg-[#15803d] hover:bg-[#166534] transition-colors focus:outline-none
-                           focus-visible:ring-2 focus-visible:ring-[#6d28d9]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                           focus-visible:ring-2 focus-visible:ring-[#6d28d9]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white
+                           min-h-[40px]"
                 onClick={burst}
+                title="WhatsApp'tan anında teklif alın - Sahneva"
               >
+                <span aria-hidden="true">💬</span>
                 WhatsApp Teklif
               </a>
             </nav>
 
+            {/* ✅ Mobil menü butonu - değişmedi */}
             <button
               onClick={() => setMobileOpen((s) => !s)}
               className="md:hidden inline-flex items-center justify-center p-2 rounded
-                         focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]/40"
-              aria-label="Menüyü aç/kapat"
+                         focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6d28d9]/40
+                         min-h-[44px] min-w-[44px]"
+              aria-label="Menüyü aç veya kapat"
               aria-expanded={mobileOpen}
               aria-controls="mobile-menu"
+              title="Mobil menü"
             >
               <svg
                 className="h-7 w-7 text-neutral-900"
@@ -301,6 +364,7 @@ export default function Navbar() {
         />
       )}
 
+      {/* ✅ İYİLEŞTİRİLDİ: Mobil menü SEO optimizasyonu */}
       <div
         id="mobile-menu"
         role="dialog"
@@ -320,8 +384,9 @@ export default function Navbar() {
           <Link
             href="/hakkimizda"
             onClick={() => setMobileOpen(false)}
-            className="block py-3 border-b text-neutral-800 font-medium"
+            className="block py-3 border-b text-neutral-800 font-medium text-base"
             aria-current={active("/hakkimizda") ? "page" : undefined}
+            title="Sahneva Hakkında"
           >
             Hakkımızda
           </Link>
@@ -332,7 +397,9 @@ export default function Navbar() {
               onClick={() => setMobileServicesOpen((s) => !s)}
               aria-expanded={mobileServicesOpen}
               aria-controls="mobile-services-list"
-              className="w-full flex items-center justify-between gap-3 py-3 text-base font-semibold text-neutral-900"
+              className="w-full flex items-center justify-between gap-3 py-3 text-base font-semibold text-neutral-900
+                         min-h-[44px]"
+              title="Sahneva Hizmetler Menüsü"
             >
               <span>Hizmetler</span>
               <svg
@@ -358,13 +425,15 @@ export default function Navbar() {
               }`}
             >
               <ul className="mt-1 rounded-lg border border-neutral-200 bg-neutral-50">
-                {serviceLinks.map(({ href, label }) => (
+                {serviceLinks.map(({ href, label, title }) => (
                   <li key={href} className="border-b last:border-b-0 border-neutral-200">
                     <Link
                       href={href}
                       onClick={() => setMobileOpen(false)}
-                      className="block px-3 py-2 text-sm text-neutral-800 hover:bg-[#f3f0ff] hover:text-[#6d28d9]"
+                      className="block px-3 py-3 text-sm text-neutral-800 hover:bg-[#f3f0ff] hover:text-[#6d28d9] transition-colors
+                                 min-h-[44px] flex items-center"
                       aria-current={active(href) ? "page" : undefined}
+                      title={title}
                     >
                       {label}
                     </Link>
@@ -377,25 +446,29 @@ export default function Navbar() {
           <Link
             href="/iletisim"
             onClick={() => setMobileOpen(false)}
-            className="block py-3 border-t text-neutral-800 font-medium"
+            className="block py-3 border-t text-neutral-800 font-medium text-base"
             aria-current={active("/iletisim") ? "page" : undefined}
+            title="Sahneva İletişim"
           >
             İletişim
           </Link>
 
           <a
-            href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
+            href="https://wa.me/905453048671?text=Merhaba%2C+sahne+ve+etkinlik+ekipmanları+için+teklif+almak+istiyorum."
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="WhatsApp Teklif – üzerinden teklif iste (yeni sekmede açılır)"
-            className="block text-center mt-3 rounded-lg px-3 py-2 text-white text-sm font-semibold 
+            aria-label="WhatsApp Teklif - Sahneva WhatsApp iletişim (yeni sekmede açılır)"
+            className="block text-center mt-3 rounded-lg px-4 py-3 text-white text-base font-semibold 
                        bg-[#15803d] hover:bg-[#166534] transition-colors focus:outline-none
-                       focus-visible:ring-2 focus-visible:ring-[#6d28d9]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                       focus-visible:ring-2 focus-visible:ring-[#6d28d9]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white
+                       min-h-[44px] flex items-center justify-center gap-2"
             onClick={(e) => {
               burst(e);
               setMobileOpen(false);
             }}
+            title="WhatsApp'tan teklif alın"
           >
+            <span aria-hidden="true">💬</span>
             WhatsApp Teklif
           </a>
         </div>
