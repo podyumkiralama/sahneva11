@@ -8,19 +8,19 @@ import Faq from "../../components/Faq";
 import HeroCtasClient from "../../components/HeroCtasClient";
 import ReviewBanner from "../../components/ReviewBanner";
 
-// Optimize edilmiş dinamik import'lar
+// Client bileşenlerini dinamik yükle - ssr:false KULLANMIYORUZ
 const ServicesTabsLazy = dynamic(
   () => import("../../components/ServicesTabs"),
   { 
     loading: () => <SectionSkeleton label="Hizmetler yükleniyor" />,
-    ssr: false // CSR için optimize
+    // ssr: false kaldırıldı - Next.js 15 uyumluluğu için
   }
 );
 const ProjectsGalleryLazy = dynamic(
   () => import("../../components/ProjectsGallery"),
   { 
     loading: () => <SectionSkeleton label="Projeler yükleniyor" />,
-    ssr: false
+    // ssr: false kaldırıldı - Next.js 15 uyumluluğu için
   }
 );
 
