@@ -127,7 +127,6 @@ export default function RootLayout({ children }) {
         `}</style>
       </head>
 
-      {/* ✅ BURADA PADDING KALDIRILDI */}
       <body className={`${inter.className} scroll-smooth`}>
         <a
           href="#main"
@@ -137,12 +136,9 @@ export default function RootLayout({ children }) {
         </a>
 
         <Navbar />
-
-        {/* ✅ PT KALDIRILDI */}
         <main id="main" role="main" className="mb-24 lg:mb-0">
           {children}
         </main>
-
         <UtilityBar />
         <Footer />
 
@@ -155,6 +151,23 @@ export default function RootLayout({ children }) {
             __html: JSON.stringify(ldLocalBusiness),
           }}
         />
+
+        {/* ✅ ✅ ✅ GOOGLE ANALYTICS (GA4) */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-J5YK10YLLC"
+          strategy="afterInteractive"
+        />
+        <Script id="ga4" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-J5YK10YLLC', {
+              page_path: window.location.pathname,
+            });
+          `}
+        </Script>
+
       </body>
     </html>
   );
