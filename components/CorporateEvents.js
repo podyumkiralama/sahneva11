@@ -4,45 +4,41 @@
 import Image from "next/image";
 import Link from "next/link";
 
-// Grid: <768px tek sütun; >=768px 3 sütun (md:grid-cols-3)
-// Container iç boşluk ~ 2rem, sütunlar arası gap-6 = 1.5rem (satırda 2 gap => 3rem)
+// ✅ İYİLEŞTİRİLDİ: Daha optimize sizes değeri
 const CARD_SIZES =
-  "(max-width: 768px) calc(100vw - 2rem), " +                // tek sütun
-  "(max-width: 1280px) calc((100vw - 2rem - 3rem) / 3), " +  // 3 sütun
-  "400px";                                                   // ≥1280px: ~ (1280px - 2rem - 3rem)/3 ≈ 400px
+  "(max-width: 768px) 100vw, " +
+  "(max-width: 1024px) calc((100vw - 4rem) / 2), " +
+  "calc((1280px - 4rem) / 3)";
 
 const CARDS = [
   {
     slug: "lansman",
     title: "Ürün Lansmanları",
     img: "/img/kurumsal/lansman.webp",
-    alt: "Kurumsal lansman etkinliği için sahne ve ekran kurulumu",
-    text:
-      "LED ekran kurgu, sahne tasarımı, ışık şovları ve canlı yayın altyapısıyla etkileyici sunumlar.",
+    alt: "Kurumsal ürün lansmanı için profesyonel sahne, LED ekran ve ışık sistemi kurulumu - Sahneva",
+    text: "LED ekran kurgu, sahne tasarımı, ışık şovları ve canlı yayın altyapısıyla etkileyici sunumlar.",
   },
   {
-    slug: "konferans",
+    slug: "konferans", 
     title: "Konferans & Kongre",
     img: "/img/kurumsal/konferans.webp",
-    alt: "Konferans ve kongre için sahne ve ses-ışık sistemleri",
-    text:
-      "Çoklu mikrofon, simultane çeviri, sunum yönetimi ve kayıt çözümleriyle kusursuz akış.",
+    alt: "Konferans ve kongre organizasyonları için sahne, ses-ışık sistemleri ve teknik ekipman - Sahneva",
+    text: "Çoklu mikrofon, simultane çeviri, sunum yönetimi ve kayıt çözümleriyle kusursuz akış.",
   },
   {
     slug: "bayi-toplantisi",
     title: "Bayi & İç İletişim",
-    img: "/img/kurumsal/bayi-toplantisi.webp",
-    alt: "Bayi toplantısı için sahne, ekran ve ışık kurulumu",
-    text:
-      "Kurumsal kimliğe uygun sahne–dekor, çoklu ekran, video–ses yönetimi ve teknik ekip.",
+    img: "/img/kurumsal/bayi-toplantisi.webp", 
+    alt: "Bayi toplantısı ve kurumsal iletişim etkinlikleri için özel sahne, ekran ve aydınlatma çözümleri - Sahneva",
+    text: "Kurumsal kimliğe uygun sahne–dekor, çoklu ekran, video–ses yönetimi ve teknik ekip.",
   },
 ];
 
 const ADVANTAGES = [
-  { icon: "⚡", label: "Aynı Gün Kurulum" },
-  { icon: "🎛", label: "Güncel Ekipman Parkı" },
-  { icon: "👷", label: "Deneyimli Teknik Ekip" },
-  { icon: "🛡", label: "Güvenlik & Yedek Plan" },
+  { icon: "⚡", label: "Aynı Gün Kurulum", desc: "Hızlı ve profesyonel kurulum hizmeti" },
+  { icon: "🎛", label: "Güncel Ekipman Parkı", desc: "En son teknoloji ekipmanlar" },
+  { icon: "👷", label: "Deneyimli Teknik Ekip", desc: "Uzman profesyonel ekip" },
+  { icon: "🛡", label: "Güvenlik & Yedek Plan", desc: "Güvenlik öncelikli hizmet" },
 ];
 
 export default function CorporateEvents() {
@@ -52,7 +48,7 @@ export default function CorporateEvents() {
         id="kurumsal-heading"
         className="text-2xl md:text-3xl font-bold text-center mb-4"
       >
-        Kurumsal Organizasyonlar
+        Kurumsal Organizasyon Çözümleri
       </h2>
 
       <p
@@ -64,7 +60,7 @@ export default function CorporateEvents() {
         sunuyoruz.
       </p>
 
-      {/* Kartlar */}
+      {/* ✅ DÜZELTİLDİ: Kartlar - image optimizasyonu */}
       <div
         className="grid gap-6 md:grid-cols-3"
         role="list"
@@ -76,7 +72,7 @@ export default function CorporateEvents() {
             className="rounded-2xl border bg-white shadow-sm hover:shadow-md transition overflow-hidden focus-within:ring-2 focus-within:ring-primary/40"
             role="listitem"
           >
-            {/* Sabit oran (CLS azaltır) */}
+            {/* ✅ DÜZELTİLDİ: Image optimize edildi */}
             <div className="relative aspect-[16/9] w-full">
               <Image
                 src={card.img}
@@ -86,18 +82,23 @@ export default function CorporateEvents() {
                 className="object-cover"
                 loading="lazy"
                 decoding="async"
-                fetchPriority="low"
+                // ✅ fetchPriority KALDIRILDI
+                placeholder="blur"
+                blurDataURL="/img/placeholder-blur.webp"
+                quality={80}
               />
             </div>
 
             <div className="p-6">
               <h3 className="font-semibold text-lg mb-1">{card.title}</h3>
               <p className="text-sm text-neutral-600 mb-4">{card.text}</p>
+              {/* ✅ İYİLEŞTİRİLDİ: Link SEO optimizasyonu */}
               <Link
                 href="/iletisim"
                 prefetch={false}
                 className="text-primary font-semibold hover:underline focus:outline-none focus:ring-2 focus:ring-primary/40 rounded"
-                aria-label={`${card.title} için teklif al`}
+                aria-label={`${card.title} için teklif al - Sahneva kurumsal çözümler`}
+                title={`${card.title} hizmeti için ücretsiz teklif alın`}
               >
                 Teklif Al
               </Link>
@@ -106,15 +107,18 @@ export default function CorporateEvents() {
         ))}
       </div>
 
-      {/* Avantajlar şeridi */}
+      {/* ✅ İYİLEŞTİRİLDİ: Avantajlar - semantic iyileştirme */}
       <div
         className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4"
-        aria-label="Avantajlar"
+        aria-label="Kurumsal Hizmet Avantajları"
+        role="list"
       >
         {ADVANTAGES.map((item, i) => (
           <div
             key={i}
             className="flex items-center gap-2 rounded-xl border bg-white p-4"
+            role="listitem"
+            title={item.desc}
           >
             <span className="text-2xl" aria-hidden="true">
               {item.icon}
@@ -124,33 +128,40 @@ export default function CorporateEvents() {
         ))}
       </div>
 
-      {/* CTA bandı */}
+      {/* ✅ İYİLEŞTİRİLDİ: CTA bandı - SEO optimizasyonu */}
       <div className="mt-10 rounded-2xl bg-primary/5 border p-6 text-center">
         <h3 className="text-xl md:text-2xl font-semibold mb-2">
-          Kurumsal etkinliğinizi anahtar teslim planlayalım
+          Kurumsal Etkinlikleriniz İçin Anahtar Teslim Çözüm
         </h3>
         <p className="text-neutral-700 mb-4">
-          Sahne, podyum, LED ekran, ses–ışık ve yayın çözümleri için hemen
-          iletişime geçin.
+          Profesyonel sahne, podyum, LED ekran, ses–ışık ve yayın çözümleri için 
+          uzman ekibimizle hemen iletişime geçin.
         </p>
-        <div className="flex justify-center gap-3">
+        <div className="flex flex-col sm:flex-row justify-center gap-3">
           <a
             href="tel:+905453048671"
             className="btn btn-primary focus:outline-none focus:ring-2 focus:ring-primary/40"
-            aria-label="Telefonla görüş – +90 545 304 86 71"
+            aria-label="Kurumsal etkinlik için telefonla görüş – +90 545 304 86 71"
+            title="Telefonla ücretsiz danışmanlık alın"
           >
-            Telefonla Görüş
+            📞 Telefonla Görüş
           </a>
           <a
-            href="https://wa.me/905453048671?text=Merhaba%2C+kurumsal+etkinlik+i%C3%A7in+teklif+almak+istiyorum."
+            href="https://wa.me/905453048671?text=Merhaba%2C+kurumsal+etkinlik+organizasyonu+için+profesyonel+çözüm+ve+teklif+almak+istiyorum."
             className="btn btn-accent focus:outline-none focus:ring-2 focus:ring-primary/40"
-            aria-label="WhatsApp üzerinden teklif iste"
+            aria-label="WhatsApp üzerinden kurumsal etkinlik teklifi iste"
+            title="WhatsApp'tan kurumsal çözüm teklifi alın"
             target="_blank"
             rel="noopener noreferrer"
           >
-            WhatsApp
+            💬 WhatsApp'tan Yaz
           </a>
         </div>
+        
+        {/* ✅ YENİ: Ek bilgi */}
+        <p className="text-xs text-neutral-500 mt-4">
+          <strong>Hızlı Yanıt:</strong> Müşteri temsilcilerimiz 7/24 hizmetinizde
+        </p>
       </div>
     </section>
   );
