@@ -1,0 +1,45 @@
+{
+  "name": "sahneva",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "prebuild": "npm dedupe",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "analyze": "ANALYZE=true next build"
+  },
+  "dependencies": {
+    "@vercel/speed-insights": "1.2.0",
+    "next": "15.5.2",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "tailwindcss": "3.4.8",
+    "postcss": "8.4.38",
+    "autoprefixer": "10.4.19"
+  },
+  "devDependencies": {
+    "@next/bundle-analyzer": "15.5.2",
+    "eslint": "8.57.0",
+    "eslint-config-next": "15.5.2"
+  },
+  "browserslist": {
+    "production": [
+      "Chrome >= 114",
+      "Firefox >= 113",
+      "Safari >= 16.4",
+      "iOS >= 16.4",
+      "Edge >= 114"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "engines": {
+    "node": ">=20 <23"
+  }
+}

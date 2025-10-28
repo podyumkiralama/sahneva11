@@ -1,0 +1,199 @@
+/* ROLLBACK to previous look & feel with only safe a11y tweaks */
+
+/* Tailwind base */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Theme vars (unchanged) */
+:root{
+  --brand:#6d28d9;
+  --brand-700:#5b21b6;
+  --accent:#15803d;
+  --accent-700:#166534;
+  --fs:100%;
+}
+
+html{ scroll-behavior:smooth; font-size:var(--fs); }
+html,body{ height:100%; }
+body{ @apply bg-white text-slate-800 antialiased; }
+
+img, video, canvas, svg { max-width:100%; height:auto; }
+.container{ max-width:1280px; margin-inline:auto; padding-inline:1rem; }
+
+.full-bleed{
+  position:relative;
+  margin-left:calc(50% - 50vw);
+  margin-right:calc(50% - 50vw);
+  inline-size:100svw; width:100vw;
+  min-height:60vh;
+}
+@media (min-width:768px){ .full-bleed{ min-height:70vh; } }
+
+.object-cover{ object-fit:cover; }
+.will-change-transform{ will-change:transform; }
+
+.section-lazy{
+  content-visibility:auto;
+  contain-intrinsic-size: 1px 800px;
+}
+@supports not (content-visibility:auto){ .section-lazy{} }
+
+.nav-glass{
+  @apply sticky top-0 z-40;
+  backdrop-filter:blur(8px);
+  background: rgba(255,255,255,.75);
+  background: color-mix(in oklab, white 70%, transparent);
+  border-bottom:1px solid rgba(0,0,0,.06);
+}
+
+/* Buttons (keep high contrast) */
+.btn{
+  @apply inline-flex items-center justify-center rounded-lg px-6 py-3 font-semibold text-white shadow-md transition;
+  text-shadow:0 1px 0 rgba(0,0,0,.25);
+}
+.btn-primary{ background:var(--brand); }
+.btn-primary:hover{ background:var(--brand-700); }
+.btn-accent{ background:var(--accent); }
+.btn-accent:hover{ background:var(--accent-700); }
+
+/* REVERT badges to glassy look */
+.badge{
+  @apply flex items-center gap-2 px-4 py-2 rounded-full border backdrop-blur;
+  background:rgba(255,255,255,.10);
+  color:#fff;
+  border-color:rgba(255,255,255,.20);
+}
+
+.card{ @apply p-6 bg-white rounded-2xl shadow transition; }
+.card:hover{ @apply shadow-md; }
+
+.faq-card{
+  @apply rounded-xl border;
+  background:rgba(255,255,255,.95);
+  border-color:rgba(0,0,0,.08);
+}
+
+.hero-overlay{
+  background:linear-gradient(180deg, rgba(0,0,0,.6), rgba(0,0,0,.45) 35%, rgba(0,0,0,.6));
+}
+
+/* Keep a clear focus ring (subtle but visible) */
+:focus-visible{ outline:2px solid #6d28d966; outline-offset:2px; }
+
+html.hc body{ filter:contrast(1.06) saturate(1.05); }
+html.hc a{ text-decoration:underline; }
+
+@supports (padding:max(0px)){
+  .pb-safe{ padding-bottom:max(1rem, env(safe-area-inset-bottom)); }
+}
+
+/* Burst effect (unchanged) */
+.burst-particle{
+  position:absolute; left:0; top:0;
+  background:radial-gradient(circle, var(--burst-c1,#6d28d9), var(--burst-c2,#22c55e));
+  border-radius:9999px;
+  transform:translate(-50%,-50%);
+  animation:burst-move var(--life,550ms) ease-out forwards, burst-fade var(--life,550ms) ease-out forwards;
+  pointer-events:none;
+  will-change:transform,opacity;
+  box-shadow:0 0 10px rgba(0,0,0,.12);
+}
+@keyframes burst-move{
+  from{ transform:translate(-50%,-50%) rotate(0) scale(1); }
+  to{ transform:translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--dr)) scale(.6); }
+}
+@keyframes burst-fade{
+  0%{ opacity:1; }
+  80%{ opacity:.7; }
+  100%{ opacity:0; }
+}
+@media (prefers-reduced-motion: reduce){
+  .burst-particle{ animation: burst-fade 400ms ease-out forwards; transform: translate(-50%,-50%) scale(.8); }
+}
+
+.bar-item{
+  display:grid; place-items:center; height:3rem; width:100%;
+  font-size:.875rem; font-weight:600; color:rgb(38 38 38);
+  border-radius:.5rem; position: relative;
+}
+.bar-item:hover{ background:#f8fafc; }
+.bar-item:focus-visible{ outline:2px solid #6d28d966; outline-offset:2px; }
+
+.img-skeleton{ background:#f3f4f6; }
+
+@supports (font-synthesis-weight: auto){
+  html{ font-synthesis-weight: auto; font-synthesis-style: auto; }
+}
+
+/* ---- Minimal A11Y-only nudges ---- */
+/* 1) Ensure hero small text is not translucent if class missed */
+.hero-para { color:#ffffff; }
+/* 2) Avoid low-contrast grays on small text blocks */
+.text-muted-safe { color:#475569; } /* slate-600 */
+    /* === FAQ modern stil (WCAG-safe) === */
+
+.faqGlass{
+  /* mor+yeşil hafif vinyet + cam efekti */
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(99,102,241,.10), transparent),
+    radial-gradient(900px 500px at 110% 10%, rgba(16,185,129,.10), transparent),
+    rgba(255,255,255,.72);
+  -webkit-backdrop-filter: saturate(120%) blur(6px);
+  backdrop-filter: saturate(120%) blur(6px);
+  border:1px solid rgba(0,0,0,.06);
+  border-radius: 1rem; /* 16px */
+}
+
+/* küçük kategori/etiket butonları (opsiyonel) */
+.faqChip{
+  border:1px solid rgba(0,0,0,.08);
+  background:#fff;
+  color:#0f172a; /* slate-900 */
+  border-radius: 9999px;
+  padding:.375rem .75rem; /* 6px 12px */
+  font-weight:600;
+  transition: background .2s ease, transform .15s ease, box-shadow .2s ease;
+}
+.faqChip:hover{ background:#f8fafc; transform:translateY(-1px); }
+.faqChip:focus-visible{
+  outline:2px solid #6d28d9; outline-offset:2px;
+}
+
+/* her bir <details> kartı */
+.faqCard{
+  border:1px solid rgba(0,0,0,.08);
+  background:#fff;
+  border-radius:.75rem; /* 12px */
+  transition: border-color .2s ease, box-shadow .2s ease, transform .15s ease;
+}
+.faqCard[open]{
+  border-color:#6366f1;           /* indigo-500 */
+  box-shadow:0 10px 30px rgba(2,6,23,.08);
+  transform:translateY(-1px);
+}
+
+/* summary trigger'ı için net focus halkası */
+.faqSummary{
+  display:flex; align-items:center; justify-content:space-between; gap:.75rem;
+  font-weight:700; color:#0f172a;  /* slate-900 */
+  border-radius:.5rem;
+}
+.faqSummary:focus-visible{
+  outline:2px solid #6d28d9;             /* brand moru */
+  outline-offset:2px;
+}
+
+/* içerik görünür olurken animasyon */
+.faqAnim{ animation:faqFade .25s ease both; }
+@keyframes faqFade{
+  from{ opacity:0; transform:translateY(-4px); }
+  to  { opacity:1; transform:translateY(0); }
+}
+
+/* hareketi azalt tercihine saygı */
+@media (prefers-reduced-motion: reduce){
+  .faqCard[open]{ transform:none; }
+  .faqChip:hover{ transform:none; }
+  .faqAnim{ animation:none; }
+}
