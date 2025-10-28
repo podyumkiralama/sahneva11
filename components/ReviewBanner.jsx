@@ -4,138 +4,91 @@
 import { useEffect, useState, useCallback } from "react";
 
 const REVIEW_URL = "https://g.page/r/CZhkMzkNOdgnEBI/review";
-const LS_KEY = "rvb.dismissed.v2"; // ✅ Yeni versiyon key
+const LS_KEY = "rvb.dismissed.v1";
 
 export default function ReviewBanner({
   mode = "sticky",
   className = "",
-  title = "Sahneva Organizasyon'u Google'da Değerlendirin",
-  subtitle = "Müşteri memnuniyeti bizim için çok önemli. Deneyiminizi paylaşır mısınız?",
-  ctaLabel = "Yorum Yap",
+  title = "Sahneva Organizasyon’u Google’da değerlendirin",
+  subtitle = "Görüşünüz bizim için çok değerli. 1 dakikanızı ayırır mısınız?",
+  ctaLabel = "Yorum Yaz",
 }) {
   const [hidden, setHidden] = useState(true);
-  const [mounted, setMounted] = useState(false);
 
-  // ✅ İYİLEŞTİRİLDİ: useEffect optimizasyonu
   useEffect(() => {
-    setMounted(true);
-    const dismissed = localStorage.getItem(LS_KEY) === "1";
+    const dismissed = typeof window !== "undefined" && localStorage.getItem(LS_KEY) === "1";
     setHidden(dismissed);
   }, []);
 
   const dismiss = useCallback(() => {
-    try { 
-      localStorage.setItem(LS_KEY, "1"); 
-    } catch (e) {
-      console.warn('LocalStorage erişilemiyor:', e);
-    }
+    try { localStorage.setItem(LS_KEY, "1"); } catch {}
     setHidden(true);
   }, []);
 
-  // ✅ İYİLEŞTİRİLDİ: SSR uyumluluğu
-  if (!mounted || hidden) return null;
+  if (hidden) return null;
 
-  // ✅ İYİLEŞTİRİLDİ: useCallback ile optimize edilmiş Content component'i
-  const Content = useCallback(() => (
-    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+  const Content = () => (
+    <div className="flex items-center gap-3">
       <div
         aria-hidden="true"
         role="presentation"
-        className="flex items-center justify-center rounded-full bg-yellow-400/20 text-yellow-600 w-12 h-12 text-xl shrink-0"
-        title="5 Yıldızlı Değerlendirme"
+        className="hidden sm:flex items-center justify-center rounded-full bg-yellow-400/15 text-yellow-500 w-10 h-10 text-xl"
       >
-        ⭐
+        ★
       </div>
 
-      <div className="min-w-0 flex-1 text-center sm:text-left">
-        <p 
-          className="text-sm sm:text-base font-bold text-gray-900" 
-          id="review-title"
-          itemProp="name"
-        >
-          {title}
-        </p>
-        <p 
-          className="text-xs sm:text-sm text-gray-700 mt-1" 
-          id="review-subtitle"
-          itemProp="description"
-        >
-          {subtitle}
-        </p>
+      <div className="min-w-0">
+        <p className="text-sm sm:text-base font-semibold text-neutral-900" id="review-title">{title}</p>
+        <p className="text-xs sm:text-sm text-neutral-600" id="review-subtitle">{subtitle}</p>
       </div>
 
-      <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
-        {/* ✅ İYİLEŞTİRİLDİ: Google Review Link SEO optimizasyonu */}
-        <a
-          href={REVIEW_URL}
-          target="_blank"
-          rel="noopener noreferrer nofollow" // ✅ nofollow eklendi
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-[#b45309] hover:bg-[#92400e] text-white text-sm font-semibold px-5 py-3 transition-all duration-200 shadow-sm hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b45309] focus-visible:ring-offset-2 min-h-[44px] min-w-[120px]"
-          aria-label="Google Maps'te Sahneva için yorum yazın - Yeni sekmede açılır"
-          title="Sahneva Google Yorumları - Müşteri deneyiminizi paylaşın"
-          itemProp="url"
-        >
-          <span aria-hidden="true">📝</span>
-          {ctaLabel}
-        </a>
+      <div className="flex-1" />
 
-        {/* ✅ İYİLEŞTİRİLDİ: Erişilebilir kapat butonu */}
-        <button
-          type="button"
-          onClick={dismiss}
-          className="inline-flex items-center justify-center rounded-full text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2 transition-colors min-h-[44px] min-w-[44px]"
-          aria-label="Değerlendirme bildirimini kapat"
-          title="Bildirimi kapat"
-        >
-          <span aria-hidden="true" className="text-lg font-bold">×</span>
-        </button>
-      </div>
-    </div>
-  ), [title, subtitle, ctaLabel, dismiss]); // ✅ Bağımlılıklar eklendi
+      <a
+        href={REVIEW_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="shrink-0 inline-flex items-center gap-2 rounded-full bg-[#b45309] hover:bg-[#92400e] text-white text-sm font-semibold px-4 py-2 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b45309]/40"
+        aria-label={`Google üzerinde Sahneva için yorum yaz (yeni sekmede açılır)`}
+      >
+        ⭐ {ctaLabel}
+      </a>
 
-  // ✅ İYİLEŞTİRİLDİ: Schema.org markup için wrapper
-  const BannerWrapper = ({ children, ...props }) => (
-    <div
-      {...props}
-      itemScope
-      itemType="https://schema.org/Review"
-      itemProp="review"
-    >
-      {children}
+      <button
+        type="button"
+        onClick={dismiss}
+        className="ml-2 -mr-1 inline-flex h-9 w-9 items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-300"
+        aria-label="Bu bildirimi kapat"
+      >
+        ✕
+      </button>
     </div>
   );
 
   if (mode === "inline") {
     return (
-      <BannerWrapper
-        className={`container my-6 rounded-2xl border border-yellow-200 bg-yellow-50 shadow-sm p-4 sm:p-6 ${className}`}
+      <section
+        className={`container my-6 rounded-2xl border bg-white shadow-sm p-4 sm:p-5 ${className}`}
         role="region"
         aria-labelledby="review-title"
         aria-describedby="review-subtitle"
       >
         <Content />
-      </BannerWrapper>
+      </section>
     );
   }
 
   return (
-    <BannerWrapper
+    <div
       role="region"
       aria-live="polite"
       aria-labelledby="review-title"
       aria-describedby="review-subtitle"
-      className={`fixed bottom-4 left-4 right-4 z-[60] sm:left-6 sm:right-6 ${className}`}
+      className={`fixed bottom-3 left-3 right-3 z-[60] ${className}`}
     >
-      <div className="mx-auto max-w-4xl rounded-2xl border border-yellow-200 bg-yellow-50 shadow-xl p-4 sm:p-5 backdrop-blur-sm bg-yellow-50/95">
+      <div className="mx-auto max-w-3xl rounded-2xl border bg-white shadow-lg p-3 sm:p-4">
         <Content />
-        
-        {/* ✅ YENİ: Ek bilgi */}
-        <div className="mt-3 pt-3 border-t border-yellow-200/50">
-          <p className="text-xs text-gray-600 text-center">
-            <strong>4.9/5 ⭐</strong> ortalama puan • <strong>250+</strong> müşteri yorumu
-          </p>
-        </div>
       </div>
-    </BannerWrapper>
+    </div>
   );
 }
