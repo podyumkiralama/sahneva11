@@ -8,22 +8,25 @@ import Faq from "../../components/Faq";
 import HeroCtasClient from "../../components/HeroCtasClient";
 import ReviewBanner from "../../components/ReviewBanner";
 
-// Client bileşenlerini dinamik yükle
+// Optimize edilmiş dinamik import'lar
 const ServicesTabsLazy = dynamic(
   () => import("../../components/ServicesTabs"),
   { 
-    loading: () => <SectionSkeleton label="Hizmetler yükleniyor" />
+    loading: () => <SectionSkeleton label="Hizmetler yükleniyor" />,
+    ssr: false // CSR için optimize
   }
 );
 const ProjectsGalleryLazy = dynamic(
   () => import("../../components/ProjectsGallery"),
   { 
-    loading: () => <SectionSkeleton label="Projeler yükleniyor" />
+    loading: () => <SectionSkeleton label="Projeler yükleniyor" />,
+    ssr: false
   }
 );
 
-export const revalidate = 3600; // 1 saat
+export const revalidate = 3600;
 
+// Geliştirilmiş skeleton component
 function SectionSkeleton({ label = "İçerik yükleniyor" }) {
   return (
     <div
@@ -32,346 +35,418 @@ function SectionSkeleton({ label = "İçerik yükleniyor" }) {
       aria-live="polite"
       aria-label={label}
     >
-      <div className="h-10 w-40 mb-4 rounded bg-neutral-100 animate-pulse" />
-      <div className="h-40 rounded-2xl bg-neutral-100 animate-pulse" />
+      <div className="flex flex-col items-center space-y-4">
+        <div className="h-10 w-40 rounded bg-gradient-to-r from-neutral-100 to-neutral-200 animate-pulse" />
+        <div className="h-40 w-full rounded-2xl bg-gradient-to-r from-neutral-100 to-neutral-200 animate-pulse" />
+        <span className="sr-only">{label}</span>
+      </div>
     </div>
   );
 }
 
+// SEO-friendly schema markup
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'EventProductionCompany',
+  'name': 'Sahneva',
+  'description': 'Profesyonel sahne, podyum, LED ekran ve ses-ışık sistemleri kiralama',
+  'url': 'https://sahneva.com',
+  'telephone': '+905453048671',
+  'areaServed': 'TR',
+  'serviceType': 'Event Production'
+};
+
 export default function HomePage() {
   return (
     <div className="overflow-x-hidden">
-      {/* Klavye kullanıcıları için "içeriğe atla" */}
+      {/* Schema markup */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+
+      {/* Enhanced skip link */}
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:z-[9999] focus:top-3 focus:left-3 focus:bg-white focus:text-black focus:px-3 focus:py-2 focus:rounded"
+        className="sr-only focus:not-sr-only focus:fixed focus:z-[9999] focus:top-3 focus:left-3 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-3 focus:rounded-lg focus:font-semibold focus:shadow-lg transition-all duration-200"
       >
         Ana içeriğe atla
       </a>
 
-      {/* HERO Section */}
-      <section className="full-bleed relative overflow-x-hidden">
-        <Image
-          src="/img/hero-bg.webp"
-          alt="Profesyonel sahne kurulumu, modüler podyum sistemleri ve yüksek çözünürlüklü LED ekranlar - Sahneva etkinlik ekipmanları"
-          fill
-          priority
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
-          placeholder="blur"
-          blurDataURL="/img/hero-bg-low.webp"
-          className="object-cover hero-optimized"
-          quality={85}
-        />
-        <div
-          className="absolute inset-0 bg-[#0b0f1a]/85"
+      {/* Optimized HERO section */}
+      <section
+        className="full-bleed relative overflow-x-hidden bg-gradient-to-br from-blue-900/95 to-purple-900/90"
+        aria-labelledby="hero-title"
+        role="region"
+      >
+        {/* Background with priority loading */}
+        <div className="absolute inset-0">
+          <Image
+            src="/img/hero-bg.webp"
+            alt="Profesyonel sahne kurulumu, LED ekranlar ve ses-ışık ekipmanlarıyla hazırlanmış etkinlik alanı"
+            fill
+            priority
+            quality={90}
+            sizes="100vw"
+            className="object-cover"
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R"
+          />
+        </div>
+
+        {/* Gradient overlay */}
+        <div 
+          className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/40"
           aria-hidden="true"
         />
 
-        <div className="relative z-10 container py-20 md:py-32 text-center">
-          <h1
-            className="text-white text-4xl md:text-6xl font-extrabold mb-4 tracking-tight"
-          >
-            Sahne, Podyum, LED Ekran &amp; Ses-Işık Sistemleri Kiralama
-          </h1>
-          <p className="text-white text-lg md:text-xl mb-8">
-            Türkiye genelinde sahne ve podyum kurulumları, LED ekran, ses-ışık
-            sistemleri ve çadır kiralama. Hızlı teslim, profesyonel teknik ekip.
-          </p>
-
-          {/* CTA'lar */}
-          <HeroCtasClient />
-
-          {/* Kısa özellik rozetleri */}
-          <div
-            className="mt-6 grid max-w-3xl mx-auto grid-cols-1 sm:grid-cols-3 gap-3"
-          >
-            {[
-              ["⭐", "4.9 Müşteri Memnuniyeti", "Yüzlerce mutlu müşteri"],
-              ["🔧", "Aynı Gün Kurulum", "Hızlı ve profesyonel kurulum"],
-              ["👷", "Uzman Teknik Ekip", "Deneyimli profesyonel ekip"],
-            ].map(([icon, label, title], i) => (
-              <div
-                key={i}
-                className="badge whitespace-nowrap overflow-hidden text-ellipsis"
-                title={title}
-              >
-                <span aria-hidden="true">{icon}</span>
-                <span>{label}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Alt bilgi */}
-          <div className="mt-10 text-center">
-            <div className="text-5xl mb-3" aria-hidden="true">
-              🎧
-            </div>
-            <h2 className="text-white text-2xl md:text-3xl font-semibold mb-2">
-              Organizasyonunuz için Ücretsiz Danışmanlık
-            </h2>
-            <p className="text-white max-w-3xl mx-auto">
-              Etkinliğiniz için en doğru sahne, podyum, ses-ışık ve ekran
-              çözümlerini ücretsiz danışmanlıkla planlayalım.
+        {/* Hero content */}
+        <div className="relative z-10 container py-24 md:py-36 lg:py-44 text-center">
+          <div className="max-w-4xl mx-auto">
+            <h1
+              id="hero-title"
+              className="text-white text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight tracking-tight"
+            >
+              Profesyonel <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-purple-200">Sahne Sistemleri</span> & Teknoloji Kiralama
+            </h1>
+            
+            <p className="text-white/90 text-xl md:text-2xl lg:text-3xl mb-8 leading-relaxed font-light max-w-3xl mx-auto">
+              Türkiye genelinde <strong>sahne kurulumu</strong>, <strong>LED ekran</strong>, <strong>ses-ışık sistemleri</strong> ve profesyonel ekipman kiralama
             </p>
+
+            {/* Enhanced CTA section */}
+            <div className="mb-12">
+              <HeroCtasClient />
+            </div>
+
+            {/* Premium features grid */}
+            <ul
+              className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto mb-16"
+              aria-label="Hizmet avantajları"
+            >
+              {[
+                { icon: "⭐", label: "4.9/5 Müşteri Puanı", desc: "500+ Mutlu Müşteri" },
+                { icon: "⚡", label: "Aynı Gün Kurulum", desc: "Hızlı Teslimat" },
+                { icon: "👷", label: "Uzman Ekip", desc: "10+ Yıl Deneyim" },
+              ].map(({ icon, label, desc }, i) => (
+                <li key={i} className="group">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20 hover:bg-white/20 transition-all duration-300 group-hover:scale-105">
+                    <div className="text-2xl mb-2" aria-hidden="true">{icon}</div>
+                    <div className="text-white font-semibold text-sm">{label}</div>
+                    <div className="text-white/70 text-xs">{desc}</div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+
+            {/* Trust indicators */}
+            <div className="bg-black/30 backdrop-blur-sm rounded-3xl p-8 border border-white/10 max-w-2xl mx-auto">
+              <div className="text-4xl mb-4" aria-hidden="true">🎧</div>
+              <h2 className="text-white text-2xl md:text-3xl font-bold mb-3">
+                Ücretsiz Profesyonel Danışmanlık
+              </h2>
+              <p className="text-white/80 text-lg leading-relaxed">
+                Etkinliğiniz için en uygun çözümleri <strong>ücretsiz teknik danışmanlık</strong> ile planlayalım. 2 saat içinde detaylı teklif.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Ana içerik başlangıcı (landmark) */}
-      <main id="main">
+      {/* Main content */}
+      <main id="main" className="relative">
+        {/* Floating review banner */}
+        <div className="sticky top-0 z-40">
+          <ReviewBanner />
+        </div>
 
-        {/* Google yorum banner'ı */}
-        <ReviewBanner />
-
-        {/* Hizmetler sekmeleri */}
-        <section className="section-lazy">
-          <h2 className="sr-only">
-            Profesyonel Hizmetlerimiz
-          </h2>
-          <Suspense fallback={<SectionSkeleton label="Hizmetler yükleniyor" />}>
+        {/* Services section with enhanced loading */}
+        <section 
+          className="relative py-16 bg-gradient-to-b from-white to-neutral-50/80"
+          aria-labelledby="hizmetler-title"
+        >
+          <div className="absolute inset-0 bg-grid-neutral-200/50 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,white)]" aria-hidden="true" />
+          
+          <Suspense fallback={
+            <div className="relative z-10">
+              <SectionSkeleton label="Premium hizmetlerimiz yükleniyor" />
+            </div>
+          }>
             <ServicesTabsLazy />
           </Suspense>
         </section>
 
-        {/* Projeler galerisi */}
-        <section className="section-lazy">
-          <h2 className="sr-only">
-            Tamamlanan Projeler ve Referanslar
-          </h2>
-          <Suspense fallback={<SectionSkeleton label="Projeler yükleniyor" />}>
-            <ProjectsGalleryLazy />
-          </Suspense>
+        {/* Projects gallery with visual enhancement */}
+        <section 
+          className="py-20 bg-neutral-900"
+          aria-labelledby="projeler-title"
+        >
+          <div className="container">
+            <div className="text-center mb-16">
+              <h2 id="projeler-title" className="text-4xl md:text-5xl font-black text-white mb-4">
+                Başarılı <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Projelerimiz</span>
+              </h2>
+              <p className="text-xl text-white/70 max-w-2xl mx-auto">
+                500'den fazla kurumsal etkinlikte güvenilir çözüm ortağı
+              </p>
+            </div>
+            
+            <Suspense fallback={
+              <div className="relative z-10">
+                <SectionSkeleton label="Referans projelerimiz yükleniyor" />
+              </div>
+            }>
+              <ProjectsGalleryLazy />
+            </Suspense>
+          </div>
         </section>
 
-        {/* Kurumsal etkinlikler */}
-        <section className="section-lazy">
-          <h2 className="sr-only">
-            Kurumsal Etkinlik Çözümlerimiz
-          </h2>
-          <CorporateEvents />
+        {/* Corporate events with visual hierarchy */}
+        <section className="section-lazy relative py-20 bg-white" aria-labelledby="kurumsal-title">
+          <div className="container">
+            <div className="text-center mb-16">
+              <h2 id="kurumsal-title" className="text-4xl md:text-5xl font-black text-neutral-900 mb-4">
+                Kurumsal <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Çözümlerimiz</span>
+              </h2>
+              <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
+                Fortune 500 şirketleri ve lider markalar için profesyonel etkinlik çözümleri
+              </p>
+            </div>
+            <CorporateEvents />
+          </div>
         </section>
 
-        {/* Bizi Neden Tercih Etmelisiniz */}
+        {/* Enhanced why choose us section */}
         <section
-          className="container py-16"
+          className="py-20 bg-gradient-to-br from-neutral-50 to-blue-50/30"
           aria-labelledby="neden-tercih-heading"
         >
-          <h2
-            id="neden-tercih-heading"
-            className="text-2xl md:text-3xl font-bold text-center mb-10"
-          >
-            Neden Sahneva'yı Tercih Etmelisiniz?
-          </h2>
-
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {[
-              [
-                "⭐",
-                "Yüksek Müşteri Memnuniyeti",
-                "Her organizasyonda ortalama %100'e yakın müşteri memnuniyeti sağlıyoruz.",
-              ],
-              [
-                "⚡",
-                "Hızlı ve Profesyonel Kurulum",
-                "Aynı gün içinde sahne, podyum ve ekipmanlarınızı anahtar teslim kuruyoruz.",
-              ],
-              [
-                "🎤",
-                "Güncel ve Güçlü Ekipmanlar",
-                "LED ekran, ses-ışık sistemleri, çadır ve podyum çözümlerinde en yeni teknolojiler.",
-              ],
-              [
-                "👷",
-                "Deneyimli Teknik Ekip",
-                "Güvenli, planlı ve sorunsuz kurulum için profesyonel ekibimiz her zaman yanınızda.",
-              ],
-              [
-                "💰",
-                "Uygun Fiyat Garantisi",
-                "Türkiye genelinde rekabetçi fiyatlarla kaliteli hizmet sunuyoruz.",
-              ],
-              [
-                "🚚",
-                "Türkiye Geneli Hizmet",
-                "Türkiye'nin her yerinde etkinlik kurulumu yapıyoruz.",
-              ],
-            ].map(([icon, title, desc], i) => (
-              <article
-                key={i}
-                className="rounded-xl border bg-white shadow-sm p-6 hover:shadow-md transition"
+          <div className="container">
+            <div className="text-center mb-16">
+              <h2
+                id="neden-tercih-heading"
+                className="text-4xl md:text-5xl font-black text-neutral-900 mb-6"
               >
-                <div className="text-4xl mb-4" aria-hidden="true">
-                  {icon}
+                Neden <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Sahneva</span>'yı Tercih Etmelisiniz?
+              </h2>
+              <p className="text-xl text-neutral-600 max-w-2xl mx-auto">
+                10 yılı aşkın deneyimimiz ve uzman ekibimizle fark yaratıyoruz
+              </p>
+            </div>
+
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {[
+                {
+                  icon: "⭐",
+                  title: "Yüksek Müşteri Memnuniyeti",
+                  desc: "Her organizasyonda %100'e yakın müşteri memnuniyeti oranı",
+                  stat: "%98 Memnuniyet"
+                },
+                {
+                  icon: "⚡",
+                  title: "Hızlı Kurulum",
+                  desc: "Aynı gün içinde anahtar teslim profesyonel kurulum",
+                  stat: "2-6 Saat"
+                },
+                {
+                  icon: "🎤",
+                  title: "Premium Ekipman",
+                  desc: "En son teknoloji LED ekran, ses-ışık sistemleri",
+                  stat: "2024 Model"
+                },
+                {
+                  icon: "👷",
+                  title: "Uzman Teknik Ekip",
+                  desc: "10+ yıl deneyimli profesyonel teknik kadro",
+                  stat: "15+ Uzman"
+                },
+                {
+                  icon: "💰",
+                  title: "Rekabetçi Fiyat",
+                  desc: "Kaliteli hizmeti en uygun fiyat garantisiyle sunuyoruz",
+                  stat: "%30 Tasarruf"
+                },
+                {
+                  icon: "🚚",
+                  title: "Türkiye Geneli",
+                  desc: "Türkiye'nin 81 ilinde hızlı ve güvenilir hizmet",
+                  stat: "81 İl"
+                },
+              ].map(({ icon, title, desc, stat }, i) => (
+                <div
+                  key={i}
+                  className="group relative bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-500 p-8 border border-neutral-100 hover:border-blue-200/50 hover:scale-105"
+                >
+                  <div className="absolute top-4 right-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-sm font-bold px-3 py-1 rounded-full">
+                    {stat}
+                  </div>
+                  <div className="text-4xl mb-6 bg-gradient-to-r from-blue-500 to-purple-500 text-transparent bg-clip-text" aria-hidden="true">
+                    {icon}
+                  </div>
+                  <h3 className="font-bold text-xl mb-4 text-neutral-900 group-hover:text-blue-600 transition-colors">
+                    {title}
+                  </h3>
+                  <p className="text-neutral-600 leading-relaxed">{desc}</p>
                 </div>
-                <h3 className="font-semibold text-lg mb-2">{title}</h3>
-                <p className="text-sm text-neutral-700">{desc}</p>
-              </article>
-            ))}
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* SEO METİN BLOĞU */}
-        <section className="section-lazy" aria-labelledby="seo-title">
-          <div className="container py-14 md:py-16">
-            <h2
-              id="seo-title"
-              className="text-2xl md:text-3xl font-bold text-center mb-8"
-            >
-              Etkinlik Prodüksiyon &amp; Organizasyon – Türkiye Geneli Teknik Çözüm Ortağınız
+        {/* Enhanced SEO content sections */}
+        <section className="py-20 bg-white" aria-labelledby="seo-title">
+          <div className="container">
+            <h2 id="seo-title" className="text-4xl md:text-5xl font-black text-center mb-16 text-neutral-900">
+              Türkiye'nin <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">1 Numaralı</span> Etkinlik Teknoloji Partneri
             </h2>
 
-            <div className="grid gap-6 md:grid-cols-2">
-              <article className="card" aria-labelledby="u2u-title">
-                <h3 id="u2u-title" className="font-semibold text-lg mb-2">
+            <div className="grid gap-8 lg:gap-12 lg:grid-cols-2">
+              <article className="bg-gradient-to-br from-blue-50 to-white rounded-3xl p-8 shadow-lg border border-blue-100">
+                <h3 className="font-black text-2xl mb-6 text-neutral-900 flex items-center gap-3">
+                  <span className="bg-blue-500 text-white p-2 rounded-lg">🚀</span>
                   Uçtan Uca Teknik Hizmet
                 </h3>
-                <p className="text-neutral-700">
-                  Sahneva{" "}
-                  <a
-                    href="/sahne-kiralama"
-                    className="underline hover:no-underline font-medium"
-                    title="Profesyonel sahne kiralama hizmetleri ve fiyatları"
-                  >
-                    sahne sistemleri kiralama
-                  </a>
-                  ,{" "}
-                  <a
-                    href="/podyum-kiralama"
-                    className="underline hover:no-underline font-medium"
-                    title="Modüler podyum kiralama ve kurulum hizmeti"
-                  >
-                    podyum kurulumu
-                  </a>
-                  ,{" "}
-                  <a
-                    href="/led-ekran-kiralama"
-                    className="underline hover:no-underline font-medium"
-                    title="LED ekran kiralama fiyatları ve teknik özellikler"
-                  >
-                    LED ekran kiralama
-                  </a>{" "}
-                  ve{" "}
-                  <a
-                    href="/ses-isik-sistemleri"
-                    className="underline hover:no-underline font-medium"
-                    title="Ses ve ışık sistemi kiralama ve kurulumu"
-                  >
-                    ses ışık sistemi kurulumu
-                  </a>{" "}
-                  alanlarında uçtan uca çözümler sunar. Keşif, çizim, kurulum ve
-                  canlı yönetim aşamalarının tamamını profesyonel ekibimiz
-                  yürütür.
-                </p>
-                <ul className="mt-3 space-y-1 text-sm text-neutral-700 list-disc pl-5">
-                  <li>IP65 dış mekân LED paneller, yüksek parlaklık</li>
-                  <li>Line-array ses sistemleri, dijital mikserler</li>
-                  <li>Modüler podyum ve sahne platformları</li>
-                  <li>DMX kontrollü ışık ve ambiyans aydınlatma</li>
-                </ul>
+                <div className="prose prose-lg max-w-none text-neutral-700">
+                  <p className="text-lg leading-relaxed">
+                    <strong>Sahneva</strong> olarak{' '}
+                    <a href="/sahne-kiralama" className="text-blue-600 hover:text-blue-700 font-semibold underline decoration-2 underline-offset-4 transition-colors">
+                      sahne sistemleri kiralama
+                    </a>
+                    ,{' '}
+                    <a href="/podyum-kiralama" className="text-blue-600 hover:text-blue-700 font-semibold underline decoration-2 underline-offset-4 transition-colors">
+                      podyum kurulumu
+                    </a>
+                    ,{' '}
+                    <a href="/led-ekran-kiralama" className="text-blue-600 hover:text-blue-700 font-semibold underline decoration-2 underline-offset-4 transition-colors">
+                      LED ekran kiralama
+                    </a>{' '}
+                    ve{' '}
+                    <a href="/ses-isik-sistemleri" className="text-blue-600 hover:text-blue-700 font-semibold underline decoration-2 underline-offset-4 transition-colors">
+                      ses ışık sistemi kurulumu
+                    </a>{' '}
+                    alanlarında komple çözümler sunuyoruz.
+                  </p>
+                  
+                  <ul className="mt-6 space-y-3 text-neutral-700">
+                    {[
+                      "IP65 dış mekân LED paneller, 4500+ nit parlaklık",
+                      "Line-array ses sistemleri, dijital mikserler",
+                      "Modüler podyum ve sahne platformları",
+                      "DMX kontrollü ışık ve ambiyans aydınlatma"
+                    ].map((item, i) => (
+                      <li key={i} className="flex items-center gap-3">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </article>
 
-              <article className="card" aria-labelledby="hizli-title">
-                <h3 id="hizli-title" className="font-semibold text-lg mb-2">
+              <article className="bg-gradient-to-br from-purple-50 to-white rounded-3xl p-8 shadow-lg border border-purple-100">
+                <h3 className="font-black text-2xl mb-6 text-neutral-900 flex items-center gap-3">
+                  <span className="bg-purple-500 text-white p-2 rounded-lg">⚡</span>
                   Hızlı Kurulum, Şeffaf Fiyat
                 </h3>
-                <p className="text-neutral-700">
-                  İstanbul merkezli ekibimizle Türkiye'nin her ilinde çalışıyoruz.
-                  Aynı gün hızlı kurulum, yedekli ekipman ve 7/24 teknik destek
-                  ile riskleri minimize ederiz. Talep halinde{" "}
-                  <a
-                    href="/led-ekran-kiralama"
-                    className="underline hover:no-underline font-medium"
-                    title="LED ekran kiralama fiyatları ve paket seçenekleri"
-                  >
-                    LED ekran fiyatları
-                  </a>{" "}
-                  ve alternatif paketleri karşılaştırmalı olarak paylaşırız. Tüm
-                  işlerimiz sözleşmeli ve e-faturalıdır.
-                </p>
-                <p className="text-neutral-700 mt-3">
-                  Teklif almak için arayın ya da{" "}
-                  <a
-                    href="https://wa.me/905453048671?text=Merhaba%2C+sahne+ve+ekipman+kiralaması+için+teklif+almak+istiyorum."
-                    className="underline hover:no-underline font-medium"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="WhatsApp'tan ücretsiz teklif alın (yeni sekmede açılır)"
-                  >
-                    WhatsApp'tan yazın
-                  </a>
-                  .
-                </p>
+                <div className="prose prose-lg max-w-none text-neutral-700">
+                  <p className="text-lg leading-relaxed">
+                    İstanbul merkezli ekibimizle <strong>Türkiye'nin 81 ilinde</strong> hizmet veriyoruz. 
+                    Aynı gün kurulum, yedekli ekipman ve 7/24 teknik destek ile riskleri minimize ediyoruz.
+                  </p>
+                  
+                  <div className="mt-6 p-4 bg-white rounded-xl border border-purple-200">
+                    <p className="font-semibold text-purple-900 mb-2">Hızlı Teklif İsteği:</p>
+                    <a
+                      href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ulaşıyorum.+Detaylı+teklif+almak+istiyorum."
+                      className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:scale-105 shadow-lg"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span>WhatsApp'tan Hemen Teklif Al</span>
+                      <span className="text-lg">→</span>
+                    </a>
+                  </div>
+                </div>
               </article>
             </div>
           </div>
         </section>
 
-        {/* PREMIUM BLOK */}
-        <section className="section-lazy" aria-labelledby="premium-title">
-          <div className="container pb-10 md:pb-12">
-            <h2
-              id="premium-title"
-              className="text-2xl md:text-3xl font-bold mb-4"
-            >
-              Neden Yüksek Ölçekli Kurulumlarda <span className="whitespace-nowrap">Sahneva</span> Tercih Ediliyor?
-            </h2>
+        {/* Premium block with enhanced content */}
+        <section className="py-20 bg-gradient-to-br from-neutral-900 to-blue-900/90 text-white">
+          <div className="container">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-4xl md:text-5xl font-black text-center mb-12">
+                Büyük Ölçekli Kurulumlarda <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">Neden Biz?</span>
+              </h2>
 
-            <div className="prose max-w-none text-neutral-700">
-              <p>
-                Büyük ölçekli ve protokol seviyesindeki etkinliklerde yalnızca
-                güçlü ekipman değil, <strong>kusursuz operasyon</strong> ve{" "}
-                <strong>güvenli rigging</strong> esastır. Sahneva;{" "}
-                <a href="/sahne-kiralama" className="underline font-medium" title="Profesyonel sahne kiralama hizmeti">
-                  sahne ve podyum
-                </a>{" "}
-                tasarımından{" "}
-                <a href="/led-ekran-kiralama" className="underline font-medium" title="Yüksek çözünürlüklü LED ekran kiralama">
-                  P2–P6 LED ekran
-                </a>{" "}
-                konfigürasyonlarına,{" "}
-                <a href="/ses-isik-sistemleri" className="underline font-medium" title="Ses ve ışık sistemi kurulumu">
-                  ses-ışık
-                </a>{" "}
-                optimizasyonundan truss ve <em>scaff</em> üst yapılara kadar tüm
-                bileşenleri tek bir teknik omurga altında birleştirir.
-              </p>
+              <div className="prose prose-lg prose-invert max-w-none">
+                <p className="text-xl leading-relaxed text-white/90">
+                  Protokol seviyesindeki etkinliklerde yalnızca güçlü ekipman değil,{' '}
+                  <strong className="text-blue-300">kusursuz operasyon</strong> ve{' '}
+                  <strong className="text-blue-300">güvenli rigging</strong> esastır.
+                </p>
 
-              <h3 className="mt-6 text-lg md:text-xl font-semibold">
-                Sahneva ile Çalışmanın Güçlü Yanları
-              </h3>
-              <ul className="mt-2 space-y-2 list-disc pl-5">
-                <li>
-                  Yüksek parlaklık için optimize <strong>LED ekran</strong>{" "}
-                  konumlandırması (P2–P6)
-                </li>
-                <li>
-                  <strong>Truss</strong> ve <strong>scaff</strong> üst yapılarla
-                  güvenli rigging
-                </li>
-                <li>Alan akustiğine göre ölçeklenen ses-ışık tasarımı</li>
-                <li>Hızlı kurulum, risk yönetimi ve 7/24 teknik destek</li>
-                <li>Şeffaf teklif ve kurumsal raporlama</li>
-              </ul>
+                <div className="grid md:grid-cols-2 gap-8 mt-12">
+                  <div className="space-y-6">
+                    <h3 className="text-2xl font-black text-white flex items-center gap-3">
+                      <span className="bg-blue-500 p-2 rounded-lg">🏆</span>
+                      Teknik Üstünlük
+                    </h3>
+                    <ul className="space-y-4">
+                      {[
+                        "P2-P6 LED ekran konfigürasyonları",
+                        "Truss ve scaff üst yapılarla güvenli rigging",
+                        "Alan akustiğine özel ses optimizasyonu",
+                        "DMX kontrollü ışık tasarımı"
+                      ].map((item, i) => (
+                        <li key={i} className="flex items-center gap-3">
+                          <div className="w-2 h-2 bg-blue-400 rounded-full flex-shrink-0" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
-              <p className="mt-4">
-                <a href="/cadir-kiralama" className="underline font-medium" title="Çadır kiralama ve kurulum hizmeti">
-                  Çadır kurulumu
-                </a>
-                , zemin hazırlığı ve dekoratif uygulamalar dâhil; etkinliğinizin
-                tüm teknik ihtiyaçlarını tek çatı altında yönetiriz.
-              </p>
+                  <div className="space-y-6">
+                    <h3 className="text-2xl font-black text-white flex items-center gap-3">
+                      <span className="bg-purple-500 p-2 rounded-lg">🛡️</span>
+                      Operasyonel Mükemmellik
+                    </h3>
+                    <ul className="space-y-4">
+                      {[
+                        "7/24 teknik destek ve sahne yönetimi",
+                        "Risk analizi ve yönetim planı",
+                        "Şeffaf teklif ve kurumsal raporlama",
+                        "ISO standartlarında kalite kontrol"
+                      ].map((item, i) => (
+                        <li key={i} className="flex items-center gap-3">
+                          <div className="w-2 h-2 bg-purple-400 rounded-full flex-shrink-0" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* SSS */}
-        <section className="section-lazy">
-          <h2 className="sr-only">
-            Sıkça Sorulan Sorular ve Cevapları
-          </h2>
-          <Faq />
+        {/* FAQ section */}
+        <section className="py-20 bg-white" aria-labelledby="faq-title">
+          <div className="container">
+            <div className="text-center mb-16">
+              <h2 id="faq-title" className="text-4xl md:text-5xl font-black text-neutral-900 mb-4">
+                Sıkça Sorulan <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Sorular</span>
+              </h2>
+              <p className="text-xl text-neutral-600 max-w-2xl mx-auto">
+                Etkinlik planlamanızla ilgili tüm sorularınızı yanıtlıyoruz
+              </p>
+            </div>
+            <Faq />
+          </div>
         </section>
-
       </main>
     </div>
   );
