@@ -15,7 +15,9 @@ const LIGHTBOX_SIZES =
   "(max-width: 1200px) 90vw, " +
   "min(1024px, 80vw)";
 
-// ✅ OPTİMİZE: 3 galeri ve premium içerik
+// components/ProjectsGallery.js - GALLERIES objesi güncellendi
+
+// ✅ OPTİMİZE: 3 galeri - Podyum Kiralama eklendi
 const GALLERIES = {
   "LED Ekran Kiralama": {
     images: [
@@ -43,21 +45,20 @@ const GALLERIES = {
     stats: "100+ Açık Hava Organizasyonu",
     icon: "⛺"
   },
-  "Ses & Işık Sistemleri": {
+  "Podyum Kiralama": {
     images: [
-      "/img/galeri/ses-isik-1.webp",
-      "/img/galeri/ses-isik-2.webp",
-      "/img/galeri/ses-isik-3.webp",
-      "/img/galeri/ses-isik-4.webp",
-      "/img/galeri/ses-isik-5.webp",
-      "/img/galeri/ses-isik-6.webp",
+      "/img/galeri/podyum-kiralama-1.webp",
+      "/img/galeri/podyum-kiralama-2.webp",
+      "/img/galeri/podyum-kiralama-3.webp",
+      "/img/galeri/podyum-kiralama-4.webp",
+      "/img/galeri/podyum-kiralama-5.webp",
+      "/img/galeri/podyum-kiralama-6.webp",
     ],
-    description: "Profesyonel ses ve ışık sistemleri ile unutulmaz etkinlik deneyimleri",
+    description: "Profesyonel podyum kurulumları ve modüler podyum sistemleri",
     stats: "200+ Profesyonel Kurulum",
-    icon: "🎭"
+    icon: "👑"
   }
 };
-
 // ✅ OPTİMİZE: Premium blur placeholder
 const BLUR_DATA_URL = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R";
 
