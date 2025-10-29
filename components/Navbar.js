@@ -58,7 +58,7 @@ export default function Navbar() {
   const servicesBtnId = "nav-services-button";
   const servicesMenuId = "nav-services-menu";
 
-  // ✅ PREMIUM: Optimize edilmiş burst animasyonu
+  // ✅ DÜZELTİLDİ: Optimize edilmiş burst animasyonu
   const burst = useCallback((e, colors = ["#6366f1", "#8b5cf6"]) => {
     try {
       if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
@@ -173,6 +173,11 @@ export default function Navbar() {
     hoverTimer.current = setTimeout(() => setServicesOpen(false), 150);
   };
 
+  // ✅ DÜZELTİLDİ: Sabit className değerleri
+  const whatsappBtnClass = "ml-2 inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-white text-sm font-semibold bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white min-h-[44px]";
+  
+  const mobileWhatsappBtnClass = "block text-center mt-4 rounded-xl px-6 py-4 text-white text-base font-semibold bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white min-h-[44px] flex items-center justify-center gap-3";
+
   return (
     <>
       <a
@@ -182,7 +187,7 @@ export default function Navbar() {
         Ana içeriğe atla
       </a>
 
-      {/* ✅ PREMIUM: Header with gradient and backdrop blur */}
+      {/* ✅ DÜZELTİLDİ: Header with gradient and backdrop blur */}
       <header
         className={[
           "fixed top-0 inset-x-0 z-50 transition-all duration-500 border-b",
@@ -196,7 +201,7 @@ export default function Navbar() {
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
-            {/* ✅ PREMIUM: Logo with gradient effect */}
+            {/* ✅ DÜZELTİLDİ: Logo with gradient effect */}
             <Link 
               href="/" 
               className="flex items-center gap-3 group" 
@@ -222,7 +227,7 @@ export default function Navbar() {
               )}
             </Link>
 
-            {/* ✅ PREMIUM: Desktop Navigation */}
+            {/* ✅ DÜZELTİLDİ: Desktop Navigation */}
             <nav className="hidden lg:flex items-center gap-8" aria-label="Ana menü">
               <Link
                 href="/hakkimizda"
@@ -238,7 +243,7 @@ export default function Navbar() {
                 Hakkımızda
               </Link>
 
-              {/* ✅ PREMIUM: Services Dropdown with enhanced design */}
+              {/* ✅ DÜZELTİLDİ: Services Dropdown with enhanced design */}
               <div
                 className="relative"
                 ref={dropdownRef}
@@ -333,17 +338,13 @@ export default function Navbar() {
                 İletişim
               </Link>
 
-              {/* ✅ PREMIUM: WhatsApp butonu with gradient */}
+              {/* ✅ DÜZELTİLDİ: WhatsApp butonu with fixed className */}
               <a
                 href="https://wa.me/905453048671?text=Merhaba%2C+sahne+ve+etkinlik+ekipmanları+için+teklif+almak+istiyorum."
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp Teklif - Sahneva WhatsApp iletişim (yeni sekmede açılır)"
-                className="ml-2 inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-white text-sm font-semibold
-                           bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 
-                           transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 focus:outline-none
-                           focus-visible:ring-2 focus-visible:ring-green-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white
-                           min-h-[44px]"
+                className={whatsappBtnClass}
                 onClick={(e) => burst(e, ["#10b981", "#059669"])}
                 title="WhatsApp'tan anında teklif alın - Sahneva"
               >
@@ -352,14 +353,10 @@ export default function Navbar() {
               </a>
             </nav>
 
-            {/* ✅ PREMIUM: Mobil menü butonu */}
+            {/* ✅ DÜZELTİLDİ: Mobil menü butonu */}
             <button
               onClick={() => setMobileOpen((s) => !s)}
-              className="lg:hidden inline-flex items-center justify-center p-3 rounded-xl
-                         bg-white/80 backdrop-blur-sm border border-neutral-200/60
-                         hover:bg-white hover:border-neutral-300 transition-all duration-300
-                         focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50
-                         min-h-[44px] min-w-[44px]"
+              className="lg:hidden inline-flex items-center justify-center p-3 rounded-xl bg-white/80 backdrop-blur-sm border border-neutral-200/60 hover:bg-white hover:border-neutral-300 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 min-h-[44px] min-w-[44px]"
               aria-label="Menüyü aç veya kapat"
               aria-expanded={mobileOpen}
               aria-controls="mobile-menu"
@@ -384,7 +381,7 @@ export default function Navbar() {
         />
       )}
 
-      {/* ✅ PREMIUM: Mobil menü with enhanced design */}
+      {/* ✅ DÜZELTİLDİ: Mobil menü with enhanced design */}
       <div
         id="mobile-menu"
         role="dialog"
@@ -418,8 +415,7 @@ export default function Navbar() {
               onClick={() => setMobileServicesOpen((s) => !s)}
               aria-expanded={mobileServicesOpen}
               aria-controls="mobile-services-list"
-              className="w-full flex items-center justify-between gap-3 py-4 px-4 text-base font-semibold text-neutral-900 rounded-xl hover:bg-blue-50/80 hover:text-blue-600 transition-all duration-300 border border-transparent hover:border-blue-200/60
-                         min-h-[44px]"
+              className="w-full flex items-center justify-between gap-3 py-4 px-4 text-base font-semibold text-neutral-900 rounded-xl hover:bg-blue-50/80 hover:text-blue-600 transition-all duration-300 border border-transparent hover:border-blue-200/60 min-h-[44px]"
               title="Sahneva Hizmetler Menüsü"
             >
               <div className="flex items-center gap-3">
@@ -454,8 +450,7 @@ export default function Navbar() {
                     key={href}
                     href={href}
                     onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-3 px-3 py-3 text-sm text-neutral-800 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 hover:text-blue-600 rounded-lg transition-all duration-300 border border-transparent hover:border-blue-200/60
-                               min-h-[44px]"
+                    className="flex items-center gap-3 px-3 py-3 text-sm text-neutral-800 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 hover:text-blue-600 rounded-lg transition-all duration-300 border border-transparent hover:border-blue-200/60 min-h-[44px]"
                     aria-current={active(href) ? "page" : undefined}
                     title={title}
                   >
@@ -478,16 +473,13 @@ export default function Navbar() {
             İletişim
           </Link>
 
+          {/* ✅ DÜZELTİLDİ: Mobil WhatsApp butonu with fixed className */}
           <a
             href="https://wa.me/905453048671?text=Merhaba%2C+sahne+ve+etkinlik+ekipmanları+için+teklif+almak+istiyorum."
             target="_blank"
             rel="noopener noreferrer"
             aria-label="WhatsApp Teklif - Sahneva WhatsApp iletişim (yeni sekmede açılır)"
-            className="block text-center mt-4 rounded-xl px-6 py-4 text-white text-base font-semibold 
-                       bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 
-                       transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 focus:outline-none
-                       focus-visible:ring-2 focus-visible:ring-green-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white
-                       min-h-[44px] flex items-center justify-center gap-3"
+            className={mobileWhatsappBtnClass}
             onClick={(e) => {
               burst(e, ["#10b981", "#059669"]);
               setMobileOpen(false);
@@ -500,7 +492,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* ✅ PREMIUM: Burst particle styles */}
+      {/* ✅ DÜZELTİLDİ: Burst particle styles */}
       <style jsx>{`
         .burst-particle {
           position: fixed;
