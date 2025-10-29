@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const services = [
   {
@@ -9,7 +10,7 @@ const services = [
     title: 'Sahne Kiralama',
     icon: '🎪',
     description: 'Profesyonel modüler sahne sistemleri, truss yapılar ve güvenlik ekipmanları. Konser, festival, fuar ve özel etkinlikler için özel tasarım sahne çözümleri.',
-    image: '/img/hero-bg.webp',
+    image: '/img/hizmet-sahne.webp',
     features: [
       'Modüler sahne sistemleri (1x1m, 1x2m, 2x2m)',
       'Alüminyum truss ve scaffolding sistemleri',
@@ -17,14 +18,15 @@ const services = [
       'Profesyonel kurulum ve söküm hizmeti',
       'Yüksek kapasiteli sahne platformları'
     ],
-    cta: 'Sahne Kiralama Teklifi Al'
+    cta: 'Sahne Kiralama Teklifi Al',
+    href: '/sahne-kiralama'
   },
   {
     id: 'podyum',
     title: 'Podyum Kiralama',
     icon: '👑',
     description: 'Modüler podyum sistemleri, özel tasarım podyumlar ve protokol masaları. Toplantı, lansman ve ödül törenleri için profesyonel çözümler.',
-    image: '/img/hero-bg.webp',
+    image: '/img/hizmet-podyum.webp',
     features: [
       'Modüler podyum sistemleri (30cm, 60cm, 90cm)',
       'Protokol masaları ve arkalık sistemleri',
@@ -32,14 +34,15 @@ const services = [
       'Hızlı kurulum ve taşınabilirlik',
       'Çeşitli renk ve boyut seçenekleri'
     ],
-    cta: 'Podyum Kiralama Teklifi Al'
+    cta: 'Podyum Kiralama Teklifi Al',
+    href: '/podyum-kiralama'
   },
   {
     id: 'led',
     title: 'LED Ekran Kiralama',
     icon: '🖥️',
     description: 'Yüksek çözünürlüklü indoor/outdoor LED ekran çözümleri. P2, P3, P4, P5, P6 pixel pitch seçenekleri ile her türlü etkinlik için ideal.',
-    image: '/img/hero-bg.webp',
+    image: '/img/galeri/led-ekran-kiralama-1.webp',
     features: [
       'P2-P6 pixel pitch seçenekleri',
       'IP65 su geçirmez outdoor ekranlar',
@@ -47,14 +50,15 @@ const services = [
       'HD video işleme ve kontrol sistemleri',
       'Kurulum ve teknik destek'
     ],
-    cta: 'LED Ekran Teklifi Al'
+    cta: 'LED Ekran Teklifi Al',
+    href: '/led-ekran-kiralama'
   },
   {
     id: 'ses',
     title: 'Ses Sistemleri Kiralama',
     icon: '🔊',
     description: 'Profesyonel ses sistemleri ve ses mühendisliği hizmetleri. Line-array sistemler, dijital mikserler ve kablosuz ekipmanlar.',
-    image: '/img/hero-bg.webp',
+    image: '/img/ses-isik/ses-sistemi.webp',
     features: [
       'Line-array ses sistemleri',
       'Dijital mikser ve ses işleme',
@@ -62,14 +66,15 @@ const services = [
       'Ses mühendisliği ve operatörlük',
       'Monitor ve sahne içi ses sistemleri'
     ],
-    cta: 'Ses Sistemi Teklifi Al'
+    cta: 'Ses Sistemi Teklifi Al',
+    href: '/ses-isik-sistemleri'
   },
   {
     id: 'isik',
     title: 'Işık Sistemleri Kiralama',
     icon: '💡',
     description: 'DMX kontrollü profesyonel ışık sistemleri, lazer, smoke machine ve efekt ekipmanları. Her türlü etkinlik için ışık tasarımı.',
-    image: '/img/hero-bg.webp',
+    image: '/img/ses-isik/isik-sistemi.webp',
     features: [
       'Moving head ve spot ışıklar',
       'LED wash ve par canlıklar',
@@ -77,14 +82,15 @@ const services = [
       'Lazer ve özel efekt sistemleri',
       'Işık operatörlüğü hizmeti'
     ],
-    cta: 'Işık Sistemi Teklifi Al'
+    cta: 'Işık Sistemi Teklifi Al',
+    href: '/ses-isik-sistemleri'
   },
   {
     id: 'cadir',
     title: 'Çadır Kiralama',
     icon: '⛺',
     description: 'Açık hava etkinlikleri için profesyonel çadır kurulumları. Su geçirmez, rüzgar dayanıklı çadır sistemleri ve aksesuarları.',
-    image: '/img/hero-bg.webp',
+    image: '/img/galeri/cadir-kiralama-1.webp',
     features: [
       '3x3m, 3x6m, 6x6m çadır sistemleri',
       'Su geçirmez ve UV dayanıklı kumaş',
@@ -92,7 +98,24 @@ const services = [
       'Aydınlatma ve dekorasyon',
       'Profesyonel montaj ve demontaj'
     ],
-    cta: 'Çadır Kiralama Teklifi Al'
+    cta: 'Çadır Kiralama Teklifi Al',
+    href: '/cadir-kiralama'
+  },
+  {
+    id: 'masa-sandalye',
+    title: 'Masa & Sandalye Kiralama',
+    icon: '🪑',
+    description: 'Toplantı, davet, düğün ve özel etkinlikler için profesyonel masa ve sandalye kiralama hizmeti. Şık ve konforlu çözümler.',
+    image: '/img/hizmet-masa.webp',
+    features: [
+      'Toplantı masaları (yuvarlak, dikdörtgen)',
+      'Konforlu sandalye ve oturma grupları',
+      'Süslü düğün sandalyeleri',
+      'Masa örtüsü ve dekorasyon',
+      'Teslimat, kurulum ve toplama hizmeti'
+    ],
+    cta: 'Masa Sandalye Teklifi Al',
+    href: '/masa-sandalye-kiralama'
   }
 ];
 
@@ -121,7 +144,9 @@ export default function ServicesTabs() {
             >
               <span className="text-lg">{service.icon}</span>
               <span className="hidden sm:inline">{service.title}</span>
-              <span className="sm:hidden">{service.title.split(' ')[0]}</span>
+              <span className="sm:hidden">
+                {service.title.includes('&') ? service.title.split('&')[0].trim() : service.title.split(' ')[0]}
+              </span>
             </button>
           ))}
         </div>
@@ -169,21 +194,33 @@ export default function ServicesTabs() {
                 </ul>
               </div>
 
-              {/* CTA Butonu */}
-              <div className="pt-4">
-                <a
-                  href={`https://wa.me/905453048671?text=Merhaba,%20${encodeURIComponent(activeService.title)}%20hakkında%20teklif%20almak%20istiyorum.`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg w-full md:w-auto justify-center"
-                >
-                  <span>{activeService.cta}</span>
-                  <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                  </svg>
-                </a>
-                <p className="text-sm text-gray-500 mt-3 text-center md:text-left">
-                  📞 WhatsApp'tan hemen teklif alın. <strong>2 saat içinde</strong> yanıt veriyoruz.
+              {/* CTA Butonları */}
+              <div className="pt-4 space-y-4">
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <a
+                    href={`https://wa.me/905453048671?text=Merhaba,%20${encodeURIComponent(activeService.title)}%20hakkında%20teklif%20almak%20istiyorum.`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center gap-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg flex-1 justify-center"
+                  >
+                    <span>{activeService.cta}</span>
+                    <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                  </a>
+                  
+                  <Link
+                    href={activeService.href}
+                    className="group inline-flex items-center gap-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg flex-1 justify-center"
+                  >
+                    <span>Detaylı Bilgi</span>
+                    <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+                </div>
+                <p className="text-sm text-gray-500 text-center">
+                  📞 <strong>2 saat içinde</strong> WhatsApp'tan yanıt • 🌐 Detaylı bilgi için sayfayı ziyaret et
                 </p>
               </div>
             </div>
@@ -207,6 +244,17 @@ export default function ServicesTabs() {
                   <p className="text-gray-600 text-sm">Profesyonel Çözüm</p>
                 </div>
               </div>
+              
+              {/* Sayfa Linki Overlay */}
+              <Link 
+                href={activeService.href}
+                className="absolute top-4 right-4 bg-black/60 hover:bg-black/80 text-white p-2 rounded-lg transition-all duration-300 hover:scale-110"
+                title="Detaylı bilgi için tıklayın"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </Link>
             </div>
           </div>
         )}
@@ -219,10 +267,11 @@ export default function ServicesTabs() {
           Hızlı Teklif
         </div>
         <h4 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
-          Acil İhtiyacınız mı Var?
+          Tüm Hizmetlerde %100 Müşteri Memnuniyeti
         </h4>
         <p className="text-gray-600 mb-6 max-w-2xl mx-auto text-sm md:text-base">
-          Aşağıdaki butondan doğrudan WhatsApp üzerinden tüm hizmetlerimiz hakkında detaylı teklif alabilirsiniz.
+          Aşağıdaki butonlardan doğrudan WhatsApp üzerinden tüm hizmetlerimiz hakkında detaylı teklif alabilir 
+          veya telefonla hemen iletişim kurabilirsiniz.
           <strong className="block mt-1 text-green-600">7/24 teknik destek</strong>
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -247,6 +296,23 @@ export default function ServicesTabs() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
             </svg>
           </a>
+        </div>
+
+        {/* Hızlı Sayfa Linkleri */}
+        <div className="mt-8 pt-6 border-t border-blue-200">
+          <p className="text-gray-600 text-sm mb-4">Hızlı Sayfa Erişimi:</p>
+          <div className="flex flex-wrap justify-center gap-2">
+            {services.slice(0, 4).map((service) => (
+              <Link
+                key={service.id}
+                href={service.href}
+                className="inline-flex items-center gap-1 bg-white hover:bg-blue-50 text-gray-700 text-xs px-3 py-2 rounded-lg border border-gray-200 transition-all duration-200 hover:shadow-md"
+              >
+                <span>{service.icon}</span>
+                <span>{service.title.split(' ')[0]}</span>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </div>
