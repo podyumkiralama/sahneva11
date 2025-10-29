@@ -604,7 +604,7 @@ export default function HomePage() {
                 Sıkça Sorulan <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Sorular</span>
               </h2>
               <p className="text-xl text-neutral-600 max-w-2xl mx-auto">
-                Sahne kiralama, LED ekran fiyatları ve teknik detaylar hakkında merak ettikleriniz
+                Sahne, podyum, LED ekran kiralama ve kurulum hizmetlerimiz hakkında en çok merak edilen sorular ve cevapları
               </p>
             </div>
             <Faq />
