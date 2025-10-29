@@ -6,6 +6,19 @@ import UtilityBar from "../components/UtilityBar";
 import { Inter } from "next/font/google";
 import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next"
+// app/layout.js içinde
+import { Analytics } from '@vercel/analytics/react';
+
+export default function Layout({ children }) {
+  return (
+    <html>
+      <body>
+        {children}
+        <Analytics />
+      </body>
+    </html>
+  );
+}
 
 const inter = Inter({
   subsets: ["latin"],
