@@ -239,16 +239,16 @@ export default function UtilityBar() {
                   >
                     📞 Hemen Ara
                   </a>
-                  <a
-                    href="https://wa.me/905453048671?text=Merhaba%2C+sahne+ve+etkinlik+ekipmanları+için+teklif+almak+istiyorum."
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block rounded-lg px-4 py-3 text-sm font-semibold text-white bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 transition-all duration-300 text-center"
-                    onClick={(e) => burst(e, ["#10b981", "#059669"])}
-                    title="WhatsApp'tan anında teklif alın"
-                  >
-                    💬 WhatsApp Teklif
-                  </a>
+                 <a
+        href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ulaşıyorum.+Sahne+kiralama+ve+LED+ekran+fiyatları+hakkında+detaylı+teklif+almak+istiyorum."
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-3 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+        aria-label="WhatsApp üzerinden hemen teklif alın"
+      >
+        <span className="text-lg">💬</span>
+        <span className="text-sm font-bold">WhatsApp'tan Hemen Teklif Al</span>
+      </a>
                 </div>
               </div>
             )}
