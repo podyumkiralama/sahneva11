@@ -5,25 +5,13 @@ import Footer from "../components/Footer";
 import UtilityBar from "../components/UtilityBar";
 import { Inter } from "next/font/google";
 import Script from "next/script";
-import { SpeedInsights } from "@vercel/speed-insights/next"
-// app/layout.js içinde
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from '@vercel/analytics/react';
-
-export default function Layout({ children }) {
-  return (
-    <html>
-      <body>
-        {children}
-        <Analytics />
-      </body>
-    </html>
-  );
-}
 
 const inter = Inter({
   subsets: ["latin"],
-  preload: true, // ✅ Preload true yapıldı - performans için daha iyi
-  display: "swap", // ✅ optional yerine swap - daha iyi font loading
+  preload: true,
+  display: "swap",
   fallback: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "Arial", "sans-serif"],
   adjustFontFallback: true,
 });
@@ -36,13 +24,12 @@ export const metadata = {
   },
   description:
     "Türkiye genelinde sahne, podyum, LED ekran, ses-ışık sistemleri ve çadır kiralama. Hızlı kurulum, profesyonel teknik ekip, uygun fiyat. Hemen teklif alın!",
-  keywords: "sahne kiralama, podyum kiralama, led ekran kiralama, ses ışık sistemi, etkinlik ekipmanları", // ✅ Yeni: keywords eklendi
+  keywords: "sahne kiralama, podyum kiralama, led ekran kiralama, ses ışık sistemi, etkinlik ekipmanları",
   manifest: "/site.webmanifest",
   alternates: { canonical: "https://www.sahneva.com" },
-  viewport: { // ✅ viewport metadata içine taşındı
+  viewport: {
     width: "device-width",
     initialScale: 1,
-    // maximumScale kaldırıldı - erişilebilirlik için önemli
   },
   themeColor: "#6d28d9",
   openGraph: {
@@ -60,12 +47,12 @@ export const metadata = {
       }
     ],
     type: "website",
-    locale: "tr_TR", // ✅ Yeni: locale eklendi
+    locale: "tr_TR",
   },
   robots: { 
     index: true, 
     follow: true,
-    googleBot: { // ✅ Yeni: GoogleBot ayarları
+    googleBot: {
       index: true,
       follow: true,
       'max-video-preview': -1,
@@ -83,13 +70,10 @@ export const metadata = {
   },
   verification: { 
     google: "H9p1RO-W1U3JDTjp0mM32blFkYABaTHNFnxVKKFfo08",
-    // ✅ Yeni: Diğer platformlar için verification
-    yandex: "yandex-verification-code", // Yandex varsa ekleyin
-    yahoo: "yahoo-verification-code", // Yahoo varsa ekleyin
   },
-  authors: [{ name: "Sahneva" }], // ✅ Yeni: authors eklendi
-  publisher: "Sahneva", // ✅ Yeni: publisher eklendi
-  formatDetection: { // ✅ Yeni: format detection
+  authors: [{ name: "Sahneva" }],
+  publisher: "Sahneva",
+  formatDetection: {
     telephone: true,
     date: true,
     address: true,
@@ -158,7 +142,7 @@ export default function RootLayout({ children }) {
         availableLanguage: ["Turkish"],
       },
     ],
-    hasOfferCatalog: { // ✅ Yeni: Hizmet kataloğu
+    hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "Etkinlik Ekipmanları Kiralama",
       itemListElement: [
@@ -179,7 +163,6 @@ export default function RootLayout({ children }) {
     }
   };
 
-  // ✅ YENİ: Organization Schema
   const ldOrganization = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -190,11 +173,10 @@ export default function RootLayout({ children }) {
     sameAs: ldLocalBusiness.sameAs,
     address: ldLocalBusiness.address,
     contactPoint: ldLocalBusiness.contactPoint,
-    foundingDate: "2020", // ✅ Şirket kuruluş tarihi
+    foundingDate: "2020",
     description: metadata.description
   };
 
-  // ✅ YENİ: WebSite Schema
   const ldWebsite = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -215,7 +197,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="tr" suppressHydrationWarning>
       <head>
-        {/* ✅ İYİLEŞTİRİLMİŞ: Kritik CSS */}
         <style id="critical-css">{`
           .full-bleed{
             position:relative;
@@ -235,14 +216,12 @@ export default function RootLayout({ children }) {
             margin-inline:auto;
             padding-inline:1rem
           }
-          /* ✅ LCP Optimizasyonu */
           .hero-optimized { 
             content-visibility: auto;
             contain: layout style paint;
           }
         `}</style>
 
-        {/* ✅ YENİ: Favicon çeşitliliği */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -250,7 +229,6 @@ export default function RootLayout({ children }) {
       </head>
 
       <body className={`${inter.className} scroll-smooth`}>
-        {/* ✅ Erişilebilirlik - MÜKEMMEL (değişmedi) */}
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:z-[100] focus:top-3 focus:left-3 focus:px-3 focus:py-2 focus:rounded-lg focus:bg-white focus:shadow"
@@ -265,7 +243,6 @@ export default function RootLayout({ children }) {
         <UtilityBar />
         <Footer />
 
-        {/* ✅ DÜZELTİLDİ: JSON-LD - beforeInteractive */}
         <Script
           id="ld-localbusiness"
           type="application/ld+json"
@@ -275,7 +252,6 @@ export default function RootLayout({ children }) {
           }}
         />
 
-        {/* ✅ YENİ: Organization Schema */}
         <Script
           id="ld-organization"
           type="application/ld+json"
@@ -285,7 +261,6 @@ export default function RootLayout({ children }) {
           }}
         />
 
-        {/* ✅ YENİ: WebSite Schema */}
         <Script
           id="ld-website"
           type="application/ld+json"
@@ -295,7 +270,6 @@ export default function RootLayout({ children }) {
           }}
         />
 
-        {/* ✅ DÜZELTİLDİ: GA4 - Strategy çakışması giderildi */}
         <Script 
           src="https://www.googletagmanager.com/gtag/js?id=G-J5YK10YLLC" 
           strategy="afterInteractive"
@@ -312,10 +286,8 @@ export default function RootLayout({ children }) {
           `}
         </Script>
 
-        {/* ✅ YENİ: Performance Monitoring */}
         <Script id="performance-monitoring" strategy="afterInteractive">
           {`
-            // Core Web Vitals monitoring
             if ('webVitals' in window) {
               webVitals.getCLS(console.log);
               webVitals.getFID(console.log);
@@ -323,6 +295,10 @@ export default function RootLayout({ children }) {
             }
           `}
         </Script>
+
+        {/* Analytics ve Speed Insights ekleniyor */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
