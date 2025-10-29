@@ -131,9 +131,9 @@ export default function HomePage() {
         Ana içeriğe atla
       </a>
 
-      {/* OPTIMIZED HERO SECTION */}
+      {/* ✅ DÜZELTİLDİ: Hero section'a navbar yüksekliği kadar padding eklendi */}
       <section
-        className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900"
+        className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 pt-16 lg:pt-20"
         aria-labelledby="hero-title"
         role="banner"
       >
@@ -295,8 +295,9 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ✅ DÜZELTİLDİ: ReviewBanner'a da navbar yüksekliği kadar margin eklendi */}
       <main id="main" className="relative">
-        <div className="sticky top-0 z-40">
+        <div className="sticky top-0 z-40 mt-16 lg:mt-20">
           <ReviewBanner />
         </div>
 
