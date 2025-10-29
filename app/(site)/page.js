@@ -492,15 +492,15 @@ export default function HomePage() {
                   <div className="mt-4 p-4 bg-white rounded-lg border border-purple-200 shadow-md">
                     <p className="font-bold text-purple-900 text-base mb-2">Hızlı Teklif İsteği:</p>
                     <a
-                      href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ulaşıyorum.+Sahne+kiralama+ve+LED+ekran+fiyatları+hakkında+detaylı+teklif+almak+istiyorum."
-                      className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-bold transition-all duration-300 hover:scale-105 shadow-lg text-sm"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="WhatsApp üzerinden hemen teklif alın"
-                    >
-                      <span>WhatsApp'tan Hemen Teklif Al</span>
-                      <span className="text-lg">→</span>
-                    </a>
+        href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ulaşıyorum.+Sahne+kiralama+ve+LED+ekran+fiyatları+hakkında+detaylı+teklif+almak+istiyorum."
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center justify-center gap-3 bg-green-700 hover:bg-green-800 text-white font-bold px-5 py-4 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl min-h-[60px]"
+        aria-label="WhatsApp üzerinden kurumsal etkinlik teklifi iste"
+      >
+        <span className="text-xl">💬</span>
+        <span className="text-sm font-bold">WhatsApp'tan Yaz</span>
+      </a>
                     <p className="text-xs text-neutral-600 mt-2">
                       <strong>2 saat içinde</strong> detaylı teklif ve profesyonel danışmanlık
                     </p>
