@@ -265,9 +265,9 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="flex-1 text-center md:text-left">
-                  <h3 className="text-white text-xl md:text-2xl font-bold mb-2">
+                  <h2 className="text-white text-xl md:text-2xl font-bold mb-2">
                     Ücretsiz Profesyonel Danışmanlık
-                  </h3>
+                  </h2>
                   <p className="text-white/90 text-base leading-relaxed">
                     Etkinliğiniz için <strong>en uygun sahne çözümleri</strong>, LED ekran seçenekleri ve ses-ışık sistemlerini 
                     ücretsiz teknik danışmanlık ile planlayalım. <strong className="text-yellow-300">2 saat içinde detaylı teklif</strong> sunuyoruz.
