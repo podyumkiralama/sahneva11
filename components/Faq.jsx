@@ -142,70 +142,71 @@ export default function Faq() {
           </div>
         </div>
 
-        {/* ✅ Daha Kompakt İletişim Bilgileri */}
-        <div className="mt-8 text-center">
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200/60 p-6 max-w-2xl mx-auto">
-            <h4 className="text-lg font-bold text-gray-900 mb-4">
+        {/* ✅ Çok Daha Dar İletişim Bilgileri */}
+        <div className="mt-6 text-center">
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg border border-gray-200/60 p-4 max-w-2xl mx-auto">
+            <h4 className="text-base font-bold text-gray-900 mb-3">
               Hızlı İletişim Kanalları
             </h4>
             
             <nav aria-label="Hızlı iletişim seçenekleri">
-              <ul className="flex flex-wrap gap-3 justify-center items-center">
+              <ul className="flex flex-wrap gap-2 justify-center items-center">
                 <li>
                   <a 
                     href="tel:+905453048671"
-                    className="inline-flex items-center gap-2 bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 font-medium px-4 py-3 rounded-xl transition-all duration-300 hover:shadow-md hover:scale-105 min-h-[50px] text-sm"
+                    className="inline-flex items-center gap-2 bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 font-medium px-3 py-2 rounded-lg transition-all duration-300 hover:shadow-md hover:scale-105 min-h-[44px] text-xs"
                     aria-label="Telefon ile iletişim - +90 545 304 86 71"
                     title="Sahneva telefon iletişim"
                   >
-                    <span className="text-lg" aria-hidden="true">📞</span>
+                    <span className="text-base" aria-hidden="true">📞</span>
                     <div className="text-left">
                       <div className="text-xs font-medium">Telefon</div>
-                      <div className="text-xs opacity-75">+90 545 304 8671</div>
+                      <div className="text-[10px] opacity-75">+90 545 304 8671</div>
                     </div>
                   </a>
                 </li>
                 <li>
                   <a 
                     href="https://wa.me/905453048671"
-                    className="inline-flex items-center gap-2 bg-green-50 hover:bg-green-100 border border-green-200 text-green-700 font-medium px-4 py-3 rounded-xl transition-all duration-300 hover:shadow-md hover:scale-105 min-h-[50px] text-sm"
+                    className="inline-flex items-center gap-2 bg-green-50 hover:bg-green-100 border border-green-200 text-green-700 font-medium px-3 py-2 rounded-lg transition-all duration-300 hover:shadow-md hover:scale-105 min-h-[44px] text-xs"
                     aria-label="WhatsApp üzerinden iletişim"
                     title="Sahneva WhatsApp iletişim"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <span className="text-lg" aria-hidden="true">💬</span>
+                    <span className="text-base" aria-hidden="true">💬</span>
                     <div className="text-left">
                       <div className="text-xs font-medium">WhatsApp</div>
-                      <div className="text-xs opacity-75">Hızlı Mesaj</div>
+                      <div className="text-[10px] opacity-75">Hızlı Mesaj</div>
                     </div>
                   </a>
                 </li>
                 <li>
                   <a 
                     href="mailto:info@sahneva.com"
-                    className="inline-flex items-center gap-2 bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 font-medium px-4 py-3 rounded-xl transition-all duration-300 hover:shadow-md hover:scale-105 min-h-[50px] text-sm"
+                    className="inline-flex items-center gap-2 bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 font-medium px-3 py-2 rounded-lg transition-all duration-300 hover:shadow-md hover:scale-105 min-h-[44px] text-xs"
                     aria-label="E-posta gönder - info@sahneva.com"
                     title="Sahneva e-posta iletişim"
                   >
-                    <span className="text-lg" aria-hidden="true">✉️</span>
+                    <span className="text-base" aria-hidden="true">✉️</span>
                     <div className="text-left">
                       <div className="text-xs font-medium">E-posta</div>
-                      <div className="text-xs opacity-75">info@sahneva.com</div>
+                      <div className="text-[10px] opacity-75">info@sahneva.com</div>
                     </div>
                   </a>
                 </li>
               </ul>
             </nav>
             
-            <div className="mt-4 flex items-center justify-center gap-3 text-xs text-gray-600">
+            {/* ✅ Çok Daha Dar Boşluklu Durum Bilgisi */}
+            <div className="mt-2 flex items-center justify-center gap-2 text-[10px] text-gray-600">
               <div className="flex items-center gap-1">
-                <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
+                <div className="w-1 h-1 bg-green-500 rounded-full animate-pulse"></div>
                 <span>7/24 Destek</span>
               </div>
-              <div className="w-px h-3 bg-gray-300"></div>
+              <div className="w-px h-2 bg-gray-300"></div>
               <div className="flex items-center gap-1">
-                <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
+                <div className="w-1 h-1 bg-green-500 rounded-full animate-pulse"></div>
                 <span>5 Dakikada Yanıt</span>
               </div>
             </div>
