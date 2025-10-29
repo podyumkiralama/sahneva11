@@ -54,35 +54,21 @@ const services = [
     href: '/led-ekran-kiralama'
   },
   {
-    id: 'ses',
-    title: 'Ses Sistemleri Kiralama',
-    icon: '🔊',
-    description: 'Profesyonel ses sistemleri ve ses mühendisliği hizmetleri. Line-array sistemler, dijital mikserler ve kablosuz ekipmanlar.',
+    id: 'ses-isik',
+    title: 'Ses & Işık Sistemleri',
+    icon: '🎭',
+    description: 'Profesyonel ses ve ışık sistemleri kiralama hizmeti. Konser, tiyatro, konferans ve özel etkinlikleriniz için komple ses ve ışık çözümleri.',
     image: '/img/ses-isik/ses-sistemi.webp',
     features: [
-      'Line-array ses sistemleri',
-      'Dijital mikser ve ses işleme',
-      'Kablosuz mikrofon sistemleri',
-      'Ses mühendisliği ve operatörlük',
-      'Monitor ve sahne içi ses sistemleri'
+      'Line-array ses sistemleri ve dijital mikserler',
+      'Kablosuz mikrofon ve monitor sistemleri',
+      'Moving head, spot ve LED ışık sistemleri',
+      'DMX kontrol ve ışık programlama',
+      'Lazer, smoke machine ve özel efektler',
+      'Ses ve ışık operatörlüğü hizmeti',
+      'Alan akustiğine özel ses optimizasyonu'
     ],
-    cta: 'Ses Sistemi Teklifi Al',
-    href: '/ses-isik-sistemleri'
-  },
-  {
-    id: 'isik',
-    title: 'Işık Sistemleri Kiralama',
-    icon: '💡',
-    description: 'DMX kontrollü profesyonel ışık sistemleri, lazer, smoke machine ve efekt ekipmanları. Her türlü etkinlik için ışık tasarımı.',
-    image: '/img/ses-isik/isik-sistemi.webp',
-    features: [
-      'Moving head ve spot ışıklar',
-      'LED wash ve par canlıklar',
-      'DMX kontrol ve programlama',
-      'Lazer ve özel efekt sistemleri',
-      'Işık operatörlüğü hizmeti'
-    ],
-    cta: 'Işık Sistemi Teklifi Al',
+    cta: 'Ses & Işık Sistemi Teklifi Al',
     href: '/ses-isik-sistemleri'
   },
   {
