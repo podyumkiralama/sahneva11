@@ -171,11 +171,7 @@ export default function ProjectsGallery() {
     return (
       <section className="relative py-20 bg-gradient-to-br from-gray-50 to-white">
         <div className="container">
-          <div className="text-center mb-16">
-            <div className="h-10 bg-gradient-to-r from-gray-200 to-gray-300 rounded-lg animate-pulse w-64 mx-auto mb-4"></div>
-            <div className="h-6 bg-gray-200 rounded animate-pulse w-96 mx-auto"></div>
-          </div>
-
+          {/* ❌ BAŞLIK KALDIRILDI - Anasayfadan gelecek */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3].map((item) => (
               <div key={item} className="group">
@@ -203,22 +199,7 @@ export default function ProjectsGallery() {
       </div>
       
       <div className="container relative z-10">
-        {/* ✅ OPTİMİZE: Premium header */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-full px-6 py-3 shadow-sm mb-6">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span className="text-sm font-medium text-gray-700">500+ Başarılı Proje</span>
-          </div>
-          
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-            Referans Projelerimiz
-          </h2>
-          
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            500'den fazla kurumsal etkinlik, konser, fuar ve özel organizasyonda 
-            <span className="font-semibold text-gray-900"> güvenilir çözüm ortağınız</span>
-          </p>
-        </div>
+        {/* ❌ BAŞLIK KALDIRILDI - Anasayfadan gelecek */}
 
         {/* ✅ OPTİMİZE: Premium grid layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" role="list">
