@@ -74,12 +74,7 @@ const tabs = [
   },
 ];
 
-export default function ServicesTabs({ headingId: providedHeadingId, heading = "Hizmetlerimiz" }) {
-  const rid = useId();
-  const headingId = providedHeadingId ?? `${rid}-services-heading`;
-  const [active, setActive] = useState(0);
-  const tabsRef = useRef([]);
-  const liveRef = useRef(null);
+
 
   // ✅ İYİLEŞTİRİLDİ: Keyboard navigation optimize edildi
   const onKeyDown = useCallback(
