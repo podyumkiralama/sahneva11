@@ -130,14 +130,15 @@ export default function Faq() {
                 
                 {/* ✅ DÜZELTİLDİ: Yüksek kontrastlı yeşil buton */}
                 <a
-                  href="/iletisim"
-                  className="inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:shadow-md transform hover:-translate-y-0.5 min-h-[52px] text-sm"
-                  aria-label="Canlı destek ekibimizle iletişime geçin - Sahneva iletişim"
-                  title="Sahneva canlı destek ve iletişim sayfası"
-                >
-                  <span className="text-lg">💬</span>
-                  <span>Canlı Destek</span>
-                </a>
+  href="/iletisim"
+  className="inline-flex items-center justify-center gap-2 bg-green-700 hover:bg-green-800 text-white font-bold px-6 py-3 rounded-xl transition-all duration-300 hover:shadow-md transform hover:-translate-y-0.5 min-h-[52px] text-sm"
+  aria-label="Canlı destek ekibimizle iletişime geçin - Sahneva iletişim"
+  title="Sahneva canlı destek ve iletişim sayfası"
+>
+  <span className="text-lg">💬</span>
+  <span>Canlı Destek</span>
+</a>
+
               </div>
             </div>
           </div>
