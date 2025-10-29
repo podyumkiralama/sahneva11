@@ -13,6 +13,7 @@
     "security:check": "npx @next/security-headers-check"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.2.0",
     "@vercel/speed-insights": "1.2.0",
     "next": "15.5.2",
     "react": "18.3.1",
