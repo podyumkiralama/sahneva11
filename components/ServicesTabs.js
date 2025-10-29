@@ -18,7 +18,6 @@ const services = [
       'Profesyonel kurulum ve söküm hizmeti',
       'Yüksek kapasiteli sahne platformları'
     ],
-    cta: 'Sahne Kiralama Teklifi Al',
     href: '/sahne-kiralama'
   },
   {
@@ -34,7 +33,6 @@ const services = [
       'Hızlı kurulum ve taşınabilirlik',
       'Çeşitli renk ve boyut seçenekleri'
     ],
-    cta: 'Podyum Kiralama Teklifi Al',
     href: '/podyum-kiralama'
   },
   {
@@ -50,7 +48,6 @@ const services = [
       'HD video işleme ve kontrol sistemleri',
       'Kurulum ve teknik destek'
     ],
-    cta: 'LED Ekran Teklifi Al',
     href: '/led-ekran-kiralama'
   },
   {
@@ -68,7 +65,6 @@ const services = [
       'Ses ve ışık operatörlüğü hizmeti',
       'Alan akustiğine özel ses optimizasyonu'
     ],
-    cta: 'Ses & Işık Sistemi Teklifi Al',
     href: '/ses-isik-sistemleri'
   },
   {
@@ -84,7 +80,6 @@ const services = [
       'Aydınlatma ve dekorasyon',
       'Profesyonel montaj ve demontaj'
     ],
-    cta: 'Çadır Kiralama Teklifi Al',
     href: '/cadir-kiralama'
   },
   {
@@ -100,7 +95,6 @@ const services = [
       'Masa örtüsü ve dekorasyon',
       'Teslimat, kurulum ve toplama hizmeti'
     ],
-    cta: 'Masa Sandalye Teklifi Al',
     href: '/masa-sandalye-kiralama'
   }
 ];
@@ -180,34 +174,17 @@ export default function ServicesTabs() {
                 </ul>
               </div>
 
-              {/* CTA Butonları */}
-              <div className="pt-4 space-y-4">
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <a
-                    href={`https://wa.me/905453048671?text=Merhaba,%20${encodeURIComponent(activeService.title)}%20hakkında%20teklif%20almak%20istiyorum.`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg flex-1 justify-center"
-                  >
-                    <span>{activeService.cta}</span>
-                    <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                    </svg>
-                  </a>
-                  
-                  <Link
-                    href={activeService.href}
-                    className="group inline-flex items-center gap-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg flex-1 justify-center"
-                  >
-                    <span>Detaylı Bilgi</span>
-                    <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </Link>
-                </div>
-                <p className="text-sm text-gray-500 text-center">
-                  📞 <strong>2 saat içinde</strong> WhatsApp'tan yanıt • 🌐 Detaylı bilgi için sayfayı ziyaret et
-                </p>
+              {/* Detaylı Bilgi Butonu */}
+              <div className="pt-4">
+                <Link
+                  href={activeService.href}
+                  className="group inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold text-lg px-8 py-4 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg w-full md:w-auto justify-center"
+                >
+                  <span>Detaylı Bilgi ve Fiyat Teklifi Al</span>
+                  <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
               </div>
             </div>
 
@@ -246,59 +223,26 @@ export default function ServicesTabs() {
         )}
       </div>
 
-      {/* Hızlı İletişim */}
+      {/* Hızlı Sayfa Linkleri */}
       <div className="text-center mt-12 p-6 md:p-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-3xl border border-blue-100">
-        <div className="inline-flex items-center gap-2 bg-white rounded-full px-4 py-2 text-sm font-semibold text-blue-600 mb-4">
-          <span>⚡</span>
-          Hızlı Teklif
-        </div>
         <h4 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
-          Tüm Hizmetlerde %100 Müşteri Memnuniyeti
+          Tüm Hizmetlerimizi Keşfedin
         </h4>
         <p className="text-gray-600 mb-6 max-w-2xl mx-auto text-sm md:text-base">
-          Aşağıdaki butonlardan doğrudan WhatsApp üzerinden tüm hizmetlerimiz hakkında detaylı teklif alabilir 
-          veya telefonla hemen iletişim kurabilirsiniz.
-          <strong className="block mt-1 text-green-600">7/24 teknik destek</strong>
+          Aşağıdaki bağlantılardan tüm hizmetlerimiz hakkında detaylı bilgi alabilir ve fiyat teklifi talep edebilirsiniz.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <a
-            href="https://wa.me/905453048671?text=Merhaba,%20sahne%20ve%20etkinlik%20ekipmanları%20kiralama%20hizmetleriniz%20hakkında%20detaylı%20teklif%20almak%20istiyorum."
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white font-bold text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg w-full sm:w-auto justify-center"
-          >
-            <span>WhatsApp'tan Hemen Teklif Al</span>
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
-          </a>
-          
-          <a
-            href="tel:+905453048671"
-            className="inline-flex items-center gap-3 bg-blue-500 hover:bg-blue-600 text-white font-bold text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg w-full sm:w-auto justify-center"
-          >
-            <span>Hemen Ara</span>
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-            </svg>
-          </a>
-        </div>
-
-        {/* Hızlı Sayfa Linkleri */}
-        <div className="mt-8 pt-6 border-t border-blue-200">
-          <p className="text-gray-600 text-sm mb-4">Hızlı Sayfa Erişimi:</p>
-          <div className="flex flex-wrap justify-center gap-2">
-            {services.slice(0, 4).map((service) => (
-              <Link
-                key={service.id}
-                href={service.href}
-                className="inline-flex items-center gap-1 bg-white hover:bg-blue-50 text-gray-700 text-xs px-3 py-2 rounded-lg border border-gray-200 transition-all duration-200 hover:shadow-md"
-              >
-                <span>{service.icon}</span>
-                <span>{service.title.split(' ')[0]}</span>
-              </Link>
-            ))}
-          </div>
+        
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+          {services.map((service) => (
+            <Link
+              key={service.id}
+              href={service.href}
+              className="group flex flex-col items-center gap-2 bg-white hover:bg-blue-50 text-gray-700 p-4 rounded-xl border border-gray-200 transition-all duration-200 hover:shadow-md hover:scale-105"
+            >
+              <span className="text-2xl">{service.icon}</span>
+              <span className="text-xs font-semibold text-center leading-tight">{service.title}</span>
+            </Link>
+          ))}
         </div>
       </div>
     </div>
