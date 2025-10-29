@@ -15,118 +15,34 @@ const LIGHTBOX_SIZES =
   "(max-width: 1200px) 90vw, " +
   "min(1024px, 80vw)";
 
-// ✅ OPTİMİZE: SEO friendly galeri verileri
+// ✅ OPTİMİZE: SEO friendly galeri verileri - sadece 3 ana hizmet
 const GALLERIES = {
-  "Podyum Kiralama": {
-    images: [
-    "/img/galeri/podyum-kiralama-1.webp",
-    "/img/galeri/podyum-kiralama-2.webp",
-    "/img/galeri/podyum-kiralama-3.webp",
-    "/img/galeri/podyum-kiralama-4.webp",
-    "/img/galeri/podyum-kiralama-5.webp",
-    "/img/galeri/podyum-kiralama-6.webp",
-    "/img/galeri/podyum-kiralama-7.webp",
-    "/img/galeri/podyum-kiralama-8.webp",
-    "/img/galeri/podyum-kiralama-9.webp",
-    "/img/galeri/podyum-kiralama-10.webp",
-    "/img/galeri/podyum-kiralama-11.webp",
-    "/img/galeri/podyum-kiralama-12.webp",
-    "/img/galeri/podyum-kiralama-13.webp",
-    "/img/galeri/podyum-kiralama-14.webp",
-    "/img/galeri/podyum-kiralama-15.webp",
-    "/img/galeri/podyum-kiralama-16.webp",
-    "/img/galeri/podyum-kiralama-17.webp",
-    "/img/galeri/podyum-kiralama-18.webp",
-    "/img/galeri/podyum-kiralama-19.webp",
-    "/img/galeri/podyum-kiralama-20.webp",
-    "/img/galeri/podyum-kiralama-21.webp",
-    "/img/galeri/podyum-kiralama-22.webp",
-    "/img/galeri/podyum-kiralama-23.webp",
-    "/img/galeri/podyum-kiralama-24.webp",
-    "/img/galeri/podyum-kiralama-25.webp",
-    "/img/galeri/podyum-kiralama-26.webp",
-    "/img/galeri/podyum-kiralama-27.webp",
-    "/img/galeri/podyum-kiralama-28.webp",
-    "/img/galeri/podyum-kiralama-29.webp",
-    "/img/galeri/podyum-kiralama-30.webp",
-    "/img/galeri/podyum-kiralama-31.webp",
-    "/img/galeri/podyum-kiralama-32.webp",
-    "/img/galeri/podyum-kiralama-33.webp",
-    "/img/galeri/podyum-kiralama-34.webp",
-    "/img/galeri/podyum-kiralama-35.webp",
-    "/img/galeri/podyum-kiralama-36.webp",
-    ],
-    description: "Profesyonel podyum kurulumları ve modüler podyum sistemleri - Sahneva referans projeleri",
-    titleAttr: "Podyum Kiralama Referansları - Profesyonel Kurulum Örnekleri"
-  },
   "LED Ekran Kiralama": {
     images: [
       "/img/galeri/led-ekran-kiralama-1.webp",
-    "/img/galeri/led-ekran-kiralama-2.webp",
-    "/img/galeri/led-ekran-kiralama-3.webp",
-    "/img/galeri/led-ekran-kiralama-4.webp",
-    "/img/galeri/led-ekran-kiralama-5.webp",
-    "/img/galeri/led-ekran-kiralama-6.webp",
-    "/img/galeri/led-ekran-kiralama-7.webp",
-    "/img/galeri/led-ekran-kiralama-8.webp",
-    "/img/galeri/led-ekran-kiralama-9.webp",
-    "/img/galeri/led-ekran-kiralama-10.webp",
-    "/img/galeri/led-ekran-kiralama-11.webp",
-    "/img/galeri/led-ekran-kiralama-12.webp",
-    "/img/galeri/led-ekran-kiralama-13.webp",
-    "/img/galeri/led-ekran-kiralama-14.webp",
-    "/img/galeri/led-ekran-kiralama-15.webp",
-    "/img/galeri/led-ekran-kiralama-16.webp",
-    "/img/galeri/led-ekran-kiralama-17.webp",
-    "/img/galeri/led-ekran-kiralama-18.webp",
-    "/img/galeri/led-ekran-kiralama-19.webp",
-    "/img/galeri/led-ekran-kiralama-20.webp",
-    "/img/galeri/led-ekran-kiralama-21.webp",
-    "/img/galeri/led-ekran-kiralama-22.webp",
-    "/img/galeri/led-ekran-kiralama-23.webp",
-    "/img/galeri/led-ekran-kiralama-24.webp",
-    "/img/galeri/led-ekran-kiralama-25.webp",
-    "/img/galeri/led-ekran-kiralama-26.webp",
-    "/img/galeri/led-ekran-kiralama-27.webp",
-    "/img/galeri/led-ekran-kiralama-28.webp",
-    "/img/galeri/led-ekran-kiralama-29.webp",
-    "/img/galeri/led-ekran-kiralama-30.webp",
-    "/img/galeri/led-ekran-kiralama-31.webp",
-    "/img/galeri/led-ekran-kiralama-32.webp",
-    "/img/galeri/led-ekran-kiralama-33.webp",
-    "/img/galeri/led-ekran-kiralama-34.webp",
-    "/img/galeri/led-ekran-kiralama-35.webp",
-    "/img/galeri/led-ekran-kiralama-36.webp",
+      "/img/galeri/led-ekran-kiralama-2.webp",
+      "/img/galeri/led-ekran-kiralama-3.webp",
+      "/img/galeri/led-ekran-kiralama-4.webp",
+      "/img/galeri/led-ekran-kiralama-5.webp",
     ],
     description: "Yüksek çözünürlüklü LED ekran kurulumları ve etkinlik prodüksiyonları - Sahneva",
     titleAttr: "LED Ekran Kiralama Referansları - Büyük Ölçekli Kurulumlar"
   },
   "Çadır Kiralama": {
     images: [
-       "/img/galeri/cadir-kiralama-1.webp",
-    "/img/galeri/cadir-kiralama-2.webp",
-    "/img/galeri/cadir-kiralama-3.webp",
-    "/img/galeri/cadir-kiralama-4.webp",
-    "/img/galeri/cadir-kiralama-5.webp",
-    "/img/galeri/cadir-kiralama-6.webp",
-    "/img/galeri/cadir-kiralama-7.webp",
-    "/img/galeri/cadir-kiralama-8.webp",
-    "/img/galeri/cadir-kiralama-9.webp",
-    "/img/galeri/cadir-kiralama-10.webp",
-    "/img/galeri/cadir-kiralama-11.webp",
-    "/img/galeri/cadir-kiralama-12.webp",
-    "/img/galeri/cadir-kiralama-13.webp",
-    "/img/galeri/cadir-kiralama-14.webp",
-    "/img/galeri/cadir-kiralama-15.webp",
-    "/img/galeri/cadir-kiralama-16.webp",
-    "/img/galeri/cadir-kiralama-17.webp",
-    "/img/galeri/cadir-kiralama-18.webp",
-    "/img/galeri/cadir-kiralama-19.webp",
+      "/img/galeri/cadir-kiralama-1.webp",
+      "/img/galeri/cadir-kiralama-2.webp",
+      "/img/galeri/cadir-kiralama-3.webp",
+      "/img/galeri/cadir-kiralama-4.webp",
+      "/img/galeri/cadir-kiralama-5.webp",
     ],
     description: "Açık hava etkinlikleri için profesyonel çadır kurulumları - Sahneva çadır kiralama",
     titleAttr: "Çadır Kiralama Referansları - Açık Hava Etkinlik Çözümleri"
   },
 };
+
+// ✅ OPTİMİZE: Basit blur data URL
+const BLUR_DATA_URL = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R";
 
 export default function ProjectsGallery() {
   const [isOpen, setIsOpen] = useState(false);
@@ -144,7 +60,7 @@ export default function ProjectsGallery() {
   const liveRef = useRef(null);
   const headingId = "projects-heading";
 
-  // ✅ FIX: Hydration hatası için useEffect
+  // ✅ OPTİMİZE: Basit mount kontrolü
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -157,11 +73,14 @@ export default function ProjectsGallery() {
     setIsOpen(true);
     setTimeout(() => setAnim(true), 10);
     
+    // Ekran okuyucu bildirimi
     if (liveRef.current) {
-      liveRef.current.textContent = `${groupTitle} proje galerisi açıldı, ${images.length} fotoğraf mevcut.`;
       setTimeout(() => {
-        if (liveRef.current) liveRef.current.textContent = "";
-      }, 1500);
+        liveRef.current.textContent = `${groupTitle} galerisi açıldı, ${images.length} fotoğraf`;
+        setTimeout(() => {
+          if (liveRef.current) liveRef.current.textContent = "";
+        }, 2000);
+      }, 100);
     }
   }, []);
 
@@ -169,38 +88,29 @@ export default function ProjectsGallery() {
     setAnim(false);
     setTimeout(() => {
       setIsOpen(false);
-      if (lastFocus.current && typeof lastFocus.current.focus === "function") {
-        try {
-          lastFocus.current.focus();
-        } catch (e) {
-          console.log("Focus error:", e);
-        }
-      }
+      lastFocus.current?.focus?.();
     }, 200);
   }, []);
 
   const prev = useCallback(() => {
-    if (!items || items.length <= 1) return;
-    setIndex((currentIndex) => (currentIndex - 1 + items.length) % items.length);
+    if (items.length <= 1) return;
+    setIndex((current) => (current - 1 + items.length) % items.length);
   }, [items]);
 
   const next = useCallback(() => {
-    if (!items || items.length <= 1) return;
-    setIndex((currentIndex) => (currentIndex + 1) % items.length);
+    if (items.length <= 1) return;
+    setIndex((current) => (current + 1) % items.length);
   }, [items]);
 
-  // ✅ FIX: Basitleştirilmiş body scroll lock
+  // ✅ OPTİMİZE: Basitleştirilmiş scroll lock
   useEffect(() => {
     if (!isOpen) return;
 
     scrollYRef.current = window.scrollY;
     const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
     
-    // Body scroll'u kilitle
     document.body.style.position = 'fixed';
     document.body.style.top = `-${scrollYRef.current}px`;
-    document.body.style.left = '0';
-    document.body.style.right = '0';
     document.body.style.overflow = 'hidden';
     if (scrollbarWidth > 0) {
       document.body.style.paddingRight = `${scrollbarWidth}px`;
@@ -214,29 +124,20 @@ export default function ProjectsGallery() {
 
     window.addEventListener("keydown", handleKeyDown);
     
-    // Focus'u kapat butonuna ver
-    setTimeout(() => {
-      if (closeBtnRef.current) {
-        closeBtnRef.current.focus();
-      }
-    }, 100);
+    setTimeout(() => closeBtnRef.current?.focus(), 100);
 
     return () => {
-      // Scroll kilidini kaldır
       const scrollY = scrollYRef.current;
       document.body.style.position = '';
       document.body.style.top = '';
-      document.body.style.left = '';
-      document.body.style.right = '';
       document.body.style.overflow = '';
       document.body.style.paddingRight = '';
       window.scrollTo(0, scrollY);
-      
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen, close, prev, next]);
 
-  // ✅ FIX: Basitleştirilmiş touch handlers
+  // Touch handlers
   const onTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
   };
@@ -245,29 +146,28 @@ export default function ProjectsGallery() {
     touchEndX.current = e.changedTouches[0].clientX;
     const deltaX = touchEndX.current - touchStartX.current;
     
-    if (Math.abs(deltaX) > 50) { // Minimum swipe distance
-      if (deltaX > 0) {
-        prev();
-      } else {
-        next();
-      }
+    if (Math.abs(deltaX) > 50) {
+      deltaX > 0 ? prev() : next();
     }
   };
 
-  // Sunucu tarafında render için loading state
+  // ✅ OPTİMİZE: Basit loading state
   if (!mounted) {
     return (
       <section className="container py-16 md:py-20" aria-labelledby={headingId}>
-        <h2 id={headingId} className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
-          Tamamlanan Projeler ve Referanslar
+        <h2 id={headingId} className="text-3xl md:text-4xl font-bold text-center mb-8 text-gray-900">
+          Başarılı Projelerimiz
         </h2>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {[1, 2, 3].map((item) => (
+        <p className="text-center text-gray-600 max-w-3xl mx-auto mb-12 text-lg leading-relaxed">
+          500'den fazla kurumsal etkinlik, konser, fuar ve özel organizasyonda güvenilir çözüm ortağı
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+          {[1, 2].map((item) => (
             <div key={item} className="space-y-4">
               <div className="h-6 bg-gray-200 rounded animate-pulse w-3/4"></div>
-              <div className="h-48 md:h-60 lg:h-72 bg-gray-200 rounded-2xl animate-pulse"></div>
-              <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+              <div className="h-64 md:h-72 bg-gray-200 rounded-2xl animate-pulse"></div>
               <div className="h-4 bg-gray-200 rounded animate-pulse w-2/3"></div>
             </div>
           ))}
@@ -286,18 +186,19 @@ export default function ProjectsGallery() {
       itemScope
       itemType="https://schema.org/ImageGallery"
     >
-      <h2 id={headingId} className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900">
-        Tamamlanan Projeler ve Referanslar
-      </h2>
-
-      <p className="text-center text-gray-600 max-w-2xl mx-auto mb-10 text-lg">
-        Sahne, podyum, LED ekran ve çadır kurulumlarımızdan seçilmiş referans projeler. 
-        Profesyonel ekipman ve uzman ekibimizle hayata geçirdiğimiz etkinlikler.
-      </p>
+      {/* ✅ OPTİMİZE: SEO friendly başlık ve açıklama */}
+      <header className="text-center mb-12">
+        <h2 id={headingId} className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          Başarılı Projelerimiz
+        </h2>
+        <p className="text-gray-600 text-lg max-w-3xl mx-auto leading-relaxed">
+          500'den fazla kurumsal etkinlik, konser, fuar ve özel organizasyonda güvenilir çözüm ortağı
+        </p>
+      </header>
 
       {/* ✅ OPTİMİZE: Grid layout ve SEO */}
       <div 
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8" 
+        className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8" 
         role="list" 
         aria-label="Proje galerisi kategorileri"
       >
@@ -312,31 +213,34 @@ export default function ProjectsGallery() {
               key={groupTitle} 
               className="space-y-4 group" 
               role="listitem"
+              itemScope
+              itemType="https://schema.org/CreativeWork"
             >
-              <h3 id={labelId} className="text-xl font-bold text-gray-900">
+              <h3 id={labelId} className="text-xl font-bold text-gray-900" itemProp="name">
                 {groupTitle}
               </h3>
 
               <button
                 type="button"
                 onClick={() => open(groupTitle, images, 0)}
-                className="relative w-full h-48 md:h-60 lg:h-72 overflow-hidden rounded-2xl border-2 border-gray-200 bg-white shadow-md transition-all duration-300 group-hover:shadow-xl group-hover:border-purple-500 focus:outline-none focus:ring-4 focus:ring-purple-500 focus:ring-offset-2"
+                className="relative w-full h-64 md:h-72 overflow-hidden rounded-2xl border-2 border-gray-200 bg-white shadow-md transition-all duration-300 group-hover:shadow-xl group-hover:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2"
                 aria-labelledby={labelId}
                 aria-describedby={metaId}
                 title={galleryData.titleAttr}
               >
                 <Image
                   src={cover}
-                  alt={`${groupTitle} - Sahneva profesyonel kurulum örneği ve referans projesi`}
+                  alt={`${groupTitle} - Sahneva profesyonel kurulum örneği`}
                   fill
                   className={`object-cover transition-transform duration-500 ${
-                    prefersReducedMotion ? "" : "group-hover:scale-110"
+                    prefersReducedMotion ? "" : "group-hover:scale-105"
                   }`}
                   sizes={COVER_SIZES}
-                  quality={70}
-                  loading={i < 2 ? "eager" : "lazy"}
+                  quality={75}
+                  loading={i === 0 ? "eager" : "lazy"}
                   placeholder="blur"
-                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R"
+                  blurDataURL={BLUR_DATA_URL}
+                  itemProp="image"
                 />
                 
                 <div 
@@ -361,7 +265,7 @@ export default function ProjectsGallery() {
                 </div>
               </button>
               
-              <p className="text-gray-600 text-sm leading-relaxed">
+              <p className="text-gray-600 text-sm leading-relaxed" itemProp="description">
                 {galleryData.description}
               </p>
             </article>
@@ -372,25 +276,23 @@ export default function ProjectsGallery() {
       {/* Ekran okuyucu bildirimi */}
       <div ref={liveRef} aria-live="polite" className="sr-only" />
 
-      {/* ✅ FIX: Basitleştirilmiş Lightbox */}
+      {/* ✅ OPTİMİZE: Basitleştirilmiş Lightbox */}
       {isOpen && (
         <div
-          className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md ${
+          className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-sm ${
             prefersReducedMotion ? "" : "transition-opacity duration-300"
           } ${anim ? "opacity-100" : "opacity-0"}`}
           role="dialog"
           aria-modal="true"
-          aria-label={`${title} proje galerisi - ${index + 1}. görsel`}
-          onClick={(e) => {
-            if (e.target === e.currentTarget) close();
-          }}
+          aria-label={`${title} proje galerisi`}
+          onClick={(e) => e.target === e.currentTarget && close()}
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
         >
           {/* Kapat butonu */}
           <button
             ref={closeBtnRef}
-            className="absolute top-4 right-4 md:top-6 md:right-6 text-white/90 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 transition-all duration-200 z-10 min-h-[44px] min-w-[44px] flex items-center justify-center"
+            className="absolute top-4 right-4 z-10 text-white/90 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-white transition-all duration-200 min-h-[44px] min-w-[44px] flex items-center justify-center"
             onClick={close}
             aria-label="Galeriyi kapat"
           >
@@ -401,17 +303,16 @@ export default function ProjectsGallery() {
           {items.length > 1 && (
             <>
               <button
-                className="hidden md:flex absolute top-1/2 left-4 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full w-14 h-14 items-center justify-center text-3xl shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 transition-all duration-200 z-10"
+                className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white rounded-full w-12 h-12 items-center justify-center text-2xl transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
                 onClick={prev}
-                aria-label="Önceki proje görseli"
+                aria-label="Önceki görsel"
               >
                 ‹
               </button>
-
               <button
-                className="hidden md:flex absolute top-1/2 right-4 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full w-14 h-14 items-center justify-center text-3xl shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 transition-all duration-200 z-10"
+                className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white rounded-full w-12 h-12 items-center justify-center text-2xl transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
                 onClick={next}
-                aria-label="Sonraki proje görseli"
+                aria-label="Sonraki görsel"
               >
                 ›
               </button>
@@ -420,56 +321,41 @@ export default function ProjectsGallery() {
 
           {/* Görsel alanı */}
           <div
-            className={`relative w-full max-w-6xl aspect-[16/10] ${
-              prefersReducedMotion
-                ? ""
-                : "transform transition-transform duration-300"
+            className={`relative w-full max-w-4xl aspect-[4/3] ${
+              prefersReducedMotion ? "" : "transition-transform duration-300"
             } ${anim ? "scale-100 opacity-100" : "scale-95 opacity-0"}`}
           >
             <Image
               key={items[index]}
               src={items[index]}
-              alt={`${title} - ${index + 1}. referans proje görseli, Sahneva profesyonel kurulum`}
+              alt={`${title} - ${index + 1}. referans proje görseli`}
               fill
-              className="object-contain drop-shadow-2xl"
+              className="object-contain"
               sizes={LIGHTBOX_SIZES}
               quality={85}
               priority
-              onError={() => {
-                // Basit error handling - sonraki resme geç
-                if (items.length > 1) {
-                  next();
-                }
-              }}
             />
           </div>
 
           {/* Bilgi çubuğu */}
-          <div className="absolute bottom-20 md:bottom-6 left-0 right-0 text-center text-white/90 text-base font-medium bg-black/40 backdrop-blur-sm py-2 mx-auto max-w-md rounded-full">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/90 text-sm font-medium bg-black/50 backdrop-blur-sm py-2 px-4 rounded-full">
             {title} — {index + 1} / {items.length}
           </div>
 
           {/* Mobil kontrol çubuğu */}
           {items.length > 1 && (
-            <div className="md:hidden fixed inset-x-0 bottom-0 z-50 bg-black/80 backdrop-blur py-4">
-              <div className="mx-auto max-w-xl flex items-center justify-between gap-3 px-4">
+            <div className="md:hidden fixed inset-x-0 bottom-0 z-50 bg-black/80 backdrop-blur py-3">
+              <div className="mx-auto max-w-sm flex items-center justify-between gap-2 px-4">
                 <button
                   onClick={prev}
-                  className="flex-1 rounded-xl bg-white/20 text-white py-3 font-semibold text-sm transition-colors hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 min-h-[44px]"
+                  className="flex-1 rounded-xl bg-white/20 text-white py-3 text-sm transition-colors hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 min-h-[44px]"
                   aria-label="Önceki görsel"
                 >
                   ‹ Önceki
                 </button>
                 <button
-                  onClick={close}
-                  className="flex-1 rounded-xl bg-white/20 text-white py-3 font-semibold text-sm transition-colors hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 min-h-[44px]"
-                  aria-label="Galeriyi kapat"
-                >
-                  ✕ Kapat
-                </button>
-                <button
                   onClick={next}
-                  className="flex-1 rounded-xl bg-white/20 text-white py-3 font-semibold text-sm transition-colors hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 min-h-[44px]"
+                  className="flex-1 rounded-xl bg-white/20 text-white py-3 text-sm transition-colors hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 min-h-[44px]"
                   aria-label="Sonraki görsel"
                 >
                   Sonraki ›
