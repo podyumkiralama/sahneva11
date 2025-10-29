@@ -258,7 +258,7 @@ export default function HomePage() {
             <Suspense 
               fallback={
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {[1, 2, 3].map((item) => (
+                  {[1, 2, 3, 4, 5, 6].map((item) => (
                     <div key={item} className="bg-neutral-800 rounded-2xl animate-pulse h-80" />
                   ))}
                 </div>
