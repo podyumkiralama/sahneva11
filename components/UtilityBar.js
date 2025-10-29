@@ -244,7 +244,7 @@ export default function UtilityBar() {
         target="_blank"
         rel="noopener noreferrer"
         className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-3 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
-        aria-label="WhatsApp üzerinden hemen teklif alın"
+        aria-label="WhatsApp iletişim"
       >
         <span className="text-lg">💬</span>
         <span className="text-sm font-bold">WhatsApp'tan Hemen Teklif Al</span>
