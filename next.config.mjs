@@ -34,19 +34,12 @@ const nextConfig = {
   experimental: {
     optimizeCss: true,
     scrollRestoration: true,
-    legacyBrowsers: false,
-    browsersListForSwc: true,
-    esmExternals: true,
     optimizePackageImports: [
       'lucide-react',
       '@headlessui/react',
       'framer-motion',
       'react-icons'
     ],
-    workerThreads: false, // Vercel'de sorun çıkarabilir
-    webpackBuildWorker: false, // Vercel'de sorun çıkarabilir
-    parallelServerBuildTraces: true,
-    parallelServerCompiles: true,
   },
 
   // === WEBPACK OPTİMİZASYONLARI ===
@@ -229,9 +222,6 @@ const nextConfig = {
   // === TRAILING SLASH ===
   trailingSlash: false,
 
-  // === SWC MINIFICATION ===
-  swcMinify: true,
-
   // === SOURCE MAPS ===
   productionBrowserSourceMaps: false,
 
@@ -240,7 +230,7 @@ const nextConfig = {
   pageExtensions: ['tsx', 'ts', 'jsx', 'js', 'mdx'],
 
   // === OUTPUT ===
-  output: 'standalone', // Vercel için optimize edilmiş output
+  output: 'standalone',
 };
 
 export default nextConfig;
