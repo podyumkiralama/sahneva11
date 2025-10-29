@@ -335,10 +335,10 @@ export default function HomePage() {
           <div className="container">
             <div className="text-center mb-16">
               <h2 id="kurumsal-title" className="text-4xl md:text-5xl font-black text-neutral-900 mb-4">
-                Kurumsal <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Çözümlerimiz</span>
+                Kurumsal <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Organizasyon Çözümlerimiz</span>
               </h2>
               <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
-                Fortune 500 şirketleri, devlet kurumları ve lider markalar için profesyonel etkinlik çözümleri
+                Lansman, konferans, bayi toplantısı ve kurumsal etkinlikleriniz için sahne, podyum, LED ekran, ses–ışık ve teknik operasyonu tek çatı altında sunuyoruz.
               </p>
             </div>
             <CorporateEvents />
