@@ -23,7 +23,7 @@ export default function UtilityBar() {
   const dialogRef = useRef(null);
   const toolsRef = useRef(null);
 
-  // ✅ PREMIUM: ESC ile arama modalını kapat
+  // ✅ ESC ile arama modalını kapat
   useEffect(() => {
     const onEsc = (e) => {
       if (e.key === "Escape") {
@@ -35,7 +35,7 @@ export default function UtilityBar() {
     return () => window.removeEventListener("keydown", onEsc);
   }, []);
 
-  // ✅ PREMIUM: Dışarı tıklama ile araçları kapat
+  // ✅ Dışarı tıklama ile araçları kapat
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (toolsRef.current && !toolsRef.current.contains(e.target)) {
@@ -52,7 +52,7 @@ export default function UtilityBar() {
         r.label.toLowerCase().includes(query.toLowerCase().trim())
       );
 
-  // ✅ PREMIUM: Yazı boyutu kontrolü - BİLEŞİK ANİMASYON ile
+  // ✅ Yazı boyutu kontrolü - BİLEŞİK ANİMASYON ile
   const bumpFont = useCallback((delta) => {
     const root = document.documentElement;
     const current = parseFloat(
@@ -60,27 +60,26 @@ export default function UtilityBar() {
     );
     const next = Math.min(130, Math.max(85, Math.round(current + delta)));
     
-    // ✅ Bileşik animasyon: sadece transform kullan
     root.style.setProperty("--fs", `${next}%`);
     
-    // ✅ Haptic feedback - transform ile (bileşik animasyon)
+    // ✅ Bileşik animasyon: sadece transform
     document.body.classList.add('font-change-active');
     setTimeout(() => document.body.classList.remove('font-change-active'), 300);
   }, []);
 
-  // ✅ PREMIUM: Yüksek kontrast modu
+  // ✅ Yüksek kontrast modu
   const toggleContrast = useCallback(() => {
     document.documentElement.classList.toggle("hc");
     setActiveTool(null);
   }, []);
 
-  // ✅ PREMIUM: En üste dön
+  // ✅ En üste dön
   const scrollTopSmooth = useCallback(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     setActiveTool(null);
   }, []);
 
-  // ✅ PREMIUM: Optimize edilmiş BİLEŞİK burst efekti
+  // ✅ Optimize edilmiş BİLEŞİK burst efekti
   const burst = useCallback((e, colors = ["#6366f1", "#8b5cf6"]) => {
     try {
       if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
@@ -103,29 +102,44 @@ export default function UtilityBar() {
         const dist = 25 + Math.random() * 20;
         
         // Transform kullan - bileşik animasyon
-        el.style.transform = `translate(${Math.cos(angle) * dist}px, ${Math.sin(angle) * dist}px) rotate(${(Math.random() * 40 - 20).toFixed(1)}deg)`;
-        el.style.opacity = '0';
+        const translateX = Math.cos(angle) * dist;
+        const translateY = Math.sin(angle) * dist;
+        const rotate = (Math.random() * 40 - 20);
+        
+        el.style.transform = `translate(${translateX}px, ${translateY}px) rotate(${rotate}deg)`;
+        el.style.opacity = '1';
         
         el.style.setProperty("--life", `${life}ms`);
-        el.style.setProperty("--burst-c1", i % 2 === 0 ? colors[0] : colors[1]);
-        el.style.setProperty("--burst-c2", i % 2 === 0 ? colors[1] : colors[0]);
+        el.style.background = `linear-gradient(135deg, ${i % 2 === 0 ? colors[0] : colors[1]}, ${i % 2 === 0 ? colors[1] : colors[0]})`;
         
         const s = 4 + Math.random() * 4;
-        el.style.width = el.style.height = `${s}px`;
+        el.style.width = `${s}px`;
+        el.style.height = `${s}px`;
         el.style.left = `${x}px`;
         el.style.top = `${y}px`;
         
         fragment.appendChild(el);
+        
+        // ✅ Animasyon sonunda elementi kaldır
+        el.animate([
+          { transform: 'translate(0, 0) rotate(0deg)', opacity: 1 },
+          { transform: `translate(${translateX}px, ${translateY}px) rotate(${rotate}deg)`, opacity: 0 }
+        ], {
+          duration: life,
+          easing: 'ease-out',
+          fill: 'forwards'
+        });
+        
         setTimeout(() => {
           if (el.parentNode) el.parentNode.removeChild(el);
-        }, life + 30);
+        }, life);
       }
       
       document.body.appendChild(fragment);
     } catch {}
   }, []);
 
-  // ✅ PREMIUM: Tool toggle fonksiyonu
+  // ✅ Tool toggle fonksiyonu
   const toggleTool = useCallback((toolName, e) => {
     burst(e, ["#06b6d4", "#8b5cf6"]);
     setActiveTool(activeTool === toolName ? null : toolName);
@@ -133,45 +147,41 @@ export default function UtilityBar() {
 
   return (
     <>
-      {/* ✅ PREMIUM: Bottom utility bar - SADE ve ÇALIŞAN */}
+      {/* ✅ Bottom utility bar - BİLEŞİK ANİMASYONLAR ile */}
       <div
         ref={toolsRef}
-        className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 bg-white/90 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl"
-        style={{
-          height: '64px',
-          minHeight: '64px'
-        }}
+        className="utility-bar-container"
         role="region"
         aria-label="Erişilebilirlik araçları ve hızlı navigasyon"
       >
-        <div className="flex items-center gap-1 p-2 h-full">
-          {/* ✅ PREMIUM: Erişilebilirlik araçları */}
-          <div className="relative h-full flex items-center">
+        <div className="utility-bar-content">
+          {/* ✅ Erişilebilirlik araçları */}
+          <div className="utility-tool-wrapper">
             <button
-              className={`utility-btn group ${activeTool === 'accessibility' ? 'bg-blue-50 text-blue-600' : ''}`}
+              className={`utility-btn group ${activeTool === 'accessibility' ? 'utility-btn-active' : ''}`}
               onClick={(e) => toggleTool('accessibility', e)}
               aria-label="Erişilebilirlik araçları"
               title="Erişilebilirlik araçları - Yazı boyutu ve kontrast"
             >
-              <span className="text-lg">♿</span>
-              <div className="absolute -top-2 -right-1 w-2 h-2 bg-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <span className="utility-icon">♿</span>
+              <div className="utility-dot"></div>
             </button>
 
             {activeTool === 'accessibility' && (
-              <div className="absolute bottom-12 left-0 mb-2 min-w-48 rounded-xl border border-white/20 bg-white/95 backdrop-blur-xl p-3 shadow-xl z-50">
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between gap-3 mb-3">
-                    <span className="text-sm font-semibold text-gray-700">Yazı Boyutu</span>
-                    <div className="flex gap-1">
+              <div className="utility-tooltip">
+                <div className="utility-tooltip-content">
+                  <div className="font-size-controls">
+                    <span className="control-label">Yazı Boyutu</span>
+                    <div className="font-buttons">
                       <button
-                        className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-sm font-bold transition-colors"
+                        className="font-btn"
                         onClick={() => bumpFont(-5)}
                         aria-label="Yazı boyutunu küçült"
                       >
                         A-
                       </button>
                       <button
-                        className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-sm font-bold transition-colors"
+                        className="font-btn"
                         onClick={() => bumpFont(+5)}
                         aria-label="Yazı boyutunu büyüt"
                       >
@@ -181,7 +191,7 @@ export default function UtilityBar() {
                   </div>
                   
                   <button
-                    className="w-full rounded-lg px-3 py-2 text-sm font-semibold bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 transition-all duration-300 text-center"
+                    className="contrast-btn"
                     onClick={toggleContrast}
                     aria-label="Yüksek kontrast modunu aç/kapat"
                   >
@@ -192,8 +202,8 @@ export default function UtilityBar() {
             )}
           </div>
 
-          {/* ✅ PREMIUM: Arama butonu */}
-          <div className="h-full flex items-center">
+          {/* ✅ Arama butonu */}
+          <div className="utility-tool-wrapper">
             <button
               className="utility-btn group"
               onClick={(e) => {
@@ -207,13 +217,13 @@ export default function UtilityBar() {
               aria-controls={openSearch ? "site-search-dialog" : undefined}
               title="Site içi arama - Hızlı navigasyon"
             >
-              <span className="text-lg">🔍</span>
-              <div className="absolute -top-2 -right-1 w-2 h-2 bg-green-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <span className="utility-icon">🔍</span>
+              <div className="utility-dot"></div>
             </button>
           </div>
 
-          {/* ✅ PREMIUM: En üste dön */}
-          <div className="h-full flex items-center">
+          {/* ✅ En üste dön */}
+          <div className="utility-tool-wrapper">
             <button
               className="utility-btn group"
               onClick={(e) => {
@@ -223,29 +233,29 @@ export default function UtilityBar() {
               aria-label="Sayfanın en üstüne dön"
               title="En üste dön - Hızlı navigasyon"
             >
-              <span className="text-lg">⬆️</span>
-              <div className="absolute -top-2 -right-1 w-2 h-2 bg-orange-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <span className="utility-icon">⬆️</span>
+              <div className="utility-dot"></div>
             </button>
           </div>
 
-          {/* ✅ PREMIUM: Hızlı iletişim */}
-          <div className="relative h-full flex items-center">
+          {/* ✅ Hızlı iletişim */}
+          <div className="utility-tool-wrapper">
             <button
-              className={`utility-btn group ${activeTool === 'contact' ? 'bg-green-50 text-green-600' : ''}`}
+              className={`utility-btn group ${activeTool === 'contact' ? 'utility-btn-active' : ''}`}
               onClick={(e) => toggleTool('contact', e)}
               aria-label="Hızlı iletişim seçenekleri"
               title="Hızlı iletişim - Telefon ve WhatsApp"
             >
-              <span className="text-lg">📞</span>
-              <div className="absolute -top-2 -right-1 w-2 h-2 bg-green-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <span className="utility-icon">📞</span>
+              <div className="utility-dot"></div>
             </button>
 
             {activeTool === 'contact' && (
-              <div className="absolute bottom-12 right-0 mb-2 min-w-48 rounded-xl border border-white/20 bg-white/95 backdrop-blur-xl p-3 shadow-xl z-50">
-                <div className="space-y-2">
+              <div className="utility-tooltip">
+                <div className="utility-tooltip-content">
                   <a
                     href="tel:+905453048671"
-                    className="block rounded-lg px-4 py-3 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-300 text-center"
+                    className="contact-btn phone"
                     onClick={(e) => burst(e, ["#3b82f6", "#8b5cf6"])}
                     title="Hemen arayın - Ücretsiz danışmanlık"
                   >
@@ -255,11 +265,11 @@ export default function UtilityBar() {
                     href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ulaşıyorum.+Sahne+kiralama+ve+LED+ekran+fiyatları+hakkında+detaylı+teklif+almak+istiyorum."
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-3 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                    className="contact-btn whatsapp"
                     aria-label="WhatsApp iletişim"
                   >
-                    <span className="text-lg">💬</span>
-                    <span className="text-sm font-bold">WhatsApp'tan Hemen Teklif Al</span>
+                    <span className="whatsapp-icon">💬</span>
+                    WhatsApp'tan Hemen Teklif Al
                   </a>
                 </div>
               </div>
@@ -268,12 +278,12 @@ export default function UtilityBar() {
         </div>
       </div>
 
-      {/* ✅ PREMIUM: Arama modalı */}
+      {/* ✅ Arama modalı */}
       {openSearch && (
         <div
           id="site-search-dialog"
           ref={dialogRef}
-          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm p-0 sm:p-6"
+          className="search-modal-overlay"
           role="dialog"
           aria-modal="true"
           aria-label="Site içi arama - Hızlı sayfa navigasyonu"
@@ -281,15 +291,13 @@ export default function UtilityBar() {
             if (e.target === e.currentTarget) setOpenSearch(false);
           }}
         >
-          <div className="w-full sm:max-w-2xl rounded-t-2xl sm:rounded-2xl bg-gradient-to-br from-white to-gray-50/80 backdrop-blur-sm shadow-2xl border border-white/20">
-            <div className="flex items-center gap-3 px-4 py-4 border-b border-gray-200/60">
-              <div className="flex-1 relative">
-                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                  🔍
-                </div>
+          <div className="search-modal-container">
+            <div className="search-header">
+              <div className="search-input-wrapper">
+                <div className="search-icon">🔍</div>
                 <input
                   type="search"
-                  className="w-full rounded-xl border border-gray-300/60 bg-white/80 pl-10 pr-4 py-3 text-lg outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 transition-all duration-300"
+                  className="search-input"
                   placeholder="Ne aramıştınız? (örn: LED ekran, podyum, sahne...)"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
@@ -298,7 +306,7 @@ export default function UtilityBar() {
                 />
               </div>
               <button
-                className="ml-1 rounded-xl px-4 py-3 text-sm font-semibold bg-gray-100/80 hover:bg-gray-200/80 transition-all duration-300 min-h-[44px] backdrop-blur-sm"
+                className="search-close-btn"
                 onClick={() => setOpenSearch(false)}
                 aria-label="Arama modalını kapat"
                 title="Aramayı kapat"
@@ -306,28 +314,28 @@ export default function UtilityBar() {
                 Kapat
               </button>
             </div>
-            <div className="max-h-[60vh] overflow-y-auto p-3">
+            <div className="search-results">
               {filtered.length === 0 ? (
-                <div className="px-3 py-8 text-center text-gray-600">
-                  <div className="text-4xl mb-3">🔍</div>
-                  <p className="text-lg font-medium">Sonuç bulunamadı</p>
-                  <p className="text-sm mt-1 text-gray-500">Lütfen farklı bir anahtar kelime deneyin</p>
+                <div className="no-results">
+                  <div className="no-results-icon">🔍</div>
+                  <p className="no-results-title">Sonuç bulunamadı</p>
+                  <p className="no-results-description">Lütfen farklı bir anahtar kelime deneyin</p>
                 </div>
               ) : (
-                <ul className="space-y-2">
+                <ul className="results-list">
                   {filtered.map((r) => (
                     <li key={r.href}>
                       <Link
                         href={r.href}
-                        className="group flex items-center gap-3 rounded-xl px-4 py-3 text-base hover:bg-blue-50/80 hover:text-blue-700 transition-all duration-300 border border-transparent hover:border-blue-200/60 backdrop-blur-sm"
+                        className="result-item"
                         onClick={() => setOpenSearch(false)}
                         title={r.title}
                       >
-                        <span className="text-lg opacity-60 group-hover:opacity-100 transition-opacity">
+                        <span className="result-icon">
                           {r.icon}
                         </span>
-                        <span className="flex-1">{r.label}</span>
-                        <span className="text-xs text-gray-400 group-hover:text-blue-400 transition-colors">
+                        <span className="result-label">{r.label}</span>
+                        <span className="result-url">
                           {r.href}
                         </span>
                       </Link>
@@ -336,9 +344,8 @@ export default function UtilityBar() {
                 </ul>
               )}
               
-              {/* ✅ PREMIUM: Arama ipuçları */}
-              <div className="mt-4 pt-4 border-t border-gray-200/60">
-                <p className="text-xs text-gray-500 text-center">
+              <div className="search-tips">
+                <p className="tips-text">
                   <strong>İpucu:</strong> "podyum", "led ekran", "ses sistemi" gibi anahtar kelimelerle arama yapabilirsiniz
                 </p>
               </div>
@@ -347,10 +354,36 @@ export default function UtilityBar() {
         </div>
       )}
 
-      {/* ✅ PREMIUM: CSS Styles - BİLEŞİK ANİMASYONLAR ile */}
-      <style jsx global>{`
-        :root {
-          --fs: 100%;
+      {/* ✅ CSS Styles - BİLEŞİK ANİMASYONLAR ile */}
+      <style jsx>{`
+        .utility-bar-container {
+          position: fixed;
+          bottom: 1rem;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 50;
+          background: rgba(255, 255, 255, 0.9);
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 16px;
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+          height: 64px;
+          min-height: 64px;
+        }
+
+        .utility-bar-content {
+          display: flex;
+          align-items: center;
+          gap: 0.25rem;
+          padding: 0.5rem;
+          height: 100%;
+        }
+
+        .utility-tool-wrapper {
+          position: relative;
+          height: 100%;
+          display: flex;
+          align-items: center;
         }
 
         .utility-btn {
@@ -364,44 +397,370 @@ export default function UtilityBar() {
           background: transparent;
           border: none;
           cursor: pointer;
-          transition: all 0.3s ease;
+          /* ✅ BİLEŞİK ANİMASYON: sadece transform ve opacity */
+          transition: transform 0.3s ease, opacity 0.3s ease;
           font-size: 16px;
         }
 
         .utility-btn:hover {
           background: rgba(99, 102, 241, 0.1);
           /* ✅ BİLEŞİK ANİMASYON: sadece transform */
-          transform: translateY(-2px);
+          transform: translateY(-2px) scale(1.05);
         }
 
         .utility-btn:active {
-          transform: translateY(0);
+          transform: translateY(0) scale(1);
         }
 
-        .burst-particle {
-          position: fixed;
-          pointer-events: none;
-          z-index: 9999;
-          background: linear-gradient(135deg, var(--burst-c1), var(--burst-c2));
+        .utility-btn-active {
+          background: rgba(59, 130, 246, 0.1);
+          color: rgb(37, 99, 235);
+        }
+
+        .utility-icon {
+          font-size: 18px;
+          /* ✅ BİLEŞİK ANİMASYON: sadece transform */
+          transition: transform 0.3s ease;
+        }
+
+        .utility-btn:hover .utility-icon {
+          transform: scale(1.1);
+        }
+
+        .utility-dot {
+          position: absolute;
+          top: -2px;
+          right: -1px;
+          width: 8px;
+          height: 8px;
+          background: rgb(59, 130, 246);
           border-radius: 50%;
-          /* ✅ BİLEŞİK ANİMASYON: sadece transform ve opacity */
-          animation: burst-animation var(--life) ease-out forwards;
+          opacity: 0;
+          /* ✅ BİLEŞİK ANİMASYON: sadece opacity */
+          transition: opacity 0.3s ease;
         }
 
-        @keyframes burst-animation {
+        .utility-btn:hover .utility-dot {
+          opacity: 1;
+        }
+
+        .utility-tooltip {
+          position: absolute;
+          bottom: 100%;
+          left: 0;
+          margin-bottom: 0.5rem;
+          min-width: 192px;
+          border-radius: 12px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(20px);
+          padding: 0.75rem;
+          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+          z-index: 60;
+          /* ✅ BİLEŞİK ANİMASYON: sadece transform ve opacity */
+          animation: tooltipAppear 0.2s ease-out;
+        }
+
+        @keyframes tooltipAppear {
           0% {
-            transform: translate(0, 0) rotate(0deg);
-            opacity: 1;
+            opacity: 0;
+            transform: translateY(10px) scale(0.95);
           }
           100% {
-            /* ✅ CSS değişkenleri yerine direkt transform */
-            transform: translate(var(--dx, 0), var(--dy, 0)) rotate(var(--dr, 0));
-            opacity: 0;
+            opacity: 1;
+            transform: translateY(0) scale(1);
           }
         }
 
-        .font-change-active {
+        .utility-tooltip-content {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
+        .font-size-controls {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 0.75rem;
+          margin-bottom: 0.75rem;
+        }
+
+        .control-label {
+          font-size: 0.875rem;
+          font-weight: 600;
+          color: rgb(55, 65, 81);
+        }
+
+        .font-buttons {
+          display: flex;
+          gap: 0.25rem;
+        }
+
+        .font-btn {
+          width: 32px;
+          height: 32px;
+          border-radius: 8px;
+          background: rgb(243, 244, 246);
+          border: none;
+          cursor: pointer;
+          font-size: 0.875rem;
+          font-weight: bold;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           /* ✅ BİLEŞİK ANİMASYON: sadece transform */
+          transition: transform 0.2s ease;
+        }
+
+        .font-btn:hover {
+          background: rgb(229, 231, 235);
+          transform: scale(1.05);
+        }
+
+        .contrast-btn {
+          width: 100%;
+          border-radius: 8px;
+          padding: 0.5rem 0.75rem;
+          font-size: 0.875rem;
+          font-weight: 600;
+          background: linear-gradient(135deg, rgb(59, 130, 246), rgb(139, 92, 246));
+          color: white;
+          border: none;
+          cursor: pointer;
+          /* ✅ BİLEŞİK ANİMASYON: sadece transform */
+          transition: transform 0.3s ease;
+        }
+
+        .contrast-btn:hover {
+          transform: translateY(-1px);
+        }
+
+        .contact-btn {
+          display: block;
+          border-radius: 8px;
+          padding: 0.75rem;
+          font-size: 0.875rem;
+          font-weight: 600;
+          text-align: center;
+          text-decoration: none;
+          /* ✅ BİLEŞİK ANİMASYON: sadece transform */
+          transition: transform 0.3s ease;
+        }
+
+        .contact-btn.phone {
+          background: linear-gradient(135deg, rgb(37, 99, 235), rgb(139, 92, 246));
+          color: white;
+        }
+
+        .contact-btn.whatsapp {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: rgb(22, 163, 74);
+          color: white;
+        }
+
+        .contact-btn:hover {
+          transform: translateY(-1px) scale(1.02);
+        }
+
+        .whatsapp-icon {
+          font-size: 16px;
+        }
+
+        /* ✅ Arama Modal Styles */
+        .search-modal-overlay {
+          position: fixed;
+          inset: 0;
+          z-index: 50;
+          display: flex;
+          align-items: flex-end;
+          justify-content: center;
+          background: rgba(0, 0, 0, 0.6);
+          backdrop-filter: blur(8px);
+          padding: 0;
+        }
+
+        @media (min-width: 640px) {
+          .search-modal-overlay {
+            align-items: center;
+            padding: 1.5rem;
+          }
+        }
+
+        .search-modal-container {
+          width: 100%;
+          max-width: 42rem;
+          border-radius: 16px 16px 0 0;
+          background: linear-gradient(135deg, rgb(255, 255, 255), rgba(243, 244, 246, 0.8));
+          backdrop-filter: blur(8px);
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @media (min-width: 640px) {
+          .search-modal-container {
+            border-radius: 16px;
+          }
+        }
+
+        .search-header {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 1rem;
+          border-bottom: 1px solid rgba(209, 213, 219, 0.6);
+        }
+
+        .search-input-wrapper {
+          flex: 1;
+          position: relative;
+        }
+
+        .search-icon {
+          position: absolute;
+          left: 0.75rem;
+          top: 50%;
+          transform: translateY(-50%);
+          color: rgb(156, 163, 175);
+        }
+
+        .search-input {
+          width: 100%;
+          border-radius: 12px;
+          border: 1px solid rgba(209, 213, 219, 0.6);
+          background: rgba(255, 255, 255, 0.8);
+          padding-left: 2.5rem;
+          padding-right: 1rem;
+          padding-top: 0.75rem;
+          padding-bottom: 0.75rem;
+          font-size: 1.125rem;
+          outline: none;
+          /* ✅ BİLEŞİK ANİMASYON: sadece transform ve opacity */
+          transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .search-input:focus {
+          transform: scale(1.02);
+          box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+        }
+
+        .search-close-btn {
+          margin-left: 0.25rem;
+          border-radius: 12px;
+          padding: 0.75rem 1rem;
+          font-size: 0.875rem;
+          font-weight: 600;
+          background: rgba(243, 244, 246, 0.8);
+          border: none;
+          cursor: pointer;
+          min-height: 44px;
+          backdrop-filter: blur(8px);
+          /* ✅ BİLEŞİK ANİMASYON: sadece transform */
+          transition: transform 0.3s ease;
+        }
+
+        .search-close-btn:hover {
+          background: rgba(229, 231, 235, 0.8);
+          transform: scale(1.05);
+        }
+
+        .search-results {
+          max-height: 60vh;
+          overflow-y: auto;
+          padding: 0.75rem;
+        }
+
+        .no-results {
+          padding: 2rem 0.75rem;
+          text-align: center;
+          color: rgb(75, 85, 99);
+        }
+
+        .no-results-icon {
+          font-size: 2.25rem;
+          margin-bottom: 0.75rem;
+        }
+
+        .no-results-title {
+          font-size: 1.125rem;
+          font-weight: 500;
+          margin-bottom: 0.25rem;
+        }
+
+        .no-results-description {
+          font-size: 0.875rem;
+          color: rgb(107, 114, 128);
+        }
+
+        .results-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
+        .result-item {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          border-radius: 12px;
+          padding: 0.75rem 1rem;
+          font-size: 1rem;
+          color: inherit;
+          text-decoration: none;
+          border: 1px solid transparent;
+          /* ✅ BİLEŞİK ANİMASYON: sadece transform */
+          transition: transform 0.3s ease;
+        }
+
+        .result-item:hover {
+          background: rgba(59, 130, 246, 0.1);
+          color: rgb(37, 99, 235);
+          transform: translateX(4px);
+        }
+
+        .result-icon {
+          font-size: 18px;
+          opacity: 0.6;
+          /* ✅ BİLEŞİK ANİMASYON: sadece transform */
+          transition: transform 0.3s ease;
+        }
+
+        .result-item:hover .result-icon {
+          opacity: 1;
+          transform: scale(1.1);
+        }
+
+        .result-label {
+          flex: 1;
+        }
+
+        .result-url {
+          font-size: 0.75rem;
+          color: rgb(156, 163, 175);
+          /* ✅ BİLEŞİK ANİMASYON: sadece color */
+          transition: color 0.3s ease;
+        }
+
+        .result-item:hover .result-url {
+          color: rgb(96, 165, 250);
+        }
+
+        .search-tips {
+          margin-top: 1rem;
+          padding-top: 1rem;
+          border-top: 1px solid rgba(209, 213, 219, 0.6);
+        }
+
+        .tips-text {
+          font-size: 0.75rem;
+          color: rgb(107, 114, 128);
+          text-align: center;
+        }
+
+        /* ✅ Font change animation */
+        .font-change-active {
           animation: fontChangePulse 0.3s ease;
         }
 
@@ -411,13 +770,23 @@ export default function UtilityBar() {
           100% { transform: scale(1); }
         }
 
-        /* ✅ BİLEŞİK OLMAYAN ANİMASYONLARI ÖNLEME */
-        /* width, height, top, left yerine transform kullan */
-        .utility-bar-container * {
-          /* ✅ Layout-triggering properties yerine composited properties */
-          transform: translateZ(0);
-          backface-visibility: hidden;
-          perspective: 1000px;
+        /* ✅ Burst particle base styles */
+        .burst-particle {
+          position: fixed;
+          pointer-events: none;
+          z-index: 9999;
+          border-radius: 50%;
+          animation: burst-animation var(--life, 400ms) ease-out forwards;
+        }
+
+        @keyframes burst-animation {
+          0% {
+            transform: translate(0, 0) rotate(0deg);
+            opacity: 1;
+          }
+          100% {
+            opacity: 0;
+          }
         }
       `}</style>
     </>
