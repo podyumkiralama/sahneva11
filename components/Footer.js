@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useCallback } from "react";
 
 export default function Footer() {
-  // ✅ İYİLEŞTİRİLDİ: Optimize edilmiş burst efekti (sadece sosyal medya için)
+  // ✅ PREMIUM: Optimize edilmiş burst efekti
   const burst = useCallback((e) => {
     try {
       if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
@@ -29,8 +29,8 @@ export default function Footer() {
         el.style.setProperty("--dy", Math.sin(angle) * dist + "px");
         el.style.setProperty("--dr", `${(Math.random() * 40 - 20).toFixed(1)}deg`);
         el.style.setProperty("--life", `${life}ms`);
-        el.style.setProperty("--burst-c1", i % 2 === 0 ? "#6d28d9" : "#22c55e");
-        el.style.setProperty("--burst-c2", i % 2 === 0 ? "#22c55e" : "#6d28d9");
+        el.style.setProperty("--burst-c1", i % 2 === 0 ? "#6366f1" : "#8b5cf6");
+        el.style.setProperty("--burst-c2", i % 2 === 0 ? "#8b5cf6" : "#06b6d4");
         
         const s = 4 + Math.random() * 4;
         el.style.width = el.style.height = `${s}px`;
@@ -50,28 +50,39 @@ export default function Footer() {
   return (
     <footer
       role="contentinfo"
-      className="bg-[#0f1115] bg-gradient-to-t from-[#0c0e12] to-[#12141a] text-gray-300 border-t border-white/5"
+      className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900/80 to-blue-900 border-t border-white/10"
       itemScope
       itemType="https://schema.org/Organization"
     >
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 py-10 px-6">
-        {/* Marka bölümü */}
+      {/* ✅ PREMIUM: Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-r from-purple-500/10 to-cyan-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-black/20 to-black/60"></div>
+      </div>
+
+      <div className="relative z-10 container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 py-12 px-6">
+        {/* ✅ PREMIUM: Marka bölümü */}
         <section aria-labelledby="ft-brand" itemProp="brand" itemScope itemType="https://schema.org/Brand">
           <h2 id="ft-brand" className="sr-only">
             Sahneva Hakkında
           </h2>
-          <div className="flex items-center gap-3 text-white font-bold text-xl mb-4">
-            <span className="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-2 rounded-lg" aria-hidden="true">⭐</span> 
-            <span itemProp="name" className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+          <div className="flex items-center gap-3 text-white font-bold text-2xl mb-6">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg blur-sm opacity-75"></div>
+              <span className="relative bg-gradient-to-r from-blue-500 to-purple-500 text-white p-2 rounded-lg" aria-hidden="true">⭐</span> 
+            </div>
+            <span itemProp="name" className="bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
               SAHNEVA
             </span>
           </div>
-          <p className="text-sm leading-6 text-gray-400 mb-4" itemProp="description">
+          <p className="text-sm leading-6 text-gray-300 mb-6" itemProp="description">
             Profesyonel etkinlik prodüksiyon & ekipman kiralama hizmetleri.
-            Türkiye geneli sahne, podyum, LED ekran ve ses-ışık sistemleri.
+            <br />
+            <span className="text-blue-300 font-medium">Türkiye geneli</span> sahne, podyum, LED ekran ve ses-ışık sistemleri.
           </p>
 
-          {/* Sosyal medya linkleri */}
+          {/* ✅ PREMIUM: Sosyal medya linkleri */}
           <div className="flex gap-3">
             <a
               href="https://www.instagram.com/sahnevaorganizasyon"
@@ -79,11 +90,12 @@ export default function Footer() {
               rel="noopener noreferrer me"
               aria-label="Sahneva Instagram sayfası (yeni sekmede açılır)"
               title="Sahneva Instagram - Etkinlik fotoğrafları ve projeler"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 min-h-[36px] min-w-[36px]"
+              className="group relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 min-h-[40px] min-w-[40px]"
               onClick={burst}
               itemProp="sameAs"
             >
-              <span aria-hidden="true" className="text-lg">📷</span>
+              <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+              <span aria-hidden="true" className="text-lg relative z-10">📷</span>
             </a>
             <a
               href="https://www.youtube.com/@sahneva"
@@ -91,21 +103,22 @@ export default function Footer() {
               rel="noopener noreferrer me"
               aria-label="Sahneva YouTube kanalı (yeni sekmede açılır)"
               title="Sahneva YouTube - Kurulum videoları ve referanslar"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 min-h-[36px] min-w-[36px]"
+              className="group relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 min-h-[40px] min-w-[40px]"
               onClick={burst}
               itemProp="sameAs"
             >
-              <span aria-hidden="true" className="text-lg">▶</span>
+              <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+              <span aria-hidden="true" className="text-lg relative z-10">▶</span>
             </a>
           </div>
         </section>
 
-        {/* Hizmetler navigasyonu */}
+        {/* ✅ PREMIUM: Hizmetler navigasyonu */}
         <nav aria-labelledby="ft-services">
-          <h2 id="ft-services" className="text-white font-semibold mb-4 text-lg">
+          <h2 id="ft-services" className="text-white font-bold mb-6 text-lg bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
             Hizmetlerimiz
           </h2>
-          <ul className="space-y-2 text-sm">
+          <ul className="space-y-3 text-sm">
             {[
               { href: "/podyum-kiralama", label: "Podyum Kiralama", title: "Modüler podyum kiralama ve kurulum hizmeti" },
               { href: "/led-ekran-kiralama", label: "LED Ekran Kiralama", title: "Yüksek çözünürlüklü LED ekran kiralama" },
@@ -116,23 +129,23 @@ export default function Footer() {
               <li key={href}>
                 <Link
                   href={href}
-                  className="text-gray-400 hover:text-white focus:text-white hover:underline underline-offset-4 transition-colors duration-200 block py-1"
+                  className="group text-gray-300 hover:text-white focus:text-white transition-all duration-200 block py-1 pl-2 border-l-2 border-transparent hover:border-blue-400 hover:pl-3"
                   title={title}
                   itemProp="url"
                 >
-                  {label}
+                  <span className="group-hover:text-blue-300 transition-colors">{label}</span>
                 </Link>
               </li>
             ))}
           </ul>
         </nav>
 
-        {/* Hızlı erişim */}
+        {/* ✅ PREMIUM: Hızlı erişim */}
         <nav aria-labelledby="ft-quick">
-          <h2 id="ft-quick" className="text-white font-semibold mb-4 text-lg">
+          <h2 id="ft-quick" className="text-white font-bold mb-6 text-lg bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
             Hızlı Erişim
           </h2>
-          <ul className="space-y-2 text-sm">
+          <ul className="space-y-3 text-sm">
             {[
               { href: "/hakkimizda", label: "Hakkımızda", title: "Sahneva hakkında bilgi ve referanslar" },
               { href: "/hizmetler", label: "Hizmetler", title: "Tüm hizmetlerimiz ve çözümler" },
@@ -142,36 +155,42 @@ export default function Footer() {
               <li key={href}>
                 <Link
                   href={href}
-                  className="text-gray-400 hover:text-white focus:text-white hover:underline underline-offset-4 transition-colors duration-200 block py-1"
+                  className="group text-gray-300 hover:text-white focus:text-white transition-all duration-200 block py-1 pl-2 border-l-2 border-transparent hover:border-purple-400 hover:pl-3"
                   title={title}
                 >
-                  {label}
+                  <span className="group-hover:text-purple-300 transition-colors">{label}</span>
                 </Link>
               </li>
             ))}
           </ul>
         </nav>
 
-        {/* İletişim bölümü - Butonlar kaldırıldı */}
+        {/* ✅ PREMIUM: İletişim bölümü */}
         <section aria-labelledby="ft-contact">
-          <h2 id="ft-contact" className="text-white font-semibold mb-4 text-lg">
+          <h2 id="ft-contact" className="text-white font-bold mb-6 text-lg bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
             İletişim Bilgileri
           </h2>
 
-          <address className="not-italic space-y-3 text-sm">
-            <div className="flex items-start gap-3">
-              <span className="text-gray-400 text-base mt-0.5" aria-hidden="true">📍</span>
+          <address className="not-italic space-y-4 text-sm">
+            <div className="flex items-start gap-3 group">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg blur-sm opacity-50"></div>
+                <span className="relative text-white text-base p-2 rounded-lg bg-slate-800/50 backdrop-blur-sm" aria-hidden="true">📍</span>
+              </div>
               <div>
-                <span className="block text-white font-medium">İstanbul / Türkiye</span>
-                <span className="text-gray-400">Türkiye geneli hizmet</span>
+                <span className="block text-white font-semibold">İstanbul / Türkiye</span>
+                <span className="text-gray-300">Türkiye geneli hizmet</span>
               </div>
             </div>
             
-            <div className="flex items-center gap-3">
-              <span className="text-gray-400 text-base" aria-hidden="true">📞</span>
+            <div className="flex items-center gap-3 group">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg blur-sm opacity-50"></div>
+                <span className="relative text-white text-base p-2 rounded-lg bg-slate-800/50 backdrop-blur-sm" aria-hidden="true">📞</span>
+              </div>
               <a
                 href="tel:+905453048671"
-                className="text-gray-400 hover:text-white font-medium transition-colors"
+                className="text-gray-300 hover:text-white font-semibold transition-all duration-300 hover:scale-105"
                 aria-label="Hemen Ara – Telefon: +90 545 304 8671"
                 title="Sahneva telefon iletişim - Hemen arayın"
                 itemProp="telephone"
@@ -180,11 +199,14 @@ export default function Footer() {
               </a>
             </div>
             
-            <div className="flex items-center gap-3">
-              <span className="text-gray-400 text-base" aria-hidden="true">✉️</span>
+            <div className="flex items-center gap-3 group">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg blur-sm opacity-50"></div>
+                <span className="relative text-white text-base p-2 rounded-lg bg-slate-800/50 backdrop-blur-sm" aria-hidden="true">✉️</span>
+              </div>
               <a
                 href="mailto:info@sahneva.com"
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-gray-300 hover:text-white transition-all duration-300 hover:scale-105"
                 aria-label="E-posta: info@sahneva.com"
                 title="Sahneva e-posta iletişim"
                 itemProp="email"
@@ -193,26 +215,29 @@ export default function Footer() {
               </a>
             </div>
             
-            <div className="flex items-start gap-3">
-              <span className="text-gray-400 text-base mt-0.5" aria-hidden="true">⏰</span>
+            <div className="flex items-start gap-3 group">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-orange-500 rounded-lg blur-sm opacity-50"></div>
+                <span className="relative text-white text-base p-2 rounded-lg bg-slate-800/50 backdrop-blur-sm" aria-hidden="true">⏰</span>
+              </div>
               <div>
-                <span className="block text-white font-medium">Hafta içi 09:00–19:00</span>
-                <span className="text-gray-400">7/24 acil destek</span>
+                <span className="block text-white font-semibold">Hafta içi 09:00–19:00</span>
+                <span className="text-gray-300">7/24 acil destek</span>
               </div>
             </div>
           </address>
 
-          {/* Google Business bağlantıları */}
-          <div className="mt-4 space-y-2">
+          {/* ✅ PREMIUM: Google Business bağlantıları */}
+          <div className="mt-6 space-y-3">
             <a
               href="https://g.page/r/CZhkMzkNOdgnEBI"
               target="_blank"
               rel="noopener noreferrer nofollow"
-              className="inline-flex items-center gap-2 text-xs text-gray-400 hover:text-white transition-colors duration-200"
+              className="group inline-flex items-center gap-2 text-xs text-gray-300 hover:text-white transition-all duration-300 hover:gap-3"
               aria-label="Google Haritalar'da Sahneva lokasyonu (yeni sekmede açılır)"
               title="Google Haritalar'da Sahneva - İstanbul lokasyonu"
             >
-              <span aria-hidden="true">📍</span>
+              <span className="group-hover:scale-110 transition-transform duration-300" aria-hidden="true">📍</span>
               Google Haritalar'da bizi bulun
             </a>
             <br />
@@ -220,34 +245,35 @@ export default function Footer() {
               href="https://g.page/r/CZhkMzkNOdgnEBI/review"
               target="_blank"
               rel="noopener noreferrer nofollow"
-              className="inline-flex items-center gap-2 text-xs text-gray-400 hover:text-white transition-colors duration-200"
+              className="group inline-flex items-center gap-2 text-xs text-gray-300 hover:text-white transition-all duration-300 hover:gap-3"
               aria-label="Google'da Sahneva için yorum yazın (yeni sekmede açılır)"
               title="Google Yorum - Müşteri deneyiminizi paylaşın"
             >
-              <span aria-hidden="true">⭐</span>
+              <span className="group-hover:scale-110 transition-transform duration-300" aria-hidden="true">⭐</span>
               Google'da yorum yazın
             </a>
           </div>
         </section>
       </div>
 
-      {/* Alt bar - daha kompakt */}
-      <div className="border-t border-white/10 text-center text-sm text-gray-400 py-4 bg-[#0a0c0f]">
-        <div className="container mx-auto px-6">
-          <p className="mb-2 text-xs text-gray-500">
+      {/* ✅ PREMIUM: Alt bar */}
+      <div className="relative border-t border-white/10 text-center text-sm text-gray-300 py-6 bg-gradient-to-r from-slate-900/50 via-purple-900/30 to-blue-900/50 backdrop-blur-sm">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+        <div className="container mx-auto px-6 relative z-10">
+          <p className="mb-3 text-gray-400">
             Türkiye genelinde profesyonel sahne, podyum, LED ekran, ses-ışık sistemleri ve kurulum hizmetleri.
           </p>
-          <p suppressHydrationWarning itemProp="copyrightYear" className="text-xs">
-            © {new Date().getFullYear()} <span itemProp="name">Sahneva</span> — Tüm hakları saklıdır.
-            <span className="mx-2">•</span>
-            <Link href="/kvkk" className="hover:text-white underline-offset-4 hover:underline transition-colors" title="KVKK Aydınlatma Metni">
+          <p suppressHydrationWarning itemProp="copyrightYear" className="text-gray-400">
+            © {new Date().getFullYear()} <span itemProp="name" className="text-white font-semibold">Sahneva</span> — Tüm hakları saklıdır.
+            <span className="mx-3 text-blue-400">•</span>
+            <Link href="/kvkk" className="text-gray-300 hover:text-white underline-offset-4 hover:underline transition-colors duration-200" title="KVKK Aydınlatma Metni">
               KVKK Aydınlatma Metni
             </Link>
           </p>
         </div>
       </div>
 
-      {/* Burst particle styles */}
+      {/* ✅ PREMIUM: Burst particle styles */}
       <style jsx>{`
         .burst-particle {
           position: fixed;
