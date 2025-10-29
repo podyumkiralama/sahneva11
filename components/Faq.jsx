@@ -12,7 +12,7 @@ function FaqRow({ question, answer, slug }) {
 
   return (
     <details
-      className="group bg-white/80 backdrop-blur-sm border border-gray-200/60 rounded-2xl p-6 mb-4 transition-all duration-300 hover:shadow-lg hover:border-blue-200/80"
+      className="group bg-white/80 backdrop-blur-sm border border-gray-200/60 rounded-xl p-4 mb-3 transition-all duration-300 hover:shadow-md hover:border-blue-200/80"
       open={open}
       onToggle={(e) => setOpen(e.currentTarget.open)}
       itemScope
@@ -22,15 +22,15 @@ function FaqRow({ question, answer, slug }) {
         id={summaryId}
         aria-controls={panelId}
         aria-expanded={open}
-        className="cursor-pointer flex items-center justify-between text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-blue-500 focus-visible:outline-offset-2 min-h-[60px]"
+        className="cursor-pointer flex items-center justify-between font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-blue-500 focus-visible:outline-offset-2 min-h-[50px]"
         itemProp="name"
       >
-        <span className="pr-8 text-lg leading-relaxed">
+        <span className="pr-6 text-base leading-relaxed">
           {question}
         </span>
-        <div className={`flex-shrink-0 w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center transition-all duration-300 group-hover:bg-blue-100 ${open ? 'bg-blue-100 rotate-90' : ''}`}>
+        <div className={`flex-shrink-0 w-7 h-7 rounded-full bg-blue-50 flex items-center justify-center transition-all duration-300 group-hover:bg-blue-100 ${open ? 'bg-blue-100 rotate-90' : ''}`}>
           <svg
-            className="w-4 h-4 text-blue-600 transition-transform duration-300"
+            className="w-3 h-3 text-blue-600 transition-transform duration-300"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -47,12 +47,12 @@ function FaqRow({ question, answer, slug }) {
 
       <div 
         id={panelId} 
-        className="mt-4 text-gray-700 border-t border-gray-100/60 pt-4"
+        className="mt-3 text-gray-700 border-t border-gray-100/60 pt-3"
         itemScope
         itemType="https://schema.org/Answer"
         itemProp="acceptedAnswer"
       >
-        <div itemProp="text" className="leading-relaxed text-base text-gray-600">
+        <div itemProp="text" className="leading-relaxed text-sm text-gray-600">
           <p>{answer}</p>
         </div>
       </div>
@@ -79,63 +79,62 @@ export default function Faq() {
 
   return (
     <section 
-      className="relative py-20 bg-gradient-to-br from-gray-50 via-white to-purple-50/30 overflow-hidden"
+      className="relative py-16 bg-gradient-to-br from-gray-50 via-white to-purple-50/30 overflow-hidden"
       aria-labelledby="faq-heading"
     >
       {/* ✅ Premium Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-24 -right-24 w-96 h-96 bg-gradient-to-r from-purple-100/20 to-blue-100/20 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-gradient-to-r from-blue-100/20 to-cyan-100/20 rounded-full blur-3xl"></div>
+        <div className="absolute -top-20 -right-20 w-80 h-80 bg-gradient-to-r from-purple-100/20 to-blue-100/20 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-28 -left-28 w-72 h-72 bg-gradient-to-r from-blue-100/20 to-cyan-100/20 rounded-full blur-3xl"></div>
       </div>
 
       <div className="container relative z-10">
         {/* ❌ BAŞLIK KALDIRILDI - Anasayfadan gelecek */}
 
-        {/* ✅ Premium FAQ Grid */}
-        <div className="mx-auto max-w-4xl">
-          <div className="grid gap-6">
+        {/* ✅ Daha Dar Aralıklı FAQ Grid */}
+        <div className="mx-auto max-w-3xl">
+          <div className="grid gap-3">
             {FAQ_ITEMS.map((item) => (
               <FaqRow key={item.slug} {...item} />
             ))}
           </div>
         </div>
 
-        {/* ✅ Premium CTA Bölümü */}
-        <div className="mt-16 text-center">
-          <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl shadow-2xl p-8 md:p-12 max-w-4xl mx-auto overflow-hidden">
+        {/* ✅ Daha Kompakt CTA Bölümü */}
+        <div className="mt-12 text-center">
+          <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl shadow-xl p-6 md:p-8 max-w-3xl mx-auto overflow-hidden">
             {/* Background Pattern */}
             <div className="absolute inset-0 opacity-10">
-              <div className="absolute -top-20 -right-20 w-40 h-40 bg-white rounded-full"></div>
-              <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-white rounded-full"></div>
+              <div className="absolute -top-16 -right-16 w-32 h-32 bg-white rounded-full"></div>
+              <div className="absolute -bottom-16 -left-16 w-32 h-32 bg-white rounded-full"></div>
             </div>
             
             <div className="relative z-10">
-              <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+              <h3 className="text-xl md:text-2xl font-bold text-white mb-3">
                 🌟 Cevabını Bulamadığınız Soru mu Var?
               </h3>
-              <p className="text-blue-100 text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
-                Uzman ekibimiz size en doğru çözümü sunmaktan mutluluk duyacaktır. 
-                7/24 destek hattımızla iletişime geçebilirsiniz.
+              <p className="text-blue-100 text-base mb-6 max-w-2xl mx-auto leading-relaxed">
+                Uzman ekibimiz size en doğru çözümü sunmaktan mutluluk duyacaktır.
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
                 <a
                   href="/sss"
-                  className="inline-flex items-center justify-center gap-3 bg-white text-blue-600 font-semibold px-8 py-4 rounded-2xl hover:bg-gray-100 transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1 min-h-[60px]"
+                  className="inline-flex items-center justify-center gap-2 bg-white text-blue-600 font-semibold px-6 py-3 rounded-xl hover:bg-gray-100 transition-all duration-300 hover:shadow-md transform hover:-translate-y-0.5 min-h-[50px] text-sm"
                   aria-label="Tüm sık sorulan soruları görüntüle - Sahneva SSS sayfası"
                   title="Sahneva hizmetleri hakkında tüm soru ve cevapları görüntüle"
                 >
-                  <span className="text-xl">📋</span>
+                  <span className="text-lg">📋</span>
                   <span>Tüm Soruları Gör</span>
                 </a>
                 
                 <a
                   href="/iletisim"
-                  className="inline-flex items-center justify-center gap-3 bg-green-500 text-white font-semibold px-8 py-4 rounded-2xl hover:bg-green-600 transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1 min-h-[60px]"
+                  className="inline-flex items-center justify-center gap-2 bg-green-500 text-white font-semibold px-6 py-3 rounded-xl hover:bg-green-600 transition-all duration-300 hover:shadow-md transform hover:-translate-y-0.5 min-h-[50px] text-sm"
                   aria-label="Canlı destek ekibimizle iletişime geçin - Sahneva iletişim"
                   title="Sahneva canlı destek ve iletişim sayfası"
                 >
-                  <span className="text-xl">💬</span>
+                  <span className="text-lg">💬</span>
                   <span>Canlı Destek</span>
                 </a>
               </div>
@@ -143,25 +142,25 @@ export default function Faq() {
           </div>
         </div>
 
-        {/* ✅ Premium İletişim Bilgileri */}
-        <div className="mt-12 text-center">
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200/60 p-8 max-w-2xl mx-auto">
-            <h4 className="text-xl font-bold text-gray-900 mb-6">
+        {/* ✅ Daha Kompakt İletişim Bilgileri */}
+        <div className="mt-8 text-center">
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200/60 p-6 max-w-2xl mx-auto">
+            <h4 className="text-lg font-bold text-gray-900 mb-4">
               Hızlı İletişim Kanalları
             </h4>
             
             <nav aria-label="Hızlı iletişim seçenekleri">
-              <ul className="flex flex-wrap gap-4 justify-center items-center">
+              <ul className="flex flex-wrap gap-3 justify-center items-center">
                 <li>
                   <a 
                     href="tel:+905453048671"
-                    className="inline-flex items-center gap-3 bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 font-semibold px-6 py-4 rounded-2xl transition-all duration-300 hover:shadow-lg hover:scale-105 min-h-[60px]"
+                    className="inline-flex items-center gap-2 bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 font-medium px-4 py-3 rounded-xl transition-all duration-300 hover:shadow-md hover:scale-105 min-h-[50px] text-sm"
                     aria-label="Telefon ile iletişim - +90 545 304 86 71"
                     title="Sahneva telefon iletişim"
                   >
-                    <span className="text-xl" aria-hidden="true">📞</span>
+                    <span className="text-lg" aria-hidden="true">📞</span>
                     <div className="text-left">
-                      <div className="text-sm font-medium">Telefon</div>
+                      <div className="text-xs font-medium">Telefon</div>
                       <div className="text-xs opacity-75">+90 545 304 8671</div>
                     </div>
                   </a>
@@ -169,15 +168,15 @@ export default function Faq() {
                 <li>
                   <a 
                     href="https://wa.me/905453048671"
-                    className="inline-flex items-center gap-3 bg-green-50 hover:bg-green-100 border border-green-200 text-green-700 font-semibold px-6 py-4 rounded-2xl transition-all duration-300 hover:shadow-lg hover:scale-105 min-h-[60px]"
+                    className="inline-flex items-center gap-2 bg-green-50 hover:bg-green-100 border border-green-200 text-green-700 font-medium px-4 py-3 rounded-xl transition-all duration-300 hover:shadow-md hover:scale-105 min-h-[50px] text-sm"
                     aria-label="WhatsApp üzerinden iletişim"
                     title="Sahneva WhatsApp iletişim"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <span className="text-xl" aria-hidden="true">💬</span>
+                    <span className="text-lg" aria-hidden="true">💬</span>
                     <div className="text-left">
-                      <div className="text-sm font-medium">WhatsApp</div>
+                      <div className="text-xs font-medium">WhatsApp</div>
                       <div className="text-xs opacity-75">Hızlı Mesaj</div>
                     </div>
                   </a>
@@ -185,13 +184,13 @@ export default function Faq() {
                 <li>
                   <a 
                     href="mailto:info@sahneva.com"
-                    className="inline-flex items-center gap-3 bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 font-semibold px-6 py-4 rounded-2xl transition-all duration-300 hover:shadow-lg hover:scale-105 min-h-[60px]"
+                    className="inline-flex items-center gap-2 bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 font-medium px-4 py-3 rounded-xl transition-all duration-300 hover:shadow-md hover:scale-105 min-h-[50px] text-sm"
                     aria-label="E-posta gönder - info@sahneva.com"
                     title="Sahneva e-posta iletişim"
                   >
-                    <span className="text-xl" aria-hidden="true">✉️</span>
+                    <span className="text-lg" aria-hidden="true">✉️</span>
                     <div className="text-left">
-                      <div className="text-sm font-medium">E-posta</div>
+                      <div className="text-xs font-medium">E-posta</div>
                       <div className="text-xs opacity-75">info@sahneva.com</div>
                     </div>
                   </a>
@@ -199,14 +198,14 @@ export default function Faq() {
               </ul>
             </nav>
             
-            <div className="mt-6 flex items-center justify-center gap-4 text-sm text-gray-600">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span>7/24 Müşteri Desteği</span>
+            <div className="mt-4 flex items-center justify-center gap-3 text-xs text-gray-600">
+              <div className="flex items-center gap-1">
+                <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
+                <span>7/24 Destek</span>
               </div>
-              <div className="w-px h-4 bg-gray-300"></div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <div className="w-px h-3 bg-gray-300"></div>
+              <div className="flex items-center gap-1">
+                <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
                 <span>5 Dakikada Yanıt</span>
               </div>
             </div>
