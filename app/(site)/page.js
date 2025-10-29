@@ -419,4 +419,141 @@ export default function HomePage() {
               </article>
 
               <article className="bg-gradient-to-br from-purple-50 to-white rounded-3xl p-8 shadow-xl border border-purple-100">
-                <h3
+                <h3 className="font-black text-2xl mb-6 text-neutral-900 flex items-center gap-3">
+                  <span className="bg-purple-500 text-white p-2 rounded-lg">⚡</span>
+                  Hızlı Kurulum, Şeffaf Fiyatlandırma ve Güvenilir Hizmet
+                </h3>
+                <div className="prose prose-lg max-w-none text-neutral-700">
+                  <p className="text-lg leading-relaxed">
+                    İstanbul merkezli ekibimizle <strong>Türkiye'nin 81 ilinde</strong> hizmet veriyoruz. 
+                    Aynı gün kurulum, yedekli ekipman stoğu ve 7/24 teknik destek ile riskleri minimize ediyoruz. 
+                    Müşterilerimize şeffaf fiyatlandırma ve detaylı teklif sunuyoruz.
+                  </p>
+                  
+                  <div className="mt-6 p-6 bg-white rounded-xl border border-purple-200 shadow-lg">
+                    <p className="font-bold text-purple-900 text-lg mb-3">Hızlı Teklif İsteği:</p>
+                    <a
+                      href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ulaşıyorum.+Sahne+kiralama+ve+LED+ekran+fiyatları+hakkında+detaylı+teklif+almak+istiyorum."
+                      className="inline-flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 hover:scale-105 shadow-lg text-lg"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="WhatsApp üzerinden hemen teklif alın"
+                    >
+                      <span>WhatsApp'tan Hemen Teklif Al</span>
+                      <span className="text-xl">→</span>
+                    </a>
+                    <p className="text-sm text-neutral-600 mt-3">
+                      <strong>2 saat içinde</strong> detaylı teklif ve profesyonel danışmanlık
+                    </p>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        {/* Premium Content Block */}
+        <section className="py-20 bg-gradient-to-br from-neutral-50 to-blue-100/50">
+          <div className="container max-w-6xl">
+            <div className="bg-white rounded-3xl shadow-2xl p-10 md:p-16 border border-neutral-200">
+              <h2 className="text-4xl md:text-5xl font-black text-center mb-12 text-neutral-900">
+                Büyük Ölçekli Etkinliklerde <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Neden Sahneva?</span>
+              </h2>
+
+              <div className="prose prose-lg prose-blue max-w-none">
+                <p className="text-xl leading-relaxed text-neutral-700 mb-8">
+                  Konser, fuar, kongre, lansman ve protokol seviyesindeki etkinliklerde yalnızca güçlü ekipman değil,{' '}
+                  <strong className="text-blue-600">kusursuz operasyon yönetimi</strong> ve{' '}
+                  <strong className="text-blue-600">güvenli rigging çözümleri</strong> esastır. Sahneva;{' '}
+                  <a href="/sahne-kiralama" className="text-blue-600 hover:text-blue-700 font-semibold underline">
+                    sahne ve podyum tasarımı
+                  </a>
+                  'ndan{' '}
+                  <a href="/led-ekran-kiralama" className="text-blue-600 hover:text-blue-700 font-semibold underline">
+                    P2-P6 LED ekran
+                  </a>{' '}
+                  konfigürasyonlarına,{' '}
+                  <a href="/ses-isik-sistemleri" className="text-blue-600 hover:text-blue-700 font-semibold underline">
+                    ses-ışık optimizasyonu
+                  </a>
+                  'ndan truss ve scaffolding üst yapılara kadar tüm bileşenleri tek bir teknik omurga altında birleştirir.
+                </p>
+
+                <div className="grid md:grid-cols-2 gap-12 mt-12">
+                  <div>
+                    <h3 className="text-2xl font-black text-neutral-900 mb-6 flex items-center gap-3">
+                      <span className="bg-blue-500 text-white p-2 rounded-lg">🏆</span>
+                      Teknik Üstünlük ve İnovasyon
+                    </h3>
+                    <ul className="space-y-4 text-neutral-700">
+                      {[
+                        "Yüksek parlaklık için optimize edilmiş LED ekran konumlandırması (P2-P6 pixel pitch)",
+                        "Truss ve scaffolding sistemleriyle güvenli rigging çözümleri",
+                        "Alan akustiğine göre ölçeklenen profesyonel ses sistemleri",
+                        "DMX kontrollü akıllı ışıklandırma ve efekt sistemleri",
+                        "Modüler sahne ve podyum sistemleriyle esnek kurulum"
+                      ].map((item, i) => (
+                        <li key={i} className="flex items-start gap-3">
+                          <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h3 className="text-2xl font-black text-neutral-900 mb-6 flex items-center gap-3">
+                      <span className="bg-purple-500 text-white p-2 rounded-lg">🛡️</span>
+                      Operasyonel Mükemmellik ve Güvenlik
+                    </h3>
+                    <ul className="space-y-4 text-neutral-700">
+                      {[
+                        "7/24 teknik destek ve profesyonel sahne yönetimi",
+                        "Kapsamlı risk analizi ve yönetim planı",
+                        "Şeffaf teklifleme ve kurumsal raporlama sistemi",
+                        "ISO standartlarında kalite kontrol ve güvence",
+                        "Yedekli ekipman stoğu ve acil durum planları",
+                        "Türkiye geneli lojistik ve koordinasyon ağı"
+                      ].map((item, i) => (
+                        <li key={i} className="flex items-start gap-3">
+                          <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="mt-12 p-6 bg-blue-50 rounded-2xl border border-blue-200">
+                  <h4 className="font-black text-xl text-blue-900 mb-3">Komple Etkinlik Çözümleri</h4>
+                  <p className="text-blue-800">
+                    <a href="/cadir-kiralama" className="text-blue-600 hover:text-blue-700 font-semibold underline">
+                      Çadır kurulumu
+                    </a>
+                    , zemin hazırlığı, dekoratif uygulamalar ve güç sistemleri dâhil; etkinliğinizin tüm teknik ihtiyaçlarını tek çatı altında yönetiyoruz. 
+                    <strong> Türkiye'nin her yerinde aynı kalite ve profesyonellik garantisi.</strong>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="py-20 bg-white" aria-labelledby="faq-title">
+          <div className="container">
+            <div className="text-center mb-16">
+              <h2 id="faq-title" className="text-4xl md:text-5xl font-black text-neutral-900 mb-4">
+                Sıkça Sorulan <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Sorular</span>
+              </h2>
+              <p className="text-xl text-neutral-600 max-w-2xl mx-auto">
+                Sahne kiralama, LED ekran fiyatları ve teknik detaylar hakkında merak ettikleriniz
+              </p>
+            </div>
+            <Faq />
+          </div>
+        </section>
+      </main>
+    </div>
+  );
+}
