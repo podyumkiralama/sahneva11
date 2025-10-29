@@ -201,7 +201,7 @@ export default function Navbar() {
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
-            {/* ✅ DÜZELTİLDİ: Logo with gradient effect */}
+            {/* ✅ DÜZELTİLDİ: Logo - arkadaki gradient kaldırıldı */}
             <Link 
               href="/" 
               className="flex items-center gap-3 group" 
@@ -209,19 +209,16 @@ export default function Navbar() {
               title="Sahneva Ana Sayfa - Etkinlik ekipmanları kiralama"
               itemProp="url"
             >
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl blur-sm opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <Image
-                  src="/img/logo.png"
-                  alt="Sahneva Logo - Profesyonel sahne, podyum, LED ekran kiralama"
-                  width={scrolled ? 140 : 160}
-                  height={scrolled ? 35 : 40}
-                  priority={pathname === "/"}
-                  sizes="(max-width: 768px) 120px, 160px"
-                  className="relative transition-all duration-300 h-8 lg:h-10 w-auto"
-                  itemProp="logo"
-                />
-              </div>
+              <Image
+                src="/img/logo.png"
+                alt="Sahneva Logo - Profesyonel sahne, podyum, LED ekran kiralama"
+                width={scrolled ? 140 : 160}
+                height={scrolled ? 35 : 40}
+                priority={pathname === "/"}
+                sizes="(max-width: 768px) 120px, 160px"
+                className="transition-all duration-300 h-8 lg:h-10 w-auto"
+                itemProp="logo"
+              />
               {!scrolled && (
                 <div className="hidden lg:block h-6 w-px bg-gradient-to-b from-transparent via-neutral-300 to-transparent"></div>
               )}
