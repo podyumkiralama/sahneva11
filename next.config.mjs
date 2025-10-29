@@ -31,7 +31,6 @@ const nextConfig = {
 
   // === DENEYSEK ÖZELLİKLER ===
   experimental: {
-    // optimizeCss: true, // Critters hatası verdiği için kapatıyoruz
     scrollRestoration: true,
     optimizePackageImports: [
       'lucide-react',
@@ -79,71 +78,61 @@ const nextConfig = {
   // === GÜVENLİK BAŞLIKLARI ===
   async headers() {
     const securityHeaders = [
-      // XSS koruması
       {
         key: 'X-XSS-Protection',
         value: '1; mode=block'
       },
-      // MIME tipi sniffling koruması
       {
         key: 'X-Content-Type-Options',
         value: 'nosniff'
       },
-      // Referrer politikası
       {
         key: 'Referrer-Policy',
         value: 'strict-origin-when-cross-origin'
       },
-      // Frame embedding koruması
       {
         key: 'X-Frame-Options',
         value: 'DENY'
       },
-      // Cross-Origin Opener Policy
       {
         key: 'Cross-Origin-Opener-Policy',
         value: 'same-origin'
       },
-      // Cross-Origin Resource Policy
       {
         key: 'Cross-Origin-Resource-Policy',
         value: 'same-origin'
       },
-      // Permissions Policy
+      // ✅ DÜZELTİLDİ: 'location' yerine 'geolocation' kullanıldı
       {
         key: 'Permissions-Policy',
-        value: 'camera=(), microphone=(), location=(), interest-cohort=()'
+        value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()'
       },
-      // Strict Transport Security
       {
         key: 'Strict-Transport-Security',
         value: 'max-age=63072000; includeSubDomains; preload'
       },
-      // DNS Prefetch Control
       {
         key: 'X-DNS-Prefetch-Control',
         value: 'off'
       },
-      // Download Options
       {
         key: 'X-Download-Options',
         value: 'noopen'
       },
-      // Permitted Cross-Domain Policies
       {
         key: 'X-Permitted-Cross-Domain-Policies',
         value: 'none'
       }
     ];
 
-    // Gelişmiş CSP Header
+    // ✅ DÜZELTİLDİ: Google Tag Manager CSP'ye eklendi
     const contentSecurityPolicy = `
       default-src 'self';
-      script-src 'self' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com;
+      script-src 'self' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com;
       style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
       font-src 'self' https://fonts.gstatic.com;
       img-src 'self' data: blob: https:;
-      connect-src 'self' https://vitals.vercel-insights.com https://www.sahneva.com;
+      connect-src 'self' https://vitals.vercel-insights.com https://sahneva.com https://www.google-analytics.com https://analytics.google.com;
       frame-src 'none';
       base-uri 'self';
       form-action 'self' https://wa.me;
@@ -159,12 +148,10 @@ const nextConfig = {
 
     return [
       {
-        // Tüm rotalara uygula
         source: '/(.*)',
         headers: securityHeaders,
       },
       {
-        // Statik asset'ler için cache headers
         source: '/_next/static/(.*)',
         headers: [
           {
@@ -174,7 +161,6 @@ const nextConfig = {
         ],
       },
       {
-        // Resimler için cache headers
         source: '/(.*).(ico|png|jpg|jpeg|webp|avif|svg|gif)',
         headers: [
           {
@@ -184,7 +170,6 @@ const nextConfig = {
         ],
       },
       {
-        // CSS ve JS için cache headers
         source: '/(.*).(css|js)',
         headers: [
           {
@@ -194,7 +179,6 @@ const nextConfig = {
         ],
       },
       {
-        // Ana sayfa için cache
         source: '/',
         headers: [
           {
@@ -204,12 +188,11 @@ const nextConfig = {
         ],
       },
       {
-        // API rotaları için CORS headers
         source: '/api/(.*)',
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
-            value: 'https://www.sahneva.com'
+            value: 'https://sahneva.com'
           },
           {
             key: 'Access-Control-Allow-Methods',
@@ -234,7 +217,7 @@ const nextConfig = {
 
   // === ÇEVRE DEĞİŞKENLERİ ===
   env: {
-    SITE_URL: process.env.SITE_URL || 'https://www.sahneva.com',
+    SITE_URL: process.env.SITE_URL || 'https://sahneva.com',
   },
 
   // === TRAILING SLASH ===
