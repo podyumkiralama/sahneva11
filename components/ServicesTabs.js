@@ -223,28 +223,6 @@ export default function ServicesTabs() {
         )}
       </div>
 
-      {/* Hızlı Sayfa Linkleri */}
-      <div className="text-center mt-12 p-6 md:p-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-3xl border border-blue-100">
-        <h4 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
-          Tüm Hizmetlerimizi Keşfedin
-        </h4>
-        <p className="text-gray-600 mb-6 max-w-2xl mx-auto text-sm md:text-base">
-          Aşağıdaki bağlantılardan tüm hizmetlerimiz hakkında detaylı bilgi alabilir ve fiyat teklifi talep edebilirsiniz.
-        </p>
-        
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-          {services.map((service) => (
-            <Link
-              key={service.id}
-              href={service.href}
-              className="group flex flex-col items-center gap-2 bg-white hover:bg-blue-50 text-gray-700 p-4 rounded-xl border border-gray-200 transition-all duration-200 hover:shadow-md hover:scale-105"
-            >
-              <span className="text-2xl">{service.icon}</span>
-              <span className="text-xs font-semibold text-center leading-tight">{service.title}</span>
-            </Link>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }
