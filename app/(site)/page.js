@@ -3,12 +3,13 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
+// Static imports
 import CorporateEvents from "../../components/CorporateEvents";
 import Faq from "../../components/Faq";
 import HeroCtasClient from "../../components/HeroCtasClient";
 import ReviewBanner from "../../components/ReviewBanner";
 
-// Client bileşenlerini dinamik yükle
+// Dynamic imports with proper paths
 const ServicesTabsLazy = dynamic(
   () => import("../../components/ServicesTabs"),
   { 
@@ -42,7 +43,6 @@ function SectionSkeleton({ label = "İçerik yükleniyor" }) {
   );
 }
 
-// Hizmetler section'ını Client Component olarak sarmalayalım
 function ServicesSection() {
   return (
     <section 
@@ -69,7 +69,6 @@ function ServicesSection() {
   );
 }
 
-// Schema markup için ayrı fonksiyon
 function StructuredData() {
   const schema = {
     '@context': 'https://schema.org',
@@ -124,10 +123,8 @@ function StructuredData() {
 export default function HomePage() {
   return (
     <div className="overflow-x-hidden">
-      {/* Structured Data */}
       <StructuredData />
 
-      {/* Skip link */}
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:z-[9999] focus:top-3 focus:left-3 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-3 focus:rounded-lg focus:font-semibold focus:shadow-lg transition-all duration-200"
@@ -135,16 +132,15 @@ export default function HomePage() {
         Ana içeriğe atla
       </a>
 
-      {/* OPTIMIZED PREMIUM HERO SECTION */}
+      {/* OPTIMIZED HERO SECTION */}
       <section
         className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900"
         aria-labelledby="hero-title"
         role="banner"
       >
-        {/* Optimized Background */}
         <div className="absolute inset-0">
           <Image
-            src="/img/hero-bg-optimized.webp"
+            src="/img/hero-bg.webp"
             alt="Profesyonel sahne kurulumu, LED ekranlar ve ses-ışık sistemleri - Sahneva Türkiye geneli sahne kiralama"
             fill
             priority
@@ -160,31 +156,25 @@ export default function HomePage() {
           />
         </div>
 
-        {/* Enhanced Gradient Overlay */}
         <div 
           className="absolute inset-0 bg-gradient-to-br from-slate-900/85 via-blue-900/70 to-purple-900/75"
           aria-hidden="true"
         />
         
-        {/* Animated Glow Effects */}
         <div 
           className="absolute inset-0 bg-gradient-to-r from-transparent via-white/3 to-transparent animate-pulse"
           style={{ animationDuration: '8s' }}
           aria-hidden="true"
         />
 
-        {/* Hero Content */}
         <div className="relative z-10 container py-16 md:py-20">
           <div className="max-w-6xl mx-auto">
-            {/* Main Header */}
             <div className="text-center mb-12">
-              {/* Trust Badge */}
               <div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md rounded-full px-6 py-3 border border-white/20 mb-8">
                 <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
                 <span className="text-white/90 text-sm font-medium">Türkiye Geneli Profesyonel Hizmet</span>
               </div>
 
-              {/* Main Headline */}
               <h1
                 id="hero-title"
                 className="text-white text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight tracking-tight"
@@ -195,20 +185,17 @@ export default function HomePage() {
                 </span>
               </h1>
               
-              {/* Subheadline */}
               <p className="text-white/90 text-xl md:text-2xl lg:text-3xl mb-8 leading-relaxed font-medium max-w-4xl mx-auto">
                 <span className="bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text font-bold">Sahne Kiralama</span>, 
                 <span className="bg-gradient-to-r from-purple-400 to-cyan-400 text-transparent bg-clip-text font-bold"> LED Ekran</span>, 
                 <span className="bg-gradient-to-r from-cyan-400 to-blue-400 text-transparent bg-clip-text font-bold"> Ses-Işık Sistemleri</span>
               </p>
 
-              {/* Description */}
               <p className="text-white/80 text-lg md:text-xl mb-12 max-w-3xl mx-auto">
                 500+ başarılı proje, %98 müşteri memnuniyeti ve Türkiye geneli hızlı kurulum ile yanınızdayız
               </p>
             </div>
 
-            {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 md:gap-6 mb-16">
               <a
                 href="tel:+905453048671"
@@ -237,7 +224,6 @@ export default function HomePage() {
               </a>
             </div>
 
-            {/* Features Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-16">
               {[
                 {
@@ -272,7 +258,6 @@ export default function HomePage() {
               ))}
             </div>
 
-            {/* Free Consultation Banner */}
             <div className="bg-gradient-to-r from-blue-600/90 to-purple-600/90 backdrop-blur-md rounded-3xl p-8 md:p-10 border border-white/20 shadow-2xl max-w-4xl mx-auto">
               <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8">
                 <div className="flex-shrink-0">
@@ -302,7 +287,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Scroll Indicator */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
           <div className="animate-bounce">
             <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
@@ -312,17 +296,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* MAIN CONTENT */}
       <main id="main" className="relative">
-        {/* Review Banner */}
         <div className="sticky top-0 z-40">
           <ReviewBanner />
         </div>
 
-        {/* Services Section */}
         <ServicesSection />
 
-        {/* Projects Gallery */}
         <section 
           className="py-20 bg-gradient-to-br from-neutral-900 to-blue-900/95"
           aria-labelledby="projeler-title"
@@ -351,7 +331,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Corporate Events */}
         <section className="py-20 bg-white" aria-labelledby="kurumsal-title">
           <div className="container">
             <div className="text-center mb-16">
@@ -366,7 +345,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Why Choose Us Section */}
         <section
           className="py-20 bg-gradient-to-br from-blue-50/80 to-purple-50/60"
           aria-labelledby="neden-tercih-heading"
@@ -450,7 +428,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* SEO Content Sections */}
         <section className="py-20 bg-white" aria-labelledby="seo-title">
           <div className="container">
             <h2 id="seo-title" className="text-4xl md:text-5xl font-black text-center mb-16 text-neutral-900">
@@ -481,7 +458,7 @@ export default function HomePage() {
                     <a href="/ses-isik-sistemleri" className="text-blue-600 hover:text-blue-700 font-semibold underline decoration-2 underline-offset-4 transition-colors">
                       ses ışık sistemi kurulumu
                     </a>{' '}
-                    hizmetlerinde komple çözümler suniyoruz. Keşif, planlama, kurulum ve canlı yönetim aşamalarının tamamını profesyonel ekibimiz yürütüyor.
+                    hizmetlerinde komple çözümler sunuyoruz. Keşif, planlama, kurulum ve canlı yönetim aşamalarının tamamını profesyonel ekibimiz yürütüyor.
                   </p>
                   
                   <ul className="mt-6 space-y-3 text-neutral-700">
@@ -534,7 +511,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Premium Content Block */}
         <section className="py-20 bg-gradient-to-br from-neutral-50 to-blue-100/50">
           <div className="container max-w-6xl">
             <div className="bg-white rounded-3xl shadow-2xl p-10 md:p-16 border border-neutral-200">
@@ -621,7 +597,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* FAQ Section */}
         <section className="py-20 bg-white" aria-labelledby="faq-title">
           <div className="container">
             <div className="text-center mb-16">
