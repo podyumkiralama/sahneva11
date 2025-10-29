@@ -135,96 +135,178 @@ export default function HomePage() {
         Ana içeriğe atla
       </a>
 
-      {/* HERO SECTION */}
+      {/* OPTIMIZED PREMIUM HERO SECTION */}
       <section
-        className="full-bleed relative overflow-x-hidden bg-gradient-to-br from-blue-900/95 to-purple-900/90 min-h-screen flex items-center"
+        className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900"
         aria-labelledby="hero-title"
         role="banner"
       >
-        {/* Background Image */}
+        {/* Optimized Background */}
         <div className="absolute inset-0">
           <Image
-            src="/img/hero-bg.webp"
-            alt="Profesyonel sahne kurulumu, LED ekranlar, ses ve ışık ekipmanlarıyla hazırlanmış etkinlik alanı - Sahneva Türkiye geneli sahne kiralama hizmeti"
+            src="/img/hero-bg-optimized.webp"
+            alt="Profesyonel sahne kurulumu, LED ekranlar ve ses-ışık sistemleri - Sahneva Türkiye geneli sahne kiralama"
             fill
             priority
-            quality={85}
-            sizes="100vw"
-            className="object-cover"
+            quality={75}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
+            className="object-cover object-center"
             placeholder="blur"
-            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R"
+            blurDataURL="data:image/webp;base64,UklGRkoCAABXRUJQVlA4WAoAAAAgAAAAAQABAgAASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAAAAAAAAAAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggHgAAAJABAJ0BKgIAAwAHQJYlpAAC51m2AAD+5R4qGAAAAA=="
+            style={{
+              transform: 'scale(1.02)',
+              filter: 'brightness(0.7) contrast(1.1) saturate(1.1)'
+            }}
           />
         </div>
 
-        {/* Gradient Overlay */}
+        {/* Enhanced Gradient Overlay */}
         <div 
-          className="absolute inset-0 bg-gradient-to-t from-black/70 via-blue-900/40 to-purple-900/30"
+          className="absolute inset-0 bg-gradient-to-br from-slate-900/85 via-blue-900/70 to-purple-900/75"
+          aria-hidden="true"
+        />
+        
+        {/* Animated Glow Effects */}
+        <div 
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/3 to-transparent animate-pulse"
+          style={{ animationDuration: '8s' }}
           aria-hidden="true"
         />
 
         {/* Hero Content */}
-        <div className="relative z-10 container py-20 text-center">
-          <div className="max-w-5xl mx-auto">
-            <h1
-              id="hero-title"
-              className="text-white text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight tracking-tight"
-            >
-              Profesyonel <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300 block mt-2">Sahne Sistemleri</span> Kiralama
-            </h1>
-            
-            <p className="text-white/95 text-2xl md:text-3xl lg:text-4xl mb-10 leading-relaxed font-medium max-w-4xl mx-auto">
-              Türkiye genelinde <strong className="text-blue-300">sahne kiralama</strong>, <strong className="text-purple-300">podyum kurulumu</strong>, <strong className="text-blue-300">LED ekran</strong> ve <strong className="text-purple-300">ses-ışık sistemleri</strong> kiralama hizmeti
-            </p>
+        <div className="relative z-10 container py-16 md:py-20">
+          <div className="max-w-6xl mx-auto">
+            {/* Main Header */}
+            <div className="text-center mb-12">
+              {/* Trust Badge */}
+              <div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md rounded-full px-6 py-3 border border-white/20 mb-8">
+                <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                <span className="text-white/90 text-sm font-medium">Türkiye Geneli Profesyonel Hizmet</span>
+              </div>
 
-            {/* CTA Butonları */}
-            <div className="mb-16">
-              <HeroCtasClient />
+              {/* Main Headline */}
+              <h1
+                id="hero-title"
+                className="text-white text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight tracking-tight"
+              >
+                <span className="block">Profesyonel</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-purple-300 to-cyan-300 bg-300% animate-gradient">
+                  Sahne Sistemleri
+                </span>
+              </h1>
+              
+              {/* Subheadline */}
+              <p className="text-white/90 text-xl md:text-2xl lg:text-3xl mb-8 leading-relaxed font-medium max-w-4xl mx-auto">
+                <span className="bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text font-bold">Sahne Kiralama</span>, 
+                <span className="bg-gradient-to-r from-purple-400 to-cyan-400 text-transparent bg-clip-text font-bold"> LED Ekran</span>, 
+                <span className="bg-gradient-to-r from-cyan-400 to-blue-400 text-transparent bg-clip-text font-bold"> Ses-Işık Sistemleri</span>
+              </p>
+
+              {/* Description */}
+              <p className="text-white/80 text-lg md:text-xl mb-12 max-w-3xl mx-auto">
+                500+ başarılı proje, %98 müşteri memnuniyeti ve Türkiye geneli hızlı kurulum ile yanınızdayız
+              </p>
             </div>
 
-            {/* Özellikler Grid */}
-            <ul
-              className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto mb-20"
-              aria-label="Sahneva avantajları"
-            >
-              {[
-                { 
-                  icon: "⭐", 
-                  label: "4.9/5 Müşteri Puanı", 
-                  desc: "500+ Mutlu Müşteri",
-                  keyword: "müşteri memnuniyeti"
-                },
-                { 
-                  icon: "⚡", 
-                  label: "Aynı Gün Kurulum", 
-                  desc: "Hızlı Teslimat Garantisi",
-                  keyword: "hızlı kurulum"
-                },
-                { 
-                  icon: "👷", 
-                  label: "Uzman Ekip", 
-                  desc: "10+ Yıl Deneyim",
-                  keyword: "profesyonel ekip"
-                },
-              ].map(({ icon, label, desc, keyword }, i) => (
-                <li key={i} className="group" aria-label={keyword}>
-                  <div className="bg-white/15 backdrop-blur-lg rounded-2xl p-6 border border-white/25 hover:bg-white/25 transition-all duration-500 group-hover:scale-105 shadow-2xl">
-                    <div className="text-3xl mb-3" aria-hidden="true">{icon}</div>
-                    <div className="text-white font-bold text-lg mb-1">{label}</div>
-                    <div className="text-white/80 text-sm">{desc}</div>
-                  </div>
-                </li>
-              ))}
-            </ul>
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 md:gap-6 mb-16">
+              <a
+                href="tel:+905453048671"
+                className="group relative bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold text-lg px-8 py-4 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 min-w-[200px] text-center border border-white/20 backdrop-blur-sm"
+                aria-label="Hemen ara - Sahneva telefon iletişim +90 545 304 86 71"
+              >
+                <span className="relative z-10 flex items-center justify-center gap-2">
+                  <span className="text-xl">📞</span>
+                  Hemen Ara
+                </span>
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </a>
 
-            {/* Güven Göstergesi */}
-            <div className="bg-black/40 backdrop-blur-md rounded-3xl p-10 border border-white/20 max-w-4xl mx-auto shadow-2xl">
-              <div className="text-5xl mb-6" aria-hidden="true">🎤</div>
-              <h2 className="text-white text-3xl md:text-4xl font-bold mb-4">
-                Ücretsiz Profesyonel Danışmanlık
-              </h2>
-              <p className="text-white/90 text-xl leading-relaxed max-w-3xl mx-auto">
-                Etkinliğiniz için en uygun <strong>sahne çözümleri</strong>, <strong>LED ekran seçenekleri</strong> ve <strong>ses-ışık sistemlerini</strong> ücretsiz teknik danışmanlık ile planlayalım. <strong>2 saat içinde detaylı teklif</strong> sunuyoruz.
-              </p>
+              <a
+                href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ulaşıyorum.+Sahne+kiralama+ve+LED+ekran+fiyatları+hakkında+detaylı+teklif+almak+istiyorum."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold text-lg px-8 py-4 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 min-w-[200px] text-center border border-white/20 backdrop-blur-sm"
+                aria-label="WhatsApp'tan teklif al - Sahneva WhatsApp iletişim"
+              >
+                <span className="relative z-10 flex items-center justify-center gap-2">
+                  <span className="text-xl">💬</span>
+                  WhatsApp Teklif
+                </span>
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </a>
+            </div>
+
+            {/* Features Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-16">
+              {[
+                {
+                  icon: "⭐",
+                  title: "4.9/5 Puan",
+                  description: "500+ Mutlu Müşteri",
+                  color: "from-yellow-400 to-orange-400"
+                },
+                {
+                  icon: "⚡", 
+                  title: "Aynı Gün",
+                  description: "Hızlı Kurulum",
+                  color: "from-blue-400 to-cyan-400"
+                },
+                {
+                  icon: "👑",
+                  title: "Premium",
+                  description: "Kalite Garantisi", 
+                  color: "from-purple-400 to-pink-400"
+                }
+              ].map((item, index) => (
+                <div 
+                  key={index}
+                  className="group bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:border-white/40 transition-all duration-500 hover:scale-105 hover:bg-white/15"
+                >
+                  <div className={`text-3xl mb-3 bg-gradient-to-r ${item.color} text-transparent bg-clip-text`}>
+                    {item.icon}
+                  </div>
+                  <div className="text-white font-bold text-lg mb-1">{item.title}</div>
+                  <div className="text-white/70 text-sm">{item.description}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Free Consultation Banner */}
+            <div className="bg-gradient-to-r from-blue-600/90 to-purple-600/90 backdrop-blur-md rounded-3xl p-8 md:p-10 border border-white/20 shadow-2xl max-w-4xl mx-auto">
+              <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8">
+                <div className="flex-shrink-0">
+                  <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-2xl">
+                    🎯
+                  </div>
+                </div>
+                <div className="flex-1 text-center md:text-left">
+                  <h3 className="text-white text-2xl md:text-3xl font-bold mb-3">
+                    Ücretsiz Profesyonel Danışmanlık
+                  </h3>
+                  <p className="text-white/90 text-lg leading-relaxed">
+                    Etkinliğiniz için <strong>en uygun sahne çözümleri</strong>, LED ekran seçenekleri ve ses-ışık sistemlerini 
+                    ücretsiz teknik danışmanlık ile planlayalım. <strong className="text-yellow-300">2 saat içinde detaylı teklif</strong> sunuyoruz.
+                  </p>
+                </div>
+                <div className="flex-shrink-0">
+                  <a
+                    href="#teklif-al"
+                    className="bg-white text-blue-600 hover:bg-gray-100 font-bold px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg"
+                  >
+                    Hemen Teklif Al
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+          <div className="animate-bounce">
+            <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
+              <div className="w-1 h-3 bg-white/70 rounded-full mt-2"></div>
             </div>
           </div>
         </div>
