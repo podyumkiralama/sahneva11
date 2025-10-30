@@ -1,4 +1,5 @@
 // app/layout.js
+// ❌ BU SATIRI KALDIRIYORUZ: import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import UtilityBar from "../components/UtilityBar";
