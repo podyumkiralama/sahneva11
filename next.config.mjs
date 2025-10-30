@@ -38,6 +38,8 @@ const nextConfig = {
       'framer-motion',
       'react-icons'
     ],
+    // ✅ EKLENDİ: CSS optimizasyonunu etkinleştir
+    optimizeCss: true,
   },
 
   // === WEBPACK OPTİMİZASYONLARI ===
@@ -67,8 +69,23 @@ const nextConfig = {
             priority: 30,
             reuseExistingChunk: true,
           },
+          // ✅ EKLENDİ: CSS chunk optimizasyonu
+          styles: {
+            name: 'styles',
+            test: /\.(css|scss)$/,
+            chunks: 'all',
+            enforce: true,
+            priority: 50,
+          },
         },
       };
+    }
+
+    // ✅ EKLENDİ: CSS minimizasyonu
+    if (!dev) {
+      const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+      config.optimization.minimizer = config.optimization.minimizer || [];
+      config.optimization.minimizer.push(new CssMinimizerPlugin());
     }
 
     return config;
@@ -147,6 +164,16 @@ const nextConfig = {
       },
       {
         source: '/(.*).(ico|png|jpg|jpeg|webp|avif|svg|gif)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
+          },
+        ],
+      },
+      // ✅ EKLENDİ: CSS dosyaları için cache
+      {
+        source: '/(.*).css',
         headers: [
           {
             key: 'Cache-Control',
