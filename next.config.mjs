@@ -38,8 +38,6 @@ const nextConfig = {
       'framer-motion',
       'react-icons'
     ],
-    // ✅ EKLENDİ: CSS optimizasyonunu etkinleştir
-    optimizeCss: true,
   },
 
   // === WEBPACK OPTİMİZASYONLARI ===
@@ -69,22 +67,8 @@ const nextConfig = {
             priority: 30,
             reuseExistingChunk: true,
           },
-          // ✅ EKLENDİ: CSS chunk optimizasyonu
-          styles: {
-            name: 'styles',
-            test: /\.(css|scss)$/,
-            chunks: 'all',
-            enforce: true,
-            priority: 50,
-          },
         },
       };
-    }
-
-    // ✅ DÜZELTİLDİ: require yerine dynamic import kullan
-    if (!dev) {
-      // CSS minimizasyonu optimizeCss ile hallediliyor, bu kısmı kaldırıyoruz
-      console.log('🔧 CSS optimizasyonu experimental.optimizeCss ile etkin');
     }
 
     return config;
@@ -117,9 +101,10 @@ const nextConfig = {
         key: 'Cross-Origin-Resource-Policy',
         value: 'same-origin'
       },
+      // ✅ DÜZELTİLDİ: Geçerli Permissions-Policy değerleri
       {
         key: 'Permissions-Policy',
-        value: 'camera=(), microphone=(), geolocation=()'
+        value: 'camera=(), microphone=(), geolocation=(), payment=()'
       },
       {
         key: 'Strict-Transport-Security',
@@ -127,7 +112,7 @@ const nextConfig = {
       },
     ];
 
-    // ✅ DÜZELTİLDİ: Google Analytics için tüm gerekli domain'ler eklendi
+    // ✅ DÜZELTİLDİ: Basitleştirilmiş ve etkili CSP
     const contentSecurityPolicy = `
       default-src 'self';
       script-src 'self' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com;
@@ -135,7 +120,7 @@ const nextConfig = {
       style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
       font-src 'self' https://fonts.gstatic.com;
       img-src 'self' data: blob: https:;
-      connect-src 'self' https://vitals.vercel-insights.com https://sahneva.com https://www.google-analytics.com https://*.google-analytics.com https://region1.google-analytics.com https://analytics.google.com;
+      connect-src 'self' https://vitals.vercel-insights.com https://sahneva.com https://www.google-analytics.com;
       frame-src 'none';
       base-uri 'self';
       form-action 'self' https://wa.me;
@@ -170,19 +155,10 @@ const nextConfig = {
           },
         ],
       },
-      // ✅ EKLENDİ: CSS dosyaları için cache
-      {
-        source: '/(.*).css',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable'
-          },
-        ],
-      },
     ];
   },
 
+  // === ÇEVRE DEĞİŞKENLERİ ===
   env: {
     SITE_URL: process.env.SITE_URL || 'https://sahneva.com',
   },
