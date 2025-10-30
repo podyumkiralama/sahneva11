@@ -1,5 +1,4 @@
 // app/layout.js
-import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import UtilityBar from "../components/UtilityBar";
@@ -159,6 +158,150 @@ const CriticalCSS = () => (
           transition: transform 0.3s ease, opacity 0.3s ease;
           font-size: 16px;
         }
+
+        .utility-btn:hover {
+          background: rgba(99, 102, 241, 0.1);
+          transform: translateY(-2px) scale(1.05);
+        }
+
+        .utility-btn:active {
+          transform: translateY(0) scale(1);
+        }
+
+        .utility-btn-active {
+          background: rgba(59, 130, 246, 0.1);
+          color: rgb(37, 99, 235);
+        }
+
+        .utility-icon {
+          font-size: 18px;
+          transition: transform 0.3s ease;
+        }
+
+        .utility-btn:hover .utility-icon {
+          transform: scale(1.1);
+        }
+
+        .utility-dot {
+          position: absolute;
+          top: -2px;
+          right: -1px;
+          width: 8px;
+          height: 8px;
+          background: rgb(59, 130, 246);
+          border-radius: 50%;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+
+        .utility-btn:hover .utility-dot {
+          opacity: 1;
+        }
+
+        .utility-tooltip {
+          position: absolute;
+          bottom: 100%;
+          left: 0;
+          margin-bottom: 0.5rem;
+          min-width: 192px;
+          border-radius: 12px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(20px);
+          padding: 0.75rem;
+          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+          z-index: 60;
+          animation: tooltipAppear 0.2s ease-out;
+        }
+
+        @keyframes tooltipAppear {
+          0% { opacity: 0; transform: translateY(10px) scale(0.95); }
+          100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .utility-tooltip-content {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
+        .font-size-controls {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 0.75rem;
+          margin-bottom: 0.75rem;
+        }
+
+        .control-label {
+          font-size: 0.875rem;
+          font-weight: 600;
+          color: rgb(55, 65, 81);
+        }
+
+        .font-buttons { display: flex; gap: 0.25rem; }
+
+        .font-btn {
+          width: 32px;
+          height: 32px;
+          border-radius: 8px;
+          background: rgb(243, 244, 246);
+          border: none;
+          cursor: pointer;
+          font-size: 0.875rem;
+          font-weight: bold;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: transform 0.2s ease;
+        }
+
+        .font-btn:hover {
+          background: rgb(229, 231, 235);
+          transform: scale(1.05);
+        }
+
+        .contrast-btn {
+          width: 100%;
+          border-radius: 8px;
+          padding: 0.5rem 0.75rem;
+          font-size: 0.875rem;
+          font-weight: 600;
+          background: linear-gradient(135deg, rgb(59, 130, 246), rgb(139, 92, 246));
+          color: white;
+          border: none;
+          cursor: pointer;
+          transition: transform 0.3s ease;
+        }
+
+        .contrast-btn:hover { transform: translateY(-1px); }
+
+        .contact-btn {
+          display: block;
+          border-radius: 8px;
+          padding: 0.75rem;
+          font-size: 0.875rem;
+          font-weight: 600;
+          text-align: center;
+          text-decoration: none;
+          transition: transform 0.3s ease;
+        }
+
+        .contact-btn.phone {
+          background: linear-gradient(135deg, rgb(37, 99, 235), rgb(139, 92, 246));
+          color: white;
+        }
+
+        .contact-btn.whatsapp {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: rgb(22, 163, 74);
+          color: white;
+        }
+
+        .contact-btn:hover { transform: translateY(-1px) scale(1.02); }
+        .whatsapp-icon { font-size: 16px; }
         
         /* === HERO VE YUKARI KISIM KRİTİK STİLLER === */
         .hero-optimized { 
@@ -188,6 +331,9 @@ const CriticalCSS = () => (
           background: #f3f4f6; 
           color: #374151;
         }
+
+        /* === CLS ÖNLEME === */
+        main { padding-bottom: 64px; }
         
         /* === RESPONSIVE UTILITIES === */
         @media (max-width: 640px) {
@@ -196,13 +342,25 @@ const CriticalCSS = () => (
             height: 56px;
             min-height: 56px;
           }
+          main { padding-bottom: 56px; }
         }
         
         /* === REDUCED MOTION SUPPORT === */
         @media (prefers-reduced-motion: reduce) {
-          .utility-btn {
-            transition: none;
+          .utility-btn, .utility-icon, .utility-dot,
+          .font-btn, .contrast-btn, .contact-btn {
+            transition: none !important;
+            animation: none !important;
           }
+          
+          .utility-btn:hover { transform: none !important; }
+        }
+
+        /* === TEMEL BODY STİLLER === */
+        body { 
+          background: white; 
+          color: #1e293b;
+          font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
         }
       `
     }}
@@ -226,15 +384,6 @@ const DeferredStyles = () => (
           console.log('✅ Kritik olmayan CSS yüklendi');
         };
         document.head.appendChild(link);
-        
-        // Fontları preload et
-        const fontLink = document.createElement('link');
-        fontLink.rel = 'preload';
-        fontLink.href = 'https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa2JL7W0Q5n-wU.woff2';
-        fontLink.as = 'font';
-        fontLink.type = 'font/woff2';
-        fontLink.crossOrigin = 'anonymous';
-        document.head.appendChild(fontLink);
       `
     }}
   />
@@ -358,15 +507,6 @@ export default function RootLayout({ children }) {
       <head>
         <CriticalCSS />
         
-        {/* ✅ Preload kritik kaynaklar */}
-        <link
-          rel="preload"
-          href="/_next/static/css/app/layout.css"
-          as="style"
-          media="print"
-          onLoad="this.media='all'"
-        />
-        
         {/* ✅ Preconnect kritik domain'ler */}
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
@@ -387,7 +527,7 @@ export default function RootLayout({ children }) {
         </a>
 
         <Navbar />
-        <main id="main" role="main" className="mb-24 lg:mb-0">
+        <main id="main" role="main">
           {children}
         </main>
         <UtilityBar />
@@ -447,4 +587,4 @@ export default function RootLayout({ children }) {
       </body>
     </html>
   );
-} layout a sen ekle
+}
