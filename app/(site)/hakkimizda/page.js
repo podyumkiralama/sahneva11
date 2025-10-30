@@ -5,13 +5,6 @@ import { Suspense } from "react";
 import dynamic from "next/dynamic";
 
 /* ───── DYNAMIC IMPORTS ───── */
-const ReviewBannerLazy = dynamic(
-  () => import("../../components/ReviewBanner"),
-  { 
-    loading: () => <SectionSkeleton label="Referanslar yükleniyor" />,
-  }
-);
-
 const StatsCounterLazy = dynamic(
   () => import("../../components/StatsCounter"),
   { 
@@ -46,23 +39,6 @@ export const metadata = {
 export const revalidate = 3600;
 
 /* ───── SKELETON COMPONENTS ───── */
-function SectionSkeleton({ label = "İçerik yükleniyor" }) {
-  return (
-    <div
-      className="container py-10"
-      role="status"
-      aria-live="polite"
-      aria-label={label}
-    >
-      <div className="flex flex-col items-center space-y-4">
-        <div className="h-10 w-40 rounded bg-gradient-to-r from-neutral-100 to-neutral-200 animate-pulse" />
-        <div className="h-40 w-full rounded-2xl bg-gradient-to-r from-neutral-100 to-neutral-200 animate-pulse" />
-        <span className="sr-only">{label}</span>
-      </div>
-    </div>
-  );
-}
-
 function StatsSkeleton() {
   return (
     <div className="container -mt-16 relative z-10">
@@ -297,13 +273,6 @@ export default function HakkimizdaPage() {
         <StatsCounterLazy />
       </Suspense>
 
-      {/* ✅ REVIEW BANNER */}
-      <div className="sticky top-0 z-40 mt-16 lg:mt-20">
-        <Suspense fallback={<SectionSkeleton label="Referanslar yükleniyor" />}>
-          <ReviewBannerLazy />
-        </Suspense>
-      </div>
-
       <main id="main" className="relative">
         {/* ✅ BİZ KİMİZ SECTION */}
         <section 
@@ -354,8 +323,6 @@ export default function HakkimizdaPage() {
                     width={600}
                     height={400}
                     className="w-full h-auto object-cover"
-                    placeholder="blur"
-                    blurDataURL="data:image/webp;base64,UklGRkoCAABXRUJQVlA4WAoAAAAgAAAAAQABAgAASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAAAAAAAAAAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXnjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABl ACAASQBuAGMALgAgADIAMAAxADZWUDggHgAAAJABAJ0BKgIAAwAHQJYlpAAC51m2AAD+5R4qGAAAAA=="
                   />
                 </div>
                 <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl -z-10"></div>
