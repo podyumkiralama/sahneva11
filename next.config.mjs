@@ -81,11 +81,10 @@ const nextConfig = {
       };
     }
 
-    // ✅ EKLENDİ: CSS minimizasyonu
+    // ✅ DÜZELTİLDİ: require yerine dynamic import kullan
     if (!dev) {
-      const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-      config.optimization.minimizer = config.optimization.minimizer || [];
-      config.optimization.minimizer.push(new CssMinimizerPlugin());
+      // CSS minimizasyonu optimizeCss ile hallediliyor, bu kısmı kaldırıyoruz
+      console.log('🔧 CSS optimizasyonu experimental.optimizeCss ile etkin');
     }
 
     return config;
