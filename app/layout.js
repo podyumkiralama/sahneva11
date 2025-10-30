@@ -81,6 +81,165 @@ export const metadata = {
   },
 };
 
+// ✅ KRİTİK CSS - Above-the-fold için
+const CriticalCSS = () => (
+  <style
+    id="critical-css"
+    dangerouslySetInnerHTML={{
+      __html: `
+        /* === TEMEL LAYOUT === */
+        .container {
+          max-width: 1280px;
+          margin-inline: auto;
+          padding-inline: 1rem;
+        }
+        
+        .full-bleed {
+          position: relative;
+          margin-left: calc(50% - 50vw);
+          margin-right: calc(50% - 50vw);
+          inline-size: 100svw;
+          width: 100vw;
+          min-height: 60vh;
+          overflow-x: clip;
+        }
+        
+        @media (min-width: 768px) {
+          .full-bleed { min-height: 70vh; }
+        }
+        
+        .object-cover { object-fit: cover; }
+        
+        /* === NAVBAR KRİTİK STİLLER === */
+        .nav-glass {
+          position: sticky;
+          top: 0;
+          z-index: 40;
+          backdrop-filter: blur(8px);
+          background: rgba(255, 255, 255, 0.75);
+          background: color-mix(in oklab, white 70%, transparent);
+          border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        }
+        
+        /* === UTILITY BAR KRİTİK STİLLER === */
+        .utility-bar-container {
+          position: fixed;
+          bottom: 1rem;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 50;
+          background: rgba(255, 255, 255, 0.9);
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 16px;
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+          height: 64px;
+          min-height: 64px;
+        }
+        
+        .utility-bar-content {
+          display: flex;
+          align-items: center;
+          gap: 0.25rem;
+          padding: 0.5rem;
+          height: 100%;
+        }
+        
+        .utility-btn {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 44px;
+          height: 44px;
+          border-radius: 12px;
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          transition: transform 0.3s ease, opacity 0.3s ease;
+          font-size: 16px;
+        }
+        
+        /* === HERO VE YUKARI KISIM KRİTİK STİLLER === */
+        .hero-optimized { 
+          content-visibility: auto;
+          contain: layout style paint;
+        }
+        
+        .hero-overlay {
+          background: linear-gradient(180deg, rgba(0,0,0,.6), rgba(0,0,0,.45) 35%, rgba(0,0,0,.6));
+        }
+        
+        /* === TYPOGRAPHY KRİTİK STİLLER === */
+        .hero-para { 
+          color: #ffffff; 
+          opacity: 0.95;
+        }
+        
+        /* === FOCUS STYLES === */
+        :focus-visible { 
+          outline: 2px solid #6d28d966; 
+          outline-offset: 2px;
+          outline-width: 3px;
+        }
+        
+        /* === LOADING STATES === */
+        .img-skeleton { 
+          background: #f3f4f6; 
+          color: #374151;
+        }
+        
+        /* === RESPONSIVE UTILITIES === */
+        @media (max-width: 640px) {
+          .utility-bar-container {
+            bottom: 0.5rem;
+            height: 56px;
+            min-height: 56px;
+          }
+        }
+        
+        /* === REDUCED MOTION SUPPORT === */
+        @media (prefers-reduced-motion: reduce) {
+          .utility-btn {
+            transition: none;
+          }
+        }
+      `
+    }}
+  />
+);
+
+// ✅ ERTELENMİŞ CSS BİLEŞENİ
+const DeferredStyles = () => (
+  <Script
+    id="deferred-styles"
+    strategy="afterInteractive"
+    dangerouslySetInnerHTML={{
+      __html: `
+        // Kritik olmayan CSS'yi yükle
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = '/styles/non-critical.css';
+        link.media = 'print';
+        link.onload = () => { 
+          link.media = 'all';
+          console.log('✅ Kritik olmayan CSS yüklendi');
+        };
+        document.head.appendChild(link);
+        
+        // Fontları preload et
+        const fontLink = document.createElement('link');
+        fontLink.rel = 'preload';
+        fontLink.href = 'https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa2JL7W0Q5n-wU.woff2';
+        fontLink.as = 'font';
+        fontLink.type = 'font/woff2';
+        fontLink.crossOrigin = 'anonymous';
+        document.head.appendChild(fontLink);
+      `
+    }}
+  />
+);
+
 export default function RootLayout({ children }) {
   const SITE = "https://www.sahneva.com";
   const LB_ID = `${SITE}/#localbusiness`;
@@ -197,31 +356,22 @@ export default function RootLayout({ children }) {
   return (
     <html lang="tr" suppressHydrationWarning>
       <head>
-        <style id="critical-css">{`
-          .full-bleed{
-            position:relative;
-            margin-left:calc(50% - 50vw);
-            margin-right:calc(50% - 50vw);
-            inline-size:100svw;
-            width:100vw;
-            min-height:60vh;
-            overflow-x:clip
-          }
-          @media (min-width:768px){
-            .full-bleed{min-height:70vh}
-          }
-          .object-cover{object-fit:cover}
-          .container{
-            max-width:1280px;
-            margin-inline:auto;
-            padding-inline:1rem
-          }
-          .hero-optimized { 
-            content-visibility: auto;
-            contain: layout style paint;
-          }
-        `}</style>
-
+        <CriticalCSS />
+        
+        {/* ✅ Preload kritik kaynaklar */}
+        <link
+          rel="preload"
+          href="/_next/static/css/app/layout.css"
+          as="style"
+          media="print"
+          onLoad="this.media='all'"
+        />
+        
+        {/* ✅ Preconnect kritik domain'ler */}
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        
+        {/* ✅ Mevcut favicon ve manifest link'leri */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -243,6 +393,7 @@ export default function RootLayout({ children }) {
         <UtilityBar />
         <Footer />
 
+        {/* ✅ Schema.org JSON-LD */}
         <Script
           id="ld-localbusiness"
           type="application/ld+json"
@@ -270,6 +421,7 @@ export default function RootLayout({ children }) {
           }}
         />
 
+        {/* ✅ Google Analytics */}
         <Script 
           src="https://www.googletagmanager.com/gtag/js?id=G-J5YK10YLLC" 
           strategy="afterInteractive"
@@ -286,17 +438,10 @@ export default function RootLayout({ children }) {
           `}
         </Script>
 
-        <Script id="performance-monitoring" strategy="afterInteractive">
-          {`
-            if ('webVitals' in window) {
-              webVitals.getCLS(console.log);
-              webVitals.getFID(console.log);
-              webVitals.getLCP(console.log);
-            }
-          `}
-        </Script>
+        {/* ✅ Ertelenmiş CSS */}
+        <DeferredStyles />
 
-        {/* Analytics ve Speed Insights ekleniyor */}
+        {/* ✅ Analytics ve Speed Insights */}
         <Analytics />
         <SpeedInsights />
       </body>
