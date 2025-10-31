@@ -555,7 +555,6 @@ export default function CadirKiralamaPage() {
             </div>
           </div>
         </section>
-                  // Çadır kiralama sayfasının en altına eklenecek bölümler
 
 {/* ✅ SIKÇA SORULAN SORULAR */}
 <section className="py-20 bg-gradient-to-br from-white to-blue-50/50">
