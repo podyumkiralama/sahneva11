@@ -116,11 +116,11 @@ const nextConfig = {
     const contentSecurityPolicy = `
       default-src 'self';
       script-src 'self' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com;
-      script-src-elem 'self' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com;
+      script-src-elem 'self' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com https://formspree.io https://www.google.com https://www.googletagmanager.com;
       style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
       font-src 'self' https://fonts.gstatic.com;
       img-src 'self' data: blob: https:;
-      connect-src 'self' https://vitals.vercel-insights.com https://sahneva.com https://www.google-analytics.com;
+      connect-src 'self' https://vitals.vercel-insights.com https://www.sahneva.com https://www.google-analytics.com;
       frame-src 'none';
       base-uri 'self';
       form-action 'self' https://wa.me;
