@@ -1,16 +1,6 @@
 // app/hizmetler/page.js
 import Image from "next/image";
 import Link from "next/link";
-import { Suspense } from "react";
-import dynamic from "next/dynamic";
-
-/* ───── DYNAMIC IMPORTS ───── */
-const ServicesTabsLazy = dynamic(
-  () => import("../../components/ServicesTabs"),
-  { 
-    loading: () => <SectionSkeleton label="Hizmetler yükleniyor" />,
-  }
-);
 
 /* ───── META & ISR ───── */
 export const metadata = {
@@ -37,24 +27,6 @@ export const metadata = {
 };
 
 export const revalidate = 3600;
-
-/* ───── SKELETON COMPONENTS ───── */
-function SectionSkeleton({ label = "İçerik yükleniyor" }) {
-  return (
-    <div
-      className="container py-10"
-      role="status"
-      aria-live="polite"
-      aria-label={label}
-    >
-      <div className="flex flex-col items-center space-y-4">
-        <div className="h-10 w-40 rounded bg-gradient-to-r from-neutral-100 to-neutral-200 animate-pulse" />
-        <div className="h-40 w-full rounded-2xl bg-gradient-to-r from-neutral-100 to-neutral-200 animate-pulse" />
-        <span className="sr-only">{label}</span>
-      </div>
-    </div>
-  );
-}
 
 /* ───── STRUCTURED DATA ───── */
 function ServicesStructuredData() {
@@ -105,6 +77,91 @@ function ServicesStructuredData() {
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />
+  );
+}
+
+/* ───── SERVICES TABS FALLBACK ───── */
+function ServicesTabsFallback() {
+  const services = [
+    {
+      title: "Sahne Kiralama",
+      description: "Profesyonel truss sistemleri, modüler sahne çözümleri",
+      items: [
+        "3x3m, 6x4m, 8x4m, 10x6m ölçülerinde sahne sistemleri",
+        "Alüminyum truss sistemleri ve güvenlik ekipmanları",
+        "Modüler podyum sistemleri (1x1m, 2x1m)",
+        "Sahne dekorasyonu ve brandalama hizmetleri"
+      ]
+    },
+    {
+      title: "LED Ekran Kiralama", 
+      description: "Yüksek çözünürlüklü indoor ve outdoor LED ekran çözümleri",
+      items: [
+        "P2.5, P3, P4, P5, P6 pixel pitch seçenekleri",
+        "İç mekan ve dış mekan (IP65) LED ekranlar",
+        "Kurulum, teknik operatör ve içerik yönetimi",
+        "HD video processor ve kontrol sistemleri"
+      ]
+    },
+    {
+      title: "Ses Sistemleri",
+      description: "Profesyonel ses sistemi kiralama ve kurulum hizmetleri",
+      items: [
+        "Line array ses sistemleri ve dijital mikserler",
+        "Kablosuz mikrofon sistemleri (handheld, lapel)",
+        "Ses teknisyeni ve operatör hizmetleri",
+        "Ses testi ve akustik optimizasyon"
+      ]
+    },
+    {
+      title: "Işık Sistemleri",
+      description: "Profesyonel ışıklandırma ve efekt sistemleri",
+      items: [
+        "Moving head, spot ve wash ışıklar",
+        "Lazer, haze ve özel efekt makineleri",
+        "DMX kontrol sistemleri ve operatör",
+        "Işık programlama ve senkronizasyon"
+      ]
+    },
+    {
+      title: "Çadır Kiralama",
+      description: "Etkinlik çadırları ve geçici yapı çözümleri",
+      items: [
+        "Pagoda, şeffaf ve endüstriyel çadır sistemleri",
+        "3x3m, 6x3m, 9x3m, 9x6m, 12x6m ölçülerinde çadırlar",
+        "Çadır ısıtma-soğutma ve aydınlatma sistemleri",
+        "Zemin kaplama ve dekorasyon hizmetleri"
+      ]
+    },
+    {
+      title: "Masa Sandalye Kiralama",
+      description: "Profesyonel masa ve sandalye kiralama hizmetleri",
+      items: [
+        "Banket masaları (yuvarlak, dikdörtgen)",
+        "Konferans ve kokteyl sandalyeleri",
+        "Masa örtüsü ve dekorasyon ürünleri",
+        "Kurulum ve toplama hizmetleri"
+      ]
+    }
+  ];
+
+  return (
+    <div className="space-y-8">
+      {services.map((service, index) => (
+        <div key={index} className="bg-white rounded-2xl p-8 shadow-lg border border-neutral-100">
+          <h3 className="text-2xl font-black text-neutral-900 mb-4">{service.title}</h3>
+          <p className="text-neutral-700 mb-6 text-lg">{service.description}</p>
+          <ul className="grid md:grid-cols-2 gap-3">
+            {service.items.map((item, itemIndex) => (
+              <li key={itemIndex} className="flex items-center gap-3 text-neutral-700">
+                <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
   );
 }
 
@@ -375,9 +432,7 @@ export default function ServicesPage() {
               <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8"></div>
             </div>
 
-            <Suspense fallback={<SectionSkeleton label="Hizmet detayları yükleniyor" />}>
-              <ServicesTabsLazy />
-            </Suspense>
+            <ServicesTabsFallback />
           </div>
         </section>
 
