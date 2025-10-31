@@ -141,10 +141,6 @@ export default function CorporateEvents() {
                     <span className="transform group-hover/link:translate-x-1 transition-transform duration-200">→</span>
                   </Link>
                   
-<<<<<<< HEAD
-=======
-                  {/* DÜZELTME: class -> className */}
->>>>>>> 84909feb8a8a01465d0514c33f727410400d5772
                   <span className="text-xs font-medium text-gray-700 bg-gray-200 rounded-full px-3 py-1">
                     Profesyonel Çözüm
                   </span>
