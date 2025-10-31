@@ -1,358 +1,459 @@
-// components/UtilityBar.jsx
-"use client";
+/* components/UtilityBar.css */
+:root {
+  --fs: 100%;
+}
 
-import { useEffect, useRef, useState, useCallback } from "react";
-import Link from "next/link";
+/* ✅ Ana Utility Bar Container - SAĞ TARAFTA */
+.utility-bar-container {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 12px 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  will-change: transform;
+  contain: layout style paint;
+}
 
-const ROUTES = [
-  { href: "/", label: "Anasayfa", title: "Sahneva Ana Sayfa - Etkinlik ekipmanları kiralama", icon: "🏠" },
-  { href: "/hakkimizda", label: "Hakkımızda", title: "Sahneva Hakkında - Şirket bilgileri ve referanslar", icon: "👥" },
-  { href: "/iletisim", label: "İletişim", title: "Sahneva İletişim - Bize ulaşın ve teklif alın", icon: "📞" },
-  { href: "/podyum-kiralama", label: "Podyum", title: "Podyum Kiralama - Modüler podyum sistemleri", icon: "👑" },
-  { href: "/led-ekran-kiralama", label: "LED Ekran", title: "LED Ekran Kiralama - Yüksek çözünürlüklü ekranlar", icon: "🖥️" },
-  { href: "/ses-isik-sistemleri", label: "Ses & Işık", title: "Ses ve Işık Sistemleri - Profesyonel ekipman", icon: "🎭" },
-  { href: "/cadir-kiralama", label: "Çadır", title: "Çadır Kiralama - Açık hava etkinlik çözümleri", icon: "⛺" },
-  { href: "/masa-sandalye-kiralama", label: "Masa Sandalye", title: "Masa Sandalye Kiralama - Oturma çözümleri", icon: "🪑" },
-  { href: "/sahne-kiralama", label: "Sahne", title: "Sahne Kiralama - Profesyonel sahne kurulumu", icon: "🎪" },
-];
+.utility-bar-container.scrolled {
+  transform: translateY(-60%);
+}
 
-export default function UtilityBar() {
-  const [openSearch, setOpenSearch] = useState(false);
-  const [query, setQuery] = useState("");
-  const [activeTool, setActiveTool] = useState(null);
-  const dialogRef = useRef(null);
-  const toolsRef = useRef(null);
+.utility-bar-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
 
-  // ✅ ESC ile arama modalını kapat
-  useEffect(() => {
-    const onEsc = (e) => {
-      if (e.key === "Escape") {
-        setOpenSearch(false);
-        setActiveTool(null);
-      }
-    };
-    window.addEventListener("keydown", onEsc);
-    return () => window.removeEventListener("keydown", onEsc);
-  }, []);
+.utility-tool-wrapper {
+  position: relative;
+}
 
-  // ✅ Dışarı tıklama ile araçları kapat
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (toolsRef.current && !toolsRef.current.contains(e.target)) {
-        setActiveTool(null);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+/* ✅ Buton Stilleri */
+.utility-btn {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-size: 18px;
+}
 
-  const filtered = query.trim().length === 0
-    ? ROUTES
-    : ROUTES.filter((r) =>
-        r.label.toLowerCase().includes(query.toLowerCase().trim())
-      );
+.utility-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
 
-  // ✅ Yazı boyutu kontrolü - BİLEŞİK ANİMASYON ile
-  const bumpFont = useCallback((delta) => {
-    const root = document.documentElement;
-    const current = parseFloat(
-      getComputedStyle(root).getPropertyValue("--fs") || "100"
-    );
-    const next = Math.min(130, Math.max(85, Math.round(current + delta)));
-    
-    root.style.setProperty("--fs", `${next}%`);
-    
-    // ✅ Bileşik animasyon: sadece transform
-    document.body.classList.add('font-change-active');
-    setTimeout(() => document.body.classList.remove('font-change-active'), 300);
-  }, []);
+.utility-btn-active {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
 
-  // ✅ Yüksek kontrast modu
-  const toggleContrast = useCallback(() => {
-    document.documentElement.classList.toggle("hc");
-    setActiveTool(null);
-  }, []);
+.utility-dot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 6px;
+  height: 6px;
+  background: #10b981;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
 
-  // ✅ En üste dön
-  const scrollTopSmooth = useCallback(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    setActiveTool(null);
-  }, []);
+.utility-btn-active .utility-dot {
+  opacity: 1;
+}
 
-  // ✅ Optimize edilmiş BİLEŞİK burst efekti
-  const burst = useCallback((e, colors = ["#6366f1", "#8b5cf6"]) => {
-    try {
-      if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
-      
-      const x = e?.clientX ?? window.innerWidth / 2;
-      const y = e?.clientY ?? window.innerHeight - 80;
-      const n = 6;
-      const life = 400;
+/* ✅ Tooltip Stilleri - SOLA AÇILAN */
+.utility-tooltip {
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1001;
+  margin-right: 8px;
+}
 
-      const fragment = document.createDocumentFragment();
-      
-      for (let i = 0; i < n; i++) {
-        const el = document.createElement("span");
-        el.className = "burst-particle";
-        el.setAttribute("aria-hidden", "true");
-        el.setAttribute("role", "presentation");
-        
-        // ✅ BİLEŞİK ANİMASYON: sadece transform ve opacity
-        const angle = (Math.PI * 2 * i) / n + Math.random() * 0.2;
-        const dist = 25 + Math.random() * 20;
-        
-        // Transform kullan - bileşik animasyon
-        const translateX = Math.cos(angle) * dist;
-        const translateY = Math.sin(angle) * dist;
-        const rotate = (Math.random() * 40 - 20);
-        
-        el.style.transform = `translate(${translateX}px, ${translateY}px) rotate(${rotate}deg)`;
-        el.style.opacity = '1';
-        
-        el.style.setProperty("--life", `${life}ms`);
-        el.style.background = `linear-gradient(135deg, ${i % 2 === 0 ? colors[0] : colors[1]}, ${i % 2 === 0 ? colors[1] : colors[0]})`;
-        
-        const s = 4 + Math.random() * 4;
-        el.style.width = `${s}px`;
-        el.style.height = `${s}px`;
-        el.style.left = `${x}px`;
-        el.style.top = `${y}px`;
-        
-        fragment.appendChild(el);
-        
-        // ✅ Animasyon sonunda elementi kaldır
-        el.animate([
-          { transform: 'translate(0, 0) rotate(0deg)', opacity: 1 },
-          { transform: `translate(${translateX}px, ${translateY}px) rotate(${rotate}deg)`, opacity: 0 }
-        ], {
-          duration: life,
-          easing: 'ease-out',
-          fill: 'forwards'
-        });
-        
-        setTimeout(() => {
-          if (el.parentNode) el.parentNode.removeChild(el);
-        }, life);
-      }
-      
-      document.body.appendChild(fragment);
-    } catch {}
-  }, []);
+.utility-tooltip-content {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  min-width: 200px;
+}
 
-  // ✅ Tool toggle fonksiyonu
-  const toggleTool = useCallback((toolName, e) => {
-    burst(e, ["#06b6d4", "#8b5cf6"]);
-    setActiveTool(activeTool === toolName ? null : toolName);
-  }, [activeTool, burst]);
+/* ✅ Font Kontrol Stilleri */
+.font-size-controls {
+  margin-bottom: 12px;
+}
 
-  return (
-    <>
-      {/* ✅ Bottom utility bar - BİLEŞİK ANİMASYONLAR ile */}
-      <div
-        ref={toolsRef}
-        className="utility-bar-container"
-        role="region"
-        aria-label="Erişilebilirlik araçları ve hızlı navigasyon"
-      >
-        <div className="utility-bar-content">
-          {/* ✅ Erişilebilirlik araçları */}
-          <div className="utility-tool-wrapper">
-            <button
-              className={`utility-btn group ${activeTool === 'accessibility' ? 'utility-btn-active' : ''}`}
-              onClick={(e) => toggleTool('accessibility', e)}
-              aria-label="Erişilebilirlik araçları"
-              title="Erişilebilirlik araçları - Yazı boyutu ve kontrast"
-            >
-              <span className="utility-icon">♿</span>
-              <div className="utility-dot"></div>
-            </button>
+.control-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
 
-            {activeTool === 'accessibility' && (
-              <div className="utility-tooltip">
-                <div className="utility-tooltip-content">
-                  <div className="font-size-controls">
-                    <span className="control-label">Yazı Boyutu</span>
-                    <div className="font-buttons">
-                      <button
-                        className="font-btn"
-                        onClick={() => bumpFont(-5)}
-                        aria-label="Yazı boyutunu küçült"
-                      >
-                        A-
-                      </button>
-                      <button
-                        className="font-btn"
-                        onClick={() => bumpFont(+5)}
-                        aria-label="Yazı boyutunu büyüt"
-                      >
-                        A+
-                      </button>
-                    </div>
-                  </div>
-                  
-                  <button
-                    className="contrast-btn"
-                    onClick={toggleContrast}
-                    aria-label="Yüksek kontrast modunu aç/kapat"
-                  >
-                    🎨 Kontrast Modu
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
+.font-buttons {
+  display: flex;
+  gap: 8px;
+}
 
-          {/* ✅ Arama butonu */}
-          <div className="utility-tool-wrapper">
-            <button
-              className="utility-btn group"
-              onClick={(e) => {
-                burst(e, ["#10b981", "#06b6d4"]);
-                setOpenSearch(true);
-                setActiveTool(null);
-                setTimeout(() => dialogRef.current?.querySelector("input")?.focus(), 60);
-              }}
-              aria-haspopup="dialog"
-              aria-expanded={openSearch}
-              aria-controls={openSearch ? "site-search-dialog" : undefined}
-              title="Site içi arama - Hızlı navigasyon"
-            >
-              <span className="utility-icon">🔍</span>
-              <div className="utility-dot"></div>
-            </button>
-          </div>
+.font-btn {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
 
-          {/* ✅ En üste dön */}
-          <div className="utility-tool-wrapper">
-            <button
-              className="utility-btn group"
-              onClick={(e) => {
-                burst(e, ["#f59e0b", "#ef4444"]);
-                scrollTopSmooth();
-              }}
-              aria-label="Sayfanın en üstüne dön"
-              title="En üste dön - Hızlı navigasyon"
-            >
-              <span className="utility-icon">⬆️</span>
-              <div className="utility-dot"></div>
-            </button>
-          </div>
+.font-btn:hover {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+}
 
-          {/* ✅ Hızlı iletişim */}
-          <div className="utility-tool-wrapper">
-            <button
-              className={`utility-btn group ${activeTool === 'contact' ? 'utility-btn-active' : ''}`}
-              onClick={(e) => toggleTool('contact', e)}
-              aria-label="Hızlı iletişim seçenekleri"
-              title="Hızlı iletişim - Telefon ve WhatsApp"
-            >
-              <span className="utility-icon">📞</span>
-              <div className="utility-dot"></div>
-            </button>
+.contrast-btn {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
 
-            {activeTool === 'contact' && (
-              <div className="utility-tooltip">
-                <div className="utility-tooltip-content">
-                  <a
-                    href="tel:+905453048671"
-                    className="contact-btn phone"
-                    onClick={(e) => burst(e, ["#3b82f6", "#8b5cf6"])}
-                    title="Hemen arayın - Ücretsiz danışmanlık"
-                  >
-                    📞 Hemen Ara
-                  </a>
-                  <a
-                    href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ulaşıyorum.+Sahne+kiralama+ve+LED+ekran+fiyatları+hakkında+detaylı+teklif+almak+istiyorum."
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="contact-btn whatsapp"
-                    aria-label="WhatsApp iletişim"
-                  >
-                    <span className="whatsapp-icon">💬</span>
-                    WhatsApp'tan Hemen Teklif Al
-                  </a>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
+.contrast-btn:hover {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+}
 
-      {/* ✅ Arama modalı */}
-      {openSearch && (
-        <div
-          id="site-search-dialog"
-          ref={dialogRef}
-          className="search-modal-overlay"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Site içi arama - Hızlı sayfa navigasyonu"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setOpenSearch(false);
-          }}
-        >
-          <div className="search-modal-container">
-            <div className="search-header">
-              <div className="search-input-wrapper">
-                <div className="search-icon">🔍</div>
-                <input
-                  type="search"
-                  className="search-input"
-                  placeholder="Ne aramıştınız? (örn: LED ekran, podyum, sahne...)"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  aria-label="Arama kutusu"
-                  title="Site içi arama - Anahtar kelimeler girin"
-                />
-              </div>
-              <button
-                className="search-close-btn"
-                onClick={() => setOpenSearch(false)}
-                aria-label="Arama modalını kapat"
-                title="Aramayı kapat"
-              >
-                Kapat
-              </button>
-            </div>
-            <div className="search-results">
-              {filtered.length === 0 ? (
-                <div className="no-results">
-                  <div className="no-results-icon">🔍</div>
-                  <p className="no-results-title">Sonuç bulunamadı</p>
-                  <p className="no-results-description">Lütfen farklı bir anahtar kelime deneyin</p>
-                </div>
-              ) : (
-                <ul className="results-list">
-                  {filtered.map((r) => (
-                    <li key={r.href}>
-                      <Link
-                        href={r.href}
-                        className="result-item"
-                        onClick={() => setOpenSearch(false)}
-                        title={r.title}
-                      >
-                        <span className="result-icon">
-                          {r.icon}
-                        </span>
-                        <span className="result-label">{r.label}</span>
-                        <span className="result-url">
-                          {r.href}
-                        </span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
-              
-              <div className="search-tips">
-                <p className="tips-text">
-                  <strong>İpucu:</strong> "podyum", "led ekran", "ses sistemi" gibi anahtar kelimelerle arama yapabilirsiniz
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
-  );
+/* ✅ İletişim Butonları */
+.contact-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  margin-bottom: 8px;
+}
+
+.contact-btn:last-child {
+  margin-bottom: 0;
+}
+
+.contact-btn.phone {
+  background: #3b82f6;
+  color: white;
+}
+
+.contact-btn.phone:hover {
+  background: #2563eb;
+}
+
+.contact-btn.whatsapp {
+  background: #22c55e;
+  color: white;
+}
+
+.contact-btn.whatsapp:hover {
+  background: #16a34a;
+}
+
+.whatsapp-icon {
+  font-size: 16px;
+}
+
+/* ✅ Arama Modalı Stilleri */
+.search-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 10000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 100px;
+}
+
+.search-modal-container {
+  background: white;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.search-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f8fafc;
+}
+
+.search-input-wrapper {
+  flex: 1;
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 12px 12px 40px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.search-close-btn {
+  padding: 10px 16px;
+  background: #6b7280;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.search-close-btn:hover {
+  background: #4b5563;
+}
+
+.search-results {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.no-results {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6b7280;
+}
+
+.no-results-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.no-results-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #374151;
+}
+
+.no-results-description {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.results-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.result-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #374151;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.result-item:hover {
+  background: #f3f4f6;
+  border-color: #e5e7eb;
+}
+
+.result-icon {
+  font-size: 18px;
+  width: 24px;
+  text-align: center;
+}
+
+.result-label {
+  flex: 1;
+  font-weight: 500;
+}
+
+.result-url {
+  font-size: 12px;
+  color: #6b7280;
+  font-family: monospace;
+}
+
+.search-tips {
+  margin-top: 20px;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.tips-text {
+  margin: 0;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* ✅ Burst Particle Animasyonları */
+.burst-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10000;
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.font-change-active {
+  transition: transform 0.3s ease !important;
+}
+
+/* ✅ Yüksek Kontrast Modu */
+.hc .utility-bar-container {
+  background: #000;
+  border: 2px solid #fff;
+}
+
+.hc .utility-tooltip-content {
+  background: #000;
+  border: 2px solid #fff;
+  color: #fff;
+}
+
+.hc .font-btn,
+.hc .contrast-btn,
+.hc .contact-btn {
+  background: #000;
+  border: 1px solid #fff;
+  color: #fff;
+}
+
+.hc .font-btn:hover,
+.hc .contrast-btn:hover {
+  background: #333;
+}
+
+/* ✅ Mobile Responsive */
+@media (max-width: 768px) {
+  .utility-bar-container {
+    right: 10px;
+    padding: 8px 6px;
+  }
+  
+  .utility-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 16px;
+  }
+  
+  .utility-tooltip {
+    margin-right: 6px;
+  }
+  
+  .utility-tooltip-content {
+    min-width: 180px;
+    padding: 12px;
+  }
+  
+  .search-modal-overlay {
+    padding: 20px;
+    align-items: center;
+  }
+  
+  .search-modal-container {
+    width: 95%;
+    max-height: 90vh;
+  }
+  
+  .search-header {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .search-input-wrapper {
+    width: 100%;
+  }
+  
+  .search-close-btn {
+    width: 100%;
+  }
+}
+
+/* ✅ Çok küçük ekranlar */
+@media (max-width: 480px) {
+  .utility-bar-container {
+    right: 5px;
+    padding: 6px 4px;
+  }
+  
+  .utility-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+  }
+  
+  .utility-tooltip-content {
+    min-width: 160px;
+    padding: 10px;
+  }
+  
+  .font-buttons {
+    flex-direction: column;
+    gap: 4px;
+  }
 }
