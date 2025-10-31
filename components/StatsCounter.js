@@ -5,12 +5,17 @@ import { useInView } from 'react-intersection-observer';
 
 export default function StatsCounter() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.3 });
-  const [counters, setCounters] = useState({ projects: 0, experience: 0, cities: 0 });
+  const [counters, setCounters] = useState({ 
+    projects: 0, 
+    experience: 0, 
+    cities: 0 
+  });
 
   useEffect(() => {
     if (inView) {
       const duration = 2000;
       const steps = 60;
+      
       const increment = (target, key) => {
         let start = 0;
         const step = target / steps;
@@ -32,9 +37,21 @@ export default function StatsCounter() {
   }, [inView]);
 
   const stats = [
-    { number: `${counters.projects}+`, label: "Başarılı Proje", color: "from-blue-500 to-cyan-500" },
-    { number: `${counters.experience}+`, label: "Yıl Deneyim", color: "from-purple-500 to-pink-500" },
-    { number: `${counters.cities}`, label: "İlde Hizmet", color: "from-green-500 to-emerald-500" },
+    { 
+      number: `${counters.projects}+`, 
+      label: "Başarılı Proje", 
+      color: "from-blue-500 to-cyan-500" 
+    },
+    { 
+      number: `${counters.experience}+`, 
+      label: "Yıl Deneyim", 
+      color: "from-purple-500 to-pink-500" 
+    },
+    { 
+      number: `${counters.cities}`, 
+      label: "İlde Hizmet", 
+      color: "from-green-500 to-emerald-500" 
+    },
   ];
 
   return (
