@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // === TURBOPACK KONFİGÜRASYONU ===
+  turbopack: {},
+  
   // === TEMEL AYARLAR ===
   reactStrictMode: true,
   poweredByHeader: false,
@@ -40,39 +43,12 @@ const nextConfig = {
     ],
   },
 
-  // === WEBPACK OPTİMİZASYONLARI ===
-  webpack: (config, { dev, isServer }) => {
-    if (!dev && !isServer) {
-      config.optimization.moduleIds = 'deterministic';
-      config.optimization.chunkIds = 'deterministic';
-      config.optimization.runtimeChunk = 'single';
-      
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        maxInitialRequests: 25,
-        minSize: 20000,
-        cacheGroups: {
-          framework: {
-            name: 'framework',
-            test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/,
-            priority: 40,
-            enforce: true,
-          },
-          lib: {
-            test: /[\\/]node_modules[\\/]/,
-            name: (module) => {
-              const match = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/);
-              return match ? `lib.${match[1].replace('@', '')}` : 'lib';
-            },
-            priority: 30,
-            reuseExistingChunk: true,
-          },
-        },
-      };
-    }
-
-    return config;
-  },
+  // === WEBPACK OPTİMİZASYONLARI (Turbopack ile devre dışı) ===
+  // Not: Turbopack aktifken webpack config çalışmaz
+  // webpack: (config, { dev, isServer }) => {
+  //   // Turbopack kullanıldığı için webpack config devre dışı
+  //   return config;
+  // },
 
   // === GÜVENLİK BAŞLIKLARI ===
   async headers() {
@@ -101,7 +77,6 @@ const nextConfig = {
         key: 'Cross-Origin-Resource-Policy',
         value: 'same-origin'
       },
-      // ✅ DÜZELTİLDİ: Geçerli Permissions-Policy değerleri
       {
         key: 'Permissions-Policy',
         value: 'camera=(), microphone=(), geolocation=(), payment=()'
@@ -112,7 +87,6 @@ const nextConfig = {
       },
     ];
 
-    // ✅ DÜZELTİLDİ: Basitleştirilmiş ve etkili CSP
     const contentSecurityPolicy = `
       default-src 'self';
       script-src 'self' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com;
@@ -160,7 +134,7 @@ const nextConfig = {
 
   // === ÇEVRE DEĞİŞKENLERİ ===
   env: {
-    SITE_URL: process.env.SITE_URL || 'https://sahneva.com',
+    SITE_URL: process.env.SITE_URL || 'https://www.sahneva.com',
   },
 
   trailingSlash: false,
