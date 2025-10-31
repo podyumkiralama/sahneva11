@@ -1,10 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // === TEMEL AYARLAR ===
   reactStrictMode: true,
   poweredByHeader: false,
   generateEtags: false,
   compress: true,
   
+  // === GÖRÜNTÜ OPTİMİZASYONU ===
   images: {
     deviceSizes: [320, 420, 640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
@@ -20,12 +22,14 @@ const nextConfig = {
     unoptimized: false,
   },
 
+  // === DERLEYİCİ OPTİMİZASYONLARI ===
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production' ? {
       exclude: ['error', 'warn'],
     } : false,
   },
 
+  // === DENEYSEK ÖZELLİKLER ===
   experimental: {
     scrollRestoration: true,
     optimizePackageImports: [
@@ -36,6 +40,41 @@ const nextConfig = {
     ],
   },
 
+  // === WEBPACK OPTİMİZASYONLARI ===
+  webpack: (config, { dev, isServer }) => {
+    if (!dev && !isServer) {
+      config.optimization.moduleIds = 'deterministic';
+      config.optimization.chunkIds = 'deterministic';
+      config.optimization.runtimeChunk = 'single';
+      
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        maxInitialRequests: 25,
+        minSize: 20000,
+        cacheGroups: {
+          framework: {
+            name: 'framework',
+            test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/,
+            priority: 40,
+            enforce: true,
+          },
+          lib: {
+            test: /[\\/]node_modules[\\/]/,
+            name: (module) => {
+              const match = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/);
+              return match ? `lib.${match[1].replace('@', '')}` : 'lib';
+            },
+            priority: 30,
+            reuseExistingChunk: true,
+          },
+        },
+      };
+    }
+
+    return config;
+  },
+
+  // === GÜVENLİK BAŞLIKLARI ===
   async headers() {
     const securityHeaders = [
       {
@@ -62,9 +101,10 @@ const nextConfig = {
         key: 'Cross-Origin-Resource-Policy',
         value: 'same-origin'
       },
+      // ✅ DÜZELTİLDİ: Geçerli Permissions-Policy değerleri
       {
         key: 'Permissions-Policy',
-        value: 'camera=(), microphone=(), geolocation=()'
+        value: 'camera=(), microphone=(), geolocation=(), payment=()'
       },
       {
         key: 'Strict-Transport-Security',
@@ -72,14 +112,15 @@ const nextConfig = {
       },
     ];
 
+    // ✅ DÜZELTİLDİ: Basitleştirilmiş ve etkili CSP
     const contentSecurityPolicy = `
       default-src 'self';
       script-src 'self' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com;
-      script-src-elem 'self' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com;
+      script-src-elem 'self' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com https://formspree.io https://www.google.com https://www.googletagmanager.com;
       style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
       font-src 'self' https://fonts.gstatic.com;
       img-src 'self' data: blob: https:;
-      connect-src 'self' https://vitals.vercel-insights.com https://sahneva.com https://www.google-analytics.com;
+      connect-src 'self' https://vitals.vercel-insights.com https://www.sahneva.com https://www.google-analytics.com;
       frame-src 'none';
       base-uri 'self';
       form-action 'self' https://wa.me;
@@ -117,6 +158,7 @@ const nextConfig = {
     ];
   },
 
+  // === ÇEVRE DEĞİŞKENLERİ ===
   env: {
     SITE_URL: process.env.SITE_URL || 'https://sahneva.com',
   },

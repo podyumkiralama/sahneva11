@@ -141,7 +141,7 @@ export default function CorporateEvents() {
                     <span className="transform group-hover/link:translate-x-1 transition-transform duration-200">→</span>
                   </Link>
                   
-                  <span className="text-xs font-medium text-gray-500 bg-gray-100 rounded-full px-3 py-1">
+                  <span class="text-xs font-medium text-gray-700 bg-gray-200 rounded-full px-3 py-1">
                     Profesyonel Çözüm
                   </span>
                 </div>
@@ -214,17 +214,17 @@ export default function CorporateEvents() {
                 <span>Telefonla Görüş</span>
               </a>
               
-              <a
-                href="https://wa.me/905453048671?text=Merhaba%2C+kurumsal+etkinlik+organizasyonu+için+profesyonel+çözüm+ve+teklif+almak+istiyorum."
-                className="inline-flex items-center justify-center gap-3 bg-green-500 text-white font-semibold px-8 py-4 rounded-2xl hover:bg-green-600 transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1 min-h-[60px]"
-                aria-label="WhatsApp üzerinden kurumsal etkinlik teklifi iste"
-                title="WhatsApp'tan kurumsal çözüm teklifi alın"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className="text-2xl">💬</span>
-                <span>WhatsApp'tan Yaz</span>
-              </a>
+             <a
+  href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ulaşıyorum.+Sahne+kiralama+ve+LED+ekran+fiyatları+hakkında+detaylı+teklif+almak+istiyorum."
+  target="_blank"
+  rel="noopener noreferrer"
+  className="inline-flex items-center justify-center gap-3 bg-green-100 hover:bg-green-200 border-2 border-green-600 text-green-900 font-bold px-5 py-4 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl min-h-[60px]"
+  aria-label="WhatsApp üzerinden kurumsal etkinlik teklifi iste"
+>
+  <span className="text-xl">💬</span>
+  <span className="text-sm font-bold">WhatsApp'tan Yaz</span>
+</a>
+
             </div>
             
             <div className="flex items-center justify-center gap-4 text-blue-100 text-sm">
