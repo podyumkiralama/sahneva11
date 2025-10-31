@@ -1,15 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // === TURBOPACK KONFİGÜRASYONU ===
-  turbopack: {},
-  
   // === TEMEL AYARLAR ===
   reactStrictMode: true,
   poweredByHeader: false,
   generateEtags: false,
   compress: true,
   
-  // === GÖRÜNTÜ OPTİMİZASYONU ===
+  // === GÖRÜNTÜ OPTİMİZASYONU - HATALAR DÜZELTİLDİ ===
   images: {
     deviceSizes: [320, 420, 640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
@@ -22,10 +19,7 @@ const nextConfig = {
       },
     ],
     dangerouslyAllowSVG: false,
-    unoptimized: false,
-    // ✅ YENİ: Gelişmiş görsel optimizasyonu
-    quality: 80,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    // 'quality' ve 'contentSecurityPolicy' kaldırıldı - Next.js'de desteklenmiyor
   },
 
   // === DERLEYİCİ OPTİMİZASYONLARI ===
@@ -33,13 +27,12 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === 'production' ? {
       exclude: ['error', 'warn'],
     } : false,
-    // ✅ YENİ: CSS optimizasyonu
     reactRemoveProperties: process.env.NODE_ENV === 'production' ? {
       properties: ['^data-testid$'],
     } : false,
   },
 
-  // === DENEYSEK ÖZELLİKLER ===
+  // === DENEYSEK ÖZELLİKLER - HATALAR DÜZELTİLDİ ===
   experimental: {
     scrollRestoration: true,
     optimizePackageImports: [
@@ -48,13 +41,12 @@ const nextConfig = {
       'framer-motion',
       'react-icons'
     ],
-    // ✅ YENİ: CSS optimizasyonu
-    optimizeCss: true,
-    // ✅ YENİ: Sunucu eylemleri (Server Actions)
+    // 'optimizeCss' kaldırıldı - Next.js 16'da desteklenmiyor
+    // 'serverActions' boolean yapıldı
     serverActions: true,
   },
 
-  // === GÜVENLİK BAŞLIKLARI - GÜNCELLENDİ ===
+  // === GÜVENLİK BAŞLIKLARI ===
   async headers() {
     const securityHeaders = [
       {
@@ -82,10 +74,6 @@ const nextConfig = {
         value: 'same-origin'
       },
       {
-        key: 'Cross-Origin-Embedder-Policy',
-        value: 'require-corp'
-      },
-      {
         key: 'Permissions-Policy',
         value: 'camera=(), microphone=(), geolocation=(), payment=(), interest-cohort=()'
       },
@@ -95,20 +83,17 @@ const nextConfig = {
       },
     ];
 
-    // ✅ YENİ: Gelişmiş CSP Politikası
     const contentSecurityPolicy = `
       default-src 'self';
       script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com;
-      script-src-elem 'self' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com https://formspree.io https://www.google.com https://www.googletagmanager.com;
       style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
       font-src 'self' https://fonts.gstatic.com;
       img-src 'self' data: blob: https:;
-      connect-src 'self' https://vitals.vercel-insights.com https://www.sahneva.com https://www.google-analytics.com https://api.vercel.app;
+      connect-src 'self' https://vitals.vercel-insights.com https://www.sahneva.com https://www.google-analytics.com;
       frame-src 'self' https://www.google.com;
       base-uri 'self';
       form-action 'self' https://wa.me https://formspree.io;
       object-src 'none';
-      upgrade-insecure-requests;
     `.replace(/\s{2,}/g, ' ').trim();
 
     securityHeaders.push({
@@ -116,7 +101,6 @@ const nextConfig = {
       value: contentSecurityPolicy
     });
 
-    // ✅ YENİ: Cache-Control header'ları optimize edildi
     return [
       {
         source: '/(.*)',
@@ -127,7 +111,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable, stale-while-revalidate=86400'
+            value: 'public, max-age=31536000, immutable'
           },
         ],
       },
@@ -136,25 +120,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable, stale-while-revalidate=86400'
-          },
-        ],
-      },
-      {
-        source: '/(.*).(css|js)',
-        headers: [
-          {
-            key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable'
-          },
-        ],
-      },
-      {
-        source: '/manifest.json',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=604800, stale-while-revalidate=86400'
           },
         ],
       },
@@ -164,29 +130,11 @@ const nextConfig = {
   // === ÇEVRE DEĞİŞKENLERİ ===
   env: {
     SITE_URL: process.env.SITE_URL || 'https://www.sahneva.com',
-    // ✅ YENİ: Performans izleme
-    ENABLE_ANALYTICS: process.env.NODE_ENV === 'production' ? 'true' : 'false',
   },
 
-  // ✅ YENİ: Build optimizasyonları
+  // === BUILD OPTİMİZASYONLARI ===
   trailingSlash: false,
-  productionBrowserSourceMaps: false, // Güvenlik ve performans için false
-  staticPageGenerationTimeout: 300,
-  output: 'standalone',
-  
-  // ✅ YENİ: SEO ve performans iyileştirmeleri
-  async rewrites() {
-    return [
-      {
-        source: '/sitemap.xml',
-        destination: '/api/sitemap',
-      },
-      {
-        source: '/robots.txt',
-        destination: '/api/robots',
-      },
-    ];
-  },
+  productionBrowserSourceMaps: false,
 };
 
 export default nextConfig;
