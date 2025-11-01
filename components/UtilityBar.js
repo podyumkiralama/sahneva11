@@ -85,7 +85,6 @@ export default function UtilityBar() {
   // Tool toggle
   const toggleTool = useCallback((toolName) => {
     setActiveTool(activeTool === toolName ? null : toolName);
-    // Diğer tool'ları kapat
     if (toolName !== 'search') {
       setSearchOpen(false);
     }
@@ -127,31 +126,35 @@ export default function UtilityBar() {
             {activeTool === 'accessibility' && (
               <div id="accessibility-tooltip" className="utility-tooltip">
                 <div className="tooltip-content">
-                  <div className="tooltip-section">
-                    <span className="tooltip-label">Yazı Boyutu</span>
-                    <div className="font-controls">
+                  <div className="accessibility-section">
+                    <h4 className="section-title">Yazı Boyutu</h4>
+                    <div className="font-size-controls">
                       <button 
                         onClick={() => bumpFont(-1)} 
-                        className="font-btn"
+                        className="font-size-btn decrease"
                         aria-label="Yazı boyutunu küçült"
                       >
                         A-
                       </button>
                       <button 
                         onClick={() => bumpFont(1)} 
-                        className="font-btn"
+                        className="font-size-btn increase"
                         aria-label="Yazı boyutunu büyüt"
                       >
                         A+
                       </button>
                     </div>
                   </div>
-                  <button 
-                    onClick={toggleContrast} 
-                    className="contrast-btn"
-                  >
-                    🎨 Yüksek Kontrast
-                  </button>
+                  
+                  <div className="accessibility-section">
+                    <button 
+                      onClick={toggleContrast} 
+                      className="contrast-toggle-btn"
+                    >
+                      <span className="contrast-icon">🎨</span>
+                      Yüksek Kontrast
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
@@ -357,7 +360,7 @@ export default function UtilityBar() {
           border-radius: 12px;
           box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
           border: 1px solid rgba(0, 0, 0, 0.1);
-          min-width: 180px;
+          min-width: 200px;
           z-index: 1001;
           animation: slideDown 0.2s ease-out;
         }
@@ -374,47 +377,84 @@ export default function UtilityBar() {
         }
 
         .tooltip-content {
-          padding: 15px;
+          padding: 16px;
           display: flex;
           flex-direction: column;
-          gap: 12px;
+          gap: 16px;
         }
 
-        .tooltip-section {
+        .accessibility-section {
           display: flex;
           flex-direction: column;
           gap: 8px;
         }
 
-        .tooltip-label {
+        .section-title {
           font-weight: 600;
           color: #333;
           font-size: 14px;
+          margin: 0;
+          text-align: center;
         }
 
-        .font-controls {
+        .font-size-controls {
           display: flex;
-          gap: 5px;
+          gap: 8px;
+          justify-content: center;
         }
 
-        .font-btn, .contrast-btn {
+        .font-size-btn {
+          flex: 1;
           padding: 8px 12px;
-          border: 1px solid #e1e5e9;
-          border-radius: 6px;
+          border: 2px solid #e1e5e9;
+          border-radius: 8px;
           background: white;
+          color: #333;
+          font-weight: bold;
           cursor: pointer;
           transition: all 0.2s ease;
           font-size: 14px;
         }
 
-        .font-btn:hover, .contrast-btn:hover {
+        .font-size-btn:hover {
           background: #f8f9fa;
           border-color: #667eea;
+          transform: translateY(-1px);
         }
 
-        .font-controls .font-btn {
-          flex: 1;
-          font-weight: bold;
+        .font-size-btn.decrease {
+          background: #f8f9fa;
+        }
+
+        .font-size-btn.increase {
+          background: #f8f9fa;
+        }
+
+        .contrast-toggle-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          padding: 10px 16px;
+          border: 2px solid #e1e5e9;
+          border-radius: 8px;
+          background: white;
+          color: #333;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          font-size: 14px;
+          font-weight: 500;
+          width: 100%;
+        }
+
+        .contrast-toggle-btn:hover {
+          background: #f8f9fa;
+          border-color: #667eea;
+          transform: translateY(-1px);
+        }
+
+        .contrast-icon {
+          font-size: 16px;
         }
 
         .contact-link {
@@ -422,17 +462,19 @@ export default function UtilityBar() {
           align-items: center;
           gap: 8px;
           padding: 10px 12px;
-          border-radius: 6px;
+          border-radius: 8px;
           text-decoration: none;
           color: #333;
           transition: all 0.2s ease;
           font-size: 14px;
           border: 1px solid transparent;
+          font-weight: 500;
         }
 
         .contact-link:hover {
           background: #f8f9fa;
           border-color: #e1e5e9;
+          transform: translateY(-1px);
         }
 
         .contact-link.phone:hover {
@@ -606,7 +648,7 @@ export default function UtilityBar() {
 
         /* High Contrast Mode */
         :global(.high-contrast) {
-          filter: contrast(1.5);
+          filter: contrast(1.5) brightness(1.1);
         }
 
         /* Responsive */
@@ -627,7 +669,9 @@ export default function UtilityBar() {
           }
 
           .utility-tooltip {
-            min-width: 160px;
+            min-width: 180px;
+            left: 50%;
+            transform: translateX(-50%);
           }
 
           .search-overlay {
@@ -637,6 +681,23 @@ export default function UtilityBar() {
           .search-modal {
             width: 95%;
             max-height: 80vh;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .utility-bar {
+            bottom: 5px;
+            right: 5px;
+          }
+          
+          .utility-bar-inner {
+            padding: 8px;
+          }
+          
+          .utility-btn {
+            width: 40px;
+            height: 40px;
+            font-size: 14px;
           }
         }
       `}</style>
