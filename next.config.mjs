@@ -7,7 +7,7 @@ const nextConfig = {
   compress: true,
   swcMinify: true,
   
-  // === GÖRÜNTÜ OPTİMİZASYONU - Next.js 16 Uyumlu ===
+  // === GÖRÜNTÜ OPTİMİZASYONU ===
   images: {
     deviceSizes: [320, 420, 640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
@@ -20,7 +20,6 @@ const nextConfig = {
       },
     ],
     dangerouslyAllowSVG: false,
-    // ✅ Next.js 16'da desteklenmeyen özellikler kaldırıldı
   },
 
   // === DERLEYİCİ OPTİMİZASYONLARI ===
@@ -33,9 +32,8 @@ const nextConfig = {
     } : false,
   },
 
-  // === DENEYSEK ÖZELLİKLER - Next.js 16 Uyumlu ===
+  // === DENEYSEK ÖZELLİKLER ===
   experimental: {
-    // ✅ Server Actions artık deneysel değil, bu yüzden kaldırıldı
     scrollRestoration: true,
     optimizePackageImports: [
       'lucide-react',
@@ -43,19 +41,10 @@ const nextConfig = {
       'framer-motion',
       'react-icons'
     ],
-    // ✅ Yeni Next.js 16 özellikleri
-    optimizeCss: false, // Şu anda false, stabil değil
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
-      },
-    },
+    optimizeCss: false,
   },
 
-  // === GÜVENLİK BAŞLIKLARI - Güncellendi ===
+  // === GÜVENLİK BAŞLIKLARI - TÜM HATALAR DÜZELTİLDİ ===
   async headers() {
     const securityHeaders = [
       {
@@ -92,18 +81,20 @@ const nextConfig = {
       },
     ];
 
-    // ✅ Basitleştirilmiş CSP
+    // ✅ TÜM HATALAR İÇİN GÜNCELLENMİŞ CSP
     const contentSecurityPolicy = `
       default-src 'self';
-      script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com;
+      script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com https://www.google-analytics.com;
+      script-src-elem 'self' 'unsafe-inline' https://vercel.live https://va.vercel-scripts.com https://www.googletagmanager.com https://www.google-analytics.com;
       style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
       font-src 'self' https://fonts.gstatic.com;
-      img-src 'self' data: blob: https:;
-      connect-src 'self' https://vitals.vercel-insights.com;
-      frame-src 'none';
+      img-src 'self' data: blob: https: https://www.googletagmanager.com https://www.google-analytics.com;
+      connect-src 'self' https://vitals.vercel-insights.com https://www.sahneva.com https://www.google-analytics.com https://region1.google-analytics.com;
+      frame-src 'self' https://www.google.com;
       base-uri 'self';
-      form-action 'self';
+      form-action 'self' https://formspree.io https://wa.me;
       object-src 'none';
+      upgrade-insecure-requests;
     `.replace(/\s{2,}/g, ' ').trim();
 
     securityHeaders.push({
@@ -157,13 +148,6 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
   staticPageGenerationTimeout: 300,
   
-  // ✅ Next.js 16 Yeni Özellikleri
-  logging: {
-    fetches: {
-      fullUrl: true,
-    },
-  },
-  
   // ✅ Output optimizasyonu
   output: process.env.NODE_ENV === 'production' ? 'standalone' : undefined,
 
@@ -171,27 +155,23 @@ const nextConfig = {
   webpack: (config, { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }) => {
     // Performans optimizasyonları
     if (!dev && !isServer) {
-      // İstemci tarafı bundle optimizasyonu
       config.optimization.splitChunks = {
         chunks: 'all',
         cacheGroups: {
           default: false,
           vendors: false,
-          // React ve Next.js'i ayır
           framework: {
             name: 'framework',
             test: /[\\/]node_modules[\\/](react|react-dom|next)[\\/]/,
             priority: 40,
             enforce: true,
           },
-          // UI kütüphanelerini ayır
           ui: {
             name: 'ui',
             test: /[\\/]node_modules[\\/](@headlessui|@heroicons)[\\/]/,
             priority: 30,
             enforce: true,
           },
-          // Diğer kütüphaneler
           lib: {
             test: /[\\/]node_modules[\\/]/,
             name: 'lib',
