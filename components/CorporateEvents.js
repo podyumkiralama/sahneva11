@@ -4,6 +4,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+// ✅ PREMIUM: Optimize sizes değerleri
 const CARD_SIZES =
   "(max-width: 768px) 100vw, " +
   "(max-width: 1024px) calc((100vw - 4rem) / 2), " +
@@ -76,21 +77,27 @@ const ADVANTAGES = [
 export default function CorporateEvents() {
   return (
     <section className="relative py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50/30 overflow-hidden">
-      <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
+      {/* ✅ PREMIUM: Background elements */}
+      <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-24 -left-24 w-96 h-96 bg-gradient-to-r from-blue-100/20 to-purple-100/20 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-gradient-to-r from-green-100/20 to-cyan-100/20 rounded-full blur-3xl"></div>
       </div>
 
       <div className="container relative z-10">
-        <div className="grid gap-8 md:grid-cols-3 mb-16" role="list" aria-label="Kurumsal hizmetlerimiz">
+        {/* ❌ BAŞLIK KALDIRILDI - Anasayfadan gelecek */}
+
+        {/* ✅ PREMIUM: Premium kart tasarımı */}
+        <div className="grid gap-8 md:grid-cols-3 mb-16" role="list">
           {CARDS.map((card) => (
             <article
               key={card.slug}
-              className="group relative bg-white rounded-3xl border border-gray-200/60 shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden hover:border-blue-200/80 focus-within:border-blue-300"
+              className="group relative bg-white rounded-3xl border border-gray-200/60 shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden hover:border-blue-200/80"
               role="listitem"
             >
-              <div className={`absolute inset-0 bg-gradient-to-br ${card.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} aria-hidden="true"></div>
+              {/* Gradient Background */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${card.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
               
+              {/* Image Container */}
               <div className="relative aspect-[16/10] w-full overflow-hidden">
                 <Image
                   src={card.img}
@@ -105,13 +112,16 @@ export default function CorporateEvents() {
                   quality={80}
                 />
                 
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-500" aria-hidden="true"></div>
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-500"></div>
                 
+                {/* Icon Badge */}
                 <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-2xl p-3 transform -translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                  <span className="text-2xl" aria-hidden="true">{card.icon}</span>
+                  <span className="text-2xl">{card.icon}</span>
                 </div>
               </div>
 
+              {/* Content */}
               <div className="relative p-6 bg-white/80 backdrop-blur-sm">
                 <h3 className={`font-bold text-xl mb-3 ${card.color}`}>
                   {card.title}
@@ -124,11 +134,11 @@ export default function CorporateEvents() {
                   <Link
                     href="/iletisim"
                     prefetch={false}
-                    className="inline-flex items-center gap-2 font-semibold text-gray-700 hover:text-blue-600 transition-colors duration-200 group/link focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg px-2 py-1"
+                    className="inline-flex items-center gap-2 font-semibold text-gray-700 hover:text-blue-600 transition-colors duration-200 group/link"
                     aria-label={`${card.title} için teklif al - Sahneva kurumsal çözümler`}
                   >
                     <span>Teklif Al</span>
-                    <span className="transform group-hover/link:translate-x-1 transition-transform duration-200" aria-hidden="true">→</span>
+                    <span className="transform group-hover/link:translate-x-1 transition-transform duration-200">→</span>
                   </Link>
                   
                   <span className="text-xs font-medium text-gray-700 bg-gray-200 rounded-full px-3 py-1">
@@ -140,10 +150,11 @@ export default function CorporateEvents() {
           ))}
         </div>
 
+        {/* ✅ PREMIUM: Avantajlar bölümü */}
         <div className="mb-16">
           <div className="text-center mb-10">
             <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-full px-6 py-3 shadow-sm mb-4">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" aria-hidden="true"></div>
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               <span className="text-sm font-medium text-gray-700">Neden Sahneva?</span>
             </div>
             <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
@@ -151,14 +162,13 @@ export default function CorporateEvents() {
             </h3>
           </div>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4" role="list" aria-label="Avantajlarımız">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4" role="list">
             {ADVANTAGES.map((item, i) => (
               <div
                 key={i}
-                className={`group relative ${item.bg} ${item.border} rounded-2xl border-2 p-6 transition-all duration-300 hover:shadow-lg hover:scale-105 hover:border-blue-300/50 focus-within:border-blue-300 focus-within:shadow-lg`}
+                className={`group relative ${item.bg} ${item.border} rounded-2xl border-2 p-6 transition-all duration-300 hover:shadow-lg hover:scale-105 hover:border-blue-300/50`}
                 role="listitem"
                 title={item.desc}
-                tabIndex={0}
               >
                 <div className="flex items-center gap-4">
                   <span className="text-3xl transition-transform duration-300 group-hover:scale-110" aria-hidden="true">
@@ -176,8 +186,10 @@ export default function CorporateEvents() {
           </div>
         </div>
 
+        {/* ✅ PREMIUM: CTA bölümü */}
         <div className="relative rounded-3xl bg-gradient-to-r from-blue-600 to-purple-600 p-8 md:p-12 text-center text-white overflow-hidden">
-          <div className="absolute inset-0 opacity-10" aria-hidden="true">
+          {/* Background Pattern */}
+          <div className="absolute inset-0 opacity-10">
             <div className="absolute -top-20 -right-20 w-40 h-40 bg-white rounded-full"></div>
             <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-white rounded-full"></div>
           </div>
@@ -194,11 +206,11 @@ export default function CorporateEvents() {
             <div className="flex flex-col sm:flex-row justify-center gap-4 mb-6">
               <a
                 href="tel:+905453048671"
-                className="inline-flex items-center justify-center gap-3 bg-white text-blue-600 font-semibold px-8 py-4 rounded-2xl hover:bg-gray-100 transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1 min-h-[60px] focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600"
+                className="inline-flex items-center justify-center gap-3 bg-white text-blue-600 font-semibold px-8 py-4 rounded-2xl hover:bg-gray-100 transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1 min-h-[60px]"
                 aria-label="Kurumsal etkinlik için telefonla görüş – +90 545 304 86 71"
                 title="Telefonla ücretsiz danışmanlık alın"
               >
-                <span className="text-2xl" aria-hidden="true">📞</span>
+                <span className="text-2xl">📞</span>
                 <span>Telefonla Görüş</span>
               </a>
               
@@ -206,22 +218,22 @@ export default function CorporateEvents() {
                 href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ulaşıyorum.+Sahne+kiralama+ve+LED+ekran+fiyatları+hakkında+detaylı+teklif+almak+istiyorum."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-3 bg-green-100 hover:bg-green-200 border-2 border-green-600 text-green-900 font-bold px-5 py-4 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl min-h-[60px] focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 focus:ring-offset-purple-600"
+                className="inline-flex items-center justify-center gap-3 bg-green-100 hover:bg-green-200 border-2 border-green-600 text-green-900 font-bold px-5 py-4 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl min-h-[60px]"
                 aria-label="WhatsApp üzerinden kurumsal etkinlik teklifi iste"
               >
-                <span className="text-xl" aria-hidden="true">💬</span>
+                <span className="text-xl">💬</span>
                 <span className="text-sm font-bold">WhatsApp'tan Yaz</span>
               </a>
             </div>
             
             <div className="flex items-center justify-center gap-4 text-blue-100 text-sm">
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" aria-hidden="true"></div>
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                 <span>7/24 Müşteri Desteği</span>
               </div>
-              <div className="w-px h-4 bg-blue-400" aria-hidden="true"></div>
+              <div className="w-px h-4 bg-blue-400"></div>
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" aria-hidden="true"></div>
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                 <span>15 Dakikada Yanıt</span>
               </div>
             </div>
