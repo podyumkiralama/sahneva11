@@ -120,7 +120,7 @@ export default function HomePage() {
             priority
             quality={75}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
-            className="object-cover object-center hero-optimized"
+            className="object-cover object-center"
             placeholder="blur"
             blurDataURL="data:image/webp;base64,UklGRkoCAABXRUJQVlA4WAoAAAAgAAAAAQABAgAASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAAAAAAAAAAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXnjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggHgAAAJABAJ0BKgIAAwAHQJYlpAAC51m2AAD+5R4qGAAAAA=="
             style={{
@@ -135,6 +135,12 @@ export default function HomePage() {
           aria-hidden="true"
         />
         
+        <div 
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/3 to-transparent animate-pulse"
+          style={{ animationDuration: '8s' }}
+          aria-hidden="true"
+        />
+
         <div className="relative z-10 container py-12 md:py-16">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-10">
