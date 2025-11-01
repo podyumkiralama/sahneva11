@@ -3,11 +3,9 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
-/* ──────────────────────────────────────────────────────────
-   HERO görselini STATİK import: LCP + otomatik blurDataURL
-   Projende "@/public/..." alias'ı yoksa aşağıdakini kullan:
-   import heroImg from "../../public/img/hero-bg.webp";
----------------------------------------------------------------- */
+// Kahraman görselini statik import ederek LCP ve blur işini Next'e bırak
+// Not: "@/public/..." alias'ı projende varsa bunu kullanabilirsin.
+// Yoksa: import heroImg from "../../public/img/hero-bg.webp";
 import heroImg from "@/public/img/hero-bg.webp";
 
 // Static imports
@@ -20,6 +18,7 @@ const ServicesTabsLazy = dynamic(
   () => import("../../components/ServicesTabs"),
   { loading: () => <SectionSkeleton label="Hizmetler yükleniyor" /> }
 );
+
 const ProjectsGalleryLazy = dynamic(
   () => import("../../components/ProjectsGallery"),
   { loading: () => <SectionSkeleton label="Projeler yükleniyor" /> }
@@ -27,9 +26,6 @@ const ProjectsGalleryLazy = dynamic(
 
 export const revalidate = 3600;
 
-/* ──────────────────────────────────────────────────────────
-   Skeleton: erişilebilir + motion-reduce (animasyon kapama)
----------------------------------------------------------------- */
 function SectionSkeleton({ label = "İçerik yükleniyor" }) {
   return (
     <div
@@ -47,9 +43,6 @@ function SectionSkeleton({ label = "İçerik yükleniyor" }) {
   );
 }
 
-/* ──────────────────────────────────────────────────────────
-   Hizmetler: 2. kodun içerik akışı korunuyor
----------------------------------------------------------------- */
 function ServicesSection() {
   return (
     <section
@@ -76,6 +69,7 @@ function ServicesSection() {
             sistemleri kurulumu
           </p>
         </div>
+
         <Suspense fallback={<SectionSkeleton label="Hizmetler yükleniyor" />}>
           <ServicesTabsLazy />
         </Suspense>
@@ -84,10 +78,7 @@ function ServicesSection() {
   );
 }
 
-/* ──────────────────────────────────────────────────────────
-   JSON-LD: Organization + Service (daha yaygın & güvenli)
-   (2. koddaki EventService yerine)
----------------------------------------------------------------- */
+/** JSON-LD: Organization + Service (geçerli tipler) */
 function StructuredData() {
   const org = {
     "@context": "https://schema.org",
@@ -96,7 +87,11 @@ function StructuredData() {
     url: "https://sahneva.com",
     telephone: "+905453048671",
     logo: "https://sahneva.com/img/logo.png",
-    sameAs: [],
+    sameAs: [
+      // sosyal profillerin varsa ekle:
+      // "https://www.instagram.com/....",
+      // "https://www.facebook.com/...."
+    ],
     contactPoint: [
       {
         "@type": "ContactPoint",
@@ -125,6 +120,14 @@ function StructuredData() {
       "Işık Sistemi Kiralama",
       "Etkinlik Prodüksiyon",
     ],
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Kiralama Paketleri",
+      itemListElement: [
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Sahne Kiralama" } },
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "LED Ekran Kiralama" } },
+      ],
+    },
   };
 
   return (
@@ -146,7 +149,6 @@ export default function HomePage() {
     <div className="overflow-x-hidden">
       <StructuredData />
 
-      {/* Skip link */}
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:z-[9999] focus:top-3 focus:left-3 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-3 focus:rounded-lg focus:font-semibold focus:shadow-lg transition-all duration-200"
@@ -154,7 +156,7 @@ export default function HomePage() {
         Ana içeriğe atla
       </a>
 
-      {/* HERO (metin içeriği 2. koddan) */}
+      {/* HERO */}
       <section
         className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 pt-16 lg:pt-20"
         aria-labelledby="hero-title"
@@ -167,7 +169,6 @@ export default function HomePage() {
             fill
             priority
             sizes="100vw"
-            placeholder="blur"
             className="object-cover object-center"
             style={{
               transform: "scale(1.02)",
@@ -180,6 +181,7 @@ export default function HomePage() {
           className="absolute inset-0 bg-gradient-to-br from-slate-900/85 via-blue-900/70 to-purple-900/75"
           aria-hidden="true"
         />
+
         <div
           className="absolute inset-0 bg-gradient-to-r from-transparent via-white/3 to-transparent animate-pulse motion-reduce:animate-none"
           style={{ animationDuration: "8s" }}
@@ -233,9 +235,7 @@ export default function HomePage() {
                 aria-label="Hemen ara - Sahneva telefon iletişim +90 545 304 86 71"
               >
                 <span className="relative z-10 flex items-center justify-center gap-2">
-                  <span className="text-lg" aria-hidden="true">
-                    📞
-                  </span>
+                  <span className="text-lg" aria-hidden="true">📞</span>
                   Hemen Ara
                 </span>
                 <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -249,9 +249,7 @@ export default function HomePage() {
                 aria-label="WhatsApp'tan teklif al - Sahneva WhatsApp iletişim"
               >
                 <span className="relative z-10 flex items-center justify-center gap-2">
-                  <span className="text-lg" aria-hidden="true">
-                    💬
-                  </span>
+                  <span className="text-lg" aria-hidden="true">💬</span>
                   WhatsApp Teklif
                 </span>
                 <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -300,10 +298,7 @@ export default function HomePage() {
             <div className="bg-gradient-to-r from-blue-600/90 to-purple-600/90 backdrop-blur-md rounded-2xl p-6 md:p-8 border border-white/20 shadow-xl max-w-4xl mx-auto">
               <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
                 <div className="flex-shrink-0">
-                  <div
-                    className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-xl"
-                    aria-hidden="true"
-                  >
+                  <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-xl" aria-hidden="true">
                     🎯
                   </div>
                 </div>
@@ -312,13 +307,9 @@ export default function HomePage() {
                     Ücretsiz Profesyonel Danışmanlık
                   </h2>
                   <p className="text-white/90 text-base leading-relaxed">
-                    Etkinliğiniz için <strong>en uygun sahne çözümleri</strong>,
-                    LED ekran seçenekleri ve ses-ışık sistemlerini ücretsiz
-                    teknik danışmanlık ile planlayalım.{" "}
-                    <strong className="text-yellow-300">
-                      2 saat içinde detaylı teklif
-                    </strong>{" "}
-                    sunuyoruz.
+                    Etkinliğiniz için <strong>en uygun sahne çözümleri</strong>, LED ekran seçenekleri ve ses-ışık
+                    sistemlerini ücretsiz teknik danışmanlık ile planlayalım.{" "}
+                    <strong className="text-yellow-300">2 saat içinde detaylı teklif</strong> sunuyoruz.
                   </p>
                 </div>
                 <div className="flex-shrink-0">
@@ -345,7 +336,7 @@ export default function HomePage() {
       </section>
 
       <main id="main" className="relative">
-        {/* CLS guard: sticky banner yüksekliği kadar boşluk */}
+        {/* CLS için yükseklik guard (banner yüksekliği kadar boşluk) */}
         <div aria-hidden="true" className="h-12 lg:h-16" />
         <div className="sticky top-0 z-40">
           <ReviewBanner />
@@ -353,7 +344,6 @@ export default function HomePage() {
 
         <ServicesSection />
 
-        {/* Projeler (2. kod içeriği) */}
         <section
           className="py-12 bg-gradient-to-br from-neutral-900 to-blue-900/95"
           aria-labelledby="projeler-title"
@@ -392,7 +382,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Kurumsal */}
         <section className="py-12 bg-white" aria-labelledby="kurumsal-title">
           <div className="container">
             <div className="text-center mb-12">
@@ -415,7 +404,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Neden Sahneva? */}
         <section
           className="py-12 bg-gradient-to-br from-blue-50/80 to-purple-50/60"
           aria-labelledby="neden-tercih-heading"
@@ -509,7 +497,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* SEO bölümü (2. koddaki içerik + UTM’li WhatsApp) */}
         <section className="py-12 bg-white" aria-labelledby="seo-title">
           <div className="container">
             <h2
@@ -609,9 +596,7 @@ export default function HomePage() {
                       className="inline-flex items-center justify-center gap-3 bg-green-700 hover:bg-green-800 text-white font-bold px-5 py-4 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl min-h-[60px] focus:outline-none focus-visible:ring-2 focus-visible:ring-green-200"
                       aria-label="WhatsApp üzerinden kurumsal etkinlik teklifi iste"
                     >
-                      <span className="text-xl" aria-hidden="true">
-                        💬
-                      </span>
+                      <span className="text-xl" aria-hidden="true">💬</span>
                       <span className="text-sm font-bold">WhatsApp'tan Yaz</span>
                     </a>
                     <p className="text-xs text-neutral-600 mt-2">
@@ -624,7 +609,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Büyük ölçekli etkinlik metni (2. kod) */}
         <section className="py-12 bg-gradient-to-br from-neutral-50 to-blue-100/50">
           <div className="container max-w-6xl">
             <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 border border-neutral-200">
@@ -639,32 +623,17 @@ export default function HomePage() {
                 <p className="text-lg leading-relaxed text-neutral-700 mb-6">
                   Konser, fuar, kongre, lansman ve protokol seviyesindeki
                   etkinliklerde yalnızca güçlü ekipman değil,{" "}
-                  <strong className="text-blue-600">
-                    kusursuz operasyon yönetimi
-                  </strong>{" "}
-                  ve{" "}
-                  <strong className="text-blue-600">
-                    güvenli rigging çözümleri
-                  </strong>{" "}
-                  esastır. Sahneva;{" "}
-                  <a
-                    href="/sahne-kiralama"
-                    className="text-blue-600 hover:text-blue-700 font-semibold underline"
-                  >
+                  <strong className="text-blue-600">kusursuz operasyon yönetimi</strong> ve{" "}
+                  <strong className="text-blue-600">güvenli rigging çözümleri</strong> esastır. Sahneva;{" "}
+                  <a href="/sahne-kiralama" className="text-blue-600 hover:text-blue-700 font-semibold underline">
                     sahne ve podyum tasarımı
                   </a>
                   'ndan{" "}
-                  <a
-                    href="/led-ekran-kiralama"
-                    className="text-blue-600 hover:text-blue-700 font-semibold underline"
-                  >
+                  <a href="/led-ekran-kiralama" className="text-blue-600 hover:text-blue-700 font-semibold underline">
                     P2-P6 LED ekran
                   </a>{" "}
                   konfigürasyonlarına,{" "}
-                  <a
-                    href="/ses-isik-sistemleri"
-                    className="text-blue-600 hover:text-blue-700 font-semibold underline"
-                  >
+                  <a href="/ses-isik-sistemleri" className="text-blue-600 hover:text-blue-700 font-semibold underline">
                     ses-ışık optimizasyonu
                   </a>
                   'ndan truss ve scaffolding üst yapılara kadar tüm bileşenleri
@@ -742,7 +711,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* SSS */}
         <section className="py-12 bg-white" aria-labelledby="faq-title">
           <div className="container">
             <div className="text-center mb-12">
