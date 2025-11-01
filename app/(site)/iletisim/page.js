@@ -1,6 +1,5 @@
 // app/(site)/iletisim/page.jsx
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
 
 export const metadata = {
@@ -79,31 +78,28 @@ export default function ContactPage() {
         Ana içeriğe atla
       </a>
 
-      {/* ✅ HERO SECTION - Premium Design */}
+      {/* ✅ HERO SECTION - Premium Design (Resim yerine gradient ve efektler) */}
       <section 
         className="relative min-h-[60vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 pt-16 lg:pt-20"
         aria-labelledby="hero-title"
       >
-        <div className="absolute inset-0">
-          <Image
-            src="/img/iletisim-hero.webp"
-            alt="Sahneva İletişim - Profesyonel Etkinlik Çözümleri ve Teknik Destek"
-            fill
-            priority
-            quality={80}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
-            className="object-cover object-center"
-            style={{
-              transform: 'scale(1.02)',
-              filter: 'brightness(0.6) contrast(1.1) saturate(1.1)'
-            }}
-          />
+        {/* Dinamik gradient efektleri */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse delay-1000"></div>
+          <div className="absolute top-40 left-1/2 w-80 h-80 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse delay-500"></div>
         </div>
 
-        <div 
-          className="absolute inset-0 bg-gradient-to-br from-slate-900/80 via-blue-900/60 to-purple-900/70"
-          aria-hidden="true"
-        />
+        {/* Geometrik desen */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `radial-gradient(circle at 25% 25%, rgba(255,255,255,0.2) 0%, transparent 50%),
+                              radial-gradient(circle at 75% 75%, rgba(255,255,255,0.1) 0%, transparent 50%)`,
+            backgroundSize: '50% 50%, 30% 30%',
+            backgroundPosition: '0 0, 100% 100%',
+            backgroundRepeat: 'no-repeat'
+          }}></div>
+        </div>
 
         {/* ✅ BÜYÜK ARKA PLAN YAZISI */}
         <div className="absolute inset-0 flex items-center justify-center opacity-5">
@@ -293,7 +289,7 @@ export default function ContactPage() {
               </div>
 
               {/* Teklif Formu */}
-              <div className="bg-white rounded-2xl shadow-2xl border border-neutral-200 p-8">
+              <div className="bg-white rounded-2xl shadow-2xl border border-neutral-200 p-8" id="teklif-formu">
                 <div className="text-center mb-8">
                   <h2 className="text-3xl font-black text-neutral-900 mb-4">
                     Hızlı <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Teklif Alın</span>
