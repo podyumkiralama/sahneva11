@@ -68,7 +68,7 @@ function ServicesSection() {
   );
 }
 
-function EventServiceSchema() {
+function StructuredData() {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'EventService',
@@ -84,7 +84,31 @@ function EventServiceSchema() {
       'Ses Sistemi Kiralama',
       'Işık Sistemi Kiralama',
       'Etkinlik Prodüksiyon'
-    ]
+    ],
+    'hasOfferCatalog': {
+      '@type': 'OfferCatalog',
+      'name': 'Etkinlik Ekipmanları Kiralama',
+      'itemListElement': [
+        {
+          '@type': 'Offer',
+          'itemOffered': {
+            '@type': 'Service',
+            'name': 'Sahne Kiralama'
+          }
+        },
+        {
+          '@type': 'Offer',
+          'itemOffered': {
+            '@type': 'Service',
+            'name': 'LED Ekran Kiralama'
+          }
+        }
+      ]
+    },
+    'address': {
+      '@type': 'PostalAddress',
+      'addressCountry': 'TR'
+    }
   };
 
   return (
@@ -98,7 +122,7 @@ function EventServiceSchema() {
 export default function HomePage() {
   return (
     <div className="overflow-x-hidden">
-      <EventServiceSchema />
+      <StructuredData />
 
       <a
         href="#main"
@@ -107,6 +131,7 @@ export default function HomePage() {
         Ana içeriğe atla
       </a>
 
+      {/* ✅ DÜZELTİLDİ: Hero section'a navbar yüksekliği kadar padding eklendi */}
       <section
         className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 pt-16 lg:pt-20"
         aria-labelledby="hero-title"
@@ -120,7 +145,7 @@ export default function HomePage() {
             priority
             quality={75}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
-            className="object-cover object-center hero-optimized"
+            className="object-cover object-center"
             placeholder="blur"
             blurDataURL="data:image/webp;base64,UklGRkoCAABXRUJQVlA4WAoAAAAgAAAAAQABAgAASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAAAAAAAAAAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXnjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggHgAAAJABAJ0BKgIAAwAHQJYlpAAC51m2AAD+5R4qGAAAAA=="
             style={{
@@ -135,6 +160,12 @@ export default function HomePage() {
           aria-hidden="true"
         />
         
+        <div 
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/3 to-transparent animate-pulse"
+          style={{ animationDuration: '8s' }}
+          aria-hidden="true"
+        />
+
         <div className="relative z-10 container py-12 md:py-16">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-10">
@@ -264,6 +295,7 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ✅ DÜZELTİLDİ: ReviewBanner'a da navbar yüksekliği kadar margin eklendi */}
       <main id="main" className="relative">
         <div className="sticky top-0 z-40 mt-16 lg:mt-20">
           <ReviewBanner />
@@ -460,15 +492,15 @@ export default function HomePage() {
                   <div className="mt-4 p-4 bg-white rounded-lg border border-purple-200 shadow-md">
                     <p className="font-bold text-purple-900 text-base mb-2">Hızlı Teklif İsteği:</p>
                     <a
-                      href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ulaşıyorum.+Sahne+kiralama+ve+LED+ekran+fiyatları+hakkında+detaylı+teklif+almak+istiyorum."
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-3 bg-green-700 hover:bg-green-800 text-white font-bold px-5 py-4 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl min-h-[60px]"
-                      aria-label="WhatsApp üzerinden kurumsal etkinlik teklifi iste"
-                    >
-                      <span className="text-xl">💬</span>
-                      <span className="text-sm font-bold">WhatsApp'tan Yaz</span>
-                    </a>
+        href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ulaşıyorum.+Sahne+kiralama+ve+LED+ekran+fiyatları+hakkında+detaylı+teklif+almak+istiyorum."
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center justify-center gap-3 bg-green-700 hover:bg-green-800 text-white font-bold px-5 py-4 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl min-h-[60px]"
+        aria-label="WhatsApp üzerinden kurumsal etkinlik teklifi iste"
+      >
+        <span className="text-xl">💬</span>
+        <span className="text-sm font-bold">WhatsApp'tan Yaz</span>
+      </a>
                     <p className="text-xs text-neutral-600 mt-2">
                       <strong>2 saat içinde</strong> detaylı teklif ve profesyonel danışmanlık
                     </p>
