@@ -33,7 +33,7 @@ export default function UtilityBar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // ESC ile arama modalını kapat
+  // ESC ile kapatma
   useEffect(() => {
     const onEsc = (e) => {
       if (e.key === "Escape") {
@@ -45,16 +45,20 @@ export default function UtilityBar() {
     return () => window.removeEventListener("keydown", onEsc);
   }, []);
 
-  // Dışarı tıklama ile araçları kapat
+  // ✅ DÜZELTME: Dışarı tıklama - event listener'ı doğru şekilde ekleyelim
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (toolsRef.current && !toolsRef.current.contains(e.target)) {
         setActiveTool(null);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    
+    // ✅ Event listener'ı sadece activeTool varsa ekleyelim
+    if (activeTool) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, [activeTool]); // ✅ activeTool bağımlılık olarak eklendi
 
   const filtered = query.trim().length === 0
     ? ROUTES
@@ -62,21 +66,17 @@ export default function UtilityBar() {
         r.label.toLowerCase().includes(query.toLowerCase().trim())
       );
 
-  // Yazı boyutu kontrolü
+  // ✅ DÜZELTME: Yazı boyutu fonksiyonunu basitleştirelim
   const bumpFont = useCallback((delta) => {
     const root = document.documentElement;
-    const current = parseFloat(
-      getComputedStyle(root).getPropertyValue("--fs") || "100"
-    );
+    const current = parseFloat(getComputedStyle(root).getPropertyValue("--fs") || "100");
     const next = Math.min(130, Math.max(85, Math.round(current + delta)));
     
     root.style.setProperty("--fs", `${next}%`);
-    
-    document.body.classList.add('font-change-active');
-    setTimeout(() => document.body.classList.remove('font-change-active'), 300);
+    setActiveTool(null); // ✅ İşlem sonrası menüyü kapat
   }, []);
 
-  // Yüksek kontrast modu
+  // ✅ DÜZELTME: Kontrast modu
   const toggleContrast = useCallback(() => {
     document.documentElement.classList.toggle("hc");
     setActiveTool(null);
@@ -88,68 +88,76 @@ export default function UtilityBar() {
     setActiveTool(null);
   }, []);
 
-  // Burst efekti
+  // ✅ DÜZELTME: Basitleştirilmiş burst efekti
   const burst = useCallback((e, colors = ["#6366f1", "#8b5cf6"]) => {
+    if (typeof window === 'undefined') return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    
     try {
-      if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
-      
       const rect = e.currentTarget.getBoundingClientRect();
       const x = rect.left + rect.width / 2;
       const y = rect.top + rect.height / 2;
-      const n = 6;
-      const life = 400;
-
-      const fragment = document.createDocumentFragment();
       
-      for (let i = 0; i < n; i++) {
-        const el = document.createElement("span");
-        el.className = "burst-particle";
-        el.setAttribute("aria-hidden", "true");
+      // Basit particle efekti
+      for (let i = 0; i < 4; i++) {
+        const particle = document.createElement('div');
+        particle.style.cssText = `
+          position: fixed;
+          left: ${x}px;
+          top: ${y}px;
+          width: 4px;
+          height: 4px;
+          background: ${colors[i % colors.length]};
+          border-radius: 50%;
+          pointer-events: none;
+          z-index: 10000;
+        `;
         
-        const angle = (Math.PI * 2 * i) / n + Math.random() * 0.2;
-        const dist = 25 + Math.random() * 20;
+        document.body.appendChild(particle);
         
-        const translateX = Math.cos(angle) * dist;
-        const translateY = Math.sin(angle) * dist;
-        const rotate = (Math.random() * 40 - 20);
+        const angle = (Math.PI * 2 * i) / 4;
+        const distance = 20;
+        const translateX = Math.cos(angle) * distance;
+        const translateY = Math.sin(angle) * distance;
         
-        el.style.transform = `translate(${translateX}px, ${translateY}px) rotate(${rotate}deg)`;
-        el.style.opacity = '1';
-        
-        el.style.setProperty("--life", `${life}ms`);
-        el.style.background = `linear-gradient(135deg, ${i % 2 === 0 ? colors[0] : colors[1]}, ${i % 2 === 0 ? colors[1] : colors[0]})`;
-        
-        const s = 4 + Math.random() * 4;
-        el.style.width = `${s}px`;
-        el.style.height = `${s}px`;
-        el.style.left = `${x}px`;
-        el.style.top = `${y}px`;
-        
-        fragment.appendChild(el);
-        
-        el.animate([
-          { transform: 'translate(0, 0) rotate(0deg)', opacity: 1 },
-          { transform: `translate(${translateX}px, ${translateY}px) rotate(${rotate}deg)`, opacity: 0 }
+        particle.animate([
+          { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+          { transform: `translate(${translateX}px, ${translateY}px) scale(0)`, opacity: 0 }
         ], {
-          duration: life,
-          easing: 'ease-out',
-          fill: 'forwards'
+          duration: 400,
+          easing: 'ease-out'
         });
         
         setTimeout(() => {
-          if (el.parentNode) el.parentNode.removeChild(el);
-        }, life);
+          if (particle.parentNode) particle.parentNode.removeChild(particle);
+        }, 400);
       }
-      
-      document.body.appendChild(fragment);
-    } catch {}
+    } catch (error) {
+      console.log('Burst effect error:', error);
+    }
   }, []);
 
-  // Tool toggle fonksiyonu
+  // ✅ DÜZELTME: Tool toggle fonksiyonu - daha güvenli
   const toggleTool = useCallback((toolName, e) => {
-    burst(e, ["#06b6d4", "#8b5cf6"]);
+    if (e) {
+      e.stopPropagation(); // ✅ Event bubbling'i önle
+      burst(e, ["#06b6d4", "#8b5cf6"]);
+    }
     setActiveTool(activeTool === toolName ? null : toolName);
   }, [activeTool, burst]);
+
+  // ✅ DÜZELTME: Arama açma fonksiyonu
+  const openSearchModal = useCallback((e) => {
+    if (e) {
+      e.stopPropagation();
+      burst(e, ["#10b981", "#06b6d4"]);
+    }
+    setOpenSearch(true);
+    setActiveTool(null);
+    setTimeout(() => {
+      dialogRef.current?.querySelector("input")?.focus();
+    }, 100);
+  }, [burst]);
 
   return (
     <>
@@ -167,6 +175,7 @@ export default function UtilityBar() {
               onClick={(e) => toggleTool('accessibility', e)}
               aria-label="Erişilebilirlik araçları"
               title="Erişilebilirlik araçları - Yazı boyutu ve kontrast"
+              type="button"
             >
               <span className="utility-icon">♿</span>
               <div className="utility-dot"></div>
@@ -182,6 +191,7 @@ export default function UtilityBar() {
                         className="font-btn"
                         onClick={() => bumpFont(-5)}
                         aria-label="Yazı boyutunu küçült"
+                        type="button"
                       >
                         A-
                       </button>
@@ -189,6 +199,7 @@ export default function UtilityBar() {
                         className="font-btn"
                         onClick={() => bumpFont(+5)}
                         aria-label="Yazı boyutunu büyüt"
+                        type="button"
                       >
                         A+
                       </button>
@@ -199,6 +210,7 @@ export default function UtilityBar() {
                     className="contrast-btn"
                     onClick={toggleContrast}
                     aria-label="Yüksek kontrast modunu aç/kapat"
+                    type="button"
                   >
                     🎨 Kontrast Modu
                   </button>
@@ -211,16 +223,11 @@ export default function UtilityBar() {
           <div className="utility-tool-wrapper">
             <button
               className="utility-btn group"
-              onClick={(e) => {
-                burst(e, ["#10b981", "#06b6d4"]);
-                setOpenSearch(true);
-                setActiveTool(null);
-                setTimeout(() => dialogRef.current?.querySelector("input")?.focus(), 60);
-              }}
+              onClick={openSearchModal}
               aria-haspopup="dialog"
               aria-expanded={openSearch}
-              aria-controls={openSearch ? "site-search-dialog" : undefined}
               title="Site içi arama - Hızlı navigasyon"
+              type="button"
             >
               <span className="utility-icon">🔍</span>
               <div className="utility-dot"></div>
@@ -232,11 +239,13 @@ export default function UtilityBar() {
             <button
               className="utility-btn group"
               onClick={(e) => {
+                if (e) e.stopPropagation();
                 burst(e, ["#f59e0b", "#ef4444"]);
                 scrollTopSmooth();
               }}
               aria-label="Sayfanın en üstüne dön"
               title="En üste dön - Hızlı navigasyon"
+              type="button"
             >
               <span className="utility-icon">⬆️</span>
               <div className="utility-dot"></div>
@@ -250,6 +259,7 @@ export default function UtilityBar() {
               onClick={(e) => toggleTool('contact', e)}
               aria-label="Hızlı iletişim seçenekleri"
               title="Hızlı iletişim - Telefon ve WhatsApp"
+              type="button"
             >
               <span className="utility-icon">📞</span>
               <div className="utility-dot"></div>
@@ -261,7 +271,11 @@ export default function UtilityBar() {
                   <a
                     href="tel:+905453048671"
                     className="contact-btn phone"
-                    onClick={(e) => burst(e, ["#3b82f6", "#8b5cf6"])}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      burst(e, ["#3b82f6", "#8b5cf6"]);
+                      setActiveTool(null);
+                    }}
                     title="Hemen arayın - Ücretsiz danışmanlık"
                   >
                     📞 Hemen Ara
@@ -271,6 +285,10 @@ export default function UtilityBar() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="contact-btn whatsapp"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveTool(null);
+                    }}
                     aria-label="WhatsApp iletişim"
                   >
                     <span className="whatsapp-icon">💬</span>
@@ -315,6 +333,7 @@ export default function UtilityBar() {
                 onClick={() => setOpenSearch(false)}
                 aria-label="Arama modalını kapat"
                 title="Aramayı kapat"
+                type="button"
               >
                 Kapat
               </button>
