@@ -1,10 +1,9 @@
 // app/layout.js
-import "./styles/globals.css";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import "../styles/globals.css";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import { Inter } from "next/font/google";
 
-// ----- FONT -----
 const inter = Inter({
   subsets: ["latin"],
   preload: false,
@@ -13,7 +12,7 @@ const inter = Inter({
   adjustFontFallback: true,
 });
 
-// ----- META / VIEWPORT -----
+// Viewport
 export const viewport = {
   width: "device-width",
   initialScale: 1,
@@ -21,6 +20,7 @@ export const viewport = {
   themeColor: "#6d28d9",
 };
 
+// Metadata
 export const metadata = {
   metadataBase: new URL("https://www.sahneva.com"),
   title: {
@@ -29,9 +29,7 @@ export const metadata = {
   },
   description:
     "Türkiye genelinde sahne, podyum, LED ekran, ses-ışık sistemleri kiralama ve profesyonel kurulum. Hızlı keşif, teknik ekip ve 7/24 destek.",
-  alternates: {
-    canonical: "https://www.sahneva.com",
-  },
+  alternates: { canonical: "https://www.sahneva.com" },
   openGraph: {
     title: "Sahneva – Profesyonel Sahne & Etkinlik Teknolojileri",
     description:
@@ -42,18 +40,11 @@ export const metadata = {
   },
 };
 
-// ----- SADECE / İÇİN JSON-LD ENJEKSİYONU -----
-function HomeStructuredData() {
-  // Server Component: pathname bilmediğimiz için client’ta koşullayacağız
-  return null;
-}
-
-// Küçük bir client bileşen ile yalnızca "/" rotasında script bas
-function StructuredDataClient() {
+// JSON-LD sadece anasayfada ("/") basılsın
+function StructuredDataHomeOnly() {
   "use client";
   const { usePathname } = require("next/navigation");
   const pathname = usePathname();
-
   if (pathname !== "/") return null;
 
   const ORG = {
@@ -109,14 +100,6 @@ function StructuredDataClient() {
       telephone: "+905453048671",
       logo: "https://www.sahneva.com/img/logo.png",
     },
-    hasOfferCatalog: {
-      "@type": "OfferCatalog",
-      name: "Kiralama Paketleri",
-      itemListElement: [
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Sahne Kiralama" } },
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "LED Ekran Kiralama" } },
-      ],
-    },
   };
 
   return (
@@ -135,6 +118,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="tr" className={inter.className}>
       <body className="min-h-screen bg-white text-neutral-900 antialiased">
+        {/* Skip link */}
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:z-[9999] focus:top-3 focus:left-3 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-3 focus:rounded-lg focus:font-semibold focus:shadow-lg"
@@ -144,8 +128,8 @@ export default function RootLayout({ children }) {
 
         <Navbar />
 
-        {/* JSON-LD sadece / için */}
-        <StructuredDataClient />
+        {/* Rich Snippet’ler sadece /’ta */}
+        <StructuredDataHomeOnly />
 
         <main id="main">{children}</main>
 
