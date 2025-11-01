@@ -17,25 +17,25 @@ const ROUTES = [
 ];
 
 export default function UtilityBar() {
-  const [openSearch, setOpenSearch] = useState(false);
+  const [isSearchOpen, setSearchOpen] = useState(false); // ✅ DEĞİŞTİRİLDİ: openSearch -> isSearchOpen
   const [query, setQuery] = useState("");
   const [activeTool, setActiveTool] = useState(null);
   const [scrolled, setScrolled] = useState(false);
   const dialogRef = useRef(null);
   const toolsRef = useRef(null);
 
-  // ✅ DÜZELTME: Basit scroll takibi
+  // Scroll takibi
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 100);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // ✅ DÜZELTME: ESC ile kapatma
+  // ESC ile kapatma
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === "Escape") {
-        setOpenSearch(false);
+        setSearchOpen(false); // ✅ DEĞİŞTİRİLDİ
         setActiveTool(null);
       }
     };
@@ -43,7 +43,7 @@ export default function UtilityBar() {
     return () => window.removeEventListener("keydown", handleEscape);
   }, []);
 
-  // ✅ DÜZELTME: Dışarı tıklama - çok daha basit ve güvenli
+  // Dışarı tıklama
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (toolsRef.current && !toolsRef.current.contains(e.target)) {
@@ -60,7 +60,7 @@ export default function UtilityBar() {
   const filtered = query.trim().length === 0 ? ROUTES : 
     ROUTES.filter((r) => r.label.toLowerCase().includes(query.toLowerCase().trim()));
 
-  // ✅ DÜZELTME: Yazı boyutu - daha basit
+  // Yazı boyutu
   const bumpFont = useCallback((delta) => {
     const root = document.documentElement;
     const current = parseFloat(getComputedStyle(root).getPropertyValue("--fs") || "100");
@@ -69,33 +69,32 @@ export default function UtilityBar() {
     setActiveTool(null);
   }, []);
 
-  // ✅ DÜZELTME: Kontrast modu
+  // Kontrast modu
   const toggleContrast = useCallback(() => {
     document.documentElement.classList.toggle("hc");
     setActiveTool(null);
   }, []);
 
-  // ✅ DÜZELTME: En üste dön
+  // En üste dön
   const scrollTop = useCallback(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     setActiveTool(null);
   }, []);
 
-  // ✅ DÜZELTME: Tool toggle - çok daha basit
+  // Tool toggle
   const toggleTool = useCallback((toolName) => {
     setActiveTool(activeTool === toolName ? null : toolName);
   }, [activeTool]);
 
-  // ✅ DÜZELTME: Arama açma
-  const openSearch = useCallback(() => {
-    setOpenSearch(true);
+  // ✅ DÜZELTME: Arama açma fonksiyonu - isim değiştirildi
+  const openSearchModal = useCallback(() => {
+    setSearchOpen(true);
     setActiveTool(null);
     setTimeout(() => dialogRef.current?.querySelector("input")?.focus(), 100);
   }, []);
 
   return (
     <>
-      {/* ✅ ANA DÜZELTME: Utility Bar Container */}
       <div
         ref={toolsRef}
         className={`utility-bar-container ${scrolled ? 'scrolled' : ''}`}
@@ -132,7 +131,7 @@ export default function UtilityBar() {
           <div className="utility-tool-wrapper">
             <button
               className="utility-btn"
-              onClick={openSearch}
+              onClick={openSearchModal} {/* ✅ DEĞİŞTİRİLDİ: openSearch -> openSearchModal */}
               title="Site içi arama"
             >
               <span className="utility-icon">🔍</span>
@@ -182,11 +181,11 @@ export default function UtilityBar() {
         </div>
       </div>
 
-      {/* ✅ Arama Modalı */}
-      {openSearch && (
+      {/* ✅ DÜZELTME: Arama Modalı - state değişkeni güncellendi */}
+      {isSearchOpen && (
         <div 
           className="search-modal-overlay"
-          onClick={() => setOpenSearch(false)}
+          onClick={() => setSearchOpen(false)}
         >
           <div 
             ref={dialogRef}
@@ -208,7 +207,7 @@ export default function UtilityBar() {
               </div>
               <button 
                 className="search-close-btn"
-                onClick={() => setOpenSearch(false)}
+                onClick={() => setSearchOpen(false)} {/* ✅ DEĞİŞTİRİLDİ */}
               >
                 Kapat
               </button>
@@ -226,7 +225,7 @@ export default function UtilityBar() {
                       key={route.href}
                       href={route.href}
                       className="result-item"
-                      onClick={() => setOpenSearch(false)}
+                      onClick={() => setSearchOpen(false)} {/* ✅ DEĞİŞTİRİLDİ */}
                     >
                       <span>{route.icon}</span>
                       <span>{route.label}</span>
