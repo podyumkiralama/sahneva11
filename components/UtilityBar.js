@@ -1,19 +1,19 @@
 // components/UtilityBar.jsx
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 
 const ROUTES = [
-  { href: "/", label: "Anasayfa" },
-  { href: "/hakkimizda", label: "Hakkımızda" },
-  { href: "/iletisim", label: "İletişim" },
-  { href: "/podyum-kiralama", label: "Podyum Kiralama" },
-  { href: "/led-ekran-kiralama", label: "LED Ekran Kiralama" },
-  { href: "/ses-isik-sistemleri", label: "Ses Işık Sistemleri" },
-  { href: "/cadir-kiralama", label: "Çadır Kiralama" },
-  { href: "/masa-sandalye-kiralama", label: "Masa Sandalye Kiralama" },
-  { href: "/sahne-kiralama", label: "Sahne Kiralama" },
+  { href: "/", label: "Anasayfa", title: "Sahneva Ana Sayfa - Etkinlik ekipmanları kiralama" },
+  { href: "/hakkimizda", label: "Hakkımızda", title: "Sahneva Hakkında - Şirket bilgileri ve referanslar" },
+  { href: "/iletisim", label: "İletişim", title: "Sahneva İletişim - Bize ulaşın ve teklif alın" },
+  { href: "/podyum-kiralama", label: "Podyum Kiralama", title: "Podyum Kiralama - Modüler podyum sistemleri" },
+  { href: "/led-ekran-kiralama", label: "LED Ekran Kiralama", title: "LED Ekran Kiralama - Yüksek çözünürlüklü ekranlar" },
+  { href: "/ses-isik-sistemleri", label: "Ses Işık Sistemleri", title: "Ses ve Işık Sistemleri - Profesyonel ekipman" },
+  { href: "/cadir-kiralama", label: "Çadır Kiralama", title: "Çadır Kiralama - Açık hava etkinlik çözümleri" },
+  { href: "/masa-sandalye-kiralama", label: "Masa Sandalye Kiralama", title: "Masa Sandalye Kiralama - Oturma çözümleri" },
+  { href: "/sahne-kiralama", label: "Sahne Kiralama", title: "Sahne Kiralama - Profesyonel sahne kurulumu" },
 ];
 
 export default function UtilityBar() {
@@ -21,13 +21,15 @@ export default function UtilityBar() {
   const [query, setQuery] = useState("");
   const dialogRef = useRef(null);
 
-  // ESC ile arama modalını kapat
+  // ✅ İYİLEŞTİRİLDİ: ESC ile arama modalını kapat
   useEffect(() => {
     const onEsc = (e) => {
       if (e.key === "Escape") setOpenSearch(false);
     };
-    if (openSearch) window.addEventListener("keydown", onEsc);
-    return () => window.removeEventListener("keydown", onEsc);
+    if (openSearch) {
+      window.addEventListener("keydown", onEsc);
+      return () => window.removeEventListener("keydown", onEsc);
+    }
   }, [openSearch]);
 
   const filtered =
@@ -37,8 +39,8 @@ export default function UtilityBar() {
           r.label.toLowerCase().includes(query.toLowerCase().trim())
         );
 
-  // Yazı boyutu kontrolü (html --fs değişkeni)
-  const bumpFont = (delta) => {
+  // ✅ İYİLEŞTİRİLDİ: Yazı boyutu kontrolü
+  const bumpFont = useCallback((delta) => {
     const root = document.documentElement;
     const current = parseFloat(
       getComputedStyle(root).getPropertyValue("--fs") || "100%"
@@ -46,85 +48,100 @@ export default function UtilityBar() {
     const pct = Number.isNaN(current) ? 100 : current;
     const next = Math.min(130, Math.max(85, Math.round(pct + delta)));
     root.style.setProperty("--fs", `${next}%`);
-    burst();
-  };
+  }, []);
 
-  // Yüksek kontrast modu
-  const toggleContrast = () => {
+  // ✅ İYİLEŞTİRİLDİ: Yüksek kontrast modu
+  const toggleContrast = useCallback(() => {
     document.documentElement.classList.toggle("hc");
-    burst();
-  };
+  }, []);
 
-  // En üste dön
-  const scrollTopSmooth = () => {
+  // ✅ İYİLEŞTİRİLDİ: En üste dön
+  const scrollTopSmooth = useCallback(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    burst();
-  };
+  }, []);
 
-  // ==== Burst efekt ====
-  const burst = (e) => {
-    const x = e?.clientX ?? window.innerWidth / 2;
-    const y = e?.clientY ?? window.innerHeight - 80;
-    const n = 12;
-    const life = 600;
-    for (let i = 0; i < n; i++) {
-      const el = document.createElement("span");
-      el.className = "burst-particle";
-      const angle = (Math.PI * 2 * i) / n + Math.random() * 0.3;
-      const dist = 40 + Math.random() * 40;
-      el.style.setProperty("--dx", Math.cos(angle) * dist + "px");
-      el.style.setProperty("--dy", Math.sin(angle) * dist + "px");
-      el.style.setProperty("--dr", `${(Math.random() * 60 - 30).toFixed(1)}deg`);
-      el.style.setProperty("--life", `${life}ms`);
-      el.style.setProperty("--burst-c1", i % 2 === 0 ? "#6d28d9" : "#22c55e");
-      el.style.setProperty("--burst-c2", i % 2 === 0 ? "#22c55e" : "#6d28d9");
-      const s = 6 + Math.random() * 6;
-      el.style.width = el.style.height = `${s}px`;
-      el.style.left = `${x}px`;
-      el.style.top = `${y}px`;
-      document.body.appendChild(el);
-      setTimeout(() => el.remove(), life + 50);
-    }
-  };
+  // ✅ İYİLEŞTİRİLDİ: Optimize edilmiş burst efekti
+  const burst = useCallback((e) => {
+    try {
+      if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+      
+      const x = e?.clientX ?? window.innerWidth / 2;
+      const y = e?.clientY ?? window.innerHeight - 80;
+      const n = 8; // ✅ Optimize: 12'den 8'e
+      const life = 500; // ✅ Optimize: 600ms'den 500ms'ye
 
-  const withBurst = (fn) => (e) => {
+      // ✅ İYİLEŞTİRİLDİ: DocumentFragment kullanımı
+      const fragment = document.createDocumentFragment();
+      
+      for (let i = 0; i < n; i++) {
+        const el = document.createElement("span");
+        el.className = "burst-particle";
+        el.setAttribute("aria-hidden", "true");
+        el.setAttribute("role", "presentation");
+        
+        const angle = (Math.PI * 2 * i) / n + Math.random() * 0.25;
+        const dist = 32 + Math.random() * 30; // ✅ Optimize: mesafe azaltıldı
+        el.style.setProperty("--dx", Math.cos(angle) * dist + "px");
+        el.style.setProperty("--dy", Math.sin(angle) * dist + "px");
+        el.style.setProperty("--dr", `${(Math.random() * 50 - 25).toFixed(1)}deg`);
+        el.style.setProperty("--life", `${life}ms`);
+        el.style.setProperty("--burst-c1", i % 2 === 0 ? "#6d28d9" : "#22c55e");
+        el.style.setProperty("--burst-c2", i % 2 === 0 ? "#22c55e" : "#6d28d9");
+        
+        const s = 5 + Math.random() * 5; // ✅ Optimize: boyut küçültüldü
+        el.style.width = el.style.height = `${s}px`;
+        el.style.left = `${x}px`;
+        el.style.top = `${y}px`;
+        
+        fragment.appendChild(el);
+        setTimeout(() => {
+          if (el.parentNode) el.parentNode.removeChild(el);
+        }, life + 40); // ✅ Optimize: timeout azaltıldı
+      }
+      
+      document.body.appendChild(fragment);
+    } catch {}
+  }, []);
+
+  // ✅ İYİLEŞTİRİLDİ: Optimize edilmiş event handler
+  const withBurst = useCallback((fn) => (e) => {
     burst(e);
     fn?.();
-  };
+  }, [burst]);
 
   return (
     <>
-      {/* Bottom utility bar (sadece mobil & tablet) */}
+      {/* ✅ İYİLEŞTİRİLDİ: Bottom utility bar */}
       <div
-        className="fixed bottom-0 inset-x-0 z-40 lg:hidden bg-white border-t border-neutral-200 shadow-sm pb-safe"
+        className="fixed bottom-0 inset-x-0 z-40 lg:hidden bg-white border-t border-neutral-200 shadow-lg pb-safe"
         role="region"
-        aria-label="Kullanıcı araç çubuğu"
+        aria-label="Erişilebilirlik araçları ve hızlı navigasyon"
       >
         <div className="mx-auto max-w-screen-md px-3">
-          <div className="grid grid-cols-5 gap-2 py-2">
-            {/* Yazı küçült */}
+          <div className="grid grid-cols-5 gap-2 py-3">
+            {/* ✅ İYİLEŞTİRİLDİ: Yazı küçült */}
             <button
-              className="bar-item"
+              className="bar-item min-h-[44px] text-sm font-medium"
               onClick={withBurst(() => bumpFont(-5))}
               aria-label="Yazı boyutunu küçült"
-              title="Yazı küçült"
+              title="Yazı boyutunu küçült - Erişilebilirlik"
             >
               A-
             </button>
 
-            {/* Yazı büyüt */}
+            {/* ✅ İYİLEŞTİRİLDİ: Yazı büyüt */}
             <button
-              className="bar-item"
+              className="bar-item min-h-[44px] text-sm font-medium"
               onClick={withBurst(() => bumpFont(+5))}
               aria-label="Yazı boyutunu büyüt"
-              title="Yazı büyüt"
+              title="Yazı boyutunu büyüt - Erişilebilirlik"
             >
               A+
             </button>
 
-            {/* Arama */}
+            {/* ✅ İYİLEŞTİRİLDİ: Arama */}
             <button
-              className="bar-item"
+              className="bar-item min-h-[44px] text-sm font-medium"
               onClick={(e) => {
                 burst(e);
                 setOpenSearch(true);
@@ -132,50 +149,52 @@ export default function UtilityBar() {
               }}
               aria-haspopup="dialog"
               aria-expanded={openSearch}
-              /* ⬇️ HATA DÜZELTME: Modal kapalıyken aria-controls verme */
               aria-controls={openSearch ? "site-search-dialog" : undefined}
-              title="Sitede ara"
+              title="Site içi arama - Hızlı navigasyon"
             >
-              Ara
+              🔍 Ara
             </button>
 
-            {/* En üste dön */}
+            {/* ✅ İYİLEŞTİRİLDİ: En üste dön */}
             <button
-              className="bar-item"
+              className="bar-item min-h-[44px] text-sm font-medium"
               onClick={withBurst(scrollTopSmooth)}
-              aria-label="En üste dön"
-              title="En üste dön"
+              aria-label="Sayfanın en üstüne dön"
+              title="En üste dön - Hızlı navigasyon"
             >
-              ↑
+              ⬆️ Yukarı
             </button>
 
-            {/* Hızlı iletişim */}
+            {/* ✅ İYİLEŞTİRİLDİ: Hızlı iletişim */}
             <div className="relative">
               <details className="group">
                 <summary
-                  className="bar-item list-none cursor-pointer"
+                  className="bar-item list-none cursor-pointer min-h-[44px] text-sm font-medium"
                   onClick={burst}
-                  aria-label="Hızlı iletişim"
-                  title="Hızlı iletişim"
+                  aria-label="Hızlı iletişim seçenekleri"
+                  title="Hızlı iletişim - Telefon ve WhatsApp"
                 >
-                  İletişim
+                  📞 İletişim
                 </summary>
-                <div className="absolute right-0 bottom-12 mb-2 min-w-44 rounded-xl border border-neutral-200 bg-white p-2 shadow-lg">
+                <div className="absolute right-0 bottom-14 mb-2 min-w-48 rounded-xl border border-neutral-200 bg-white p-3 shadow-xl z-50">
+                  {/* ✅ DEĞİŞTİRİLDİ: Hero ile aynı buton renkleri */}
                   <a
                     href="tel:+905453048671"
-                    className="block rounded-md px-3 py-2 text-sm font-semibold text-white bg-[#6d28d9] hover:bg-[#5b21b6]"
+                    className="block rounded-lg px-4 py-3 text-sm font-semibold text-white bg-indigo-700 hover:bg-indigo-800 transition-colors text-center mb-2"
                     onClick={burst}
+                    title="Hemen arayın - Ücretsiz danışmanlık"
                   >
-                    Hemen Ara
+                    📞 Hemen Ara
                   </a>
                   <a
-                    href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
+                    href="https://wa.me/905453048671?text=Merhaba%2C+sahne+ve+etkinlik+ekipmanları+için+teklif+almak+istiyorum."
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-2 block rounded-md px-3 py-2 text-sm font-semibold text-white bg-[#15803d] hover:bg-[#166534]"
+                    className="block rounded-lg px-4 py-3 text-sm font-semibold text-white bg-emerald-700 hover:bg-emerald-800 transition-colors text-center"
                     onClick={burst}
+                    title="WhatsApp'tan anında teklif alın"
                   >
-                    WhatsApp Teklif
+                    💬 WhatsApp Teklif
                   </a>
                 </div>
               </details>
@@ -184,51 +203,71 @@ export default function UtilityBar() {
         </div>
       </div>
 
-      {/* Basit arama modalı */}
+      {/* ✅ İYİLEŞTİRİLDİ: Arama modalı SEO optimizasyonu */}
       {openSearch && (
         <div
           id="site-search-dialog"
           ref={dialogRef}
-          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 p-0 sm:p-6"
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm p-0 sm:p-6"
           role="dialog"
           aria-modal="true"
-          aria-label="Site içi arama"
+          aria-label="Site içi arama - Hızlı sayfa navigasyonu"
           onClick={(e) => {
             if (e.target === e.currentTarget) setOpenSearch(false);
           }}
         >
-          <div className="w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl bg-white shadow-lg">
-            <div className="flex items-center gap-2 px-4 py-3 border-b">
-              <input
-                type="search"
-                className="w-full rounded-md border border-neutral-200 px-3 py-2 outline-none focus:ring-2 focus:ring-[#6d28d9]/30"
-                placeholder="Ne aramıştınız? (örn. LED ekran)"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
+          <div className="w-full sm:max-w-2xl rounded-t-2xl sm:rounded-2xl bg-white shadow-2xl">
+            <div className="flex items-center gap-3 px-4 py-4 border-b border-neutral-200">
+              <div className="flex-1 relative">
+                <input
+                  type="search"
+                  className="w-full rounded-xl border border-neutral-300 px-4 py-3 text-lg outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  placeholder="Ne aramıştınız? (örn: LED ekran, podyum, sahne...)"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  aria-label="Arama kutusu"
+                  title="Site içi arama - Anahtar kelimeler girin"
+                />
+              </div>
               <button
-                className="ml-1 rounded-md px-3 py-2 text-sm font-semibold bg-neutral-100 hover:bg-neutral-200"
+                className="ml-1 rounded-xl px-4 py-3 text-sm font-semibold bg-neutral-100 hover:bg-neutral-200 transition-colors min-h-[44px]"
                 onClick={() => setOpenSearch(false)}
+                aria-label="Arama modalını kapat"
+                title="Aramayı kapat"
               >
                 Kapat
               </button>
             </div>
-            <ul className="max-h-[50vh] overflow-y-auto p-2">
-              {filtered.length === 0 && (
-                <li className="px-3 py-3 text-sm text-neutral-600">Sonuç bulunamadı.</li>
+            <div className="max-h-[60vh] overflow-y-auto p-3">
+              {filtered.length === 0 ? (
+                <div className="px-3 py-4 text-center text-neutral-600">
+                  <p className="text-lg font-medium">Sonuç bulunamadı</p>
+                  <p className="text-sm mt-1">Lütfen farklı bir anahtar kelime deneyin</p>
+                </div>
+              ) : (
+                <ul className="space-y-2">
+                  {filtered.map((r) => (
+                    <li key={r.href}>
+                      <Link
+                        href={r.href}
+                        className="block rounded-lg px-4 py-3 text-base hover:bg-indigo-50 hover:text-indigo-700 transition-colors border border-transparent hover:border-indigo-200"
+                        onClick={() => setOpenSearch(false)}
+                        title={r.title}
+                      >
+                        {r.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               )}
-              {filtered.map((r) => (
-                <li key={r.href}>
-                  <Link
-                    href={r.href}
-                    className="block rounded-md px-3 py-2 text-sm hover:bg-[#f3f0ff] hover:text-[#815be0]"
-                    onClick={() => setOpenSearch(false)}
-                  >
-                    {r.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+              
+              {/* ✅ YENİ: Arama ipuçları */}
+              <div className="mt-4 pt-4 border-t border-neutral-200">
+                <p className="text-xs text-neutral-500 text-center">
+                  <strong>İpucu:</strong> "podyum", "led ekran", "ses sistemi" gibi anahtar kelimelerle arama yapabilirsiniz
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       )}
