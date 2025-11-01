@@ -1,355 +1,234 @@
 // components/UtilityBar.jsx
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 const ROUTES = [
-  { href: "/", label: "Anasayfa", title: "Sahneva Ana Sayfa - Etkinlik ekipmanları kiralama", icon: "🏠" },
-  { href: "/hakkimizda", label: "Hakkımızda", title: "Sahneva Hakkında - Şirket bilgileri ve referanslar", icon: "👥" },
-  { href: "/iletisim", label: "İletişim", title: "Sahneva İletişim - Bize ulaşın ve teklif alın", icon: "📞" },
-  { href: "/podyum-kiralama", label: "Podyum", title: "Podyum Kiralama - Modüler podyum sistemleri", icon: "👑" },
-  { href: "/led-ekran-kiralama", label: "LED Ekran", title: "LED Ekran Kiralama - Yüksek çözünürlüklü ekranlar", icon: "🖥️" },
-  { href: "/ses-isik-sistemleri", label: "Ses & Işık", title: "Ses ve Işık Sistemleri - Profesyonel ekipman", icon: "🎭" },
-  { href: "/cadir-kiralama", label: "Çadır", title: "Çadır Kiralama - Açık hava etkinlik çözümleri", icon: "⛺" },
-  { href: "/masa-sandalye-kiralama", label: "Masa Sandalye", title: "Masa Sandalye Kiralama - Oturma çözümleri", icon: "🪑" },
-  { href: "/sahne-kiralama", label: "Sahne", title: "Sahne Kiralama - Profesyonel sahne kurulumu", icon: "🎪" },
+  { href: "/", label: "Anasayfa" },
+  { href: "/hakkimizda", label: "Hakkımızda" },
+  { href: "/iletisim", label: "İletişim" },
+  { href: "/podyum-kiralama", label: "Podyum Kiralama" },
+  { href: "/led-ekran-kiralama", label: "LED Ekran Kiralama" },
+  { href: "/ses-isik-sistemleri", label: "Ses Işık Sistemleri" },
+  { href: "/cadir-kiralama", label: "Çadır Kiralama" },
+  { href: "/masa-sandalye-kiralama", label: "Masa Sandalye Kiralama" },
+  { href: "/sahne-kiralama", label: "Sahne Kiralama" },
 ];
 
 export default function UtilityBar() {
   const [openSearch, setOpenSearch] = useState(false);
   const [query, setQuery] = useState("");
-  const [activeTool, setActiveTool] = useState(null);
   const dialogRef = useRef(null);
-  const toolsRef = useRef(null);
 
-  // ✅ ESC ile arama modalını kapat
+  // ESC ile arama modalını kapat
   useEffect(() => {
     const onEsc = (e) => {
-      if (e.key === "Escape") {
-        setOpenSearch(false);
-        setActiveTool(null);
-      }
+      if (e.key === "Escape") setOpenSearch(false);
     };
-    window.addEventListener("keydown", onEsc);
+    if (openSearch) window.addEventListener("keydown", onEsc);
     return () => window.removeEventListener("keydown", onEsc);
-  }, []);
+  }, [openSearch]);
 
-  // ✅ Dışarı tıklama ile araçları kapat
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (toolsRef.current && !toolsRef.current.contains(e.target)) {
-        setActiveTool(null);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  const filtered =
+    query.trim().length === 0
+      ? ROUTES
+      : ROUTES.filter((r) =>
+          r.label.toLowerCase().includes(query.toLowerCase().trim())
+        );
 
-  const filtered = query.trim().length === 0
-    ? ROUTES
-    : ROUTES.filter((r) =>
-        r.label.toLowerCase().includes(query.toLowerCase().trim())
-      );
-
-  // ✅ Yazı boyutu kontrolü - BİLEŞİK ANİMASYON ile
-  const bumpFont = useCallback((delta) => {
+  // Yazı boyutu kontrolü (html --fs değişkeni)
+  const bumpFont = (delta) => {
     const root = document.documentElement;
     const current = parseFloat(
-      getComputedStyle(root).getPropertyValue("--fs") || "100"
+      getComputedStyle(root).getPropertyValue("--fs") || "100%"
     );
-    const next = Math.min(130, Math.max(85, Math.round(current + delta)));
-    
+    const pct = Number.isNaN(current) ? 100 : current;
+    const next = Math.min(130, Math.max(85, Math.round(pct + delta)));
     root.style.setProperty("--fs", `${next}%`);
-    
-    // ✅ Bileşik animasyon: sadece transform
-    document.body.classList.add('font-change-active');
-    setTimeout(() => document.body.classList.remove('font-change-active'), 300);
-  }, []);
+    burst();
+  };
 
-  // ✅ Yüksek kontrast modu
-  const toggleContrast = useCallback(() => {
+  // Yüksek kontrast modu
+  const toggleContrast = () => {
     document.documentElement.classList.toggle("hc");
-    setActiveTool(null);
-  }, []);
+    burst();
+  };
 
-  // ✅ En üste dön
-  const scrollTopSmooth = useCallback(() => {
+  // En üste dön
+  const scrollTopSmooth = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    setActiveTool(null);
-  }, []);
+    burst();
+  };
 
-  // ✅ Optimize edilmiş BİLEŞİK burst efekti
-  const burst = useCallback((e, colors = ["#6366f1", "#8b5cf6"]) => {
-    try {
-      if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
-      
-      const x = e?.clientX ?? window.innerWidth / 2;
-      const y = e?.clientY ?? window.innerHeight - 80;
-      const n = 6;
-      const life = 400;
+  // ==== Burst efekt ====
+  const burst = (e) => {
+    const x = e?.clientX ?? window.innerWidth / 2;
+    const y = e?.clientY ?? window.innerHeight - 80;
+    const n = 12;
+    const life = 600;
+    for (let i = 0; i < n; i++) {
+      const el = document.createElement("span");
+      el.className = "burst-particle";
+      const angle = (Math.PI * 2 * i) / n + Math.random() * 0.3;
+      const dist = 40 + Math.random() * 40;
+      el.style.setProperty("--dx", Math.cos(angle) * dist + "px");
+      el.style.setProperty("--dy", Math.sin(angle) * dist + "px");
+      el.style.setProperty("--dr", `${(Math.random() * 60 - 30).toFixed(1)}deg`);
+      el.style.setProperty("--life", `${life}ms`);
+      el.style.setProperty("--burst-c1", i % 2 === 0 ? "#6d28d9" : "#22c55e");
+      el.style.setProperty("--burst-c2", i % 2 === 0 ? "#22c55e" : "#6d28d9");
+      const s = 6 + Math.random() * 6;
+      el.style.width = el.style.height = `${s}px`;
+      el.style.left = `${x}px`;
+      el.style.top = `${y}px`;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), life + 50);
+    }
+  };
 
-      const fragment = document.createDocumentFragment();
-      
-      for (let i = 0; i < n; i++) {
-        const el = document.createElement("span");
-        el.className = "burst-particle";
-        el.setAttribute("aria-hidden", "true");
-        el.setAttribute("role", "presentation");
-        
-        // ✅ BİLEŞİK ANİMASYON: sadece transform ve opacity
-        const angle = (Math.PI * 2 * i) / n + Math.random() * 0.2;
-        const dist = 25 + Math.random() * 20;
-        
-        // Transform kullan - bileşik animasyon
-        const translateX = Math.cos(angle) * dist;
-        const translateY = Math.sin(angle) * dist;
-        const rotate = (Math.random() * 40 - 20);
-        
-        el.style.transform = `translate(${translateX}px, ${translateY}px) rotate(${rotate}deg)`;
-        el.style.opacity = '1';
-        
-        el.style.setProperty("--life", `${life}ms`);
-        el.style.background = `linear-gradient(135deg, ${i % 2 === 0 ? colors[0] : colors[1]}, ${i % 2 === 0 ? colors[1] : colors[0]})`;
-        
-        const s = 4 + Math.random() * 4;
-        el.style.width = `${s}px`;
-        el.style.height = `${s}px`;
-        el.style.left = `${x}px`;
-        el.style.top = `${y}px`;
-        
-        fragment.appendChild(el);
-        
-        // ✅ Animasyon sonunda elementi kaldır
-        el.animate([
-          { transform: 'translate(0, 0) rotate(0deg)', opacity: 1 },
-          { transform: `translate(${translateX}px, ${translateY}px) rotate(${rotate}deg)`, opacity: 0 }
-        ], {
-          duration: life,
-          easing: 'ease-out',
-          fill: 'forwards'
-        });
-        
-        setTimeout(() => {
-          if (el.parentNode) el.parentNode.removeChild(el);
-        }, life);
-      }
-      
-      document.body.appendChild(fragment);
-    } catch {}
-  }, []);
-
-  // ✅ Tool toggle fonksiyonu
-  const toggleTool = useCallback((toolName, e) => {
-    burst(e, ["#06b6d4", "#8b5cf6"]);
-    setActiveTool(activeTool === toolName ? null : toolName);
-  }, [activeTool, burst]);
+  const withBurst = (fn) => (e) => {
+    burst(e);
+    fn?.();
+  };
 
   return (
     <>
-      {/* ✅ Bottom utility bar - BİLEŞİK ANİMASYONLAR ile */}
+      {/* Bottom utility bar (sadece mobil & tablet) */}
       <div
-        ref={toolsRef}
-        className="utility-bar-container"
+        className="fixed bottom-0 inset-x-0 z-40 lg:hidden bg-white border-t border-neutral-200 shadow-sm pb-safe"
         role="region"
-        aria-label="Erişilebilirlik araçları ve hızlı navigasyon"
+        aria-label="Kullanıcı araç çubuğu"
       >
-        <div className="utility-bar-content">
-          {/* ✅ Erişilebilirlik araçları */}
-          <div className="utility-tool-wrapper">
+        <div className="mx-auto max-w-screen-md px-3">
+          <div className="grid grid-cols-5 gap-2 py-2">
+            {/* Yazı küçült */}
             <button
-              className={`utility-btn group ${activeTool === 'accessibility' ? 'utility-btn-active' : ''}`}
-              onClick={(e) => toggleTool('accessibility', e)}
-              aria-label="Erişilebilirlik araçları"
-              title="Erişilebilirlik araçları - Yazı boyutu ve kontrast"
+              className="bar-item"
+              onClick={withBurst(() => bumpFont(-5))}
+              aria-label="Yazı boyutunu küçült"
+              title="Yazı küçült"
             >
-              <span className="utility-icon">♿</span>
-              <div className="utility-dot"></div>
+              A-
             </button>
 
-            {activeTool === 'accessibility' && (
-              <div className="utility-tooltip">
-                <div className="utility-tooltip-content">
-                  <div className="font-size-controls">
-                    <span className="control-label">Yazı Boyutu</span>
-                    <div className="font-buttons">
-                      <button
-                        className="font-btn"
-                        onClick={() => bumpFont(-5)}
-                        aria-label="Yazı boyutunu küçült"
-                      >
-                        A-
-                      </button>
-                      <button
-                        className="font-btn"
-                        onClick={() => bumpFont(+5)}
-                        aria-label="Yazı boyutunu büyüt"
-                      >
-                        A+
-                      </button>
-                    </div>
-                  </div>
-                  
-                  <button
-                    className="contrast-btn"
-                    onClick={toggleContrast}
-                    aria-label="Yüksek kontrast modunu aç/kapat"
-                  >
-                    🎨 Kontrast Modu
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* ✅ Arama butonu */}
-          <div className="utility-tool-wrapper">
+            {/* Yazı büyüt */}
             <button
-              className="utility-btn group"
+              className="bar-item"
+              onClick={withBurst(() => bumpFont(+5))}
+              aria-label="Yazı boyutunu büyüt"
+              title="Yazı büyüt"
+            >
+              A+
+            </button>
+
+            {/* Arama */}
+            <button
+              className="bar-item"
               onClick={(e) => {
-                burst(e, ["#10b981", "#06b6d4"]);
+                burst(e);
                 setOpenSearch(true);
-                setActiveTool(null);
                 setTimeout(() => dialogRef.current?.querySelector("input")?.focus(), 60);
               }}
               aria-haspopup="dialog"
               aria-expanded={openSearch}
+              /* ⬇️ HATA DÜZELTME: Modal kapalıyken aria-controls verme */
               aria-controls={openSearch ? "site-search-dialog" : undefined}
-              title="Site içi arama - Hızlı navigasyon"
+              title="Sitede ara"
             >
-              <span className="utility-icon">🔍</span>
-              <div className="utility-dot"></div>
+              Ara
             </button>
-          </div>
 
-          {/* ✅ En üste dön */}
-          <div className="utility-tool-wrapper">
+            {/* En üste dön */}
             <button
-              className="utility-btn group"
-              onClick={(e) => {
-                burst(e, ["#f59e0b", "#ef4444"]);
-                scrollTopSmooth();
-              }}
-              aria-label="Sayfanın en üstüne dön"
-              title="En üste dön - Hızlı navigasyon"
+              className="bar-item"
+              onClick={withBurst(scrollTopSmooth)}
+              aria-label="En üste dön"
+              title="En üste dön"
             >
-              <span className="utility-icon">⬆️</span>
-              <div className="utility-dot"></div>
-            </button>
-          </div>
-
-          {/* ✅ Hızlı iletişim */}
-          <div className="utility-tool-wrapper">
-            <button
-              className={`utility-btn group ${activeTool === 'contact' ? 'utility-btn-active' : ''}`}
-              onClick={(e) => toggleTool('contact', e)}
-              aria-label="Hızlı iletişim seçenekleri"
-              title="Hızlı iletişim - Telefon ve WhatsApp"
-            >
-              <span className="utility-icon">📞</span>
-              <div className="utility-dot"></div>
+              ↑
             </button>
 
-            {activeTool === 'contact' && (
-              <div className="utility-tooltip">
-                <div className="utility-tooltip-content">
+            {/* Hızlı iletişim */}
+            <div className="relative">
+              <details className="group">
+                <summary
+                  className="bar-item list-none cursor-pointer"
+                  onClick={burst}
+                  aria-label="Hızlı iletişim"
+                  title="Hızlı iletişim"
+                >
+                  İletişim
+                </summary>
+                <div className="absolute right-0 bottom-12 mb-2 min-w-44 rounded-xl border border-neutral-200 bg-white p-2 shadow-lg">
                   <a
                     href="tel:+905453048671"
-                    className="contact-btn phone"
-                    onClick={(e) => burst(e, ["#3b82f6", "#8b5cf6"])}
-                    title="Hemen arayın - Ücretsiz danışmanlık"
+                    className="block rounded-md px-3 py-2 text-sm font-semibold text-white bg-[#6d28d9] hover:bg-[#5b21b6]"
+                    onClick={burst}
                   >
-                    📞 Hemen Ara
+                    Hemen Ara
                   </a>
                   <a
-                    href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ulaşıyorum.+Sahne+kiralama+ve+LED+ekran+fiyatları+hakkında+detaylı+teklif+almak+istiyorum."
+                    href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum."
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="contact-btn whatsapp"
-                    aria-label="WhatsApp iletişim"
+                    className="mt-2 block rounded-md px-3 py-2 text-sm font-semibold text-white bg-[#15803d] hover:bg-[#166534]"
+                    onClick={burst}
                   >
-                    <span className="whatsapp-icon">💬</span>
-                    WhatsApp'tan Hemen Teklif Al
+                    WhatsApp Teklif
                   </a>
                 </div>
-              </div>
-            )}
+              </details>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* ✅ Arama modalı */}
+      {/* Basit arama modalı */}
       {openSearch && (
         <div
           id="site-search-dialog"
           ref={dialogRef}
-          className="search-modal-overlay"
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 p-0 sm:p-6"
           role="dialog"
           aria-modal="true"
-          aria-label="Site içi arama - Hızlı sayfa navigasyonu"
+          aria-label="Site içi arama"
           onClick={(e) => {
             if (e.target === e.currentTarget) setOpenSearch(false);
           }}
         >
-          <div className="search-modal-container">
-            <div className="search-header">
-              <div className="search-input-wrapper">
-                <div className="search-icon">🔍</div>
-                <input
-                  type="search"
-                  className="search-input"
-                  placeholder="Ne aramıştınız? (örn: LED ekran, podyum, sahne...)"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  aria-label="Arama kutusu"
-                  title="Site içi arama - Anahtar kelimeler girin"
-                />
-              </div>
+          <div className="w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl bg-white shadow-lg">
+            <div className="flex items-center gap-2 px-4 py-3 border-b">
+              <input
+                type="search"
+                className="w-full rounded-md border border-neutral-200 px-3 py-2 outline-none focus:ring-2 focus:ring-[#6d28d9]/30"
+                placeholder="Ne aramıştınız? (örn. LED ekran)"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
               <button
-                className="search-close-btn"
+                className="ml-1 rounded-md px-3 py-2 text-sm font-semibold bg-neutral-100 hover:bg-neutral-200"
                 onClick={() => setOpenSearch(false)}
-                aria-label="Arama modalını kapat"
-                title="Aramayı kapat"
               >
                 Kapat
               </button>
             </div>
-            <div className="search-results">
-              {filtered.length === 0 ? (
-                <div className="no-results">
-                  <div className="no-results-icon">🔍</div>
-                  <p className="no-results-title">Sonuç bulunamadı</p>
-                  <p className="no-results-description">Lütfen farklı bir anahtar kelime deneyin</p>
-                </div>
-              ) : (
-                <ul className="results-list">
-                  {filtered.map((r) => (
-                    <li key={r.href}>
-                      <Link
-                        href={r.href}
-                        className="result-item"
-                        onClick={() => setOpenSearch(false)}
-                        title={r.title}
-                      >
-                        <span className="result-icon">
-                          {r.icon}
-                        </span>
-                        <span className="result-label">{r.label}</span>
-                        <span className="result-url">
-                          {r.href}
-                        </span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+            <ul className="max-h-[50vh] overflow-y-auto p-2">
+              {filtered.length === 0 && (
+                <li className="px-3 py-3 text-sm text-neutral-600">Sonuç bulunamadı.</li>
               )}
-              
-              <div className="search-tips">
-                <p className="tips-text">
-                  <strong>İpucu:</strong> "podyum", "led ekran", "ses sistemi" gibi anahtar kelimelerle arama yapabilirsiniz
-                </p>
-              </div>
-            </div>
+              {filtered.map((r) => (
+                <li key={r.href}>
+                  <Link
+                    href={r.href}
+                    className="block rounded-md px-3 py-2 text-sm hover:bg-[#f3f0ff] hover:text-[#815be0]"
+                    onClick={() => setOpenSearch(false)}
+                  >
+                    {r.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       )}
