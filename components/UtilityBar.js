@@ -117,6 +117,7 @@ export default function UtilityBar() {
               className={`utility-btn ${activeTool === 'accessibility' ? 'utility-btn-active' : ''}`}
               onClick={() => toggleTool('accessibility')}
               title="Erişilebilirlik araçları"
+              aria-label="Erişilebilirlik araçları"
             >
               <span className="utility-icon">♿</span>
               <span className="utility-dot"></span>
@@ -128,11 +129,27 @@ export default function UtilityBar() {
                   <div className="font-size-controls">
                     <div className="control-label">Yazı Boyutu</div>
                     <div className="font-buttons">
-                      <button onClick={() => bumpFont(-1)} className="font-btn">A-</button>
-                      <button onClick={() => bumpFont(1)} className="font-btn">A+</button>
+                      <button 
+                        onClick={() => bumpFont(-1)} 
+                        className="font-btn"
+                        aria-label="Yazı boyutunu küçült"
+                      >
+                        A-
+                      </button>
+                      <button 
+                        onClick={() => bumpFont(1)} 
+                        className="font-btn"
+                        aria-label="Yazı boyutunu büyüt"
+                      >
+                        A+
+                      </button>
                     </div>
                   </div>
-                  <button onClick={toggleContrast} className="contrast-btn">
+                  <button 
+                    onClick={toggleContrast} 
+                    className="contrast-btn"
+                    aria-label="Yüksek kontrast modunu aç/kapat"
+                  >
                     🎨 Yüksek Kontrast
                   </button>
                 </div>
@@ -143,11 +160,13 @@ export default function UtilityBar() {
           {/* Arama Butonu */}
           <div className="utility-tool-wrapper">
             <button
-              className="utility-btn"
+              className={`utility-btn ${activeTool === 'search' ? 'utility-btn-active' : ''}`}
               onClick={openSearchModal}
               title="Site içi arama"
+              aria-label="Site içi arama"
             >
               <span className="utility-icon">🔍</span>
+              <span className="utility-dot"></span>
             </button>
           </div>
 
@@ -157,6 +176,7 @@ export default function UtilityBar() {
               className="utility-btn"
               onClick={scrollTop}
               title="En üste dön"
+              aria-label="Sayfanın en üstüne git"
             >
               <span className="utility-icon">⬆️</span>
             </button>
@@ -168,6 +188,7 @@ export default function UtilityBar() {
               className={`utility-btn ${activeTool === 'contact' ? 'utility-btn-active' : ''}`}
               onClick={() => toggleTool('contact')}
               title="Hızlı iletişim"
+              aria-label="Hızlı iletişim seçenekleri"
             >
               <span className="utility-icon">📞</span>
               <span className="utility-dot"></span>
@@ -180,6 +201,7 @@ export default function UtilityBar() {
                     href="tel:+905453048671" 
                     className="contact-btn phone"
                     onClick={() => setActiveTool(null)}
+                    aria-label="Telefon ile ara"
                   >
                     📞 Hemen Ara
                   </a>
@@ -189,9 +211,9 @@ export default function UtilityBar() {
                     rel="noopener noreferrer"
                     className="contact-btn whatsapp"
                     onClick={() => setActiveTool(null)}
+                    aria-label="WhatsApp'tan mesaj gönder"
                   >
-                    <span className="whatsapp-icon">💬</span>
-                    WhatsApp'tan Yaz
+                    💬 WhatsApp'tan Yaz
                   </a>
                 </div>
               </div>
@@ -206,6 +228,9 @@ export default function UtilityBar() {
         <div 
           className="search-modal-overlay"
           onClick={() => setSearchOpen(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="search-input"
         >
           <div 
             ref={dialogRef}
@@ -218,23 +243,25 @@ export default function UtilityBar() {
                 <input
                   type="text"
                   className="search-input"
-                  placeholder="Ne aramıştınız?"
+                  placeholder="Ne aramıştınız? (sahne, led ekran, ses sistemi...)"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   id="search-input"
                   name="search"
                   autoComplete="off"
+                  aria-describedby="search-results"
                 />
               </div>
               <button 
                 className="search-close-btn"
                 onClick={() => setSearchOpen(false)}
+                aria-label="Arama penceresini kapat"
               >
                 Kapat
               </button>
             </div>
 
-            <div className="search-results">
+            <div id="search-results" className="search-results">
               {filtered.length === 0 ? (
                 <div className="no-results">
                   <div className="no-results-icon">🔍</div>
@@ -254,10 +281,10 @@ export default function UtilityBar() {
                         setSearchOpen(false);
                         setActiveTool(null);
                       }}
+                      aria-label={`${route.label} sayfasına git`}
                     >
                       <span className="result-icon">{route.icon}</span>
                       <span className="result-label">{route.label}</span>
-                      <span className="result-url">{route.href}</span>
                     </Link>
                   ))}
                 </div>
