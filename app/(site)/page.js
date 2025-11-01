@@ -11,12 +11,12 @@ import CorporateEvents from "../../components/CorporateEvents";
 import Faq from "../../components/Faq";
 import ReviewBanner from "../../components/ReviewBanner";
 
-// Dynamic imports with proper paths
+// Dynamic imports with proper paths - SSR: FALSE KALDIRILDI
 const ServicesTabsLazy = dynamic(
   () => import("../../components/ServicesTabs"),
   { 
     loading: () => <SectionSkeleton label="Hizmetler yükleniyor" />,
-    ssr: false
+    // ❌ ssr: false KALDIRILDI - Server Components'te çalışmaz
   }
 );
 
@@ -24,7 +24,7 @@ const ProjectsGalleryLazy = dynamic(
   () => import("../../components/ProjectsGallery"),
   { 
     loading: () => <SectionSkeleton label="Projeler yükleniyor" />,
-    ssr: false
+    // ❌ ssr: false KALDIRILDI - Server Components'te çalışmaz
   }
 );
 
@@ -146,7 +146,7 @@ export default function HomePage() {
         Ana içeriğe atla
       </a>
 
-      {/* HERO - 1. Kodun Gelişmiş Hero Bölümü */}
+      {/* HERO */}
       <section
         className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 pt-16 lg:pt-20"
         aria-labelledby="hero-title"
@@ -271,7 +271,6 @@ export default function HomePage() {
               ))}
             </div>
 
-            {/* 2. Kodun Gelişmiş Teklif Bölümü */}
             <div className="bg-gradient-to-r from-blue-600/90 to-purple-600/90 backdrop-blur-md rounded-2xl p-6 md:p-8 border border-white/20 shadow-xl max-w-4xl mx-auto">
               <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
                 <div className="flex-shrink-0">
@@ -301,7 +300,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Scroll cue - 1. Kodun Gelişmiş Versiyonu */}
         <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
           <div className="animate-bounce motion-reduce:animate-none">
             <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
@@ -312,7 +310,6 @@ export default function HomePage() {
       </section>
 
       <main id="main" className="relative">
-        {/* CLS için yükseklik guard (banner yüksekliği kadar boşluk) - 1. Koddan */}
         <div aria-hidden="true" className="h-12 lg:h-16" />
         <div className="sticky top-0 z-40">
           <ReviewBanner />
@@ -320,7 +317,6 @@ export default function HomePage() {
 
         <ServicesSection />
 
-        {/* PROJELER - İki Koddan En İyileri Birleştirilmiş */}
         <section 
           className="py-12 bg-gradient-to-br from-neutral-900 to-blue-900/95"
           aria-labelledby="projeler-title"
@@ -349,7 +345,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* KURUMSAL - 2. Koddan */}
         <section className="py-12 bg-white" aria-labelledby="kurumsal-title">
           <div className="container">
             <div className="text-center mb-12">
@@ -364,7 +359,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* NEDEN BİZ - İki Koddan Zenginleştirilmiş */}
         <section
           className="py-12 bg-gradient-to-br from-blue-50/80 to-purple-50/60"
           aria-labelledby="neden-tercih-heading"
@@ -448,7 +442,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* SEO İÇERİK - 2. Kodun Zengin İçeriği */}
         <section className="py-12 bg-white" aria-labelledby="seo-title">
           <div className="container">
             <h2 id="seo-title" className="text-3xl md:text-4xl font-black text-center mb-12 text-neutral-900">
@@ -532,7 +525,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* BÜYÜK ÖLÇEKLİ ETKİNLİKLER - 2. Kodun Detaylı İçeriği */}
         <section className="py-12 bg-gradient-to-br from-neutral-50 to-blue-100/50">
           <div className="container max-w-6xl">
             <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 border border-neutral-200">
@@ -619,7 +611,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* SSS - 1. Kodun Yapısıyla */}
         <section className="py-12 bg-white" aria-labelledby="faq-title">
           <div className="container">
             <div className="text-center mb-12">
