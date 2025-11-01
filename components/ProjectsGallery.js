@@ -4,10 +4,10 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import Image from "next/image";
 
-// ✅ OPTİMİZE: Responsive sizes
+// Kart genişliğine göre gerçekçi sizes değerleri (3 kolon)
 const COVER_SIZES =
   "(max-width: 640px) calc(100vw - 2rem), " +
-  "(max-width: 768px) calc((100vw - 3rem) / 2), " +
+  "(max-width: 1024px) calc((100vw - 3rem) / 2), " +
   "calc((100vw - 4rem) / 3)";
 
 const LIGHTBOX_SIZES =
@@ -15,7 +15,7 @@ const LIGHTBOX_SIZES =
   "(max-width: 1200px) 90vw, " +
   "min(1024px, 80vw)";
 
-// ✅ GALLERIES
+// Galeriler
 const GALLERIES = {
   "LED Ekran Kiralama": {
     images: [
@@ -134,31 +134,28 @@ const GALLERIES = {
   },
 };
 
-// ✅ Premium blur placeholder
 const BLUR_DATA_URL =
   "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R";
-
-// ------------------------------------------------------------
 
 export default function ProjectsGallery() {
   const [isOpen, setIsOpen] = useState(false);
   const [anim, setAnim] = useState(false);
   const [title, setTitle] = useState("");
-  const [items, setItems] = useState<string[]>([]);
+  const [items, setItems] = useState([]);
   const [index, setIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
-  const lastFocus = useRef<HTMLElement | null>(null);
-  const closeBtnRef = useRef<HTMLButtonElement | null>(null);
+  const lastFocus = useRef(null);
+  const closeBtnRef = useRef(null);
   const scrollYRef = useRef(0);
-  const liveRef = useRef<HTMLDivElement | null>(null);
+  const liveRef = useRef(null);
 
   useEffect(() => setMounted(true), []);
 
-  const open = useCallback((groupTitle: string, images: string[], startIndex = 0) => {
-    lastFocus.current = document.activeElement as HTMLElement | null;
+  const open = useCallback((groupTitle, images, startIndex = 0) => {
+    lastFocus.current = document.activeElement;
     setTitle(groupTitle);
     setItems(images);
     setIndex(startIndex);
@@ -167,7 +164,7 @@ export default function ProjectsGallery() {
 
     if (liveRef.current) {
       setTimeout(() => {
-        liveRef.current!.textContent = `${groupTitle} galerisi açıldı, ${images.length} profesyonel proje`;
+        liveRef.current.textContent = `${groupTitle} galerisi açıldı, ${images.length} profesyonel proje`;
         setTimeout(() => {
           if (liveRef.current) liveRef.current.textContent = "";
         }, 2000);
@@ -179,7 +176,7 @@ export default function ProjectsGallery() {
     setAnim(false);
     setTimeout(() => {
       setIsOpen(false);
-      lastFocus.current?.focus?.();
+      if (lastFocus.current && lastFocus.current.focus) lastFocus.current.focus();
     }, 200);
   }, []);
 
@@ -197,24 +194,20 @@ export default function ProjectsGallery() {
     if (!isOpen) return;
 
     scrollYRef.current = window.scrollY;
-    const scrollbarWidth =
-      window.innerWidth - document.documentElement.clientWidth;
+    const sw = window.innerWidth - document.documentElement.clientWidth;
 
     document.body.style.position = "fixed";
     document.body.style.top = `-${scrollYRef.current}px`;
     document.body.style.overflow = "hidden";
-    if (scrollbarWidth > 0) {
-      document.body.style.paddingRight = `${scrollbarWidth}px`;
-    }
+    if (sw > 0) document.body.style.paddingRight = `${sw}px`;
 
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const onKey = (e) => {
       if (e.key === "Escape") close();
       if (e.key === "ArrowLeft") prev();
       if (e.key === "ArrowRight") next();
     };
-
-    window.addEventListener("keydown", handleKeyDown);
-    setTimeout(() => closeBtnRef.current?.focus(), 100);
+    window.addEventListener("keydown", onKey);
+    setTimeout(() => closeBtnRef.current && closeBtnRef.current.focus(), 100);
 
     return () => {
       const y = scrollYRef.current;
@@ -223,15 +216,12 @@ export default function ProjectsGallery() {
       document.body.style.overflow = "";
       document.body.style.paddingRight = "";
       window.scrollTo(0, y);
-      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keydown", onKey);
     };
   }, [isOpen, close, prev, next]);
 
-  const onTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const onTouchEnd = (e: React.TouchEvent) => {
+  const onTouchStart = (e) => (touchStartX.current = e.touches[0].clientX);
+  const onTouchEnd = (e) => {
     touchEndX.current = e.changedTouches[0].clientX;
     const dx = touchEndX.current - touchStartX.current;
     if (Math.abs(dx) > 50) (dx > 0 ? prev() : next());
@@ -239,15 +229,15 @@ export default function ProjectsGallery() {
 
   if (!mounted) {
     return (
-      <section className="relative pt-4 pb-10 bg-transparent">
+      <section className="relative pt-2 pb-8 bg-transparent">
         <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((k) => (
               <div key={k} className="group">
-                <div className="h-80 bg-gradient-to-br from-gray-200 to-gray-300 rounded-2xl animate-pulse mb-3"></div>
-                <div className="h-5 bg-gray-200 rounded animate-pulse w-3/4 mb-1.5"></div>
-                <div className="h-4 bg-gray-200 rounded animate-pulse w-full mb-1"></div>
-                <div className="h-4 bg-gray-200 rounded animate-pulse w-2/3"></div>
+                <div className="h-80 bg-gradient-to-br from-gray-200 to-gray-300 rounded-2xl animate-pulse mb-3" />
+                <div className="h-5 bg-gray-200 rounded animate-pulse w-3/4 mb-1.5" />
+                <div className="h-4 bg-gray-200 rounded animate-pulse w-full mb-1" />
+                <div className="h-4 bg-gray-200 rounded animate-pulse w-2/3" />
               </div>
             ))}
           </div>
@@ -257,18 +247,13 @@ export default function ProjectsGallery() {
   }
 
   const prefersReducedMotion =
-    typeof window !== "undefined"
-      ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      : false;
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   return (
-    // 🔻 Boşluk azaltıldı ve arka plan şeffaf
-    <section className="relative pt-4 pb-10 bg-transparent">
-      {/* Dekorları kapatmak istersen bu bloğu silebilirsin */}
-      {/* <div className="absolute inset-0 overflow-hidden pointer-events-none" /> */}
-
+    // Boşluklar azaltıldı + şerit kaldırıldı
+    <section className="relative pt-2 pb-8 bg-transparent">
       <div className="container relative z-10">
-        {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="list">
           {Object.entries(GALLERIES).map(([groupTitle, galleryData], i) => {
             const images = galleryData.images;
@@ -294,10 +279,11 @@ export default function ProjectsGallery() {
                         prefersReducedMotion ? "" : "group-hover:scale-110"
                       }`}
                       sizes={COVER_SIZES}
-                      quality={80}
+                      quality={75}         // → byte düşür
                       loading={i < 2 ? "eager" : "lazy"}
                       placeholder="blur"
                       blurDataURL={BLUR_DATA_URL}
+                      priority={i === 0}   // → LCP’yi iyileştir
                     />
 
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -341,9 +327,7 @@ export default function ProjectsGallery() {
                       className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200 flex items-center gap-1 group/btn"
                     >
                       Tümünü Gör
-                      <span className="transform group-hover/btn:translate-x-1 transition-transform duration-200">
-                        →
-                      </span>
+                      <span className="transform group-hover/btn:translate-x-1 transition-transform duration-200">→</span>
                     </button>
                   </div>
                 </div>
@@ -353,6 +337,7 @@ export default function ProjectsGallery() {
         </div>
       </div>
 
+      {/* Screen reader live region */}
       <div ref={liveRef} aria-live="polite" className="sr-only" />
 
       {isOpen && (
@@ -407,16 +392,9 @@ export default function ProjectsGallery() {
               fill
               className="object-contain rounded-xl"
               sizes={LIGHTBOX_SIZES}
-              quality={90}
+              quality={85}
               priority
             />
-          </div>
-
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/90 text-base font-medium bg-black/50 backdrop-blur-sm py-3 px-6 rounded-2xl border border-white/20 min-w-[200px] text-center">
-            <div className="font-semibold text-white mb-1">{title}</div>
-            <div className="text-sm text-white/70">
-              {index + 1} / {items.length} • Profesyonel Kurulum
-            </div>
           </div>
 
           {items.length > 1 && (
