@@ -20,7 +20,7 @@ export const viewport = {
   themeColor: "#6d28d9",
 };
 
-// Metadata
+// Metadata (genel)
 export const metadata = {
   metadataBase: new URL("https://www.sahneva.com"),
   title: {
@@ -40,80 +40,6 @@ export const metadata = {
   },
 };
 
-// JSON-LD sadece anasayfada ("/") basılsın
-function StructuredDataHomeOnly() {
-  "use client";
-  const { usePathname } = require("next/navigation");
-  const pathname = usePathname();
-  if (pathname !== "/") return null;
-
-  const ORG = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "Sahneva",
-    url: "https://www.sahneva.com",
-    logo: "https://www.sahneva.com/img/logo.png",
-    telephone: "+905453048671",
-    contactPoint: [
-      {
-        "@type": "ContactPoint",
-        telephone: "+905453048671",
-        contactType: "customer service",
-        areaServed: "TR",
-        availableLanguage: ["tr"],
-      },
-    ],
-  };
-
-  const WEBSITE = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "Sahneva",
-    url: "https://www.sahneva.com",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: "https://www.sahneva.com/aramalar?query={search_term_string}",
-      "query-input": "required name=search_term_string",
-    },
-  };
-
-  const SERVICE = {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    name: "Etkinlik Ekipmanları Kiralama",
-    description:
-      "Türkiye genelinde sahne, podyum, LED ekran, ses ve ışık sistemleri kiralama; kurulum ve teknik operasyon.",
-    url: "https://www.sahneva.com",
-    areaServed: { "@type": "Country", name: "TR" },
-    serviceType: [
-      "Sahne Kiralama",
-      "Podyum Kiralama",
-      "LED Ekran Kiralama",
-      "Ses Sistemi Kiralama",
-      "Işık Sistemi Kiralama",
-      "Etkinlik Prodüksiyon",
-    ],
-    provider: {
-      "@type": "Organization",
-      name: "Sahneva",
-      url: "https://www.sahneva.com",
-      telephone: "+905453048671",
-      logo: "https://www.sahneva.com/img/logo.png",
-    },
-  };
-
-  return (
-    <>
-      <script id="ld-org" type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(ORG) }} />
-      <script id="ld-website" type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(WEBSITE) }} />
-      <script id="ld-service" type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(SERVICE) }} />
-    </>
-  );
-}
-
 export default function RootLayout({ children }) {
   return (
     <html lang="tr" className={inter.className}>
@@ -127,12 +53,7 @@ export default function RootLayout({ children }) {
         </a>
 
         <Navbar />
-
-        {/* Rich Snippet’ler sadece /’ta */}
-        <StructuredDataHomeOnly />
-
         <main id="main">{children}</main>
-
         <Footer />
       </body>
     </html>
