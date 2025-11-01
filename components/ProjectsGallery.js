@@ -4,168 +4,170 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import Image from "next/image";
 
-// ✅ OPTİMİZE: Responsive sizes değerleri
+// ✅ OPTİMİZE: Responsive sizes
 const COVER_SIZES =
   "(max-width: 640px) calc(100vw - 2rem), " +
   "(max-width: 768px) calc((100vw - 3rem) / 2), " +
   "calc((100vw - 4rem) / 3)";
 
-const LIGHTBOX_SIZES = 
+const LIGHTBOX_SIZES =
   "(max-width: 768px) 100vw, " +
   "(max-width: 1200px) 90vw, " +
   "min(1024px, 80vw)";
 
-// components/ProjectsGallery.js - GALLERIES objesi güncellendi
-
-// ✅ OPTİMİZE: 3 galeri - Podyum Kiralama eklendi
+// ✅ GALLERIES
 const GALLERIES = {
   "LED Ekran Kiralama": {
     images: [
       "/img/galeri/led-ekran-kiralama-1.webp",
-    "/img/galeri/led-ekran-kiralama-2.webp",
-    "/img/galeri/led-ekran-kiralama-3.webp",
-    "/img/galeri/led-ekran-kiralama-4.webp",
-    "/img/galeri/led-ekran-kiralama-5.webp",
-    "/img/galeri/led-ekran-kiralama-6.webp",
-    "/img/galeri/led-ekran-kiralama-7.webp",
-    "/img/galeri/led-ekran-kiralama-8.webp",
-    "/img/galeri/led-ekran-kiralama-9.webp",
-    "/img/galeri/led-ekran-kiralama-10.webp",
-    "/img/galeri/led-ekran-kiralama-11.webp",
-    "/img/galeri/led-ekran-kiralama-12.webp",
-    "/img/galeri/led-ekran-kiralama-13.webp",
-    "/img/galeri/led-ekran-kiralama-14.webp",
-    "/img/galeri/led-ekran-kiralama-15.webp",
-    "/img/galeri/led-ekran-kiralama-16.webp",
-    "/img/galeri/led-ekran-kiralama-17.webp",
-    "/img/galeri/led-ekran-kiralama-18.webp",
-    "/img/galeri/led-ekran-kiralama-19.webp",
-    "/img/galeri/led-ekran-kiralama-20.webp",
-    "/img/galeri/led-ekran-kiralama-21.webp",
-    "/img/galeri/led-ekran-kiralama-22.webp",
-    "/img/galeri/led-ekran-kiralama-23.webp",
-    "/img/galeri/led-ekran-kiralama-24.webp",
-    "/img/galeri/led-ekran-kiralama-25.webp",
-    "/img/galeri/led-ekran-kiralama-26.webp",
-    "/img/galeri/led-ekran-kiralama-27.webp",
-    "/img/galeri/led-ekran-kiralama-28.webp",
-    "/img/galeri/led-ekran-kiralama-29.webp",
-    "/img/galeri/led-ekran-kiralama-30.webp",
-    "/img/galeri/led-ekran-kiralama-31.webp",
-    "/img/galeri/led-ekran-kiralama-32.webp",
-    "/img/galeri/led-ekran-kiralama-33.webp",
-    "/img/galeri/led-ekran-kiralama-34.webp",
-    "/img/galeri/led-ekran-kiralama-35.webp",
-    "/img/galeri/led-ekran-kiralama-36.webp",
+      "/img/galeri/led-ekran-kiralama-2.webp",
+      "/img/galeri/led-ekran-kiralama-3.webp",
+      "/img/galeri/led-ekran-kiralama-4.webp",
+      "/img/galeri/led-ekran-kiralama-5.webp",
+      "/img/galeri/led-ekran-kiralama-6.webp",
+      "/img/galeri/led-ekran-kiralama-7.webp",
+      "/img/galeri/led-ekran-kiralama-8.webp",
+      "/img/galeri/led-ekran-kiralama-9.webp",
+      "/img/galeri/led-ekran-kiralama-10.webp",
+      "/img/galeri/led-ekran-kiralama-11.webp",
+      "/img/galeri/led-ekran-kiralama-12.webp",
+      "/img/galeri/led-ekran-kiralama-13.webp",
+      "/img/galeri/led-ekran-kiralama-14.webp",
+      "/img/galeri/led-ekran-kiralama-15.webp",
+      "/img/galeri/led-ekran-kiralama-16.webp",
+      "/img/galeri/led-ekran-kiralama-17.webp",
+      "/img/galeri/led-ekran-kiralama-18.webp",
+      "/img/galeri/led-ekran-kiralama-19.webp",
+      "/img/galeri/led-ekran-kiralama-20.webp",
+      "/img/galeri/led-ekran-kiralama-21.webp",
+      "/img/galeri/led-ekran-kiralama-22.webp",
+      "/img/galeri/led-ekran-kiralama-23.webp",
+      "/img/galeri/led-ekran-kiralama-24.webp",
+      "/img/galeri/led-ekran-kiralama-25.webp",
+      "/img/galeri/led-ekran-kiralama-26.webp",
+      "/img/galeri/led-ekran-kiralama-27.webp",
+      "/img/galeri/led-ekran-kiralama-28.webp",
+      "/img/galeri/led-ekran-kiralama-29.webp",
+      "/img/galeri/led-ekran-kiralama-30.webp",
+      "/img/galeri/led-ekran-kiralama-31.webp",
+      "/img/galeri/led-ekran-kiralama-32.webp",
+      "/img/galeri/led-ekran-kiralama-33.webp",
+      "/img/galeri/led-ekran-kiralama-34.webp",
+      "/img/galeri/led-ekran-kiralama-35.webp",
+      "/img/galeri/led-ekran-kiralama-36.webp",
     ],
-    description: "Yüksek çözünürlüklü LED ekran kurulumları ve profesyonel etkinlik prodüksiyonları",
+    description:
+      "Yüksek çözünürlüklü LED ekran kurulumları ve profesyonel etkinlik prodüksiyonları",
     stats: "50+ Kurumsal Etkinlik",
-    icon: "🖥️"
+    icon: "🖥️",
   },
   "Çadır Kiralama": {
-     images: [
-       "/img/galeri/cadir-kiralama-1.webp",
-    "/img/galeri/cadir-kiralama-2.webp",
-    "/img/galeri/cadir-kiralama-3.webp",
-    "/img/galeri/cadir-kiralama-4.webp",
-    "/img/galeri/cadir-kiralama-5.webp",
-    "/img/galeri/cadir-kiralama-6.webp",
-    "/img/galeri/cadir-kiralama-7.webp",
-    "/img/galeri/cadir-kiralama-8.webp",
-    "/img/galeri/cadir-kiralama-9.webp",
-    "/img/galeri/cadir-kiralama-10.webp",
-    "/img/galeri/cadir-kiralama-11.webp",
-    "/img/galeri/cadir-kiralama-12.webp",
-    "/img/galeri/cadir-kiralama-13.webp",
-    "/img/galeri/cadir-kiralama-14.webp",
-    "/img/galeri/cadir-kiralama-15.webp",
-    "/img/galeri/cadir-kiralama-16.webp",
-    "/img/galeri/cadir-kiralama-17.webp",
-    "/img/galeri/cadir-kiralama-18.webp",
-    "/img/galeri/cadir-kiralama-19.webp",
+    images: [
+      "/img/galeri/cadir-kiralama-1.webp",
+      "/img/galeri/cadir-kiralama-2.webp",
+      "/img/galeri/cadir-kiralama-3.webp",
+      "/img/galeri/cadir-kiralama-4.webp",
+      "/img/galeri/cadir-kiralama-5.webp",
+      "/img/galeri/cadir-kiralama-6.webp",
+      "/img/galeri/cadir-kiralama-7.webp",
+      "/img/galeri/cadir-kiralama-8.webp",
+      "/img/galeri/cadir-kiralama-9.webp",
+      "/img/galeri/cadir-kiralama-10.webp",
+      "/img/galeri/cadir-kiralama-11.webp",
+      "/img/galeri/cadir-kiralama-12.webp",
+      "/img/galeri/cadir-kiralama-13.webp",
+      "/img/galeri/cadir-kiralama-14.webp",
+      "/img/galeri/cadir-kiralama-15.webp",
+      "/img/galeri/cadir-kiralama-16.webp",
+      "/img/galeri/cadir-kiralama-17.webp",
+      "/img/galeri/cadir-kiralama-18.webp",
+      "/img/galeri/cadir-kiralama-19.webp",
     ],
-    description: "Açık hava etkinlikleri için premium çadır kurulumları ve profesyonel çözümler",
+    description:
+      "Açık hava etkinlikleri için premium çadır kurulumları ve profesyonel çözümler",
     stats: "100+ Açık Hava Organizasyonu",
-    icon: "⛺"
+    icon: "⛺",
   },
   "Podyum Kiralama": {
     images: [
-    "/img/galeri/podyum-kiralama-1.webp",
-    "/img/galeri/podyum-kiralama-2.webp",
-    "/img/galeri/podyum-kiralama-3.webp",
-    "/img/galeri/podyum-kiralama-4.webp",
-    "/img/galeri/podyum-kiralama-5.webp",
-    "/img/galeri/podyum-kiralama-6.webp",
-    "/img/galeri/podyum-kiralama-7.webp",
-    "/img/galeri/podyum-kiralama-8.webp",
-    "/img/galeri/podyum-kiralama-9.webp",
-    "/img/galeri/podyum-kiralama-10.webp",
-    "/img/galeri/podyum-kiralama-11.webp",
-    "/img/galeri/podyum-kiralama-12.webp",
-    "/img/galeri/podyum-kiralama-13.webp",
-    "/img/galeri/podyum-kiralama-14.webp",
-    "/img/galeri/podyum-kiralama-15.webp",
-    "/img/galeri/podyum-kiralama-16.webp",
-    "/img/galeri/podyum-kiralama-17.webp",
-    "/img/galeri/podyum-kiralama-18.webp",
-    "/img/galeri/podyum-kiralama-19.webp",
-    "/img/galeri/podyum-kiralama-20.webp",
-    "/img/galeri/podyum-kiralama-21.webp",
-    "/img/galeri/podyum-kiralama-22.webp",
-    "/img/galeri/podyum-kiralama-23.webp",
-    "/img/galeri/podyum-kiralama-24.webp",
-    "/img/galeri/podyum-kiralama-25.webp",
-    "/img/galeri/podyum-kiralama-26.webp",
-    "/img/galeri/podyum-kiralama-27.webp",
-    "/img/galeri/podyum-kiralama-28.webp",
-    "/img/galeri/podyum-kiralama-29.webp",
-    "/img/galeri/podyum-kiralama-30.webp",
-    "/img/galeri/podyum-kiralama-31.webp",
-    "/img/galeri/podyum-kiralama-32.webp",
-    "/img/galeri/podyum-kiralama-33.webp",
-    "/img/galeri/podyum-kiralama-34.webp",
-    "/img/galeri/podyum-kiralama-35.webp",
-    "/img/galeri/podyum-kiralama-36.webp",
+      "/img/galeri/podyum-kiralama-1.webp",
+      "/img/galeri/podyum-kiralama-2.webp",
+      "/img/galeri/podyum-kiralama-3.webp",
+      "/img/galeri/podyum-kiralama-4.webp",
+      "/img/galeri/podyum-kiralama-5.webp",
+      "/img/galeri/podyum-kiralama-6.webp",
+      "/img/galeri/podyum-kiralama-7.webp",
+      "/img/galeri/podyum-kiralama-8.webp",
+      "/img/galeri/podyum-kiralama-9.webp",
+      "/img/galeri/podyum-kiralama-10.webp",
+      "/img/galeri/podyum-kiralama-11.webp",
+      "/img/galeri/podyum-kiralama-12.webp",
+      "/img/galeri/podyum-kiralama-13.webp",
+      "/img/galeri/podyum-kiralama-14.webp",
+      "/img/galeri/podyum-kiralama-15.webp",
+      "/img/galeri/podyum-kiralama-16.webp",
+      "/img/galeri/podyum-kiralama-17.webp",
+      "/img/galeri/podyum-kiralama-18.webp",
+      "/img/galeri/podyum-kiralama-19.webp",
+      "/img/galeri/podyum-kiralama-20.webp",
+      "/img/galeri/podyum-kiralama-21.webp",
+      "/img/galeri/podyum-kiralama-22.webp",
+      "/img/galeri/podyum-kiralama-23.webp",
+      "/img/galeri/podyum-kiralama-24.webp",
+      "/img/galeri/podyum-kiralama-25.webp",
+      "/img/galeri/podyum-kiralama-26.webp",
+      "/img/galeri/podyum-kiralama-27.webp",
+      "/img/galeri/podyum-kiralama-28.webp",
+      "/img/galeri/podyum-kiralama-29.webp",
+      "/img/galeri/podyum-kiralama-30.webp",
+      "/img/galeri/podyum-kiralama-31.webp",
+      "/img/galeri/podyum-kiralama-32.webp",
+      "/img/galeri/podyum-kiralama-33.webp",
+      "/img/galeri/podyum-kiralama-34.webp",
+      "/img/galeri/podyum-kiralama-35.webp",
+      "/img/galeri/podyum-kiralama-36.webp",
     ],
-    description: "Profesyonel podyum kurulumları ve modüler podyum sistemleri",
+    description:
+      "Profesyonel podyum kurulumları ve modüler podyum sistemleri",
     stats: "200+ Profesyonel Kurulum",
-    icon: "👑"
-  }
+    icon: "👑",
+  },
 };
-// ✅ OPTİMİZE: Premium blur placeholder
-const BLUR_DATA_URL = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R";
+
+// ✅ Premium blur placeholder
+const BLUR_DATA_URL =
+  "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R";
+
+// ------------------------------------------------------------
 
 export default function ProjectsGallery() {
   const [isOpen, setIsOpen] = useState(false);
   const [anim, setAnim] = useState(false);
   const [title, setTitle] = useState("");
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<string[]>([]);
   const [index, setIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
-  const lastFocus = useRef(null);
-  const closeBtnRef = useRef(null);
+  const lastFocus = useRef<HTMLElement | null>(null);
+  const closeBtnRef = useRef<HTMLButtonElement | null>(null);
   const scrollYRef = useRef(0);
-  const liveRef = useRef(null);
+  const liveRef = useRef<HTMLDivElement | null>(null);
 
-  // ✅ OPTİMİZE: Basit mount kontrolü
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  useEffect(() => setMounted(true), []);
 
-  const open = useCallback((groupTitle, images, startIndex = 0) => {
-    lastFocus.current = document.activeElement;
+  const open = useCallback((groupTitle: string, images: string[], startIndex = 0) => {
+    lastFocus.current = document.activeElement as HTMLElement | null;
     setTitle(groupTitle);
     setItems(images);
     setIndex(startIndex);
     setIsOpen(true);
     setTimeout(() => setAnim(true), 10);
-    
+
     if (liveRef.current) {
       setTimeout(() => {
-        liveRef.current.textContent = `${groupTitle} galerisi açıldı, ${images.length} profesyonel proje`;
+        liveRef.current!.textContent = `${groupTitle} galerisi açıldı, ${images.length} profesyonel proje`;
         setTimeout(() => {
           if (liveRef.current) liveRef.current.textContent = "";
         }, 2000);
@@ -183,74 +185,67 @@ export default function ProjectsGallery() {
 
   const prev = useCallback(() => {
     if (items.length <= 1) return;
-    setIndex((current) => (current - 1 + items.length) % items.length);
+    setIndex((c) => (c - 1 + items.length) % items.length);
   }, [items]);
 
   const next = useCallback(() => {
     if (items.length <= 1) return;
-    setIndex((current) => (current + 1) % items.length);
+    setIndex((c) => (c + 1) % items.length);
   }, [items]);
 
-  // ✅ OPTİMİZE: Basitleştirilmiş scroll lock
   useEffect(() => {
     if (!isOpen) return;
 
     scrollYRef.current = window.scrollY;
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-    
-    document.body.style.position = 'fixed';
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
+
+    document.body.style.position = "fixed";
     document.body.style.top = `-${scrollYRef.current}px`;
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
     if (scrollbarWidth > 0) {
       document.body.style.paddingRight = `${scrollbarWidth}px`;
     }
 
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") close();
       if (e.key === "ArrowLeft") prev();
       if (e.key === "ArrowRight") next();
     };
 
     window.addEventListener("keydown", handleKeyDown);
-    
     setTimeout(() => closeBtnRef.current?.focus(), 100);
 
     return () => {
-      const scrollY = scrollYRef.current;
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.overflow = '';
-      document.body.style.paddingRight = '';
-      window.scrollTo(0, scrollY);
+      const y = scrollYRef.current;
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
+      window.scrollTo(0, y);
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen, close, prev, next]);
 
-  // Touch handlers
-  const onTouchStart = (e) => {
+  const onTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
   };
 
-  const onTouchEnd = (e) => {
+  const onTouchEnd = (e: React.TouchEvent) => {
     touchEndX.current = e.changedTouches[0].clientX;
-    const deltaX = touchEndX.current - touchStartX.current;
-    
-    if (Math.abs(deltaX) > 50) {
-      deltaX > 0 ? prev() : next();
-    }
+    const dx = touchEndX.current - touchStartX.current;
+    if (Math.abs(dx) > 50) (dx > 0 ? prev() : next());
   };
 
-  // ✅ OPTİMİZE: Premium loading state
   if (!mounted) {
     return (
-      <section className="relative py-20 bg-gradient-to-br from-gray-50 to-white">
+      <section className="relative pt-4 pb-10 bg-transparent">
         <div className="container">
-          {/* ❌ BAŞLIK KALDIRILDI - Anasayfadan gelecek */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[1, 2, 3].map((item) => (
-              <div key={item} className="group">
-                <div className="h-80 bg-gradient-to-br from-gray-200 to-gray-300 rounded-2xl animate-pulse mb-4"></div>
-                <div className="h-6 bg-gray-200 rounded animate-pulse w-3/4 mb-2"></div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map((k) => (
+              <div key={k} className="group">
+                <div className="h-80 bg-gradient-to-br from-gray-200 to-gray-300 rounded-2xl animate-pulse mb-3"></div>
+                <div className="h-5 bg-gray-200 rounded animate-pulse w-3/4 mb-1.5"></div>
                 <div className="h-4 bg-gray-200 rounded animate-pulse w-full mb-1"></div>
                 <div className="h-4 bg-gray-200 rounded animate-pulse w-2/3"></div>
               </div>
@@ -261,33 +256,30 @@ export default function ProjectsGallery() {
     );
   }
 
-  const prefersReducedMotion = typeof window !== "undefined" ? 
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches : false;
+  const prefersReducedMotion =
+    typeof window !== "undefined"
+      ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      : false;
 
   return (
-    <section className="relative py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
-      {/* ✅ OPTİMİZE: Premium background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-24 -right-24 w-96 h-96 bg-gradient-to-r from-blue-100/20 to-purple-100/20 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-gradient-to-r from-green-100/20 to-cyan-100/20 rounded-full blur-3xl"></div>
-      </div>
-      
-      <div className="container relative z-10">
-        {/* ❌ BAŞLIK KALDIRILDI - Anasayfadan gelecek */}
+    // 🔻 Boşluk azaltıldı ve arka plan şeffaf
+    <section className="relative pt-4 pb-10 bg-transparent">
+      {/* Dekorları kapatmak istersen bu bloğu silebilirsin */}
+      {/* <div className="absolute inset-0 overflow-hidden pointer-events-none" /> */}
 
-        {/* ✅ OPTİMİZE: Premium grid layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" role="list">
+      <div className="container relative z-10">
+        {/* Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="list">
           {Object.entries(GALLERIES).map(([groupTitle, galleryData], i) => {
             const images = galleryData.images;
             const cover = images[0];
-            
+
             return (
-              <article 
-                key={groupTitle} 
+              <article
+                key={groupTitle}
                 className="group relative bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-200/60 hover:border-blue-200/80 overflow-hidden"
                 role="listitem"
               >
-                {/* Image Container */}
                 <div className="relative h-80 overflow-hidden">
                   <button
                     type="button"
@@ -307,23 +299,20 @@ export default function ProjectsGallery() {
                       placeholder="blur"
                       blurDataURL={BLUR_DATA_URL}
                     />
-                    
-                    {/* Overlay Gradient */}
+
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    
-                    {/* Content Overlay */}
-                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                      <div className="flex items-center gap-3 mb-3">
+
+                    <div className="absolute bottom-0 left-0 right-0 p-5 text-white transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                      <div className="flex items-center gap-3 mb-2.5">
                         <span className="text-2xl">{galleryData.icon}</span>
-                        <span className="text-sm font-medium bg-white/20 backdrop-blur-sm rounded-full px-3 py-1">
+                        <span className="text-xs font-medium bg-white/20 backdrop-blur-sm rounded-full px-2.5 py-1">
                           {images.length} Profesyonel Proje
                         </span>
                       </div>
                     </div>
 
-                    {/* Hover Action */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                      <div className="bg-white/90 backdrop-blur-sm rounded-full px-6 py-3 transform -translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                      <div className="bg-white/90 backdrop-blur-sm rounded-full px-5 py-2.5 transform -translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
                         <span className="font-semibold text-gray-900 text-sm flex items-center gap-2">
                           <span>🔍</span>
                           Galeriyi İncele
@@ -333,19 +322,18 @@ export default function ProjectsGallery() {
                   </button>
                 </div>
 
-                {/* Text Content */}
-                <div className="p-6">
-                  <div className="flex items-center gap-3 mb-3">
+                <div className="p-5">
+                  <div className="flex items-center gap-3 mb-2.5">
                     <span className="text-2xl text-gray-700">{galleryData.icon}</span>
-                    <h3 className="text-xl font-bold text-gray-900">{groupTitle}</h3>
+                    <h3 className="text-lg font-bold text-gray-900">{groupTitle}</h3>
                   </div>
-                  
-                  <p className="text-gray-600 leading-relaxed mb-4 line-clamp-2">
+
+                  <p className="text-gray-600 leading-relaxed mb-3 line-clamp-2">
                     {galleryData.description}
                   </p>
-                  
+
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-semibold text-blue-600 bg-blue-50 rounded-full px-3 py-1">
+                    <span className="text-xs font-semibold text-blue-600 bg-blue-50 rounded-full px-3 py-1">
                       {galleryData.stats}
                     </span>
                     <button
@@ -353,7 +341,9 @@ export default function ProjectsGallery() {
                       className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200 flex items-center gap-1 group/btn"
                     >
                       Tümünü Gör
-                      <span className="transform group-hover/btn:translate-x-1 transition-transform duration-200">→</span>
+                      <span className="transform group-hover/btn:translate-x-1 transition-transform duration-200">
+                        →
+                      </span>
                     </button>
                   </div>
                 </div>
@@ -363,10 +353,8 @@ export default function ProjectsGallery() {
         </div>
       </div>
 
-      {/* Ekran okuyucu bildirimi */}
       <div ref={liveRef} aria-live="polite" className="sr-only" />
 
-      {/* ✅ OPTİMİZE: Premium Lightbox */}
       {isOpen && (
         <div
           className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-md ${
@@ -379,7 +367,6 @@ export default function ProjectsGallery() {
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
         >
-          {/* Premium Close Button */}
           <button
             ref={closeBtnRef}
             className="absolute top-6 right-6 z-10 text-white/90 hover:text-white bg-white/10 hover:bg-white/20 rounded-2xl p-4 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/50 transition-all duration-300 min-h-[52px] min-w-[52px] flex items-center justify-center backdrop-blur-sm border border-white/20"
@@ -389,7 +376,6 @@ export default function ProjectsGallery() {
             <span className="text-lg font-bold">✕</span>
           </button>
 
-          {/* Premium Navigation Arrows */}
           {items.length > 1 && (
             <>
               <button
@@ -409,7 +395,6 @@ export default function ProjectsGallery() {
             </>
           )}
 
-          {/* Premium Image Container */}
           <div
             className={`relative w-full max-w-6xl aspect-[16/10] ${
               prefersReducedMotion ? "" : "transition-all duration-500"
@@ -427,7 +412,6 @@ export default function ProjectsGallery() {
             />
           </div>
 
-          {/* Premium Info Bar */}
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/90 text-base font-medium bg-black/50 backdrop-blur-sm py-3 px-6 rounded-2xl border border-white/20 min-w-[200px] text-center">
             <div className="font-semibold text-white mb-1">{title}</div>
             <div className="text-sm text-white/70">
@@ -435,7 +419,6 @@ export default function ProjectsGallery() {
             </div>
           </div>
 
-          {/* Premium Mobile Controls */}
           {items.length > 1 && (
             <div className="md:hidden fixed inset-x-0 bottom-0 z-50 bg-black/80 backdrop-blur-lg border-t border-white/20 py-4">
               <div className="mx-auto max-w-sm flex items-center justify-between gap-3 px-4">
