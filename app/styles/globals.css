@@ -1,6 +1,0 @@
-/* Global premium tweaks */
-.animate-slow { animation-duration: 8s; }
-.hero-img { transform: scale(1.02); filter: brightness(0.7) contrast(1.1) saturate(1.1); }
-
-/* Focus ring for accessibility */
-:focus-visible { outline: 2px solid rgba(59,130,246,.8); outline-offset: 2px; }
