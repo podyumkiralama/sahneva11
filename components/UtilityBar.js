@@ -17,7 +17,7 @@ const ROUTES = [
 ];
 
 export default function UtilityBar() {
-  const [isSearchOpen, setSearchOpen] = useState(false); // ✅ DEĞİŞTİRİLDİ: openSearch -> isSearchOpen
+  const [isSearchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [activeTool, setActiveTool] = useState(null);
   const [scrolled, setScrolled] = useState(false);
@@ -35,7 +35,7 @@ export default function UtilityBar() {
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === "Escape") {
-        setSearchOpen(false); // ✅ DEĞİŞTİRİLDİ
+        setSearchOpen(false);
         setActiveTool(null);
       }
     };
@@ -86,7 +86,7 @@ export default function UtilityBar() {
     setActiveTool(activeTool === toolName ? null : toolName);
   }, [activeTool]);
 
-  // ✅ DÜZELTME: Arama açma fonksiyonu - isim değiştirildi
+  // Arama açma fonksiyonu
   const openSearchModal = useCallback(() => {
     setSearchOpen(true);
     setActiveTool(null);
@@ -131,7 +131,7 @@ export default function UtilityBar() {
           <div className="utility-tool-wrapper">
             <button
               className="utility-btn"
-              onClick={openSearchModal} {/* ✅ DEĞİŞTİRİLDİ: openSearch -> openSearchModal */}
+              onClick={openSearchModal}
               title="Site içi arama"
             >
               <span className="utility-icon">🔍</span>
@@ -181,7 +181,7 @@ export default function UtilityBar() {
         </div>
       </div>
 
-      {/* ✅ DÜZELTME: Arama Modalı - state değişkeni güncellendi */}
+      {/* Arama Modalı */}
       {isSearchOpen && (
         <div 
           className="search-modal-overlay"
@@ -207,7 +207,7 @@ export default function UtilityBar() {
               </div>
               <button 
                 className="search-close-btn"
-                onClick={() => setSearchOpen(false)} {/* ✅ DEĞİŞTİRİLDİ */}
+                onClick={() => setSearchOpen(false)}
               >
                 Kapat
               </button>
@@ -225,7 +225,7 @@ export default function UtilityBar() {
                       key={route.href}
                       href={route.href}
                       className="result-item"
-                      onClick={() => setSearchOpen(false)} {/* ✅ DEĞİŞTİRİLDİ */}
+                      onClick={() => setSearchOpen(false)}
                     >
                       <span>{route.icon}</span>
                       <span>{route.label}</span>
