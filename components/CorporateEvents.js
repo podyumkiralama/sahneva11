@@ -4,7 +4,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-// ✅ PREMIUM: Optimize sizes değerleri
 const CARD_SIZES =
   "(max-width: 768px) 100vw, " +
   "(max-width: 1024px) calc((100vw - 4rem) / 2), " +
@@ -77,16 +76,12 @@ const ADVANTAGES = [
 export default function CorporateEvents() {
   return (
     <section className="relative py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50/30 overflow-hidden">
-      {/* ✅ PREMIUM: Background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-24 -left-24 w-96 h-96 bg-gradient-to-r from-blue-100/20 to-purple-100/20 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-gradient-to-r from-green-100/20 to-cyan-100/20 rounded-full blur-3xl"></div>
       </div>
 
       <div className="container relative z-10">
-        {/* ❌ BAŞLIK KALDIRILDI - Anasayfadan gelecek */}
-
-        {/* ✅ PREMIUM: Premium kart tasarımı */}
         <div className="grid gap-8 md:grid-cols-3 mb-16" role="list">
           {CARDS.map((card) => (
             <article
@@ -94,10 +89,8 @@ export default function CorporateEvents() {
               className="group relative bg-white rounded-3xl border border-gray-200/60 shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden hover:border-blue-200/80"
               role="listitem"
             >
-              {/* Gradient Background */}
               <div className={`absolute inset-0 bg-gradient-to-br ${card.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
               
-              {/* Image Container */}
               <div className="relative aspect-[16/10] w-full overflow-hidden">
                 <Image
                   src={card.img}
@@ -112,16 +105,13 @@ export default function CorporateEvents() {
                   quality={80}
                 />
                 
-                {/* Overlay */}
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-500"></div>
                 
-                {/* Icon Badge */}
                 <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-2xl p-3 transform -translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
                   <span className="text-2xl">{card.icon}</span>
                 </div>
               </div>
 
-              {/* Content */}
               <div className="relative p-6 bg-white/80 backdrop-blur-sm">
                 <h3 className={`font-bold text-xl mb-3 ${card.color}`}>
                   {card.title}
@@ -150,7 +140,6 @@ export default function CorporateEvents() {
           ))}
         </div>
 
-        {/* ✅ PREMIUM: Avantajlar bölümü */}
         <div className="mb-16">
           <div className="text-center mb-10">
             <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-full px-6 py-3 shadow-sm mb-4">
@@ -186,9 +175,7 @@ export default function CorporateEvents() {
           </div>
         </div>
 
-        {/* ✅ PREMIUM: CTA bölümü */}
         <div className="relative rounded-3xl bg-gradient-to-r from-blue-600 to-purple-600 p-8 md:p-12 text-center text-white overflow-hidden">
-          {/* Background Pattern */}
           <div className="absolute inset-0 opacity-10">
             <div className="absolute -top-20 -right-20 w-40 h-40 bg-white rounded-full"></div>
             <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-white rounded-full"></div>
