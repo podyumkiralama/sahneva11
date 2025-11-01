@@ -321,6 +321,7 @@ export default function ContactPage() {
                         placeholder="Adınız ve soyadınız"
                         className="w-full border border-neutral-300 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                         required
+                        autoComplete="name"
                       />
                     </div>
                     <div>
@@ -334,6 +335,7 @@ export default function ContactPage() {
                         placeholder="+90 ___ ___ __ __"
                         className="w-full border border-neutral-300 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                         required
+                        autoComplete="tel"
                       />
                     </div>
                   </div>
@@ -349,6 +351,7 @@ export default function ContactPage() {
                       placeholder="email@example.com"
                       className="w-full border border-neutral-300 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                       required
+                      autoComplete="email"
                     />
                   </div>
 
@@ -361,6 +364,7 @@ export default function ContactPage() {
                       name="eventType"
                       className="w-full border border-neutral-300 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                       required
+                      autoComplete="event-type"
                     >
                       <option value="">Etkinlik türünü seçin</option>
                       <option value="Kurumsal Etkinlik">Kurumsal Etkinlik</option>
@@ -384,6 +388,7 @@ export default function ContactPage() {
                       rows={5}
                       className="w-full border border-neutral-300 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
                       required
+                      autoComplete="off"
                     />
                   </div>
 
