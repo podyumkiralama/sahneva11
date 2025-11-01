@@ -1,50 +1,43 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // TEMEL
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
   generateEtags: true,
 
-  // GÖRÜNTÜ OPTİMİZASYONU
   images: {
+    // Sadece yerel /public görseller ve Next <Image> için uygun formatlar
     deviceSizes: [320, 420, 640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ["image/avif", "image/webp"],
-    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 gün
-    remotePatterns: [
-      { protocol: "https", hostname: "images.unsplash.com" },
-      { protocol: "https", hostname: "cdn.sahneva.com" },
-      { protocol: "https", hostname: "lh3.googleusercontent.com" },
-    ],
+    minimumCacheTTL: 60 * 60 * 24 * 30,
+    // Dış kaynak kullanmıyorsak boş bırakabiliriz
+    remotePatterns: [],
     dangerouslyAllowSVG: false,
   },
 
-  // DERLEYİCİ
   compiler: {
-    removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
-    reactRemoveProperties: process.env.NODE_ENV === "production" ? { properties: ["^data-testid$"] } : false,
+    removeConsole:
+      process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
+    reactRemoveProperties:
+      process.env.NODE_ENV === "production" ? { properties: ["^data-testid$"] } : false,
   },
 
-  // DENEYSEL
   experimental: {
     scrollRestoration: true,
     optimizePackageImports: ["lucide-react", "@headlessui/react", "framer-motion", "react-icons"],
   },
 
-  // ENV
   env: {
     SITE_URL: process.env.SITE_URL || "https://www.sahneva.com",
     NEXT_PUBLIC_APP_ENV: process.env.NODE_ENV || "development",
   },
 
-  // BUILD
   trailingSlash: false,
   productionBrowserSourceMaps: false,
   staticPageGenerationTimeout: 300,
   output: process.env.NODE_ENV === "production" ? "standalone" : undefined,
 
-  // GÜVENLİK BAŞLIKLARI
   async headers() {
     const securityHeaders = [
       { key: "X-Content-Type-Options", value: "nosniff" },
@@ -56,14 +49,10 @@ const nextConfig = {
         key: "Permissions-Policy",
         value: "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=()",
       },
-      {
-        key: "Strict-Transport-Security",
-        value: "max-age=63072000; includeSubDomains; preload",
-      },
+      { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
     ];
 
-    // CSP — GA/GTAG ve Vercel Insights dahil
-    const contentSecurityPolicy = `
+    const csp = `
       default-src 'self';
       base-uri 'self';
       object-src 'none';
@@ -94,22 +83,14 @@ const nextConfig = {
 
       frame-src 'self' https://www.google.com;
       form-action 'self' https://formspree.io https://wa.me;
-    `
-      .replace(/\s{2,}/g, " ")
-      .trim();
+    `.replace(/\s{2,}/g, " ").trim();
 
-    securityHeaders.push({ key: "Content-Security-Policy", value: contentSecurityPolicy });
+    securityHeaders.push({ key: "Content-Security-Policy", value: csp });
 
     return [
       { source: "/(.*)", headers: securityHeaders },
-      {
-        source: "/_next/static/(.*)",
-        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
-      },
-      {
-        source: "/(.*)\\.(ico|png|jpg|jpeg|webp|avif|svg|gif)",
-        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
-      },
+      { source: "/_next/static/(.*)", headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }] },
+      { source: "/(.*)\\.(ico|png|jpg|jpeg|webp|avif|svg|gif)", headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }] },
     ];
   },
 };
