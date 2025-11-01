@@ -1,11 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // === TEMEL AYARLAR ===
+  // === TEMEL AYARLAR - Next.js 16 Uyumlu ===
   reactStrictMode: true,
   poweredByHeader: false,
   generateEtags: false,
   compress: true,
-  swcMinify: true,
+  // ❌ swcMinify kaldırıldı - Next.js 16'da varsayılan
+  
+  // === TURBOPACK KONFİGÜRASYONU ===
+  // ✅ Turbopack için boş konfigürasyon
+  turbopack: {},
   
   // === GÖRÜNTÜ OPTİMİZASYONU ===
   images: {
@@ -32,7 +36,7 @@ const nextConfig = {
     } : false,
   },
 
-  // === DENEYSEK ÖZELLİKLER ===
+  // === DENEYSEK ÖZELLİKLER - Next.js 16 Uyumlu ===
   experimental: {
     scrollRestoration: true,
     optimizePackageImports: [
@@ -41,7 +45,7 @@ const nextConfig = {
       'framer-motion',
       'react-icons'
     ],
-    optimizeCss: false,
+    // ❌ optimizeCss kaldırıldı - stabil değil
   },
 
   // === GÜVENLİK BAŞLIKLARI - TÜM HATALAR DÜZELTİLDİ ===
@@ -151,39 +155,8 @@ const nextConfig = {
   // ✅ Output optimizasyonu
   output: process.env.NODE_ENV === 'production' ? 'standalone' : undefined,
 
-  // ✅ Webpack optimizasyonları
-  webpack: (config, { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }) => {
-    // Performans optimizasyonları
-    if (!dev && !isServer) {
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        cacheGroups: {
-          default: false,
-          vendors: false,
-          framework: {
-            name: 'framework',
-            test: /[\\/]node_modules[\\/](react|react-dom|next)[\\/]/,
-            priority: 40,
-            enforce: true,
-          },
-          ui: {
-            name: 'ui',
-            test: /[\\/]node_modules[\\/](@headlessui|@heroicons)[\\/]/,
-            priority: 30,
-            enforce: true,
-          },
-          lib: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'lib',
-            priority: 20,
-            enforce: true,
-          },
-        },
-      };
-    }
-
-    return config;
-  },
+  // ✅ Webpack optimizasyonları KALDIRILDI - Turbopack ile uyumsuz
+  // ❌ Webpack config kaldırıldı çünkü Turbopack ile çakışıyor
 };
 
 export default nextConfig;
