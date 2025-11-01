@@ -12,7 +12,6 @@ function FaqRow({ question, answer, slug }) {
   const summaryId = `${slug}-summary`;
   const panelId = `${slug}-panel`;
 
-  // ✅ PERFORMANS: reflow’u azalt — rAF ile ölç
   useEffect(() => {
     if (open && contentRef.current) {
       requestAnimationFrame(() => {
@@ -30,7 +29,7 @@ function FaqRow({ question, answer, slug }) {
       itemType="https://schema.org/Question"
     >
       <button
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => setOpen(!open)}
         id={summaryId}
         aria-controls={panelId}
         aria-expanded={open}
@@ -38,6 +37,7 @@ function FaqRow({ question, answer, slug }) {
         itemProp="name"
       >
         <span className="pr-3 text-sm leading-relaxed">{question}</span>
+
         <div
           className={`flex-shrink-0 w-6 h-6 rounded-full bg-blue-50 flex items-center justify-center transition-all duration-200 group-hover:bg-blue-100 ${
             open ? "bg-blue-100 rotate-90" : ""
@@ -51,8 +51,6 @@ function FaqRow({ question, answer, slug }) {
             strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"
-            aria-hidden="true"
-            focusable="false"
           >
             <path d="M8 5l8 7-8 7" />
           </svg>
@@ -79,7 +77,7 @@ function FaqRow({ question, answer, slug }) {
   );
 }
 
-// ✅ FAQ Schema.org verisi
+// ✅ FAQ Schema.org
 const generateFaqSchema = (items) => ({
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -93,27 +91,28 @@ const generateFaqSchema = (items) => ({
   })),
 });
 
-// ✅ Tam sürüm: içerik korunur, boşluklar sıkılaştırılır, footer boşluğu sıfır
+// ✅ TAM SÜRÜM — boşluk minimum
 export default function Faq({ compact = false }) {
   const faqSchema = generateFaqSchema(FAQ_ITEMS);
 
-  // Üst padding: compact’a göre değişsin; alt padding her zaman 0
-  const topPad = compact ? "pt-12" : "pt-16";
-
   return (
     <section
-      className={`relative ${topPad} pb-0 bg-gradient-to-br from-gray-50 via-white to-purple-50/30 overflow-hidden`}
+      className="relative pt-4 pb-0 bg-gradient-to-br from-gray-50 via-white to-purple-50/30 overflow-hidden"
       aria-labelledby="faq-heading"
     >
-      {/* Background dekorları */}
+      {/* Dekor — çok hafif */}
       <div className="absolute inset-0 overflow-hidden transform-gpu pointer-events-none">
         <div className="absolute -top-20 -right-20 w-80 h-80 bg-gradient-to-r from-purple-100/20 to-blue-100/20 rounded-full blur-3xl" />
         <div className="absolute -bottom-28 -left-28 w-72 h-72 bg-gradient-to-r from-blue-100/20 to-cyan-100/20 rounded-full blur-3xl" />
       </div>
 
       <div className="container relative z-10 pb-0">
-        {/* Liste */}
-        <div className="mx-auto max-w-3xl pb-0">
+        <h2 id="faq-heading" className="sr-only">
+          Sıkça Sorulan Sorular
+        </h2>
+
+        {/* SORU LİSTESİ — ÜST BOŞLUK 0 */}
+        <div className="mx-auto max-w-3xl mt-0 pt-0">
           <div className="grid gap-2">
             {FAQ_ITEMS.map((item) => (
               <FaqRow key={item.slug} {...item} />
@@ -121,8 +120,8 @@ export default function Faq({ compact = false }) {
           </div>
         </div>
 
-        {/* CTA — içerik korunur, marjinler kompakt */}
-        <div className={`text-center ${compact ? "mt-8" : "mt-10"} last:mb-0`}>
+        {/* CTA bölüm */}
+        <div className="text-center mt-8 last:mb-0">
           <div className="relative bg-gradient-to-r from-blue-700 to-purple-700 rounded-2xl shadow-xl p-8 max-w-3xl mx-auto overflow-hidden transform-gpu">
             <div className="absolute inset-0 opacity-10">
               <div className="absolute -top-16 -right-16 w-32 h-32 bg-white rounded-full" />
@@ -162,8 +161,8 @@ export default function Faq({ compact = false }) {
           </div>
         </div>
 
-        {/* İletişim kutusu — içerik korunur, marjinler kompakt, son-child boşluk 0 */}
-        <div className={`${compact ? "mt-6" : "mt-8"} text-center last:mb-0`}>
+        {/* İletişim kutusu */}
+        <div className="mt-8 text-center last:mb-0">
           <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200/60 p-6 max-w-2xl mx-auto">
             <h4 className="text-lg font-bold text-gray-900 mb-3">
               Hızlı İletişim Kanalları
@@ -175,10 +174,8 @@ export default function Faq({ compact = false }) {
                   <a
                     href="tel:+905453048671"
                     className="inline-flex items-center gap-3 bg-blue-100 hover:bg-blue-200 border border-blue-300 text-blue-900 font-bold px-5 py-3 rounded-xl transition-all duration-200 hover:shadow-md hover:scale-105 min-h-[48px] text-sm"
-                    aria-label="Telefon ile iletişim - +90 545 304 86 71"
-                    title="Sahneva telefon iletişim"
                   >
-                    <span className="text-xl" aria-hidden="true">📞</span>
+                    <span className="text-xl">📞</span>
                     <div className="text-left">
                       <div className="font-bold">Telefon</div>
                       <div className="text-xs text-blue-800 font-semibold">
@@ -187,16 +184,15 @@ export default function Faq({ compact = false }) {
                     </div>
                   </a>
                 </li>
+
                 <li>
                   <a
                     href="https://wa.me/905453048671"
-                    className="inline-flex items-center gap-3 bg-green-100 hover:bg-green-200 border border-green-300 text-green-900 font-bold px-5 py-3 rounded-xl transition-all duration-200 hover:shadow-md hover:scale-105 min-h-[48px] text-sm"
-                    aria-label="WhatsApp üzerinden iletişim"
-                    title="Sahneva WhatsApp iletişim"
                     target="_blank"
                     rel="noopener noreferrer"
+                    className="inline-flex items-center gap-3 bg-green-100 hover:bg-green-200 border border-green-300 text-green-900 font-bold px-5 py-3 rounded-xl transition-all duration-200 hover:shadow-md hover:scale-105 min-h-[48px] text-sm"
                   >
-                    <span className="text-xl" aria-hidden="true">💬</span>
+                    <span className="text-xl">💬</span>
                     <div className="text-left">
                       <div className="font-bold">WhatsApp</div>
                       <div className="text-xs text-green-800 font-semibold">
@@ -205,14 +201,13 @@ export default function Faq({ compact = false }) {
                     </div>
                   </a>
                 </li>
+
                 <li>
                   <a
                     href="mailto:info@sahneva.com"
                     className="inline-flex items-center gap-3 bg-purple-100 hover:bg-purple-200 border border-purple-300 text-purple-900 font-bold px-5 py-3 rounded-xl transition-all duration-200 hover:shadow-md hover:scale-105 min-h-[48px] text-sm"
-                    aria-label="E-posta gönder - info@sahneva.com"
-                    title="Sahneva e-posta iletişim"
                   >
-                    <span className="text-xl" aria-hidden="true">✉️</span>
+                    <span className="text-xl">✉️</span>
                     <div className="text-left">
                       <div className="font-bold">E-posta</div>
                       <div className="text-xs text-purple-800 font-semibold">
@@ -226,23 +221,23 @@ export default function Faq({ compact = false }) {
 
             <div className="mt-3 flex items-center justify-center gap-4 text-sm text-gray-800">
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-600 rounded-full animate-pulse motion-reduce:animate-none" />
+                <div className="w-2 h-2 bg-green-600 rounded-full animate-pulse" />
                 <span className="font-semibold">7/24 Destek</span>
               </div>
               <div className="w-px h-4 bg-gray-500" />
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-600 rounded-full animate-pulse motion-reduce:animate-none" />
+                <div className="w-2 h-2 bg-green-600 rounded-full animate-pulse" />
                 <span className="font-semibold">5 Dakikada Yanıt</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Bu container içindeki son elemanı güvenceye almak için ekstra boşluk bırakma */}
-        <div className="h-0 m-0 p-0" aria-hidden="true" />
+        {/* Footer’a boşluk bırakılmasın */}
+        <div className="h-0 p-0 m-0" />
       </div>
 
-      {/* FAQ Schema.org JSON-LD */}
+      {/* JSON-LD */}
       <Script
         id="faq-schema"
         type="application/ld+json"
