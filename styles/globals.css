@@ -172,7 +172,7 @@ html.hc a{
 }
 
 /* ========================================================================== */
-/* ✅ UTILITY BAR STYLES - SAĞ TARAFTA DİKEY */
+/* ✅ UTILITY BAR STYLES - SAĞ TARAFTA DİKEY - DÜZENLENMİŞ */
 /* ========================================================================== */
 
 .utility-bar-container {
@@ -189,7 +189,6 @@ html.hc a{
   border: 1px solid rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
   will-change: transform;
-  contain: layout style paint;
 }
 
 .utility-bar-container.scrolled {
@@ -205,6 +204,8 @@ html.hc a{
 
 .utility-tool-wrapper {
   position: relative;
+  display: flex;
+  justify-content: center;
 }
 
 .utility-btn {
@@ -221,6 +222,7 @@ html.hc a{
   justify-content: center;
   transition: all 0.3s ease;
   font-size: 18px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .utility-btn:hover {
@@ -230,6 +232,7 @@ html.hc a{
 
 .utility-btn-active {
   background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  transform: scale(1.1);
 }
 
 .utility-dot {
@@ -248,7 +251,7 @@ html.hc a{
   opacity: 1;
 }
 
-/* ✅ Tooltip Stilleri - SOLA AÇILAN */
+/* ✅ Tooltip Stilleri - SOLA AÇILAN - DÜZENLENMİŞ */
 .utility-tooltip {
   position: absolute;
   right: 100%;
@@ -256,6 +259,18 @@ html.hc a{
   transform: translateY(-50%);
   z-index: 1001;
   margin-right: 8px;
+  animation: tooltipFadeIn 0.2s ease-out;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
 }
 
 .utility-tooltip-content {
@@ -267,58 +282,67 @@ html.hc a{
   min-width: 200px;
 }
 
-/* ✅ Font Kontrol Stilleri */
+/* ✅ Font Kontrol Stilleri - DÜZENLENMİŞ */
 .font-size-controls {
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .control-label {
   display: block;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
-  color: #6b7280;
+  color: #374151;
   margin-bottom: 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  text-align: center;
 }
 
 .font-buttons {
   display: flex;
   gap: 8px;
+  justify-content: center;
 }
 
 .font-btn {
   flex: 1;
   padding: 8px 12px;
-  border: 1px solid #e5e7eb;
+  border: 2px solid #e5e7eb;
   background: white;
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
   transition: all 0.2s ease;
+  font-size: 14px;
+  color: #374151;
 }
 
 .font-btn:hover {
   background: #f3f4f6;
-  border-color: #d1d5db;
+  border-color: #667eea;
 }
 
 .contrast-btn {
   width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #e5e7eb;
+  padding: 10px 16px;
+  border: 2px solid #e5e7eb;
   background: white;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .contrast-btn:hover {
   background: #f3f4f6;
-  border-color: #d1d5db;
+  border-color: #667eea;
 }
 
-/* ✅ İletişim Butonları */
+/* ✅ İletişim Butonları - DÜZENLENMİŞ */
 .contact-btn {
   display: flex;
   align-items: center;
@@ -333,6 +357,7 @@ html.hc a{
   font-weight: 500;
   transition: all 0.2s ease;
   margin-bottom: 8px;
+  justify-content: center;
 }
 
 .contact-btn:last-child {
@@ -346,6 +371,7 @@ html.hc a{
 
 .contact-btn.phone:hover {
   background: #2563eb;
+  transform: translateY(-1px);
 }
 
 .contact-btn.whatsapp {
@@ -355,13 +381,14 @@ html.hc a{
 
 .contact-btn.whatsapp:hover {
   background: #16a34a;
+  transform: translateY(-1px);
 }
 
 .whatsapp-icon {
   font-size: 16px;
 }
 
-/* ✅ Arama Modalı Stilleri */
+/* ✅ Arama Modalı Stilleri - DÜZENLENMİŞ */
 .search-modal-overlay {
   position: fixed;
   inset: 0;
@@ -372,6 +399,12 @@ html.hc a{
   align-items: flex-start;
   justify-content: center;
   padding-top: 100px;
+  animation: overlayFadeIn 0.2s ease-out;
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .search-modal-container {
@@ -382,6 +415,18 @@ html.hc a{
   max-height: 80vh;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: modalSlideIn 0.2s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .search-header {
@@ -413,6 +458,7 @@ html.hc a{
   border-radius: 8px;
   font-size: 16px;
   transition: all 0.2s ease;
+  background: white;
 }
 
 .search-input:focus {
@@ -467,9 +513,9 @@ html.hc a{
 }
 
 .results-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .result-item {
@@ -487,6 +533,7 @@ html.hc a{
 .result-item:hover {
   background: #f3f4f6;
   border-color: #e5e7eb;
+  transform: translateX(5px);
 }
 
 .result-icon {
@@ -520,11 +567,6 @@ html.hc a{
   color: #6b7280;
 }
 
-/* ✅ Font change animation */
-.font-change-active {
-  transition: transform 0.3s ease !important;
-}
-
 /* ✅ Yüksek Kontrast Modu */
 .hc .utility-bar-container {
   background: #000;
@@ -541,7 +583,7 @@ html.hc a{
 .hc .contrast-btn,
 .hc .contact-btn {
   background: #000;
-  border: 1px solid #fff;
+  border: 2px solid #fff;
   color: #fff;
 }
 
