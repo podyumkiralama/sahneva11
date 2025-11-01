@@ -8,18 +8,8 @@ import Script from "next/script";
 
 const inter = Inter({
   subsets: ["latin"],
-  preload: true,
   display: "swap",
-  fallback: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "Arial", "sans-serif"],
-  adjustFontFallback: true,
 });
-
-// ✅ DÜZELTİLDİ: Next.js 14 için viewport export'u
-export const viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 5,
-}
 
 export const metadata = {
   metadataBase: new URL("https://www.sahneva.com"),
@@ -32,6 +22,11 @@ export const metadata = {
   keywords: "sahne kiralama, podyum kiralama, led ekran kiralama, ses ışık sistemi, etkinlik ekipmanları",
   manifest: "/site.webmanifest",
   alternates: { canonical: "https://www.sahneva.com" },
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 5,
+  },
   themeColor: "#6d28d9",
   openGraph: {
     title: "Sahneva – Etkinlik Prodüksiyon & Organizasyon",
@@ -84,20 +79,35 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   const SITE = "https://www.sahneva.com";
+  const LB_ID = `${SITE}/#localbusiness`;
 
   const ldLocalBusiness = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
+    "@id": LB_ID,
     name: "Sahneva",
     url: SITE,
     image: `${SITE}/img/og.jpg`,
     telephone: "+90 545 304 8671",
     priceRange: "₺₺",
-    logo: `${SITE}/img/logo.png`,
+    logo: {
+      "@type": "ImageObject",
+      url: `${SITE}/img/logo.png`,
+      width: 512,
+      height: 512,
+    },
     address: {
       "@type": "PostalAddress",
-      addressLocality: "İstanbul",
+      streetAddress: "Anadolu Cd. 61/A, Hamidiye",
+      addressLocality: "Kağıthane",
+      addressRegion: "İstanbul",
+      postalCode: "34400",
       addressCountry: "TR",
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: 41.0961692,
+      longitude: 28.9792127,
     },
     openingHoursSpecification: [
       {
@@ -108,6 +118,7 @@ export default function RootLayout({ children }) {
           "Wednesday",
           "Thursday",
           "Friday",
+          "Saturday",
         ],
         opens: "09:00",
         closes: "19:00",
@@ -127,24 +138,56 @@ export default function RootLayout({ children }) {
         availableLanguage: ["Turkish"],
       },
     ],
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Etkinlik Ekipmanları Kiralama",
+      itemListElement: [
+        {
+          "@type": "OfferCatalog",
+          name: "Sahne Sistemleri",
+          itemListElement: [
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "Sahne Kiralama"
+              }
+            }
+          ]
+        }
+      ]
+    }
   };
 
   const ldOrganization = {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": `${SITE}/#organization`,
     name: "Sahneva",
     url: SITE,
     logo: `${SITE}/img/logo.png`,
     sameAs: ldLocalBusiness.sameAs,
+    address: ldLocalBusiness.address,
     contactPoint: ldLocalBusiness.contactPoint,
+    foundingDate: "2020",
+    description: metadata.description
   };
 
   const ldWebsite = {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": `${SITE}/#website`,
     url: SITE,
     name: "Sahneva - Etkinlik Prodüksiyon & Organizasyon",
     description: metadata.description,
+    publisher: {
+      "@id": `${SITE}/#organization`
+    },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${SITE}/search?q={search_term_string}`,
+      "query-input": "required name=search_term_string"
+    }
   };
 
   return (
@@ -168,10 +211,6 @@ export default function RootLayout({ children }) {
             max-width:1280px;
             margin-inline:auto;
             padding-inline:1rem
-          }
-          .hero-optimized { 
-            content-visibility: auto;
-            contain: layout style paint;
           }
         `}</style>
 
