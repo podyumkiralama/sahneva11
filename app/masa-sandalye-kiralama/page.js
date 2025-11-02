@@ -65,7 +65,7 @@ export const metadata = {
       "Banket masa, Napolyon sandalye, konferans ve kokteyl setleri. Örtü-kılıf, numaralandırma ve profesyonel yerleşim.",
     url: "https://sahneva.com/masa-sandalye-kiralama",
     type: "article",
-    images: [{ url: "/img/hizmet-masa.webp" }],
+    images: [{ url: "/img/hizmet-masa.webp", width: 1200, height: 630, alt: "Masa sandalye kiralama - Sahneva" }],
   },
 };
 
@@ -93,10 +93,10 @@ function LongArticleMasaSandalye() {
           Fiyatlar adet ve modele göre değişir; aşağıdaki parametreler bütçeyi belirler:
         </p>
         <ul className="mt-4 grid gap-2 md:grid-cols-2 text-neutral-800">
-          <li className="flex gap-2"><span className="mt-2 h-2 w-2 rounded-full bg-primary" />Toplam adet ve etkinlik süresi (tek/çok gün)</li>
-          <li className="flex gap-2"><span className="mt-2 h-2 w-2 rounded-full bg-primary" />Model/kaplama seçimi (Napolyon, konferans, bistro, örtü/kılıf)</li>
-          <li className="flex gap-2"><span className="mt-2 h-2 w-2 rounded-full bg-primary" />Teslimat mesafesi, kat/erişim ve zaman penceresi</li>
-          <li className="flex gap-2"><span className="mt-2 h-2 w-2 rounded-full bg-primary" />Yerleşim planı, numaralandırma ve ekstra personel ihtiyacı</li>
+          <li className="flex gap-2"><span className="mt-2 h-2 w-2 rounded-full bg-primary" aria-hidden="true" />Toplam adet ve etkinlik süresi (tek/çok gün)</li>
+          <li className="flex gap-2"><span className="mt-2 h-2 w-2 rounded-full bg-primary" aria-hidden="true" />Model/kaplama seçimi (Napolyon, konferans, bistro, örtü/kılıf)</li>
+          <li className="flex gap-2"><span className="mt-2 h-2 w-2 rounded-full bg-primary" aria-hidden="true" />Teslimat mesafesi, kat/erişim ve zaman penceresi</li>
+          <li className="flex gap-2"><span className="mt-2 h-2 w-2 rounded-full bg-primary" aria-hidden="true" />Yerleşim planı, numaralandırma ve ekstra personel ihtiyacı</li>
         </ul>
         <div className="mt-5 rounded-xl bg-neutral-50 p-4 text-neutral-700">
           <p>
@@ -200,6 +200,7 @@ export default function Page() {
           fill
           sizes="100vw"
           priority
+          fetchPriority="high"
           className="object-cover object-center"
         />
         <div className="absolute inset-0 bg-black/45" aria-hidden="true" />
@@ -229,7 +230,7 @@ export default function Page() {
                 <ul className="mt-3 space-y-1 text-neutral-700">
                   {p.includes.map((inc, ii) => (
                     <li key={`pkgi-${i}-${ii}`} className="flex gap-2">
-                      <span aria-hidden>•</span> <span>{inc}</span>
+                      <span aria-hidden="true">•</span> <span>{inc}</span>
                     </li>
                   ))}
                 </ul>
@@ -258,8 +259,7 @@ export default function Page() {
               </div>
             ))}
           </div>
-          <p className="mt-3 text-sm text-neutral-500">
-                      </p>
+          <p className="mt-3 text-sm text-neutral-500"></p>
         </section>
       )}
 
@@ -290,7 +290,7 @@ export default function Page() {
             <a
               href={`https://wa.me/905453048671?text=Merhaba%20Sahneva%2C%20${encodeURIComponent(
                 title
-              )}%20hizmeti%20i%C3%A7in%20teklif%20almak%20istiyorum.`}
+              )}%20hizmeti%20için%20teklif%20almak%20istiyorum.`}
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-lg border border-white px-4 py-2 font-semibold hover:bg-white/20"
