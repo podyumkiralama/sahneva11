@@ -1,0 +1,174 @@
+// components/SeoArticles.jsx
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import Script from "next/script";
+import { SEO_ARTICLES } from "@/lib/articlesData";
+
+// Responsive sizes (kutucuk 3 sütun -> mobil 1, tablet 2, desktop 3)
+const CARD_SIZES =
+  "(max-width: 640px) calc(100vw - 2rem)," +
+  "(max-width: 1024px) calc((100vw - 3rem) / 2)," +
+  "calc((100vw - 4rem) / 3)";
+
+const BLUR =
+  "data:image/webp;base64,UklGRiIAAABXRUJQVlA4ICAAAABwAQCdASoEAAQAAP7/AAcAAABAAAAAAAAAAAAAAAAAAAAAAAA=";
+
+// JSON-LD (yalnızca Article/BlogPosting; Organization/Website yok)
+function ArticlesJsonLd({ items = [] }) {
+  // Ana sayfada çok şişmesin diye ilk 6’yı şemaya dahil edelim
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: items.slice(0, 6).map((a, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      item: {
+        "@type": a.schemaType || "BlogPosting",
+        headline: a.title,
+        description: a.desc,
+        url: a.href || `/${a.slug || ""}`,
+        image: a.image
+          ? [`https://sahneva.com${a.image}`] // cdn yok; kendi domain
+          : undefined,
+        datePublished: a.datePublished || undefined,
+        dateModified: a.dateModified || a.datePublished || undefined,
+        author: a.author
+          ? { "@type": "Organization", name: a.author }
+          : { "@type": "Organization", name: "Sahneva" },
+        publisher: { "@type": "Organization", name: "Sahneva" },
+        mainEntityOfPage: {
+          "@type": "WebPage",
+          "@id": "https://sahneva.com",
+        },
+      },
+    })),
+  };
+
+  return (
+    <Script
+      id="home-articles-jsonld"
+      type="application/ld+json"
+      strategy="afterInteractive"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
+export default function SeoArticles({ compact = false, title = "Teknik Bilgi & SEO Makaleleri" }) {
+  const items = SEO_ARTICLES?.filter(Boolean) ?? [];
+
+  if (!items.length) return null;
+
+  return (
+    <section
+      className={`${
+        compact ? "py-10" : "py-12"
+      } bg-gradient-to-br from-white via-neutral-50 to-blue-50/30`}
+      aria-labelledby="articles-title"
+    >
+      <div className="container">
+        <div className="text-center mb-8">
+          <h2
+            id="articles-title"
+            className="text-2xl md:text-3xl font-black text-neutral-900"
+          >
+            {title}
+          </h2>
+          <p className="text-neutral-600 mt-2 max-w-2xl mx-auto text-sm md:text-base">
+            Sahne, podyum, LED ekran ve ses-ışık sistemleri hakkında pratik ipuçları ve satın alma/kiralama rehberleri.
+          </p>
+        </div>
+
+        {/* Kartlar */}
+        <div
+          className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3"
+          role="list"
+        >
+          {items.slice(0, 6).map((a, idx) => (
+            <article
+              key={a.slug || a.href || idx}
+              className="group bg-white rounded-2xl border border-neutral-200 hover:border-blue-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
+              role="listitem"
+            >
+              {/* Kapak görseli (lazy) */}
+              <div className="relative aspect-[16/10]">
+                <Link
+                  href={a.href || `/${a.slug || ""}`}
+                  className="absolute inset-0 block focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 rounded-t-2xl"
+                  aria-label={a.title}
+                />
+                {a.image ? (
+                  <Image
+                    src={a.image}
+                    alt={a.alt || a.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes={CARD_SIZES}
+                    quality={80}
+                    loading={idx < 2 ? "eager" : "lazy"}
+                    placeholder="blur"
+                    blurDataURL={BLUR}
+                    priority={false}
+                  />
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-br from-neutral-200 to-neutral-300" />
+                )}
+
+                {/* Üst sol mini rozet (opsiyonel) */}
+                {a.badge && (
+                  <span className="absolute top-2 left-2 text-[11px] font-semibold text-white bg-blue-600/90 rounded-full px-2 py-1">
+                    {a.badge}
+                  </span>
+                )}
+              </div>
+
+              {/* İçerik */}
+              <div className="p-5">
+                <h3 className="text-base md:text-lg font-bold text-neutral-900 line-clamp-2">
+                  <Link
+                    href={a.href || `/${a.slug || ""}`}
+                    className="hover:text-blue-700 transition-colors duration-200"
+                  >
+                    {a.title}
+                  </Link>
+                </h3>
+
+                {a.desc && (
+                  <p className="text-sm text-neutral-600 mt-2 line-clamp-2">
+                    {a.desc}
+                  </p>
+                )}
+
+                <div className="mt-4 flex items-center justify-between">
+                  {a.tag ? (
+                    <span className="text-[12px] font-semibold text-blue-700 bg-blue-50 rounded-full px-2.5 py-1">
+                      {a.tag}
+                    </span>
+                  ) : (
+                    <span className="text-[12px] font-semibold text-neutral-600">
+                      Okuma süresi: {a.read || "2-4 dk"}
+                    </span>
+                  )}
+
+                  <Link
+                    href={a.href || `/${a.slug || ""}`}
+                    className="text-sm font-semibold text-neutral-800 hover:text-blue-700 transition-colors duration-200 flex items-center gap-1 group/lnk"
+                    aria-label={`${a.title} makalesini oku`}
+                  >
+                    Oku
+                    <span className="transition-transform group-hover/lnk:translate-x-1">→</span>
+                  </Link>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {/* JSON-LD (yalnızca makaleler) */}
+        <ArticlesJsonLd items={items} />
+      </div>
+    </section>
+  );
+}
