@@ -54,6 +54,7 @@ export default function RootLayout({ children }) {
         </a>
 
         <Navbar />
+       <UtilityBar />
         <main id="main">{children}</main>
         <Footer />
       </body>
