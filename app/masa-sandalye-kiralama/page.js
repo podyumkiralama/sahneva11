@@ -3,8 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
 import dynamic from "next/dynamic";
+import { getService } from "@/lib/data";
 
-// ⚡ LED sayfasıyla aynı mimari: lazy bileşen
+// ⚡ Lazy gallery (LED sayfasıyla aynı)
 const CaseGallery = dynamic(() => import("@/components/CaseGallery"), {
   loading: () => (
     <div
@@ -21,7 +22,10 @@ const CaseGallery = dynamic(() => import("@/components/CaseGallery"), {
 // ⚡ ISR - 30 dakika
 export const revalidate = 1800;
 
-// 📊 Premium içerik yapısı (LED sayfası ile aynı blok düzeni)
+// --- Servis verisi
+const svc = getService("masa-sandalye");
+
+// 📊 LED sayfasındaki blok mimarisiyle aynı yapı
 const PREMIUM_CONTENT = {
   hero: {
     src: "/img/masa-sandalye/hero.webp",
@@ -120,54 +124,24 @@ const PREMIUM_CONTENT = {
   },
 };
 
-// 🏷️ Fiyatlandırma (örnek birim bedeller – LED sayfasındaki modelde parçalara ayırıyoruz)
+// 🏷️ Fiyatlandırma (örnek birim bedeller)
 const PRICING = {
-  chair: {
-    napolyon: 55, // adet/gün
-    konferans: 45,
-  },
-  table: {
-    yuvarlak: 120, // adet/gün
-    dikdortgen: 100,
-    bistro: 90,
-  },
-  linen: {
-    tablecloth: 40, // adet/gün
-    runner: 15,
-    stretchCover: 35,
-  },
-  setup: 6500, // kurulum/yerleşim
-  delivery: 3500, // İstanbul içi ortalama
-  staff: 2500, // ek personel/operasyon
+  chair: { napolyon: 55, konferans: 45 }, // adet/gün
+  table: { yuvarlak: 120, dikdortgen: 100, bistro: 90 }, // adet/gün
+  linen: { tablecloth: 40, runner: 15, stretchCover: 35 }, // adet/gün
+  setup: 6500,
+  delivery: 3500,
+  staff: 2500,
 };
 
-// 🎯 Premium Metadata (LED sayfasıyla aynı alanlar)
+// 🎯 Metadata (LED sayfasıyla aynı yoğunluk)
 export const metadata = {
   title:
-    "Masa & Sandalye Kiralama | Davet, Konferans, Kokteyl – Profesyonel Yerleşim | Sahneva",
+    `${svc?.title ?? "Masa & Sandalye Kiralama"} | Davet, Konferans, Kokteyl – Profesyonel Yerleşim | Sahneva`,
   description:
+    svc?.excerpt ||
     "Napolyon ve konferans sandalyeleri, banket ve bistro masalar, örtü–kılıf; numaralandırma ve profesyonel yerleşim. İstanbul genelinde hızlı teslim.",
-  alternates: {
-    canonical: "https://www.sahneva.com/masa-sandalye-kiralama",
-  },
-  openGraph: {
-    title: "Masa & Sandalye Kiralama – Sahneva",
-    description:
-      "Davet, konferans ve kokteyl düzenleri için masa sandalye kiralama. Örtü–kılıf, planlama ve profesyonel kurulum.",
-    url: "https://www.sahneva.com/masa-sandalye-kiralama",
-    siteName: "Sahneva",
-    type: "website",
-    images: [
-      {
-        url: "/img/masa-sandalye/og.jpg",
-        width: 1200,
-        height: 630,
-        alt:
-          "Sahneva Masa & Sandalye Kiralama – Davet ve konferans düzeni",
-      },
-    ],
-    locale: "tr_TR",
-  },
+  alternates: { canonical: "https://www.sahneva.com/masa-sandalye-kiralama" },
   keywords: [
     "masa sandalye kiralama",
     "napolyon sandalye",
@@ -177,6 +151,17 @@ export const metadata = {
     "masa örtüsü kılıf",
     "istanbul masa sandalye kiralama",
   ],
+  openGraph: {
+    title: `${svc?.title ?? "Masa & Sandalye Kiralama"} | Sahneva`,
+    description:
+      svc?.desc ||
+      "Davet, konferans ve kokteyl düzenleri için masa sandalye kiralama. Örtü–kılıf, planlama ve profesyonel kurulum.",
+    url: "https://www.sahneva.com/masa-sandalye-kiralama",
+    siteName: "Sahneva",
+    type: "website",
+    images: [{ url: "/img/masa-sandalye/og.jpg", width: 1200, height: 630, alt: "Sahneva Masa & Sandalye Kiralama – Davet ve konferans düzeni" }],
+    locale: "tr_TR",
+  },
   robots: {
     index: true,
     follow: true,
@@ -190,23 +175,9 @@ export const metadata = {
   },
 };
 
-// 🎯 LED sayfasındaki buton stil sistemini koruyoruz
-const buttonStyles = {
-  primary:
-    "inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-700 to-purple-700 text-white motion-safe:hover:scale-105 motion-safe:transform transition-all duration-300 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-offset-2 focus:ring-offset-blue-900 motion-safe:focus:scale-105",
-  secondary:
-    "inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-gray-900 to-blue-900 text-white motion-safe:hover:scale-105 motion-safe:transform transition-all duration-300 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-offset-2 focus:ring-offset-gray-900 motion-safe:focus:scale-105",
-  outline:
-    "inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl border-2 border-white text-white bg-white/10 backdrop-blur-sm hover:bg-white/20 motion-safe:hover:scale-105 motion-safe:transform transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-900 motion-safe:focus:scale-105",
-  success:
-    "inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-green-600 to-emerald-700 text-white motion-safe:hover:scale-105 motion-safe:transform transition-all duration-300 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-green-300 focus:ring-offset-2 focus:ring-offset-green-900 motion-safe:focus:scale-105",
-};
-
-// 🧮 Paket fiyat hesaplama (LED sayfasındaki yapıya birebir benzer)
+// 🧮 Paket fiyat hesapla
 function calcPackagePrice(pkg) {
   const { tables, chairs, linens } = pkg.specs;
-
-  // table unit
   const tableUnit =
     tables.type.includes("Yuvarlak")
       ? PRICING.table.yuvarlak
@@ -214,30 +185,23 @@ function calcPackagePrice(pkg) {
       ? PRICING.table.dikdortgen
       : PRICING.table.bistro;
 
-  // chair unit
   let chairUnit = 0;
   if (/Napolyon/i.test(chairs.type)) chairUnit = PRICING.chair.napolyon;
   else if (/Konferans/i.test(chairs.type)) chairUnit = PRICING.chair.konferans;
 
-  // linens
   const linensTotal =
     (linens?.tablecloth || 0) * PRICING.linen.tablecloth +
     (linens?.runner || 0) * PRICING.linen.runner +
     (linens?.stretchCover || 0) * PRICING.linen.stretchCover;
 
-  const base =
-    tables.count * tableUnit + chairs.count * chairUnit + linensTotal;
-
-  const setup = PRICING.setup;
-  const delivery = PRICING.delivery;
-  const staff = PRICING.staff;
+  const base = tables.count * tableUnit + chairs.count * chairUnit + linensTotal;
 
   return {
     base: Math.round(base),
-    setup,
-    delivery,
-    staff,
-    total: Math.round(base + setup + delivery + staff),
+    setup: PRICING.setup,
+    delivery: PRICING.delivery,
+    staff: PRICING.staff,
+    total: Math.round(base + PRICING.setup + PRICING.delivery + PRICING.staff),
   };
 }
 
@@ -253,7 +217,128 @@ const formatTRY = (n) =>
     maximumFractionDigits: 0,
   }).format(n);
 
-// 📝 GELİŞTİRİLMİŞ SEO Makalesi (LED sayfasındaki EnhancedLedSeoArticle yapısını korur)
+// 🧩 LED sayfasındaki buton stilleri
+const buttonStyles = {
+  primary:
+    "inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-700 to-purple-700 text-white motion-safe:hover:scale-105 motion-safe:transform transition-all duration-300 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-offset-2 focus:ring-offset-blue-900 motion-safe:focus:scale-105",
+  outline:
+    "inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl border-2 border-white text-white bg-white/10 backdrop-blur-sm hover:bg-white/20 motion-safe:hover:scale-105 motion-safe:transform transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-900 motion-safe:focus:scale-105",
+};
+
+// 🧾 ORJİNAL MAKALELERİN AYNEN ENTEGRASYONU (senin attığın içerik)
+function OriginalLongArticle() {
+  return (
+    <section className="container max-w-4xl mx-auto py-10 md:py-14 space-y-10">
+      {/* Nedir? */}
+      <article className="space-y-4 text-neutral-800 leading-relaxed">
+        <h2 className="text-2xl md:text-3xl font-extrabold">Masa & Sandalye Kiralama Nedir?</h2>
+        <p>
+          Bir etkinliğin akışı sadece sahneyle değil, <strong>oturma konforu ve düzeniyle</strong> de şekillenir.{" "}
+          <strong>Sahneva</strong> olarak düğün, gala, konferans ve kokteyl gibi farklı senaryolara uygun masa–sandalye çözümlerini;
+          <em> teslimat, kurulum ve toplama</em> dâhil anahtar teslim sunuyoruz. Envanterimizde Napolyon, konferans tipi ve bistro sandalyeler;
+          yuvarlak banket (Ø180 cm), dikdörtgen (180×75 cm) ve kokteyl bistro masaları bulunur. Örtü, kılıf, runner ve numaralandırma gibi detaylarla alan estetiğini tamamlarız.
+        </p>
+      </article>
+
+      {/* Fiyatlar */}
+      <article className="rounded-2xl border bg-white p-6">
+        <h2 className="text-2xl md:text-3xl font-extrabold">Kiralama Fiyatları Nasıl Belirlenir?</h2>
+        <p className="mt-3 text-neutral-700">
+          Fiyatlar adet ve modele göre değişir; aşağıdaki parametreler bütçeyi belirler:
+        </p>
+        <ul className="mt-4 grid gap-2 md:grid-cols-2 text-neutral-800">
+          <li className="flex gap-2"><span className="mt-2 h-2 w-2 rounded-full bg-primary" />Toplam adet ve etkinlik süresi (tek/çok gün)</li>
+          <li className="flex gap-2"><span className="mt-2 h-2 w-2 rounded-full bg-primary" />Model/kaplama seçimi (Napolyon, konferans, bistro, örtü/kılıf)</li>
+          <li className="flex gap-2"><span className="mt-2 h-2 w-2 rounded-full bg-primary" />Teslimat mesafesi, kat/erişim ve zaman penceresi</li>
+          <li className="flex gap-2"><span className="mt-2 h-2 w-2 rounded-full bg-primary" />Yerleşim planı, numaralandırma ve ekstra personel ihtiyacı</li>
+        </ul>
+        <div className="mt-5 rounded-xl bg-neutral-50 p-4 text-neutral-700">
+          <p>
+            Hızlı bir teklif için; <strong>etkinlik tarihi/konumu</strong>, <strong>adetler</strong>, <strong>model</strong> ve varsa <strong>örtü–kılıf</strong> rengini paylaşmanız yeterli.
+          </p>
+        </div>
+      </article>
+
+      {/* Nerelerde Kullanılır */}
+      <article className="rounded-2xl border bg-white p-6">
+        <h2 className="text-2xl md:text-3xl font-extrabold">Nerelerde Kullanılır?</h2>
+        <div className="grid md:grid-cols-2 gap-2 mt-3 text-neutral-800">
+          <ul className="space-y-1">
+            <li>• Düğün, nişan, kına ve davet organizasyonları</li>
+            <li>• Lansman, gala ve kurumsal yemekler</li>
+            <li>• Konferans, seminer, eğitim</li>
+            <li>• Fuar, AVM etkinliği ve açılışlar</li>
+          </ul>
+          <ul className="space-y-1">
+            <li>• Kokteyl & networking alanları</li>
+            <li>• Mezuniyet ve okul etkinlikleri</li>
+            <li>• Açık hava belediye/dernek organizasyonları</li>
+            <li>• VIP protokol ve basın oturma düzenleri</li>
+          </ul>
+        </div>
+      </article>
+
+      {/* Düğün & Kurumsal İpuçları */}
+      <article className="rounded-2xl border bg-white p-6">
+        <h2 className="text-2xl md:text-3xl font-extrabold">Düğün & Kurumsal Etkinliklerde Yerleşim Önerileri</h2>
+
+        <div className="mt-4 grid gap-6 md:grid-cols-2">
+          <div>
+            <h3 className="text-xl font-bold">Düğün / Davet</h3>
+            <ul className="mt-2 space-y-1 text-neutral-800">
+              <li>• <strong>Yuvarlak banket</strong> masalarda 8–10 kişi idealdir; servis akışı rahatlar.</li>
+              <li>• <strong>Napolyon</strong> sandalye + keten örtü/runner şık bir görüntü sağlar.</li>
+              <li>• Gelin yolu/dans pisti çevresinde sirkülasyon için minimum 2,5 m boşluk bırakın.</li>
+              <li>• Masa numaralandırma ve oturma planını girişten görünür yerleştirin.</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-bold">Kurumsal / Konferans</h3>
+            <ul className="mt-2 space-y-1 text-neutral-800">
+              <li>• Sahne görüşü için <strong>tiyatro</strong> (sıra) veya <strong>sınıf</strong> düzeni.</li>
+              <li>• U tipi/boardroom toplantılarda 180×75 cm masalar doğru derinlik sağlar.</li>
+              <li>• Giriş–çıkış ve acil kaçış aksları en az 1,5 m açık bırakılmalı.</li>
+              <li>• İsimlik, notluk ve su servisi için masa üstü yerleşimini planlayın.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-5 rounded-xl bg-neutral-50 p-4 text-neutral-700">
+          <p>
+            <strong>İpucu:</strong> Kokteyl alanlarında bistro masalarını 2,5–3 m aralıklarla konumlandırmak, akışı rahatlatır; renkli kılıflar/şal ile kurumsal kimlik vurgulanabilir.
+          </p>
+        </div>
+      </article>
+
+      {/* Teknik Tablo */}
+      <article className="rounded-2xl border bg-white p-6">
+        <h3 className="text-xl font-bold mb-3">Teknik & Ürün Özeti</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-left text-neutral-500">
+                <th className="p-2">Ürün</th>
+                <th className="p-2">Ölçü / Detay</th>
+                <th className="p-2">Not</th>
+              </tr>
+            </thead>
+            <tbody className="[&>tr>*]:p-2 [&>tr]:border-b">
+              <tr><td>Banket Masa (Yuvarlak)</td><td>Ø180 cm</td><td>8–10 kişi; keten/tafta örtü seçenekleri</td></tr>
+              <tr><td>Dikdörtgen Masa</td><td>180×75 cm</td><td>Konferans/sınıf düzeni için ideal</td></tr>
+              <tr><td>Bistro Kokteyl Masası</td><td>Ø60–80 cm, 110 cm yükseklik</td><td>Strech kılıf: beyaz/siyah/renkli</td></tr>
+              <tr><td>Napolyon Sandalye</td><td>Ahşap/PP, minderli</td><td>Beyaz/krem/altın renk seçenekleri</td></tr>
+              <tr><td>Konferans Sandalyesi</td><td>Yastıklı, istiflenebilir</td><td>Numaralandırma ve sıra ayracı opsiyonu</td></tr>
+              <tr><td>Örtü & Kılıf</td><td>Keten, tafta, strech kılıf</td><td>Runner, fırfır, şal seçenekleri</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+  );
+}
+
+// 📝 LED tarzı geniş SEO makalesi (ekstra)
 function EnhancedMasaSeoArticle() {
   return (
     <section
@@ -274,15 +359,9 @@ function EnhancedMasaSeoArticle() {
               planı ve maliyet analizi hakkında bilmeniz gerekenler.
             </p>
             <div className="flex flex-wrap justify-center gap-4 mt-8 text-sm" role="list">
-              <span className="bg-white/20 px-4 py-2 rounded-full" role="listitem">
-                ✅ 3000+ Sandalye
-              </span>
-              <span className="bg-white/20 px-4 py-2 rounded-full" role="listitem">
-                🚚 Aynı Gün Teslim
-              </span>
-              <span className="bg-white/20 px-4 py-2 rounded-full" role="listitem">
-                🧵 Zengin Örtü & Kılıf
-              </span>
+              <span className="bg-white/20 px-4 py-2 rounded-full" role="listitem">✅ 3000+ Sandalye</span>
+              <span className="bg-white/20 px-4 py-2 rounded-full" role="listitem">🚚 Aynı Gün Teslim</span>
+              <span className="bg-white/20 px-4 py-2 rounded-full" role="listitem">🧵 Zengin Örtü & Kılıf</span>
             </div>
           </div>
 
@@ -314,7 +393,7 @@ function EnhancedMasaSeoArticle() {
               </div>
             </div>
 
-            {/* Örnek tablo (kısa) */}
+            {/* Örnek maliyet tablosu */}
             <section className="mb-14" aria-labelledby="cost-heading">
               <h3
                 id="cost-heading"
@@ -351,7 +430,7 @@ function EnhancedMasaSeoArticle() {
               </div>
             </section>
 
-            {/* SSS (server-safe) */}
+            {/* SSS */}
             <section className="mb-14" aria-labelledby="faq-heading">
               <h3
                 id="faq-heading"
@@ -417,11 +496,16 @@ function EnhancedMasaSeoArticle() {
   );
 }
 
-// 🎨 Ana sayfa bileşeni — LED sayfası ile aynı hero-üst katmanları ve bölümleri
+// 🎨 Sayfa (LED sayfası ile görsel/paralel akış)
 export default function PremiumMasaPage() {
+  const title = svc?.title ?? "Masa & Sandalye Kiralama";
+  const desc =
+    svc?.desc ??
+    "Masa sandalye kiralama: banket masa, Napolyon ve konferans sandalyeleri; örtü-kılıf, teslimat ve profesyonel yerleşim.";
+
   return (
     <div className="min-h-screen bg-white">
-      {/* 🎭 HERO (LED sayfasıyla aynı katman düzeni) */}
+      {/* 🎭 HERO */}
       <section
         className="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-slate-900 pt-20"
         aria-labelledby="main-heading"
@@ -435,17 +519,10 @@ export default function PremiumMasaPage() {
             className="object-cover"
             sizes="100vw"
           />
-          <div
-            className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-purple-900/30 to-slate-950/60"
-            aria-hidden="true"
-          />
-          <div
-            className="absolute inset-0 bg-gradient-to-r from-blue-600/15 to-purple-600/15"
-            aria-hidden="true"
-          />
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-purple-900/30 to-slate-950/60" aria-hidden="true" />
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/15 to-purple-600/15" aria-hidden="true" />
         </div>
 
-        {/* Üst içerik */}
         <div className="relative z-10 container mx-auto px-4 text-center text-white py-16">
           <h1 id="main-heading" className="text-4xl md:text-6xl font-black leading-tight">
             Masa & Sandalye{" "}
@@ -454,16 +531,11 @@ export default function PremiumMasaPage() {
             </span>
           </h1>
           <p className="mt-4 text-lg text-blue-100 max-w-3xl mx-auto">
-            Davet, konferans ve kokteyl düzenleriniz için zengin envanter ve profesyonel yerleşim.
-            İstanbul genelinde hızlı teslim.
+            Davet, konferans ve kokteyl düzenleriniz için zengin envanter ve profesyonel yerleşim. İstanbul genelinde hızlı teslim.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4 justify-center">
-            <a
-              href="tel:+905453048671"
-              className={buttonStyles.primary}
-              aria-label="Telefonla hemen teklif al"
-            >
+            <a href="tel:+905453048671" className={buttonStyles.primary} aria-label="Telefonla hemen teklif al">
               📞 Hemen Teklif Al
             </a>
             <Link href="#paketler" className={buttonStyles.outline} aria-label="Paketleri incele">
@@ -473,390 +545,303 @@ export default function PremiumMasaPage() {
         </div>
       </section>
 
-      {/* 🏷️ Skip link */}
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded-lg z-50 focus:outline-none focus:ring-2 focus:ring-white"
-      >
-        Ana içeriğe atla
-      </a>
+      {/* Kısa açıklama */}
+      <section className="container max-w-4xl mx-auto py-8">
+        <p className="text-neutral-700 leading-relaxed text-lg">{desc}</p>
+      </section>
 
-      <main id="main-content" tabIndex={-1}>
-        {/* ✨ Öne Çıkan Özellikler (LED ile aynı grid & kart davranışı) */}
-        <section
-          className="py-20 bg-gradient-to-b from-white to-blue-50/30"
-          aria-labelledby="features-heading"
-        >
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 id="features-heading" className="text-3xl md:text-5xl font-black mb-6">
-                Neden{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-purple-700">
-                  Bizim Hizmet?
-                </span>
-              </h2>
-              <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-                Geniş envanter, renk seçenekleri ve uzman lojistik ile sorunsuz kurulum.
-              </p>
-            </div>
+      {/* --- ORJİNAL MAKALE BLOKLARI (senin metnin) --- */}
+      <OriginalLongArticle />
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8" role="list">
-              {PREMIUM_CONTENT.features.map((f) => (
-                <div
-                  key={f.title}
-                  className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 text-center group hover:shadow-xl motion-safe:hover:scale-105 motion-safe:transition-all motion-safe:duration-300 motion-safe:focus-within:scale-105"
-                  role="listitem"
-                  tabIndex={0}
-                >
-                  <div
-                    className="text-3xl mb-4 motion-safe:group-hover:scale-110 motion-safe:transition-transform motion-safe:duration-300"
-                    aria-hidden="true"
-                  >
-                    {f.icon}
-                  </div>
-                  <h3 className="text-lg font-bold mb-3 text-gray-900">{f.title}</h3>
-                  <p className="text-gray-700 text-sm leading-relaxed">{f.description}</p>
-                </div>
-              ))}
-            </div>
+      {/* --- LED tarzı “Öne Çıkanlar” --- */}
+      <section className="py-20 bg-gradient-to-b from-white to-blue-50/30" aria-labelledby="features-heading">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 id="features-heading" className="text-3xl md:text-5xl font-black mb-6">
+              Neden{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-purple-700">
+                Bizim Hizmet?
+              </span>
+            </h2>
+            <p className="text-lg text-gray-700 max-w-2xl mx-auto">
+              Geniş envanter, renk seçenekleri ve uzman lojistik ile sorunsuz kurulum.
+            </p>
           </div>
-        </section>
 
-        {/* 🎪 Paketler (LED kartlarıyla aynı layout & etkileşim) */}
-        <section
-          id="paketler"
-          className="py-20 bg-gradient-to-b from-gray-50 to-blue-100/20"
-          aria-labelledby="packages-heading"
-        >
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 id="packages-heading" className="text-3xl md:text-5xl font-black mb-6">
-                Hazır{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-purple-700">
-                  Paketler
-                </span>
-              </h2>
-              <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-                İhtiyacınıza uygun, anahtar teslim masa & sandalye çözümleri.
-              </p>
-            </div>
-
-            <div
-              className="grid lg:grid-cols-3 gap-10 max-w-6xl mx-auto"
-              role="list"
-              aria-label="Masa & sandalye paketleri"
-            >
-              {enrichedPackages.map((pkg) => (
-                <article
-                  key={pkg.id}
-                  className={`relative bg-white rounded-2xl border border-gray-200 shadow-xl overflow-hidden group hover:shadow-2xl motion-safe:transition-all motion-safe:duration-500 ${
-                    pkg.badge === "Popüler"
-                      ? "ring-4 ring-blue-500/20 motion-safe:transform motion-safe:scale-105 motion-safe:hover:scale-110"
-                      : "motion-safe:hover:-translate-y-2 motion-safe:focus:-translate-y-2"
-                  }`}
-                  role="listitem"
-                  tabIndex={0}
-                >
-                  {pkg.badge && (
-                    <div
-                      className={`absolute -top-3 -right-3 px-4 py-2 rounded-full text-sm font-bold z-20 text-white shadow-lg motion-safe:group-hover:scale-110 motion-safe:group-hover:rotate-6 motion-safe:transition-all motion-safe:duration-300 ${
-                        pkg.badge === "Popüler"
-                          ? "bg-gradient-to-r from-orange-500 to-red-500"
-                          : pkg.badge === "Kurumsal"
-                          ? "bg-gradient-to-r from-purple-600 to-blue-600"
-                          : "bg-gradient-to-r from-green-500 to-emerald-600"
-                      }`}
-                    >
-                      {pkg.badge}
-                    </div>
-                  )}
-
-                  <div className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 p-6 text-white overflow-hidden motion-safe:group-hover:from-slate-800 motion-safe:group-hover:via-blue-800 motion-safe:group-hover:to-purple-800 motion-safe:transition-all motion-safe:duration-500">
-                    <div className="absolute inset-0 opacity-10" aria-hidden="true">
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full -translate-y-16 translate-x-16 motion-safe:group-hover:translate-x-12 motion-safe:transition-transform motion-safe:duration-700"></div>
-                      <div className="absolute bottom-0 left-0 w-24 h-24 bg-blue-400 rounded-full translate-y-12 -translate-x-12 motion-safe:group-hover:-translate-x-8 motion-safe:transition-transform motion-safe:duration-700"></div>
-                    </div>
-
-                    <div className="relative z-10">
-                      <div className="flex items-center justify-between mb-5">
-                        <div
-                          className="text-3xl motion-safe:group-hover:scale-110 motion-safe:transition-transform motion-safe:duration-300"
-                          aria-hidden="true"
-                        >
-                          {pkg.id === "davet-100" && "🎉"}
-                          {pkg.id === "konferans-60" && "🏢"}
-                          {pkg.id === "kokteyl-15" && "🥂"}
-                        </div>
-                        <div className="text-right motion-safe:group-hover:scale-105 motion-safe:transition-transform motion-safe:duration-300">
-                          <div className="text-2xl font-black text-blue-300">
-                            {pkg.specs.people} Kişi
-                          </div>
-                          <div className="text-xs text-blue-200">KAPASİTE</div>
-                        </div>
-                      </div>
-
-                      <h3 className="text-xl font-black mb-5 leading-tight border-b border-white/20 pb-4 motion-safe:group-hover:border-white/30 motion-safe:transition-colors motion-safe:duration-300">
-                        {pkg.name}
-                      </h3>
-
-                      <div className="grid grid-cols-2 gap-3 text-sm" role="list" aria-label="Paket özellikleri">
-                        <div className="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm motion-safe:group-hover:bg-white/15 motion-safe:transition-all motion-safe:duration-300 motion-safe:transform motion-safe:group-hover:scale-105" role="listitem">
-                          <div className="text-blue-300 text-xs mb-1">MASA</div>
-                          <div className="font-bold text-white">{pkg.specs.tables.type} × {pkg.specs.tables.count}</div>
-                        </div>
-                        <div className="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm motion-safe:group-hover:bg-white/15 motion-safe:transition-all motion-safe:duration-300 motion-safe:transform motion-safe:group-hover:scale-105" role="listitem">
-                          <div className="text-blue-300 text-xs mb-1">SANDALYE</div>
-                          <div className="font-bold text-white">{pkg.specs.chairs.type} {pkg.specs.chairs.count ? `× ${pkg.specs.chairs.count}` : ""}</div>
-                        </div>
-                        <div className="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm motion-safe:group-hover:bg-white/15 motion-safe:transition-all motion-safe:duration-300 motion-safe:transform motion-safe:group-hover:scale-105" role="listitem">
-                          <div className="text-blue-300 text-xs mb-1">ÖRTÜ/KILIF</div>
-                          <div className="font-bold text-white">
-                            {pkg.specs.linens.tablecloth ? `Örtü × ${pkg.specs.linens.tablecloth}` : ""}
-                            {pkg.specs.linens.runner ? `, Runner × ${pkg.specs.linens.runner}` : ""}
-                            {pkg.specs.linens.stretchCover ? `Kılıf × ${pkg.specs.linens.stretchCover}` : ""}
-                          </div>
-                        </div>
-                        <div className="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm motion-safe:group-hover:bg-white/15 motion-safe:transition-all motion-safe:duration-300 motion-safe:transform motion-safe:group-hover:scale-105" role="listitem">
-                          <div className="text-blue-300 text-xs mb-1">LOJİSTİK</div>
-                          <div className="font-bold text-white">Teslim & Yerleşim</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="p-6">
-                    <div className="mb-8">
-                      <h4 className="font-bold text-gray-900 mb-4 text-lg flex items-center gap-2">
-                        <span className="w-2 h-2 bg-blue-600 rounded-full" aria-hidden="true"></span>
-                        Paket İçeriği
-                      </h4>
-                      <ul className="space-y-3" role="list">
-                        {pkg.includes.map((item, i) => (
-                          <li key={i} className="flex items-start gap-3 text-gray-700 text-sm p-2 rounded-lg hover:bg-blue-50 transition-all duration-300">
-                            <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold mt-0.5 flex-shrink-0" aria-hidden="true">✓</span>
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div className="bg-gradient-to-br from-slate-50 to-white rounded-xl p-5 border border-gray-200 shadow-sm mb-6">
-                      <div className="text-center mb-5">
-                        <div className="text-xs text-gray-500 uppercase tracking-wider font-semibold">
-                          GÜNLÜK KİRA (İSTANBUL)
-                        </div>
-                        <div className="text-3xl font-black text-gray-900 mt-2">
-                          {formatTRY(pkg.pricing.total)}
-                          <span className="text-sm text-gray-500 font-normal ml-2">+ KDV</span>
-                        </div>
-                      </div>
-
-                      <div className="space-y-4 text-sm">
-                        <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                          <span className="text-gray-600 flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" aria-hidden="true"></span>
-                            Ekipman (masa/sandalye/örtü)
-                          </span>
-                          <span className="font-semibold text-gray-900">
-                            {formatTRY(pkg.pricing.base)}
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                          <span className="text-gray-600 flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 bg-green-500 rounded-full" aria-hidden="true"></span>
-                            Kurulum & Yerleşim
-                          </span>
-                          <span className="font-semibold text-gray-900">
-                            {formatTRY(pkg.pricing.setup)}
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                          <span className="text-gray-600 flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 bg-purple-500 rounded-full" aria-hidden="true"></span>
-                            Teslimat (İstanbul)
-                          </span>
-                          <span className="font-semibold text-gray-900">
-                            {formatTRY(pkg.pricing.delivery)}
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center py-2">
-                          <span className="text-gray-600 flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 bg-pink-500 rounded-full" aria-hidden="true"></span>
-                            Operasyon & Personel
-                          </span>
-                          <span className="font-semibold text-gray-900">
-                            {formatTRY(pkg.pricing.staff)}
-                          </span>
-                        </div>
-
-                        <div className="mt-5 pt-4 border-t border-gray-200">
-                          <div className="flex justify-between items-center">
-                            <span className="font-bold text-gray-900 text-base">Toplam</span>
-                            <span className="font-black text-xl text-blue-600 bg-blue-50 px-3 py-1 rounded-lg">
-                              {formatTRY(pkg.pricing.total)}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* WhatsApp CTA — harici link */}
-                    <a
-                      href={`https://wa.me/905453048671?text=Merhaba, ${encodeURIComponent(
-                        pkg.name
-                      )} hakkında detaylı bilgi ve teklif almak istiyorum.`}
-                      className="group/btn relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-4 px-6 rounded-xl w-full text-center block hover:from-blue-700 hover:to-purple-700 transition-all duration-500 transform hover:scale-[1.02] hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-purple-300"
-                      aria-label={`${pkg.name} için WhatsApp üzerinden hemen teklif alın`}
-                      target="_blank"
-                      rel="noopener nofollow"
-                    >
-                      <span className="relative z-10 flex items-center justify-center gap-2">
-                        💬 Hemen Teklif Al <span aria-hidden>→</span>
-                      </span>
-                      <div
-                        className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -skew-x-12 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000"
-                        aria-hidden="true"
-                      />
-                    </a>
-
-                    <div className="mt-4 text-center">
-                      <p className="text-xs text-gray-500">
-                        <span aria-hidden="true">⏱️</span>
-                        <span className="sr-only">Yanıt süresi:</span>
-                        <strong> 2 saat içinde</strong> detaylı teklif.
-                      </p>
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
-
-            <div className="text-center mt-16 max-w-2xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8" role="list">
+            {PREMIUM_CONTENT.features.map((f) => (
               <div
-                className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-300"
-                role="note"
+                key={f.title}
+                className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 text-center group hover:shadow-xl motion-safe:hover:scale-105 transition-all duration-300"
+                role="listitem"
+                tabIndex={0}
               >
-                <h4 className="font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors duration-300">
-                  💡 Önemli Notlar
-                </h4>
-                <p className="text-sm text-gray-600 hover:text-gray-700 transition-colors duration-300">
-                  • Fiyatlar günlük kiralama içindir. Çok gün ve büyük ölçeklerde indirim uygulanır.<br />
-                  • Teslimat İstanbul içi örnek bedeldir; mesafe/kat durumuna göre değişir.<br />
-                  • Envanter sterilizasyon ve kalite kontrolünden geçirilir.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 🖼️ PROJE GALERİSİ */}
-        <section
-          className="py-20 bg-gradient-to-b from-white to-purple-50/30"
-          aria-labelledby="gallery-heading"
-        >
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 id="gallery-heading" className="text-3xl md:text-5xl font-black mb-6">
-                Proje{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
-                  Galerimiz
-                </span>
-              </h2>
-              <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-                300+ başarılı kurulumdan seçkiler. Gerçek etkinlik görselleri.
-              </p>
-            </div>
-
-            <div className="max-w-6xl mx-auto">
-              <CaseGallery images={PREMIUM_CONTENT.gallery} />
-            </div>
-          </div>
-        </section>
-
-        {/* 🛠️ Teknik/Özellikler bloğu (LED sayfasıyla paralel) */}
-        <section
-          id="teknoloji"
-          className="py-20 bg-white"
-          aria-labelledby="technology-heading"
-        >
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 id="technology-heading" className="text-3xl md:text-5xl font-black mb-6">
-                Hizmet{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-purple-700">
-                  Özellikleri
-                </span>
-              </h2>
-              <p className="text-lg text-gray-700">Zengin seçenek ve profesyonel lojistik</p>
-            </div>
-
-            <div className="grid lg:grid-cols-2 gap-10 max-w-5xl mx-auto">
-              <div className="bg-gradient-to-br from-blue-50 to-white rounded-2xl p-6 border border-blue-200 hover:shadow-lg hover:border-blue-300 transition-all duration-300">
-                <h3 className="text-2xl font-black mb-5 text-gray-900 hover:text-blue-700 transition-colors duration-300">
-                  Teknik & Ürün Özeti
-                </h3>
-                <div className="space-y-4">
-                  {Object.entries(PREMIUM_CONTENT.technicalSpecs).map(
-                    ([k, v]) => (
-                      <div
-                        key={k}
-                        className="flex justify-between items-center py-2 border-b border-gray-200 hover:border-blue-200 hover:bg-blue-50/50 rounded-lg px-2 transition-all duration-300"
-                      >
-                        <span className="font-semibold text-gray-700 text-sm capitalize hover:text-blue-800 transition-colors duration-300">
-                          {k.replace(/([A-Z])/g, " $1").trim()}:
-                        </span>
-                        <span className="text-blue-600 font-bold text-sm hover:text-blue-800 transition-colors duration-300">
-                          {v}
-                        </span>
-                      </div>
-                    )
-                  )}
+                <div className="text-3xl mb-4 motion-safe:group-hover:scale-110 transition-transform duration-300" aria-hidden="true">
+                  {f.icon}
                 </div>
+                <h3 className="text-lg font-bold mb-3 text-gray-900">{f.title}</h3>
+                <p className="text-gray-700 text-sm leading-relaxed">{f.description}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-              <div className="bg-gradient-to-br from-purple-50 to-white rounded-2xl p-6 border border-purple-200 hover:shadow-lg hover:border-purple-300 transition-all duration-300">
-                <h3 className="text-2xl font-black mb-5 text-gray-900 hover:text-purple-700 transition-colors duration-300">
-                  Kullanım Senaryoları
-                </h3>
-                <div className="grid gap-4">
-                  {[
-                    { icon: "🎉", title: "Düğün & Davet", desc: "Şık banket masaları ve Napolyon sandalyeler" },
-                    { icon: "🏢", title: "Konferans & Seminer", desc: "Sıralı oturumlar ve masa üstü düzenleri" },
-                    { icon: "🥂", title: "Kokteyl & Lansman", desc: "Bistro masalar ve strech kılıflar" },
-                    { icon: "🏟️", title: "Açık Hava Etkinlikleri", desc: "Hızlı kurulabilir, dayanıklı ürünler" },
-                  ].map((item, i) => (
-                    <div
-                      key={i}
-                      className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-purple-300 hover:shadow-md motion-safe:hover:scale-105 transition-all duration-300 group"
-                    >
-                      <div className="text-xl" aria-hidden="true">{item.icon}</div>
-                      <div>
-                        <div className="font-semibold text-gray-900 text-sm group-hover:text-purple-700 transition-colors duration-300">
-                          {item.title}
+      {/* Paketler */}
+      <section id="paketler" className="py-20 bg-gradient-to-b from-gray-50 to-blue-100/20" aria-labelledby="packages-heading">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 id="packages-heading" className="text-3xl md:text-5xl font-black mb-6">
+              Hazır{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-purple-700">Paketler</span>
+            </h2>
+            <p className="text-lg text-gray-700 max-w-2xl mx-auto">
+              İhtiyacınıza uygun, anahtar teslim masa & sandalye çözümleri.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-10 max-w-6xl mx-auto" role="list" aria-label="Masa & sandalye paketleri">
+            {enrichedPackages.map((pkg) => (
+              <article
+                key={pkg.id}
+                className={`relative bg-white rounded-2xl border border-gray-200 shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 ${
+                  pkg.badge === "Popüler"
+                    ? "ring-4 ring-blue-500/20 transform scale-105 hover:scale-110"
+                    : "hover:-translate-y-2 focus:-translate-y-2"
+                }`}
+                role="listitem"
+                tabIndex={0}
+              >
+                {pkg.badge && (
+                  <div
+                    className={`absolute -top-3 -right-3 px-4 py-2 rounded-full text-sm font-bold z-20 text-white shadow-lg transition-all duration-300 ${
+                      pkg.badge === "Popüler"
+                        ? "bg-gradient-to-r from-orange-500 to-red-500"
+                        : pkg.badge === "Kurumsal"
+                        ? "bg-gradient-to-r from-purple-600 to-blue-600"
+                        : "bg-gradient-to-r from-green-500 to-emerald-600"
+                    }`}
+                  >
+                    {pkg.badge}
+                  </div>
+                )}
+
+                <div className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 p-6 text-white overflow-hidden">
+                  <div className="absolute inset-0 opacity-10" aria-hidden="true">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full -translate-y-16 translate-x-16"></div>
+                    <div className="absolute bottom-0 left-0 w-24 h-24 bg-blue-400 rounded-full translate-y-12 -translate-x-12"></div>
+                  </div>
+
+                  <div className="relative z-10">
+                    <div className="flex items-center justify-between mb-5">
+                      <div className="text-3xl" aria-hidden="true">
+                        {pkg.id === "davet-100" && "🎉"}
+                        {pkg.id === "konferans-60" && "🏢"}
+                        {pkg.id === "kokteyl-15" && "🥂"}
+                      </div>
+                      <div className="text-right">
+                        <div className="text-2xl font-black text-blue-300">{pkg.specs.people} Kişi</div>
+                        <div className="text-xs text-blue-200">KAPASİTE</div>
+                      </div>
+                    </div>
+
+                    <h3 className="text-xl font-black mb-5 leading-tight border-b border-white/20 pb-4">
+                      {pkg.name}
+                    </h3>
+
+                    <div className="grid grid-cols-2 gap-3 text-sm" role="list" aria-label="Paket özellikleri">
+                      <div className="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm" role="listitem">
+                        <div className="text-blue-300 text-xs mb-1">MASA</div>
+                        <div className="font-bold text-white">{pkg.specs.tables.type} × {pkg.specs.tables.count}</div>
+                      </div>
+                      <div className="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm" role="listitem">
+                        <div className="text-blue-300 text-xs mb-1">SANDALYE</div>
+                        <div className="font-bold text-white">
+                          {pkg.specs.chairs.type}{pkg.specs.chairs.count ? ` × ${pkg.specs.chairs.count}` : ""}
                         </div>
-                        <div className="text-xs text-gray-600 group-hover:text-gray-700 transition-colors duration-300">
-                          {item.desc}
+                      </div>
+                      <div className="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm" role="listitem">
+                        <div className="text-blue-300 text-xs mb-1">ÖRTÜ/KILIF</div>
+                        <div className="font-bold text-white">
+                          {pkg.specs.linens.tablecloth ? `Örtü × ${pkg.specs.linens.tablecloth}` : ""}
+                          {pkg.specs.linens.runner ? `, Runner × ${pkg.specs.linens.runner}` : ""}
+                          {pkg.specs.linens.stretchCover ? `, Kılıf × ${pkg.specs.linens.stretchCover}` : ""}
+                        </div>
+                      </div>
+                      <div className="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm" role="listitem">
+                        <div className="text-blue-300 text-xs mb-1">LOJİSTİK</div>
+                        <div className="font-bold text-white">Teslim & Yerleşim</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-6">
+                  <div className="mb-8">
+                    <h4 className="font-bold text-gray-900 mb-4 text-lg flex items-center gap-2">
+                      <span className="w-2 h-2 bg-blue-600 rounded-full" aria-hidden="true"></span>
+                      Paket İçeriği
+                    </h4>
+                    <ul className="space-y-3" role="list">
+                      {pkg.includes.map((item, i) => (
+                        <li key={i} className="flex items-start gap-3 text-gray-700 text-sm p-2 rounded-lg hover:bg-blue-50 transition-all duration-300">
+                          <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold mt-0.5" aria-hidden="true">✓</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-slate-50 to-white rounded-xl p-5 border border-gray-200 shadow-sm mb-6">
+                    <div className="text-center mb-5">
+                      <div className="text-xs text-gray-500 uppercase tracking-wider font-semibold">GÜNLÜK KİRA (İSTANBUL)</div>
+                      <div className="text-3xl font-black text-gray-900 mt-2">
+                        {formatTRY(pkg.pricing.total)} <span className="text-sm text-gray-500 font-normal ml-2">+ KDV</span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4 text-sm">
+                      <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                        <span className="text-gray-600 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" aria-hidden="true"></span>
+                          Ekipman (masa/sandalye/örtü)
+                        </span>
+                        <span className="font-semibold text-gray-900">{formatTRY(pkg.pricing.base)}</span>
+                      </div>
+                      <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                        <span className="text-gray-600 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 bg-green-500 rounded-full" aria-hidden="true"></span>
+                          Kurulum & Yerleşim
+                        </span>
+                        <span className="font-semibold text-gray-900">{formatTRY(pkg.pricing.setup)}</span>
+                      </div>
+                      <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                        <span className="text-gray-600 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 bg-purple-500 rounded-full" aria-hidden="true"></span>
+                          Teslimat (İstanbul)
+                        </span>
+                        <span className="font-semibold text-gray-900">{formatTRY(pkg.pricing.delivery)}</span>
+                      </div>
+                      <div className="flex justify-between items-center py-2">
+                        <span className="text-gray-600 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 bg-pink-500 rounded-full" aria-hidden="true"></span>
+                          Operasyon & Personel
+                        </span>
+                        <span className="font-semibold text-gray-900">{formatTRY(pkg.pricing.staff)}</span>
+                      </div>
+
+                      <div className="mt-5 pt-4 border-t border-gray-200">
+                        <div className="flex justify-between items-center">
+                          <span className="font-bold text-gray-900 text-base">Toplam</span>
+                          <span className="font-black text-xl text-blue-600 bg-blue-50 px-3 py-1 rounded-lg">
+                            {formatTRY(pkg.pricing.total)}
+                          </span>
                         </div>
                       </div>
                     </div>
-                  ))}
+                  </div>
+
+                  {/* WhatsApp CTA */}
+                  <a
+                    href={`https://wa.me/905453048671?text=Merhaba, ${encodeURIComponent(pkg.name)} hakkında detaylı bilgi ve teklif almak istiyorum.`}
+                    className="group/btn relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-4 px-6 rounded-xl w-full text-center block hover:from-blue-700 hover:to-purple-700 transition-all duration-500 transform hover:scale-[1.02] hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-purple-300"
+                    aria-label={`${pkg.name} için WhatsApp üzerinden hemen teklif alın`}
+                    target="_blank"
+                    rel="noopener nofollow"
+                  >
+                    <span className="relative z-10 flex items-center justify-center gap-2">
+                      💬 Hemen Teklif Al <span aria-hidden>→</span>
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -skew-x-12 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000" aria-hidden="true" />
+                  </a>
+
+                  <div className="mt-4 text-center">
+                    <p className="text-xs text-gray-500">
+                      <span aria-hidden="true">⏱️</span>
+                      <strong> 2 saat içinde</strong> detaylı teklif.
+                    </p>
+                  </div>
                 </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Galeri */}
+      <section className="py-20 bg-gradient-to-b from-white to-purple-50/30" aria-labelledby="gallery-heading">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 id="gallery-heading" className="text-3xl md:text-5xl font-black mb-6">
+              Proje <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">Galerimiz</span>
+            </h2>
+            <p className="text-lg text-gray-700 max-w-2xl mx-auto">
+              300+ başarılı kurulumdan seçkiler. Gerçek etkinlik görselleri.
+            </p>
+          </div>
+
+          <div className="max-w-6xl mx-auto">
+            <CaseGallery images={PREMIUM_CONTENT.gallery} />
+          </div>
+        </div>
+      </section>
+
+      {/* Teknik & Senaryolar */}
+      <section id="teknoloji" className="py-20 bg-white" aria-labelledby="technology-heading">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 id="technology-heading" className="text-3xl md:text-5xl font-black mb-6">
+              Hizmet <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-purple-700">Özellikleri</span>
+            </h2>
+            <p className="text-lg text-gray-700">Zengin seçenek ve profesyonel lojistik</p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-10 max-w-5xl mx-auto">
+            <div className="bg-gradient-to-br from-blue-50 to-white rounded-2xl p-6 border border-blue-200 hover:shadow-lg hover:border-blue-300 transition-all duration-300">
+              <h3 className="text-2xl font-black mb-5 text-gray-900">Teknik & Ürün Özeti</h3>
+              <div className="space-y-4">
+                {Object.entries(PREMIUM_CONTENT.technicalSpecs).map(([k, v]) => (
+                  <div key={k} className="flex justify-between items-center py-2 border-b border-gray-200 hover:border-blue-200 hover:bg-blue-50/50 rounded-lg px-2 transition-all duration-300">
+                    <span className="font-semibold text-gray-700 text-sm capitalize">{k.replace(/([A-Z])/g, " $1").trim()}:</span>
+                    <span className="text-blue-600 font-bold text-sm">{v}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-purple-50 to-white rounded-2xl p-6 border border-purple-200 hover:shadow-lg hover:border-purple-300 transition-all duration-300">
+              <h3 className="text-2xl font-black mb-5 text-gray-900">Kullanım Senaryoları</h3>
+              <div className="grid gap-4">
+                {[
+                  { icon: "🎉", title: "Düğün & Davet", desc: "Şık banket masaları ve Napolyon sandalyeler" },
+                  { icon: "🏢", title: "Konferans & Seminer", desc: "Sıralı oturumlar ve masa üstü düzenleri" },
+                  { icon: "🥂", title: "Kokteyl & Lansman", desc: "Bistro masalar ve strech kılıflar" },
+                  { icon: "🏟️", title: "Açık Hava Etkinlikleri", desc: "Hızlı kurulabilir, dayanıklı ürünler" },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-purple-300 hover:shadow-md transition-all duration-300">
+                    <div className="text-xl" aria-hidden="true">{item.icon}</div>
+                    <div>
+                      <div className="font-semibold text-gray-900 text-sm">{item.title}</div>
+                      <div className="text-xs text-gray-600">{item.desc}</div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* 📝 SEO Makalesi */}
-        <EnhancedMasaSeoArticle />
-      </main>
+      {/* --- LED tarzı Geniş SEO Makalesi (ekstra) --- */}
+      <EnhancedMasaSeoArticle />
 
-      {/* 🏷️ Zengin Snippet'lar (LED sayfasındaki StructuredData ile aynı yaklaşım) */}
+      {/* JSON-LD */}
       <StructuredData packages={enrichedPackages} />
     </div>
   );
 }
 
-// 🏷️ Structured Data Bileşeni
+// 🏷️ Structured Data
 function StructuredData({ packages }) {
   const siteUrl = "https://www.sahneva.com";
   const pageUrl = `${siteUrl}/masa-sandalye-kiralama`;
@@ -873,16 +858,9 @@ function StructuredData({ packages }) {
       name: "Sahneva",
       url: siteUrl,
       telephone: "+905453048671",
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: "İstanbul",
-        addressCountry: "TR",
-      },
+      address: { "@type": "PostalAddress", addressLocality: "İstanbul", addressCountry: "TR" },
     },
-    areaServed: {
-      "@type": "City",
-      name: "İstanbul",
-    },
+    areaServed: { "@type": "City", name: "İstanbul" },
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "Masa & Sandalye Paketleri",
@@ -942,24 +920,9 @@ function StructuredData({ packages }) {
 
   return (
     <>
-      <Script
-        id="service-schema-masa"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
-      />
-      <Script
-        id="faq-schema-masa"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-      <Script
-        id="breadcrumb-schema-masa"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
+      <Script id="service-schema-masa" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      <Script id="faq-schema-masa" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <Script id="breadcrumb-schema-masa" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
     </>
   );
 }
