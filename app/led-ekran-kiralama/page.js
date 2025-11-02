@@ -87,6 +87,7 @@ const PREMIUM_CONTENT = {
     { src: "/img/led/1.webp", alt: "Konser sahnesinde kurulmuş büyük LED ekran, kalabalık önünde canlı performans gösterimi", category: "Konser" },
     { src: "/img/led/2.webp", alt: "Kurumsal etkinlikte kullanılan LED ekran, sunum sırasında profesyonel aydınlatma ile aydınlatılmış", category: "Kurumsal" },
     { src: "/img/led/3.webp", alt: "Açık hava festivalinde yüksek parlaklıklı LED ekran, gün ışığında net görüntü", category: "Festival" },
+     { src: "/img/led-ekran-kiralama-hero.webp", alt: "kiralık kurumsal led ekran", category: "Kurumsal" },
   ],
   technicalSpecs: {
     pixelRange: "P2.5 - P6",
