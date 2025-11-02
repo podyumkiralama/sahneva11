@@ -21,13 +21,22 @@ export default function UtilityBar() {
   const [query, setQuery] = useState("");
   const [activeTool, setActiveTool] = useState(null);
   const [scrolled, setScrolled] = useState(false);
+
   const dialogRef = useRef(null);
   const toolsRef = useRef(null);
+  const lastFocusRef = useRef(null);
 
-  // Scroll takibi
+  // İlk yüklemede kontrast tercihini uygula
+  useEffect(() => {
+    const saved = typeof window !== "undefined" ? localStorage.getItem("hc") : null;
+    if (saved === "1") document.documentElement.classList.add("hc");
+  }, []);
+
+  // Scroll takibi (küçük konum animasyonu için)
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 100);
-    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -37,42 +46,47 @@ export default function UtilityBar() {
       if (e.key === "Escape") {
         setSearchOpen(false);
         setActiveTool(null);
+        // focus’u geri ver
+        lastFocusRef.current?.focus?.();
       }
     };
     window.addEventListener("keydown", handleEscape);
     return () => window.removeEventListener("keydown", handleEscape);
   }, []);
 
-  // Dışarı tıklama
+  // Dışarı tıklama: sadece açık tooltip’leri/aramayı kapat
   useEffect(() => {
-    const handleClickOutside = (e) => {
+    const onClick = (e) => {
       if (toolsRef.current && !toolsRef.current.contains(e.target)) {
         setActiveTool(null);
       }
-      if (dialogRef.current && !dialogRef.current.contains(e.target) && isSearchOpen) {
+      if (isSearchOpen && dialogRef.current && !dialogRef.current.contains(e.target)) {
         setSearchOpen(false);
       }
     };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
   }, [isSearchOpen]);
 
-  const filtered = query.trim().length === 0 ? ROUTES : 
-    ROUTES.filter((r) => r.label.toLowerCase().includes(query.toLowerCase().trim()));
+  const filtered = query.trim().length === 0
+    ? ROUTES
+    : ROUTES.filter((r) => r.label.toLowerCase().includes(query.toLowerCase().trim()));
 
   // Yazı boyutu
   const bumpFont = useCallback((delta) => {
     const root = document.documentElement;
     const current = parseFloat(getComputedStyle(root).fontSize) || 16;
     const newSize = Math.min(20, Math.max(12, current + delta));
-    document.documentElement.style.fontSize = `${newSize}px`;
+    root.style.fontSize = `${newSize}px`;
     setActiveTool(null);
   }, []);
 
-  // Kontrast modu
+  // Yüksek kontrast: sadece class toggle, scroll yok, overlay yok
   const toggleContrast = useCallback(() => {
-    document.documentElement.classList.toggle("hc");
+    const el = document.documentElement;
+    const willEnable = !el.classList.contains("hc");
+    el.classList.toggle("hc");
+    localStorage.setItem("hc", willEnable ? "1" : "0");
     setActiveTool(null);
   }, []);
 
@@ -82,74 +96,58 @@ export default function UtilityBar() {
     setActiveTool(null);
   }, []);
 
-  // Tool toggle
+  // Araç toggle
   const toggleTool = useCallback((toolName) => {
-    setActiveTool(activeTool === toolName ? null : toolName);
-    if (toolName !== 'search') {
-      setSearchOpen(false);
-    }
-  }, [activeTool]);
+    setActiveTool((prev) => (prev === toolName ? null : toolName));
+    if (toolName !== "search") setSearchOpen(false);
+  }, []);
 
-  // Arama açma fonksiyonu
-  const openSearchModal = useCallback(() => {
+  // Arama modalı aç
+  const openSearchModal = useCallback((e) => {
+    lastFocusRef.current = e?.currentTarget || document.activeElement;
     setSearchOpen(true);
-    setActiveTool('search');
+    setActiveTool("search");
     setTimeout(() => {
       const input = dialogRef.current?.querySelector("input");
-      if (input) {
-        input.focus();
-        input.select();
-      }
-    }, 100);
+      input?.focus();
+      input?.select();
+    }, 50);
   }, []);
 
   return (
     <>
+      {/* Sağ sabit bar */}
       <div
         ref={toolsRef}
-        className={`utility-bar-container ${scrolled ? 'scrolled' : ''}`}
+        className={`utility-bar-container ${scrolled ? "scrolled" : ""}`}
+        role="region"
+        aria-label="Hızlı yardımcı araçlar"
       >
         <div className="utility-bar-content">
-          
           {/* Erişilebilirlik Butonu */}
           <div className="utility-tool-wrapper">
             <button
-              className={`utility-btn ${activeTool === 'accessibility' ? 'utility-btn-active' : ''}`}
-              onClick={() => toggleTool('accessibility')}
+              className={`utility-btn ${activeTool === "accessibility" ? "utility-btn-active" : ""}`}
+              onClick={() => toggleTool("accessibility")}
               title="Erişilebilirlik araçları"
-              aria-label="Erişilebilirlik araçları"
+              aria-expanded={activeTool === "accessibility"}
+              aria-controls="utility-accessibility"
             >
               <span className="utility-icon">♿</span>
-              <span className="utility-dot"></span>
+              <span className="utility-dot" />
             </button>
 
-            {activeTool === 'accessibility' && (
-              <div className="utility-tooltip">
+            {activeTool === "accessibility" && (
+              <div className="utility-tooltip" id="utility-accessibility" role="dialog" aria-modal="false">
                 <div className="utility-tooltip-content">
                   <div className="font-size-controls">
                     <div className="control-label">Yazı Boyutu</div>
                     <div className="font-buttons">
-                      <button 
-                        onClick={() => bumpFont(-1)} 
-                        className="font-btn"
-                        aria-label="Yazı boyutunu küçült"
-                      >
-                        A-
-                      </button>
-                      <button 
-                        onClick={() => bumpFont(1)} 
-                        className="font-btn"
-                        aria-label="Yazı boyutunu büyüt"
-                      >
-                        A+
-                      </button>
+                      <button onClick={() => bumpFont(-1)} className="font-btn" aria-label="Yazı boyutunu küçült">A-</button>
+                      <button onClick={() => bumpFont(1)} className="font-btn" aria-label="Yazı boyutunu büyüt">A+</button>
                     </div>
                   </div>
-                  <button 
-                    onClick={toggleContrast} 
-                    className="contrast-btn"
-                    aria-label="Yüksek kontrast modunu aç/kapat"
-                  >
+                  <button onClick={toggleContrast} className="contrast-btn" aria-pressed={document.documentElement.classList.contains("hc")}>
                     🎨 Yüksek Kontrast
                   </button>
                 </div>
@@ -160,13 +158,14 @@ export default function UtilityBar() {
           {/* Arama Butonu */}
           <div className="utility-tool-wrapper">
             <button
-              className={`utility-btn ${activeTool === 'search' ? 'utility-btn-active' : ''}`}
+              className={`utility-btn ${activeTool === "search" ? "utility-btn-active" : ""}`}
               onClick={openSearchModal}
               title="Site içi arama"
-              aria-label="Site içi arama"
+              aria-haspopup="dialog"
+              aria-expanded={isSearchOpen}
             >
               <span className="utility-icon">🔍</span>
-              <span className="utility-dot"></span>
+              <span className="utility-dot" />
             </button>
           </div>
 
@@ -185,29 +184,30 @@ export default function UtilityBar() {
           {/* İletişim Butonu */}
           <div className="utility-tool-wrapper">
             <button
-              className={`utility-btn ${activeTool === 'contact' ? 'utility-btn-active' : ''}`}
-              onClick={() => toggleTool('contact')}
+              className={`utility-btn ${activeTool === "contact" ? "utility-btn-active" : ""}`}
+              onClick={() => toggleTool("contact")}
               title="Hızlı iletişim"
-              aria-label="Hızlı iletişim seçenekleri"
+              aria-expanded={activeTool === "contact"}
+              aria-controls="utility-contact"
             >
               <span className="utility-icon">📞</span>
-              <span className="utility-dot"></span>
+              <span className="utility-dot" />
             </button>
 
-            {activeTool === 'contact' && (
-              <div className="utility-tooltip">
+            {activeTool === "contact" && (
+              <div className="utility-tooltip" id="utility-contact" role="dialog" aria-modal="false">
                 <div className="utility-tooltip-content">
-                  <a 
-                    href="tel:+905453048671" 
+                  <a
+                    href="tel:+905453048671"
                     className="contact-btn phone"
                     onClick={() => setActiveTool(null)}
                     aria-label="Telefon ile ara"
                   >
                     📞 Hemen Ara
                   </a>
-                  <a 
-                    href="https://wa.me/905453048671" 
-                    target="_blank" 
+                  <a
+                    href="https://wa.me/905453048671"
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="contact-btn whatsapp"
                     onClick={() => setActiveTool(null)}
@@ -219,20 +219,22 @@ export default function UtilityBar() {
               </div>
             )}
           </div>
-
         </div>
       </div>
 
       {/* Arama Modalı */}
       {isSearchOpen && (
-        <div 
+        <div
           className="search-modal-overlay"
-          onClick={() => setSearchOpen(false)}
           role="dialog"
           aria-modal="true"
           aria-labelledby="search-input"
+          onClick={() => {
+            setSearchOpen(false);
+            lastFocusRef.current?.focus?.();
+          }}
         >
-          <div 
+          <div
             ref={dialogRef}
             className="search-modal-container"
             onClick={(e) => e.stopPropagation()}
@@ -252,9 +254,12 @@ export default function UtilityBar() {
                   aria-describedby="search-results"
                 />
               </div>
-              <button 
+              <button
                 className="search-close-btn"
-                onClick={() => setSearchOpen(false)}
+                onClick={() => {
+                  setSearchOpen(false);
+                  lastFocusRef.current?.focus?.();
+                }}
                 aria-label="Arama penceresini kapat"
               >
                 Kapat
@@ -266,9 +271,7 @@ export default function UtilityBar() {
                 <div className="no-results">
                   <div className="no-results-icon">🔍</div>
                   <div className="no-results-title">Sonuç bulunamadı</div>
-                  <div className="no-results-description">
-                    Farklı anahtar kelimeler deneyin
-                  </div>
+                  <div className="no-results-description">Farklı anahtar kelimeler deneyin</div>
                 </div>
               ) : (
                 <div className="results-list">
@@ -280,6 +283,7 @@ export default function UtilityBar() {
                       onClick={() => {
                         setSearchOpen(false);
                         setActiveTool(null);
+                        lastFocusRef.current?.focus?.();
                       }}
                       aria-label={`${route.label} sayfasına git`}
                     >
