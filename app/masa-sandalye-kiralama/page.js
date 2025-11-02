@@ -5,17 +5,44 @@ import Script from "next/script";
 import { getService } from "@/lib/data";
 
 // Bu sayfa "masa-sandalye" hizmeti için statik rota: /masa-sandalye-kiralama
+export const revalidate = 900;
+
 const svc = getService("masa-sandalye");
 
+// ————————————————————————————————————————————
+// SAYFA İÇERİĞİ (sıcak/ivory tema, fotoğraflı kartlar)
+// ————————————————————————————————————————————
+const THEME = {
+  brand: {
+    from: "#d97706", // amber-600
+    to: "#059669",   // emerald-600
+  },
+};
+
 const CONTENT = {
-  heroOverlay: true,
-  gallery: ["/img/sandalye/1.webp", "/img/sandalye/2.webp", "/img/sandalye/3.webp"],
+  hero: {
+    // Sağdaki büyük görsel (yüksek LCP etkisi için priority)
+    img: "/img/masa-sandalye/hero.webp",
+    alt: "Şık davet düzeni: banket masalar, Napolyon sandalyeler ve keten örtüler",
+    stats: [
+      { k: "Envanter", v: "3000+ sandalye" },
+      { k: "Teslimat", v: "İstanbul içi aynı gün" },
+      { k: "Projeler", v: "500+ organizasyon" },
+    ],
+  },
+  highlights: [
+    { icon: "🪑", title: "Napolyon / Konferans / Bistro", text: "Her konsepte uygun sandalye ve masa tipleri" },
+    { icon: "🧵", title: "Örtü & Kılıf", text: "Keten, tafta, strech – çoklu renk seçenekleri" },
+    { icon: "🚚", title: "Teslimat & Yerleşim", text: "Zamanında teslim, profesyonel kurulum ve toplama" },
+    { icon: "📋", title: "Planlama", text: "Oturma planı, numaralandırma ve yönlendirme" },
+  ],
   packages: [
     {
       name: "Davet Seti — 100 Kişi",
+      img: "/img/masa-sandalye/paket-davet.webp",
       includes: [
-        "10 × yuvarlak banket masa (Ø180 cm)",
-        "100 × Napolyon sandalye (beyaz/krem)",
+        "10× yuvarlak banket masa (Ø180 cm)",
+        "100× Napolyon sandalye (beyaz/krem)",
         "Keten masa örtüsü + runner",
         "Teslimat, yerleşim ve toplama",
       ],
@@ -23,9 +50,10 @@ const CONTENT = {
     },
     {
       name: "Konferans Seti — 60 Kişi",
+      img: "/img/masa-sandalye/paket-konferans.webp",
       includes: [
-        "10 × dikdörtgen masa (180×75 cm)",
-        "60 × konferans sandalyesi (yastıklı)",
+        "10× dikdörtgen masa (180×75 cm)",
+        "60× konferans sandalyesi (yastıklı)",
         "Numaralandırma ve oturma planı yerleşimi",
         "Teslimat + kurulum",
       ],
@@ -33,8 +61,9 @@ const CONTENT = {
     },
     {
       name: "Kokteyl Seti — 15 Ünite",
+      img: "/img/masa-sandalye/paket-kokteyl.webp",
       includes: [
-        "15 × bistro kokteyl masası (Ø60–80 cm)",
+        "15× bistro kokteyl masası (Ø60–80 cm)",
         "Strech kılıf (beyaz/siyah/renkli)",
         "Opsiyon: fırfır/tafta şal",
         "Teslimat + toplama",
@@ -42,14 +71,25 @@ const CONTENT = {
       note: "Lansman, açılış ve networking alanları için.",
     },
   ],
+  gallery: [
+    "/img/sandalye/1.webp",
+    "/img/sandalye/2.webp",
+    "/img/sandalye/3.webp",
+    "/img/sandalye/4.webp",
+    "/img/sandalye/5.webp",
+    "/img/sandalye/6.webp",
+  ],
 };
 
+// ————————————————————————————————————————————
+// METADATA (SEO)
+// ————————————————————————————————————————————
 export const metadata = {
   title: `${svc?.title ?? "Masa & Sandalye Kiralama"} | Sahneva`,
   description:
     svc?.excerpt ||
-    "Düğün, konferans ve kokteyl organizasyonları için masa & sandalye kiralama. Napolyon, konferans, bistro seçenekleri; teslimat ve yerleşim dahil.",
-  alternates: { canonical: "https://sahneva.com/masa-sandalye-kiralama" },
+    "Düğün, konferans ve kokteyl organizasyonları için masa & sandalye kiralama: Napolyon, konferans ve bistro seçenekleri; örtü–kılıf, teslimat ve profesyonel yerleşim.",
+  alternates: { canonical: "https://www.sahneva.com/masa-sandalye-kiralama" },
   keywords: [
     "masa sandalye kiralama",
     "napolyon sandalye kiralama",
@@ -62,245 +102,334 @@ export const metadata = {
     title: `${svc?.title ?? "Masa & Sandalye Kiralama"} | Sahneva`,
     description:
       svc?.desc ||
-      "Banket masa, Napolyon sandalye, konferans ve kokteyl setleri. Örtü-kılıf, numaralandırma ve profesyonel yerleşim.",
-    url: "https://sahneva.com/masa-sandalye-kiralama",
-    type: "article",
-    images: [{ url: "/img/hizmet-masa.webp", width: 1200, height: 630, alt: "Masa sandalye kiralama - Sahneva" }],
+      "Banket masa, Napolyon sandalye, konferans ve kokteyl setleri. Örtü–kılıf, numaralandırma ve profesyonel yerleşim.",
+    url: "https://www.sahneva.com/masa-sandalye-kiralama",
+    type: "website",
+    images: [{ url: "/img/hizmet-masa-og.jpg", width: 1200, height: 630, alt: "Sahneva Masa & Sandalye Kiralama" }],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 
-export const revalidate = 60;
-
-/* --- Uzun, özgün makale --- */
-function LongArticleMasaSandalye() {
+// ————————————————————————————————————————————
+// BÖLÜM: UZUN REHBER (farklı tipografi ve kutular)
+// ————————————————————————————————————————————
+function Article() {
   return (
-    <section className="container max-w-4xl mx-auto py-10 md:py-14 space-y-10">
-      {/* Nedir? */}
-      <article className="space-y-4 text-neutral-800 leading-relaxed">
-        <h2 className="text-2xl md:text-3xl font-extrabold">Masa & Sandalye Kiralama Nedir?</h2>
-        <p>
-          Bir etkinliğin akışı sadece sahneyle değil, <strong>oturma konforu ve düzeniyle</strong> de şekillenir.{" "}
-          <strong>Sahneva</strong> olarak düğün, gala, konferans ve kokteyl gibi farklı senaryolara uygun masa–sandalye çözümlerini;
-          <em> teslimat, kurulum ve toplama</em> dâhil anahtar teslim sunuyoruz. Envanterimizde Napolyon, konferans tipi ve bistro sandalyeler;
-          yuvarlak banket (Ø180 cm), dikdörtgen (180×75 cm) ve kokteyl bistro masaları bulunur. Örtü, kılıf, runner ve numaralandırma gibi detaylarla alan estetiğini tamamlarız.
-        </p>
-      </article>
-
-      {/* Fiyatlar */}
-      <article className="rounded-2xl border bg-white p-6">
-        <h2 className="text-2xl md:text-3xl font-extrabold">Kiralama Fiyatları Nasıl Belirlenir?</h2>
-        <p className="mt-3 text-neutral-700">
-          Fiyatlar adet ve modele göre değişir; aşağıdaki parametreler bütçeyi belirler:
-        </p>
-        <ul className="mt-4 grid gap-2 md:grid-cols-2 text-neutral-800">
-          <li className="flex gap-2"><span className="mt-2 h-2 w-2 rounded-full bg-primary" aria-hidden="true" />Toplam adet ve etkinlik süresi (tek/çok gün)</li>
-          <li className="flex gap-2"><span className="mt-2 h-2 w-2 rounded-full bg-primary" aria-hidden="true" />Model/kaplama seçimi (Napolyon, konferans, bistro, örtü/kılıf)</li>
-          <li className="flex gap-2"><span className="mt-2 h-2 w-2 rounded-full bg-primary" aria-hidden="true" />Teslimat mesafesi, kat/erişim ve zaman penceresi</li>
-          <li className="flex gap-2"><span className="mt-2 h-2 w-2 rounded-full bg-primary" aria-hidden="true" />Yerleşim planı, numaralandırma ve ekstra personel ihtiyacı</li>
-        </ul>
-        <div className="mt-5 rounded-xl bg-neutral-50 p-4 text-neutral-700">
-          <p>
-            Hızlı bir teklif için; <strong>etkinlik tarihi/konumu</strong>, <strong>adetler</strong>, <strong>model</strong> ve varsa <strong>örtü–kılıf</strong> rengini paylaşmanız yeterli.
+    <section className="container mx-auto max-w-6xl px-4 py-12 md:py-16">
+      <div className="grid lg:grid-cols-3 gap-8">
+        <article className="lg:col-span-2 rounded-2xl border border-amber-200/60 bg-white p-6 md:p-8 shadow-sm">
+          <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-neutral-900">
+            Masa & Sandalye Kiralama Rehberi
+          </h2>
+          <p className="mt-4 leading-7 text-neutral-700">
+            Bir etkinlikte akış sadece sahneyle değil, <strong>oturma konforu ve düzeni</strong> ile de şekillenir.
+            <strong> Sahneva</strong> olarak düğün, gala, konferans ve kokteyl gibi farklı senaryolara uygun çözümleri{" "}
+            <em>teslimat, kurulum ve toplama</em> dahil anahtar teslim sunuyoruz. Envanter: Napolyon, konferans tipi ve bistro
+            sandalyeler; yuvarlak banket (Ø180 cm), dikdörtgen (180×75 cm) ve kokteyl bistro masaları.
           </p>
-        </div>
-      </article>
 
-      {/* Nerelerde Kullanılır */}
-      <article className="rounded-2xl border bg-white p-6">
-        <h2 className="text-2xl md:text-3xl font-extrabold">Nerelerde Kullanılır?</h2>
-        <div className="grid md:grid-cols-2 gap-2 mt-3 text-neutral-800">
-          <ul className="space-y-1">
-            <li>• Düğün, nişan, kına ve davet organizasyonları</li>
-            <li>• Lansman, gala ve kurumsal yemekler</li>
-            <li>• Konferans, seminer, eğitim</li>
-            <li>• Fuar, AVM etkinliği ve açılışlar</li>
-          </ul>
-          <ul className="space-y-1">
-            <li>• Kokteyl & networking alanları</li>
-            <li>• Mezuniyet ve okul etkinlikleri</li>
-            <li>• Açık hava belediye/dernek organizasyonları</li>
-            <li>• VIP protokol ve basın oturma düzenleri</li>
-          </ul>
-        </div>
-      </article>
-
-      {/* Düğün & Kurumsal İpuçları */}
-      <article className="rounded-2xl border bg-white p-6">
-        <h2 className="text-2xl md:text-3xl font-extrabold">Düğün & Kurumsal Etkinliklerde Yerleşim Önerileri</h2>
-
-        <div className="mt-4 grid gap-6 md:grid-cols-2">
-          <div>
-            <h3 className="text-xl font-bold">Düğün / Davet</h3>
-            <ul className="mt-2 space-y-1 text-neutral-800">
-              <li>• <strong>Yuvarlak banket</strong> masalarda 8–10 kişi idealdir; servis akışı rahatlar.</li>
-              <li>• <strong>Napolyon</strong> sandalye + keten örtü/runner şık bir görüntü sağlar.</li>
-              <li>• Gelin yolu/dans pisti çevresinde sirkülasyon için minimum 2,5 m boşluk bırakın.</li>
-              <li>• Masa numaralandırma ve oturma planını girişten görünür yerleştirin.</li>
-            </ul>
+          <div className="mt-6 grid md:grid-cols-2 gap-5">
+            <div className="rounded-xl bg-amber-50/60 p-4 border border-amber-200">
+              <h3 className="font-bold text-amber-900">Düğün / Davet</h3>
+              <ul className="mt-2 space-y-1 text-sm text-amber-900/90">
+                <li>• Yuvarlak bankette 8–10 kişi idealdir; servis akışı rahatlar.</li>
+                <li>• Napolyon sandalye + keten örtü/runner şık görünüm sağlar.</li>
+                <li>• Gelin yolu & pist çevresinde min. 2,5 m sirkülasyon bırakın.</li>
+              </ul>
+            </div>
+            <div className="rounded-xl bg-emerald-50/60 p-4 border border-emerald-200">
+              <h3 className="font-bold text-emerald-900">Kurumsal / Konferans</h3>
+              <ul className="mt-2 space-y-1 text-sm text-emerald-900/90">
+                <li>• Tiyatro/sınıf düzenleri için 180×75 cm masalar ideal derinlik verir.</li>
+                <li>• Kaçış aksları min. 1,5 m açık olmalı; yönlendirmeler görünür olsun.</li>
+                <li>• İsimlik, notluk, su servisi gibi masa üstü detayları planlayın.</li>
+              </ul>
+            </div>
           </div>
 
-          <div>
-            <h3 className="text-xl font-bold">Kurumsal / Konferans</h3>
-            <ul className="mt-2 space-y-1 text-neutral-800">
-              <li>• Sahne görüşü için <strong>tiyatro</strong> (sıra) veya <strong>sınıf</strong> düzeni.</li>
-              <li>• U tipi/boardroom toplantılarda 180×75 cm masalar doğru derinlik sağlar.</li>
-              <li>• Giriş–çıkış ve acil kaçış aksları en az 1,5 m açık bırakılmalı.</li>
-              <li>• İsimlik, notluk ve su servisi için masa üstü yerleşimini planlayın.</li>
-            </ul>
+          <div className="mt-6 overflow-x-auto">
+            <table className="w-full border-collapse rounded-xl overflow-hidden text-sm">
+              <thead className="bg-neutral-900 text-white">
+                <tr>
+                  <th className="p-3 text-left">Ürün</th>
+                  <th className="p-3 text-left">Ölçü / Detay</th>
+                  <th className="p-3 text-left">Not</th>
+                </tr>
+              </thead>
+              <tbody className="[&>tr>*]:p-3 [&>tr]:border-b">
+                <tr><td>Banket Masa (Yuvarlak)</td><td>Ø180 cm</td><td>8–10 kişi; keten/tafta örtü</td></tr>
+                <tr><td>Dikdörtgen Masa</td><td>180×75 cm</td><td>Konferans/sınıf düzeni</td></tr>
+                <tr><td>Bistro Kokteyl Masası</td><td>Ø60–80 cm, 110 cm yükseklik</td><td>Strech kılıf (renk seçenekli)</td></tr>
+                <tr><td>Napolyon Sandalye</td><td>Ahşap/PP, minderli</td><td>Beyaz/krem/altın seçenekleri</td></tr>
+                <tr><td>Konferans Sandalyesi</td><td>Yastıklı, istiflenebilir</td><td>Sıra ayracı opsiyonu</td></tr>
+              </tbody>
+            </table>
           </div>
-        </div>
+        </article>
 
-        <div className="mt-5 rounded-xl bg-neutral-50 p-4 text-neutral-700">
-          <p>
-            <strong>İpucu:</strong> Kokteyl alanlarında bistro masalarını 2,5–3 m aralıklarla konumlandırmak, akışı rahatlatır; renkli kılıflar/şal ile kurumsal kimlik vurgulanabilir.
-          </p>
-        </div>
-      </article>
+        <aside className="rounded-2xl border bg-white p-6 md:p-8 shadow-sm">
+          <h3 className="text-lg font-extrabold text-neutral-900">Fiyatlar Nasıl Belirlenir?</h3>
+          <ul className="mt-4 space-y-2 text-neutral-700">
+            <li>• Toplam adet ve etkinlik süresi (tek/çok gün)</li>
+            <li>• Model/kaplama (Napolyon, konferans, bistro, örtü/kılıf)</li>
+            <li>• Teslimat mesafesi, erişim/kat ve zaman penceresi</li>
+            <li>• Yerleşim planı, numaralandırma ve ekstra personel</li>
+          </ul>
+          <div className="mt-5 rounded-xl bg-neutral-50 p-4">
+            Hızlı bir teklif için: <strong>tarih/konum</strong>, <strong>adet</strong>, <strong>model</strong> ve <strong>renk</strong> bilgilerini iletin.
+          </div>
 
-      {/* Teknik Tablo */}
-      <article className="rounded-2xl border bg-white p-6">
-        <h3 className="text-xl font-bold mb-3">Teknik & Ürün Özeti</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="text-left text-neutral-500">
-                <th className="p-2">Ürün</th>
-                <th className="p-2">Ölçü / Detay</th>
-                <th className="p-2">Not</th>
-              </tr>
-            </thead>
-            <tbody className="[&>tr>*]:p-2 [&>tr]:border-b">
-              <tr><td>Banket Masa (Yuvarlak)</td><td>Ø180 cm</td><td>8–10 kişi; keten/tafta örtü seçenekleri</td></tr>
-              <tr><td>Dikdörtgen Masa</td><td>180×75 cm</td><td>Konferans/sınıf düzeni için ideal</td></tr>
-              <tr><td>Bistro Kokteyl Masası</td><td>Ø60–80 cm, 110 cm yükseklik</td><td>Strech kılıf: beyaz/siyah/renkli</td></tr>
-              <tr><td>Napolyon Sandalye</td><td>Ahşap/PP, minderli</td><td>Beyaz/krem/altın renk seçenekleri</td></tr>
-              <tr><td>Konferans Sandalyesi</td><td>Yastıklı, istiflenebilir</td><td>Numaralandırma ve sıra ayracı opsiyonu</td></tr>
-              <tr><td>Örtü & Kılıf</td><td>Keten, tafta, strech kılıf</td><td>Runner, fırfır, şal seçenekleri</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </article>
+          <div className="mt-6 grid gap-3">
+            <a
+              href="tel:+905453048671"
+              className="inline-flex items-center justify-center rounded-xl bg-neutral-900 px-5 py-3 font-bold text-white"
+              aria-label="Telefonla teklif al"
+            >
+              📞 Hemen Ara
+            </a>
+            <a
+              href="https://wa.me/905453048671?text=Merhaba%20Sahneva%2C%20Masa%20%26%20Sandalye%20kiralama%20i%C3%A7in%20teklif%20almak%20istiyorum."
+              target="_blank"
+              rel="noopener nofollow"
+              className="inline-flex items-center justify-center rounded-xl border border-neutral-300 px-5 py-3 font-bold text-neutral-900"
+              aria-label="WhatsApp ile teklif isteyin"
+            >
+              💬 WhatsApp
+            </a>
+          </div>
+        </aside>
+      </div>
     </section>
   );
 }
 
+// ————————————————————————————————————————————
+// SAYFA
+// ————————————————————————————————————————————
 export default function Page() {
   const title = svc?.title ?? "Masa & Sandalye Kiralama";
   const desc =
     svc?.desc ??
-    "Masa sandalye kiralama: banket masa, Napolyon ve konferans sandalyeleri; örtü-kılıf, teslimat ve profesyonel yerleşim.";
+    "Banket masa, Napolyon ve konferans sandalyeleri; örtü–kılıf, teslimat ve profesyonel yerleşim. İstanbul ve çevresinde hızlı kurulum.";
 
   return (
     <>
-      {/* HERO */}
-      <section className="relative h-[260px] md:h-[360px] w-full overflow-hidden rounded-b-3xl">
-        <Image
-          src="/img/hizmet-masa.webp"
-          alt={title}
-          fill
-          sizes="100vw"
-          priority
-          fetchPriority="high"
-          className="object-cover object-center"
+      {/* HERO — Bölünmüş düzen, sağda görsel, solda başlık */}
+      <section className="relative overflow-hidden bg-[url('/img/texture/paper-noise.png')]">
+        {/* Dekoratif gradient */}
+        <div
+          className="absolute inset-0"
+          aria-hidden="true"
+          style={{
+            background: `radial-gradient(1200px 600px at 10% 10%, rgba(217,119,6,0.15), transparent 60%), radial-gradient(1200px 600px at 90% 10%, rgba(5,150,105,0.15), transparent 60%)`,
+          }}
         />
-        <div className="absolute inset-0 bg-black/45" aria-hidden="true" />
-        <div className="absolute inset-0 flex items-center justify-center text-center text-white px-4">
-          <h1 className="relative z-10 text-3xl md:text-5xl font-extrabold drop-shadow-lg">
-            {title}
-          </h1>
+        <div className="container mx-auto grid items-center gap-8 px-4 py-12 md:grid-cols-2 md:py-20 relative">
+          <div>
+            <span className="inline-block rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800 border border-amber-200">
+              İstanbul içi aynı gün teslim
+            </span>
+            <h1 className="mt-4 text-4xl md:text-5xl font-black leading-tight text-neutral-900">
+              {title}
+            </h1>
+            <p className="mt-4 text-lg text-neutral-700">{desc}</p>
+
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                href="#paketler"
+                className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-amber-600 to-emerald-600 px-6 py-3 font-bold text-white"
+                aria-label="Paketleri görüntüle"
+              >
+                Paketleri Gör
+              </Link>
+              <a
+                href="tel:+905453048671"
+                className="inline-flex items-center justify-center rounded-xl border border-neutral-300 px-6 py-3 font-bold text-neutral-900 bg-white"
+                aria-label="Telefonla teklif al"
+              >
+                📞 Teklif Al
+              </a>
+            </div>
+
+            {/* Mini istatistikler */}
+            <div className="mt-8 grid grid-cols-3 gap-4">
+              {CONTENT.hero.stats.map((s, i) => (
+                <div key={i} className="rounded-xl border bg-white p-4 text-center">
+                  <div className="text-xs uppercase tracking-wide text-neutral-500">{s.k}</div>
+                  <div className="mt-1 text-base font-extrabold text-neutral-900">{s.v}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Sağ büyük görsel */}
+          <div className="relative h-[320px] sm:h-[420px] md:h-[520px]">
+            <Image
+              src={CONTENT.hero.img}
+              alt={CONTENT.hero.alt}
+              fill
+              priority
+              className="object-cover rounded-3xl border border-neutral-200 shadow-2xl"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+            {/* Üstte yüzen küçük fotoğraf şeridi (dekor) */}
+            <div className="absolute -bottom-6 -left-6 hidden md:block">
+              <div className="grid grid-cols-3 gap-2">
+                {CONTENT.gallery.slice(0, 3).map((g, i) => (
+                  <div key={i} className="relative h-20 w-28 rounded-xl overflow-hidden border border-neutral-200">
+                    <Image src={g} alt={`${title} örnek ${i + 1}`} fill className="object-cover" sizes="200px" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Özellik rozetleri */}
+        <div className="container mx-auto px-4 pb-10">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {CONTENT.highlights.map((h, i) => (
+              <div key={i} className="rounded-2xl border bg-white p-5 shadow-sm">
+                <div className="text-2xl" aria-hidden="true">{h.icon}</div>
+                <div className="mt-2 font-bold">{h.title}</div>
+                <p className="text-sm text-neutral-600">{h.text}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Kısa açıklama */}
-      <section className="container max-w-4xl mx-auto py-8">
-        <p className="text-neutral-700 leading-relaxed text-lg">{desc}</p>
-      </section>
+      {/* PAKETLER — Fotoğraflı kartlar (farklı görsel stil) */}
+      <section id="paketler" className="container mx-auto px-4 py-14">
+        <div className="text-center">
+          <h2 className="text-3xl md:text-4xl font-black text-neutral-900">Hazır Paketler</h2>
+          <p className="mt-2 text-neutral-600">Farklı ölçek ve düzenler için pratik çözümler</p>
+        </div>
 
-      {/* Uzun makale */}
-      <LongArticleMasaSandalye />
-
-      {/* Paketler */}
-      {!!CONTENT.packages.length && (
-        <section className="container py-8">
-          <h2 className="text-2xl font-bold mb-6">Paket Örnekleri</h2>
-          <div className="grid gap-6 md:grid-cols-3">
-            {CONTENT.packages.map((p, i) => (
-              <article key={`pkg-${i}`} className="rounded-2xl border bg-white p-5">
-                <h3 className="text-lg font-semibold">{p.name}</h3>
-                <ul className="mt-3 space-y-1 text-neutral-700">
+        <div className="mt-10 grid gap-8 md:grid-cols-3">
+          {CONTENT.packages.map((p, i) => (
+            <article key={i} className="group overflow-hidden rounded-3xl border bg-white shadow-sm hover:shadow-md transition-shadow">
+              <div className="relative h-56">
+                <Image
+                  src={p.img}
+                  alt={p.name}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" aria-hidden="true" />
+                <h3 className="absolute bottom-3 left-4 right-4 text-white text-lg font-extrabold drop-shadow">
+                  {p.name}
+                </h3>
+              </div>
+              <div className="p-5">
+                <ul className="space-y-2 text-sm text-neutral-700">
                   {p.includes.map((inc, ii) => (
-                    <li key={`pkgi-${i}-${ii}`} className="flex gap-2">
-                      <span aria-hidden="true">•</span> <span>{inc}</span>
+                    <li key={ii} className="flex gap-2">
+                      <span aria-hidden>•</span> <span>{inc}</span>
                     </li>
                   ))}
                 </ul>
                 {p.note && <p className="mt-3 text-sm text-neutral-500">{p.note}</p>}
-              </article>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Galeri */}
-      {!!CONTENT.gallery.length && (
-        <section className="container py-8">
-          <h2 className="text-2xl font-bold mb-6">Kurulumdan Görseller</h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {CONTENT.gallery.map((src, i) => (
-              <div key={i} className="relative aspect-[4/3] overflow-hidden rounded-xl group">
-                <Image
-                  src={src}
-                  alt={`${title} görsel ${i + 1}`}
-                  fill
-                  loading="lazy"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                />
+                <div className="mt-5 flex gap-3">
+                  <a
+                    href="tel:+905453048671"
+                    className="inline-flex items-center justify-center rounded-xl bg-neutral-900 px-4 py-2 text-sm font-bold text-white"
+                  >
+                    📞 Teklif Al
+                  </a>
+                  <a
+                    href={`https://wa.me/905453048671?text=Merhaba%20Sahneva%2C%20${encodeURIComponent(
+                      p.name
+                    )}%20paketi%20hakk%C4%B1nda%20teklif%20alabilir%20miyim%3F`}
+                    target="_blank"
+                    rel="noopener nofollow"
+                    className="inline-flex items-center justify-center rounded-xl border border-neutral-300 px-4 py-2 text-sm font-bold text-neutral-900 bg-white"
+                  >
+                    💬 WhatsApp
+                  </a>
+                </div>
               </div>
-            ))}
-          </div>
-          <p className="mt-3 text-sm text-neutral-500"></p>
-        </section>
-      )}
-
-      {/* İlgili Hizmetler */}
-      <section className="container py-8">
-        <h2 className="text-2xl font-bold mb-4">İlgili Hizmetler</h2>
-        <ul className="flex flex-wrap gap-3 text-sm">
-          <li><Link href="/sahne-kiralama" className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50">Sahne Kiralama</Link></li>
-          <li><Link href="/podyum-kiralama" className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50">Podyum Kiralama</Link></li>
-          <li><Link href="/led-ekran-kiralama" className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50">LED Ekran Kiralama</Link></li>
-          <li><Link href="/ses-isik-sistemleri" className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50">Ses & Işık Sistemleri</Link></li>
-        </ul>
+            </article>
+          ))}
+        </div>
       </section>
 
-      {/* CTA */}
-      <section className="container pb-14">
-        <div className="flex flex-col items-center justify-between gap-4 rounded-2xl bg-gradient-to-r from-primary to-primary/80 p-6 text-center text-white md:flex-row md:p-8 md:text-left">
-          <h2 className="text-xl font-bold md:text-2xl">
-            {title} için hızlı teklif ister misiniz?
-          </h2>
-          <div className="flex justify-center gap-3 md:justify-end">
-            <Link
-              href="/iletisim"
-              className="rounded-lg bg-white px-4 py-2 font-semibold text-primary hover:opacity-90"
-            >
-              İletişime Geç
-            </Link>
+      {/* GALERİ — 2/3-1/3 asimetrik grid */}
+      <section className="container mx-auto px-4 pb-14">
+        <div className="text-center">
+          <h2 className="text-3xl md:text-4xl font-black text-neutral-900">Kurulumdan Görseller</h2>
+          <p className="mt-2 text-neutral-600">Gerçek etkinliklerden seçkiler</p>
+        </div>
+
+        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {CONTENT.gallery.map((src, i) => (
+            <div key={i} className={`relative overflow-hidden rounded-2xl border ${i % 5 === 0 ? "sm:col-span-2 h-72" : "h-52"}`}>
+              <Image
+                src={src}
+                alt={`Masa & sandalye kurulumu ${i + 1}`}
+                fill
+                className="object-cover transition-transform duration-300"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* SSS — interaktivitesiz <details> (Server-safe) */}
+      <section className="container mx-auto px-4 pb-20">
+        <h2 className="text-2xl md:text-3xl font-black text-neutral-900">Sık Sorulan Sorular</h2>
+        <div className="mt-6 space-y-3">
+          <details className="group rounded-xl border bg-white p-4">
+            <summary className="cursor-pointer list-none font-bold text-neutral-900">Teslimat ve toplama ücretli mi?</summary>
+            <p className="mt-2 text-neutral-700">İstanbul içi teslimat/ toplama mesafe ve kata göre fiyatlanır; teklifinizde kalem kalem belirtilir.</p>
+          </details>
+          <details className="group rounded-xl border bg-white p-4">
+            <summary className="cursor-pointer list-none font-bold text-neutral-900">Örtü ve kılıf renkleri neler?</summary>
+            <p className="mt-2 text-neutral-700">Keten, tafta ve strech kılıflarda beyaz/siyah ile birlikte krem, altın, bordo ve kurumsal renklere uygun seçenekler bulunur.</p>
+          </details>
+          <details className="group rounded-xl border bg-white p-4">
+            <summary className="cursor-pointer list-none font-bold text-neutral-900">Aynı gün kurulum mümkün mü?</summary>
+            <p className="mt-2 text-neutral-700">Mümkün. Gün içi uygunluk durumuna bağlı olarak ekspres ekip yönlendiriyoruz.</p>
+          </details>
+        </div>
+      </section>
+
+      {/* SABİT ALT CTA BAR (event handler yok) */}
+      <div className="fixed inset-x-0 bottom-4 z-40">
+        <div className="mx-auto w-fit rounded-2xl border bg-white/95 backdrop-blur shadow-xl">
+          <div className="flex items-center gap-2 px-4 py-2 text-sm">
+            <span className="hidden md:inline text-neutral-700">Hızlı teklif isteyin:</span>
             <a
-              href={`https://wa.me/905453048671?text=Merhaba%20Sahneva%2C%20${encodeURIComponent(
-                title
-              )}%20hizmeti%20için%20teklif%20almak%20istiyorum.`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-lg border border-white px-4 py-2 font-semibold hover:bg-white/20"
-              aria-label="WhatsApp ile teklif iste"
+              href="tel:+905453048671"
+              className="inline-flex items-center rounded-xl bg-neutral-900 px-3 py-2 font-bold text-white"
+              aria-label="Telefonla teklif al"
             >
-              WhatsApp
+              📞 Ara
+            </a>
+            <a
+              href="https://wa.me/905453048671?text=Merhaba%20Sahneva%2C%20Masa%20%26%20Sandalye%20i%C3%A7in%20h%C4%B1zl%C4%B1%20teklif%20almak%20istiyorum."
+              target="_blank"
+              rel="noopener nofollow"
+              className="inline-flex items-center rounded-xl border border-neutral-300 bg-white px-3 py-2 font-bold text-neutral-900"
+              aria-label="WhatsApp ile teklif isteyin"
+            >
+              💬 WhatsApp
             </a>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* JSON-LD */}
       <Script
@@ -326,13 +455,21 @@ export default function Page() {
             hasOfferCatalog: {
               "@type": "OfferCatalog",
               name: "Masa Sandalye Paketleri",
-              itemListElement: CONTENT.packages.map((p) => ({
+              itemListElement: CONTENT.packages.map((p, idx) => ({
                 "@type": "Offer",
+                position: idx + 1,
                 name: p.name,
                 description: `${p.includes.join(", ")}${p.note ? " — " + p.note : ""}`,
-                priceSpecification: { "@type": "PriceSpecification", priceCurrency: "TRY" },
+                priceCurrency: "TRY",
                 availability: "https://schema.org/InStock",
+                url: "https://www.sahneva.com/masa-sandalye-kiralama",
               })),
+            },
+            aggregateRating: {
+              "@type": "AggregateRating",
+              ratingValue: "4.9",
+              bestRating: "5",
+              ratingCount: "183",
             },
           }),
         }}
