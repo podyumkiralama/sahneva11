@@ -24,7 +24,7 @@ export const revalidate = 1800;
 // 📊 Premium içerik yapısı
 const PREMIUM_CONTENT = {
   hero: {
-    src: "/img/led/hero-premium.webp",
+    src: "/led-ekran-kiralama-hero.webp",
     alt:
       "Profesyonel LED Ekran Kiralama - Yüksek çözünürlüklü iç ve dış mekan LED ekran çözümleri",
     overlay: true,
