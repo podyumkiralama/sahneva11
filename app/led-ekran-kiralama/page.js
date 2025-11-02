@@ -263,131 +263,44 @@ export default function PremiumLedPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* 🎭 Hero Section */}
-      <section
-        className="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-slate-900 pt-20"
-        aria-labelledby="main-heading"
-      >
-        <div className="absolute inset-0">
-          {/* Hero görseli */}
-          <Image
-            src={PREMIUM_CONTENT.hero.src}
-            alt={PREMIUM_CONTENT.hero.alt}
-            fill
-            priority
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
-          />
-          <div
-            className="absolute inset-0 bg-gradient-to-br from-blue-800 via-purple-700 to-blue-900"
-            style={{
-              background:
-                "linear-gradient(135deg, #1e40af 0%, #7c3aed 30%, #1e3a8a 70%, #0f172a 100%)",
-            }}
-            aria-hidden="true"
-          />
-          <div
-            className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20"
-            aria-hidden="true"
-          />
-          <div
-            className="absolute inset-0 bg-gradient-to-b from-blue-900/40 via-transparent to-purple-900/40"
-            aria-hidden="true"
-          />
+     <section
+  className="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-slate-900 pt-20"
+  aria-labelledby="main-heading"
+>
+  <div className="absolute inset-0">
+    {/* FOTOĞRAF – altta */}
+    <Image
+      src={PREMIUM_CONTENT.hero.src}
+      alt={PREMIUM_CONTENT.hero.alt}
+      fill
+      priority
+      className="object-cover"
+      sizes="100vw"
+      onError={(e)=>{ e.currentTarget.style.opacity = "0"; }} // hata olursa zemin görünsün
+    />
 
-          {PREMIUM_CONTENT.hero.overlay && (
-            <div
-              className="absolute inset-0 bg-gradient-to-br from-slate-900/60 via-blue-900/50 to-purple-900/60"
-              aria-hidden="true"
-            />
-          )}
-        </div>
+    {/* TEK ve YARI SAYDAM OVERLAY — opak DEĞİL */}
+    <div
+      className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-purple-900/30 to-slate-950/60"
+      aria-hidden="true"
+    />
+    {/* İstersen ikinci hafif bir parlaklık katmanı */}
+    <div
+      className="absolute inset-0 bg-gradient-to-r from-blue-600/15 to-purple-600/15"
+      aria-hidden="true"
+    />
 
-        <div className="relative z-10 container mx-auto px-4 text-center text-white py-16">
-          {/* Availability Badge */}
-          <div
-            className="inline-flex items-center gap-3 bg-white/20 backdrop-blur-md rounded-2xl px-6 py-3 border border-white/30 mb-10"
-            role="status"
-            aria-label="Hizmet durumu: İstanbul'da 7/24 Profesyonel Kurulum mevcut"
-          >
-            <span className="relative flex w-3 h-3">
-              <span
-                className="motion-safe:animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"
-                aria-hidden="true"
-              />
-              <span
-                className="relative inline-flex rounded-full w-3 h-3 bg-green-500"
-                aria-hidden="true"
-              />
-            </span>
-            <span className="text-sm font-semibold">
-              İstanbul'da 7/24 Profesyonel Kurulum
-            </span>
-          </div>
+    {/* DİKKAT: Aşağıdaki *opak* katman sende vardı; KALDIRDIK.
+        <div className="absolute inset-0 ..." style={{ background: 'linear-gradient(...)' }} />
+        Bu katman opak olduğu için resmi tamamen gizliyordu.
+    */}
+  </div>
 
-          <h1
-            id="main-heading"
-            className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight mb-8 text-white drop-shadow-2xl"
-          >
-            LED Ekran Çözümleri
-          </h1>
-
-          <p className="text-lg md:text-xl lg:text-2xl text-white/95 max-w-3xl mx-auto leading-relaxed font-light mb-10 drop-shadow-lg">
-            P2.5-P6 piksel aralığı • 6500 nit parlaklık • IP65 koruma •
-            <span className="block mt-3">
-              4K çözünürlük & profesyonel yayın sistemleri
-            </span>
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-            <Link
-              href="#paketler"
-              className={buttonStyles.primary}
-              aria-label="LED ekran paketlerini inceleyin - Fiyatlar ve özellikler"
-            >
-              <span aria-hidden="true">🖥️</span>
-              <span className="ml-2">Paketleri İncele</span>
-            </Link>
-
-            {/* TEL: harici link -> <a> */}
-            <a
-              href="tel:+905453048671"
-              className={buttonStyles.success}
-              aria-label="Hemen telefonla teklif alın - +90 545 304 86 71"
-            >
-              <span aria-hidden="true">📞</span>
-              <span className="ml-2">Hemen Teklif Al</span>
-            </a>
-
-            <Link
-              href="#teknoloji"
-              className={buttonStyles.outline}
-              aria-label="LED ekran teknolojileri hakkında bilgi alın"
-            >
-              <span aria-hidden="true">⚡</span>
-              <span className="ml-2">Teknoloji</span>
-            </Link>
-          </div>
-
-          <div
-            className="flex flex-wrap justify-center items-center gap-8 text-white/90 text-sm drop-shadow"
-            role="list"
-            aria-label="Firma özellikleri"
-          >
-            <div className="flex items-center gap-2" role="listitem">
-              <span aria-hidden="true">⭐</span>
-              <span>4.9/5 (183 Değerlendirme)</span>
-            </div>
-            <div className="flex items-center gap-2" role="listitem">
-              <span aria-hidden="true">🏆</span>
-              <span>300+ Başarılı Proje</span>
-            </div>
-            <div className="flex items-center gap-2" role="listitem">
-              <span aria-hidden="true">🚀</span>
-              <span>2-6 Saatte Kurulum</span>
-            </div>
-          </div>
-        </div>
-      </section>
+  {/* İÇERİK – üstte */}
+  <div className="relative z-10 container mx-auto px-4 text-center text-white py-16">
+    {/* ... mevcut başlık ve butonların aynı kalsın ... */}
+  </div>
+</section>
 
       {/* 🏷️ Skip to main content link */}
       <a
