@@ -1,13 +1,12 @@
-// app/layout.js
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import UtilityBar from "../components/UtilityBar";
-import GAClient from "./ga-client";
 import { Inter } from "next/font/google";
-import Script from "next/script";
-import { Suspense } from "react";
+import { headers } from "next/headers";
+import Link from "next/link";
 
+// Font – preload=false (render-blocking değil)
 const inter = Inter({
   subsets: ["latin"],
   preload: false,
@@ -16,6 +15,7 @@ const inter = Inter({
   adjustFontFallback: true,
 });
 
+// Viewport
 export const viewport = {
   width: "device-width",
   initialScale: 1,
@@ -23,9 +23,13 @@ export const viewport = {
   themeColor: "#6d28d9",
 };
 
+// Metadata
 export const metadata = {
   metadataBase: new URL("https://www.sahneva.com"),
-  title: { default: "Sahne, Podyum, LED Ekran & Ses-Işık Kiralama | Sahneva", template: "%s | Sahneva" },
+  title: {
+    default: "Sahne, Podyum, LED Ekran & Ses-Işık Kiralama | Sahneva",
+    template: "%s | Sahneva",
+  },
   description:
     "Türkiye genelinde sahne, podyum, LED ekran, ses-ışık sistemleri kiralama ve profesyonel kurulum. Hızlı keşif, teknik ekip ve 7/24 destek.",
   alternates: { canonical: "https://www.sahneva.com" },
@@ -39,44 +43,23 @@ export const metadata = {
   },
 };
 
-const isProd = process.env.NODE_ENV === "production";
-
 export default function RootLayout({ children }) {
+  // middleware.ts’ten gelen nonce
+  const nonce = headers().get("x-nonce") ?? undefined;
+  const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-J5YK10YLLC";
+
   return (
     <html lang="tr" className={inter.className}>
       <head>
-        {/* ⚡ DNS/TLS ısınma */}
-        <meta httpEquiv="x-dns-prefetch-control" content="on" />
-        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
-        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+        {/* GA dosyalarını preconnect/preload – inline değil */}
         <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="" />
-        <link rel="preconnect" href="https://www.google-analytics.com" crossOrigin="" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-
-        {/* 🔮 Speculation Rules → sadece prod DIŞI (inline gerektirir) */}
-        {!isProd && (
-          <Script id="speculation-rules" type="speculationrules" strategy="afterInteractive">
-            {JSON.stringify({
-              prefetch: [
-                { source: "document", eagerness: "conservative", where: { and: [{ href_matches: "/*" }] } },
-              ],
-              prerender: [
-                { source: "document", eagerness: "moderate", where: { and: [{ href_matches: "/*" }] } },
-              ],
-            })}
-          </Script>
-        )}
-
-        {/* ✅ Google Analytics (inline yok) */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-J5YK10YLLC"
-          strategy="afterInteractive"
+        <link
+          rel="preload"
+          href={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          as="script"
         />
-        <Script src="/ga-init.js" strategy="afterInteractive" />
+        <link rel="preload" href="/ga-init.js" as="script" />
       </head>
-
       <body className="min-h-screen bg-white text-neutral-900 antialiased">
         {/* Skip link */}
         <a
@@ -89,13 +72,24 @@ export default function RootLayout({ children }) {
         <Navbar />
         <UtilityBar />
 
-        {/* Route değişimlerinde GA page_view */}
-        <Suspense fallback={null}>
-          <GAClient measurementId="G-J5YK10YLLC" />
-        </Suspense>
+        {/* GA – tamamı harici dosyalarda, inline yok */}
+        <script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          async
+        ></script>
+        <script
+          src="/ga-init.js"
+          defer
+          data-ga-id={GA_ID}
+        ></script>
 
         <main id="main">{children}</main>
         <Footer />
+
+        {/* Basit bir noscript uyarısı (inline style YOK) */}
+        <noscript>
+          <p>Sahneva: Daha iyi bir deneyim için tarayıcınızda JavaScript’i etkinleştirin.</p>
+        </noscript>
       </body>
     </html>
   );
