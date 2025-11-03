@@ -5,24 +5,19 @@ import Link from "next/link";
 import { useCallback } from "react";
 
 export default function Footer() {
-  // 🎇 Burst efekt (reduce-motion'a saygı)
   const burst = useCallback((e) => {
     try {
       if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
-
       const x = e?.clientX ?? window.innerWidth / 2;
       const y = e?.clientY ?? window.innerHeight - 80;
       const n = 6;
       const life = 400;
-
-      const fragment = document.createDocumentFragment();
-
+      const f = document.createDocumentFragment();
       for (let i = 0; i < n; i++) {
         const el = document.createElement("span");
         el.className = "burst-particle";
         el.setAttribute("aria-hidden", "true");
         el.setAttribute("role", "presentation");
-
         const angle = (Math.PI * 2 * i) / n + Math.random() * 0.2;
         const dist = 25 + Math.random() * 20;
         el.style.setProperty("--dx", Math.cos(angle) * dist + "px");
@@ -31,17 +26,14 @@ export default function Footer() {
         el.style.setProperty("--life", `${life}ms`);
         el.style.setProperty("--burst-c1", i % 2 === 0 ? "#6366f1" : "#8b5cf6");
         el.style.setProperty("--burst-c2", i % 2 === 0 ? "#8b5cf6" : "#06b6d4");
-
         const s = 4 + Math.random() * 4;
         el.style.width = el.style.height = `${s}px`;
         el.style.left = `${x}px`;
         el.style.top = `${y}px`;
-
-        fragment.appendChild(el);
+        f.appendChild(el);
         setTimeout(() => el.parentNode && el.parentNode.removeChild(el), life + 30);
       }
-
-      document.body.appendChild(fragment);
+      document.body.appendChild(f);
     } catch {}
   }, []);
 
@@ -51,7 +43,7 @@ export default function Footer() {
       itemScope
       itemType="https://schema.org/Organization"
     >
-      {/* Arkaplan efektleri */}
+      {/* arkaplan efektleri */}
       <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full blur-3xl" />
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-r from-purple-500/10 to-cyan-500/10 rounded-full blur-3xl" />
@@ -59,7 +51,7 @@ export default function Footer() {
       </div>
 
       <div className="relative z-10 container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 py-12 px-6">
-        {/* Marka */}
+        {/* marka */}
         <section aria-labelledby="ft-brand" itemProp="brand" itemScope itemType="https://schema.org/Brand">
           <h2 id="ft-brand" className="sr-only">Sahneva Hakkında</h2>
 
@@ -75,12 +67,10 @@ export default function Footer() {
 
           <p className="text-sm leading-6 text-gray-300 mb-6" itemProp="description">
             <span className="block">Profesyonel etkinlik prodüksiyon & ekipman kiralama hizmetleri.</span>
-            <span className="block">
-              <span className="text-blue-300 font-medium">Türkiye geneli</span> sahne, podyum, LED ekran ve ses-ışık sistemleri.
-            </span>
+            <span className="block"><span className="text-blue-300 font-medium">Türkiye geneli</span> sahne, podyum, LED ekran ve ses-ışık sistemleri.</span>
           </p>
 
-          {/* Sosyal linkler */}
+          {/* sosyal linkler */}
           <div className="flex gap-3">
             <a
               href="https://www.instagram.com/sahnevaorganizasyon"
@@ -110,7 +100,7 @@ export default function Footer() {
           </div>
         </section>
 
-        {/* Hizmetler */}
+        {/* hizmetler */}
         <nav aria-labelledby="ft-services">
           <h2 id="ft-services" className="text-white font-bold mb-6 text-lg bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
             Hizmetlerimiz
@@ -124,10 +114,7 @@ export default function Footer() {
               { href: "/cadir-kiralama", label: "Çadır Kiralama" },
             ].map(({ href, label }) => (
               <li key={href}>
-                <Link
-                  href={href}
-                  className="group text-gray-300 hover:text-white focus:text-white transition-all duration-200 block py-1 pl-2 border-l-2 border-transparent hover:border-blue-400 hover:pl-3"
-                >
+                <Link href={href} className="group text-gray-300 hover:text-white focus:text-white transition-all duration-200 block py-1 pl-2 border-l-2 border-transparent hover:border-blue-400 hover:pl-3">
                   <span className="group-hover:text-blue-300 transition-colors">{label}</span>
                 </Link>
               </li>
@@ -135,12 +122,12 @@ export default function Footer() {
           </ul>
         </nav>
 
-        {/* Hızlı Erişim */}
+        {/* hızlı erişim */}
         <nav aria-labelledby="ft-quick">
           <h2 id="ft-quick" className="text-white font-bold mb-6 text-lg bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
             Hızlı Erişim
           </h2>
-          <ul className="space-y-3 text-sm">
+        <ul className="space-y-3 text-sm">
             {[
               { href: "/hakkimizda", label: "Hakkımızda" },
               { href: "/hizmetler", label: "Hizmetler" },
@@ -148,10 +135,7 @@ export default function Footer() {
               { href: "/kvkk", label: "KVKK / Gizlilik" },
             ].map(({ href, label }) => (
               <li key={href}>
-                <Link
-                  href={href}
-                  className="group text-gray-300 hover:text-white focus:text-white transition-all duration-200 block py-1 pl-2 border-l-2 border-transparent hover:border-purple-400 hover:pl-3"
-                >
+                <Link href={href} className="group text-gray-300 hover:text-white focus:text-white transition-all duration-200 block py-1 pl-2 border-l-2 border-transparent hover:border-purple-400 hover:pl-3">
                   <span className="group-hover:text-purple-300 transition-colors">{label}</span>
                 </Link>
               </li>
@@ -159,14 +143,14 @@ export default function Footer() {
           </ul>
         </nav>
 
-        {/* İletişim */}
+        {/* iletişim */}
         <section aria-labelledby="ft-contact">
           <h2 id="ft-contact" className="text-white font-bold mb-6 text-lg bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
             İletişim Bilgileri
           </h2>
 
           <address className="not-italic space-y-4 text-sm">
-            <div className="flex items-start gap-3" aria-label="Adres">
+            <div className="flex items-start gap-3">
               <div className="relative" aria-hidden="true">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg blur-sm opacity-50" />
                 <span className="relative text-white text-base p-2 rounded-lg bg-slate-800/50 backdrop-blur-sm">📍</span>
@@ -182,11 +166,7 @@ export default function Footer() {
                 <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg blur-sm opacity-50" />
                 <span className="relative text-white text-base p-2 rounded-lg bg-slate-800/50 backdrop-blur-sm">📞</span>
               </div>
-              <a
-                href="tel:+905453048671"
-                className="text-gray-300 hover:text-white font-semibold transition-all duration-300 hover:scale-105"
-                itemProp="telephone"
-              >
+              <a href="tel:+905453048671" className="text-gray-300 hover:text-white font-semibold transition-all duration-300 hover:scale-105" itemProp="telephone">
                 +90 545 304 8671
               </a>
             </div>
@@ -196,11 +176,7 @@ export default function Footer() {
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg blur-sm opacity-50" />
                 <span className="relative text-white text-base p-2 rounded-lg bg-slate-800/50 backdrop-blur-sm">✉️</span>
               </div>
-              <a
-                href="mailto:info@sahneva.com"
-                className="text-gray-300 hover:text-white transition-all duration-300 hover:scale-105"
-                itemProp="email"
-              >
+              <a href="mailto:info@sahneva.com" className="text-gray-300 hover:text-white transition-all duration-300 hover:scale-105" itemProp="email">
                 info@sahneva.com
               </a>
             </div>
@@ -216,14 +192,14 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Google Business bağlantıları */}
+            {/* Google Business bağlantıları — aria-label kaldırıldı, ikonlar aria-hidden */}
             <div className="flex items-center gap-3">
               <a
                 href="https://g.page/r/CZhkMzkNOdgnEBI"
                 target="_blank"
                 rel="noopener noreferrer nofollow"
                 className="group inline-flex items-center gap-2 text-xs text-gray-300 hover:text-white transition-all duration-300 hover:gap-3"
-                aria-label="Google Haritalar"
+                title="Google Haritalar"
               >
                 <span className="group-hover:scale-110 transition-transform duration-300" aria-hidden="true">📍</span>
                 Google Haritalar'da bizi bulun
@@ -236,7 +212,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer nofollow"
                 className="group inline-flex items-center gap-2 text-xs text-gray-300 hover:text-white transition-all duration-300 hover:gap-3"
-                aria-label="Google Yorum"
+                title="Google Yorum"
               >
                 <span className="group-hover:scale-110 transition-transform duration-300" aria-hidden="true">⭐</span>
                 Google'da yorum yazın
@@ -246,7 +222,7 @@ export default function Footer() {
         </section>
       </div>
 
-      {/* Alt bar */}
+      {/* alt bar */}
       <div className="relative border-t border-white/10 text-center text-sm text-gray-300 py-6 bg-gradient-to-r from-slate-900/50 via-purple-900/30 to-blue-900/50 backdrop-blur-sm">
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" aria-hidden="true" />
         <div className="container mx-auto px-6 relative z-10">
@@ -255,23 +231,20 @@ export default function Footer() {
             <span className="block">ve kurulum hizmetleri.</span>
           </p>
 
-          {/* Mikro veri: görünmez meta ile yıl */}
+          {/* mikro veri: görünmez meta ile yıl */}
           <meta itemProp="copyrightYear" content={String(new Date().getFullYear())} />
           <p className="text-gray-400">
             © {new Date().getFullYear()}{" "}
             <span itemProp="name" className="text-white font-semibold">Sahneva</span> — Tüm hakları saklıdır.
             <span className="mx-3 text-blue-400">•</span>
-            <Link
-              href="/kvkk"
-              className="text-gray-300 hover:text-white underline-offset-4 hover:underline transition-colors duration-200"
-            >
+            <Link href="/kvkk" className="text-gray-300 hover:text-white underline-offset-4 hover:underline transition-colors duration-200">
               KVKK Aydınlatma Metni
             </Link>
           </p>
         </div>
       </div>
 
-      {/* Burst particle styles */}
+      {/* burst particle styles */}
       <style jsx>{`
         .burst-particle {
           position: fixed;
