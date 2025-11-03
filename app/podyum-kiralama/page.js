@@ -61,7 +61,9 @@ const CONTENT = {
   ],
 };
 
-// Erişilebilirlik Bileşenleri
+/* =========================
+   Erişilebilirlik Bileşenleri
+   ========================= */
 function SkipToMain() {
   return (
     <a
@@ -75,8 +77,8 @@ function SkipToMain() {
 
 function FocusableCard({ children, className = "", ...props }) {
   return (
-    <div 
-      className={`focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 focus:scale-105 transition-all duration-200 ${className}`}
+    <div
+      className={`focus:outline-none focus:ring-4 focus:ring-blue-500/50 focus:scale-105 transition-all duration-200 ${className}`}
       tabIndex={0}
       {...props}
     >
@@ -85,27 +87,37 @@ function FocusableCard({ children, className = "", ...props }) {
   );
 }
 
-function AccessibleCTA({ 
-  href, 
-  children, 
-  variant = "primary", 
+/**
+ * AccessibleCTA
+ * - Görünür metin = accessible name (aria-label görünür metni tekrar eder)
+ * - Ek açıklamalar gerektiğinde title kullanın (screen reader’lar okur, kuralı bozmaz)
+ */
+function AccessibleCTA({
+  href,
+  children,
+  variant = "primary",
   className = "",
-  ariaLabel,
-  ...props 
+  label,        // ZORUNLU: butonun görünen metni ile aynı string
+  title,        // İsteğe bağlı: ek ipucu
+  ...props
 }) {
-  const baseStyles = "font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50";
-  
+  const base =
+    "inline-flex items-center justify-center font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 motion-safe:hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300/60";
+
   const variants = {
-    primary: "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white",
-    secondary: "bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border border-white/20",
-    white: "bg-white text-blue-600 hover:bg-gray-100"
+    primary:
+      "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white",
+    secondary:
+      "bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border border-white/20",
+    white: "bg-white text-blue-600 hover:bg-gray-100",
   };
 
   return (
     <a
       href={href}
-      className={`${baseStyles} ${variants[variant]} ${className}`}
-      aria-label={ariaLabel}
+      className={`${base} ${variants[variant]} ${className}`}
+      aria-label={label}
+      title={title}
       {...props}
     >
       {children}
@@ -113,21 +125,27 @@ function AccessibleCTA({
   );
 }
 
-function OptimizedImage({ src, alt, className = "", priority = false, ...props }) {
+function OptimizedImage({
+  src,
+  alt,
+  className = "",
+  priority = false,
+  ...props
+}) {
   return (
     <Image
       src={src}
       alt={alt}
       className={`transition-transform duration-300 ${className}`}
       placeholder="blur"
-      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaUMk9NmGBnzSlT54b6bk+h0R"
+      blurDataURL="data:image/gif;base64,R0lGODlhAQABAAAAACw="
       priority={priority}
       {...props}
     />
   );
 }
 
-// Yardımcılar
+/* ======= Yardımcılar ======= */
 function priceBase(area) {
   return area * UNIT_PRICES.platform_m2_week;
 }
@@ -149,9 +167,12 @@ function formatTRY(n) {
   }
 }
 
+/* ======= Meta ======= */
 export const metadata = {
-  title: "Podyum Kiralama | Sahneva - Profesyonel Sahne ve Podyum Çözümleri",
-  description: "Modüler podyum kiralama: 1×1 ve 2×1 paneller, kaymaz kaplama, halı ve skört opsiyonları. İstanbul geneli profesyonel kurulum.",
+  title:
+    "Podyum Kiralama | Sahneva - Profesyonel Sahne ve Podyum Çözümleri",
+  description:
+    "Modüler podyum kiralama: 1×1 ve 2×1 paneller, kaymaz kaplama, halı ve skört opsiyonları. İstanbul geneli profesyonel kurulum.",
   alternates: { canonical: "https://www.sahneva.com/podyum-kiralama" },
   keywords: [
     "podyum kiralama",
@@ -161,11 +182,12 @@ export const metadata = {
     "podyum fiyatları",
     "İstanbul podyum kiralama",
     "podyum kurulumu",
-    "etkinlik podyumu"
+    "etkinlik podyumu",
   ],
   openGraph: {
     title: "Podyum Kiralama | Sahneva - Profesyonel Sahne Çözümleri",
-    description: "Konser, lansman ve düğünler için podyum sahne kiralama. Modüler 1×1 & 2×1 paneller, kaymaz kaplama.",
+    description:
+      "Konser, lansman ve düğünler için podyum sahne kiralama. Modüler 1×1 & 2×1 paneller, kaymaz kaplama.",
     url: "https://www.sahneva.com/podyum-kiralama",
     type: "website",
     images: [
@@ -181,24 +203,28 @@ export const metadata = {
   robots: { index: true, follow: true },
 };
 
+/* =========================
+         SAYFA
+   ========================= */
 export default function Page() {
   const title = "Profesyonel Podyum Kiralama";
-  const desc = "Modüler podyum sistemleri ile her türlü etkinlik için profesyonel sahne çözümleri. 1×1 ve 2×1 paneller, kaymaz kaplama, güvenlik ekipmanları ve uzman kurulum ekibi.";
+  const desc =
+    "Modüler podyum sistemleri ile her türlü etkinlik için profesyonel sahne çözümleri. 1×1 ve 2×1 paneller, kaymaz kaplama, güvenlik ekipmanları ve uzman kurulum ekibi.";
   const heroSrc = "/img/podyum/hero.webp";
 
   const enrichedPkgs = CONTENT.packages.map((p) => {
     const base = priceBase(p.layout.area);
     const carpet = priceCarpet(p.layout.area);
     const skirt = priceSkirt(p.layout.perimeter);
-    return { 
-      ...p, 
-      price: { 
-        base, 
-        withCarpetAndSkirt: base + carpet + skirt, 
-        carpet, 
+    return {
+      ...p,
+      price: {
+        base,
+        withCarpetAndSkirt: base + carpet + skirt,
+        carpet,
         skirt,
-        totalWithSetup: base + carpet + skirt + UNIT_PRICES.istanbul_setup
-      } 
+        totalWithSetup: base + carpet + skirt + UNIT_PRICES.istanbul_setup,
+      },
     };
   });
 
@@ -209,8 +235,8 @@ export default function Page() {
         "1×1 m ve 2×1 m modüler paneller",
         "Kaymaz kaplama standart",
         "40-100 cm yükseklik seçenekleri",
-        "Alüminyum karkas, çelik bağlantı elemanları"
-      ]
+        "Alüminyum karkas, çelik bağlantı elemanları",
+      ],
     },
     {
       category: "Güvenlik & Erişilebilirlik",
@@ -218,8 +244,8 @@ export default function Page() {
         "Kenar korkuluk opsiyonu",
         "Engelli erişimi için rampa",
         "Kablo kanalı ve işaretleme",
-        "Merdiven ve güvenlik ekipmanları"
-      ]
+        "Merdiven ve güvenlik ekipmanları",
+      ],
     },
     {
       category: "Tamamlayıcı Hizmetler",
@@ -227,9 +253,9 @@ export default function Page() {
         "Halı kaplama opsiyonu",
         "Skört (etek) kaplama",
         "Profesyonel kurulum ve söküm",
-        "Markalama ve özel tasarım"
-      ]
-    }
+        "Markalama ve özel tasarım",
+      ],
+    },
   ];
 
   const USE_CASES = [
@@ -238,15 +264,15 @@ export default function Page() {
     { icon: "🎤", text: "Konser, festival ve sahne performansları" },
     { icon: "🎓", text: "Mezuniyet törenleri ve okul etkinlikleri" },
     { icon: "🏛️", text: "Belediye organizasyonları ve törenler" },
-    { icon: "🛍️", text: "AVM etkinlikleri ve fuar stantları" }
+    { icon: "🛍️", text: "AVM etkinlikleri ve fuar stantları" },
   ];
 
   return (
     <div className="min-h-screen bg-white overflow-hidden">
       <SkipToMain />
-      
-      {/* ✅ HERO SECTION - Çadır Sayfası Stilinde */}
-      <section 
+
+      {/* HERO */}
+      <section
         className="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 pt-16 lg:pt-20"
         aria-labelledby="hero-title"
         role="banner"
@@ -261,65 +287,82 @@ export default function Page() {
             sizes="100vw"
             className="object-cover object-center"
             style={{
-              transform: 'scale(1.02)',
-              filter: 'brightness(0.6) contrast(1.1) saturate(1.1)'
+              transform: "scale(1.02)",
+              filter: "brightness(0.6) contrast(1.1) saturate(1.1)",
             }}
           />
         </div>
 
-        <div 
+        <div
           className="absolute inset-0 bg-gradient-to-br from-slate-900/80 via-blue-900/60 to-purple-900/70"
           aria-hidden="true"
         />
 
-        {/* ✅ BÜYÜK ARKA PLAN YAZISI */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-5" aria-hidden="true">
+        {/* Dekoratif büyük yazı */}
+        <div
+          className="absolute inset-0 flex items-center justify-center opacity-5"
+          aria-hidden="true"
+        >
           <h1 className="text-[100px] lg:text-[160px] font-black text-white tracking-wider select-none">
             PODYUM
           </h1>
         </div>
-        
+
         <div className="relative z-10 container text-center text-white">
           <div className="max-w-4xl mx-auto">
             <div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md rounded-full px-6 py-3 border border-white/20 mb-6">
-              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" aria-hidden="true"></span>
-              <span className="text-white/90 text-sm font-medium">İstanbul Geneli Kurulum</span>
+              <span
+                className="w-2 h-2 bg-green-400 rounded-full motion-safe:animate-pulse"
+                aria-hidden="true"
+              />
+              <span className="text-white/90 text-sm font-medium">
+                İstanbul Geneli Kurulum
+              </span>
             </div>
 
-            <h1
-              id="hero-title"
-              className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight"
-            >
+            <h1 id="hero-title" className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight">
               <span className="block">PROFESYONEL</span>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-purple-300 to-cyan-300">
                 Podyum Çözümleri
               </span>
             </h1>
-            
+
             <p className="text-xl md:text-2xl text-white/90 mb-8 leading-relaxed max-w-3xl mx-auto">
-              1×1 ve 2×1 modüler paneller, kaymaz kaplama<br />
-              <strong className="text-blue-300">Halı, skört ve profesyonel kurulum dahil</strong>
+              1×1 ve 2×1 modüler paneller, kaymaz kaplama
+              <br />
+              <strong className="text-blue-300">
+                Halı, skört ve profesyonel kurulum dahil
+              </strong>
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
               <AccessibleCTA
                 href="#paketler"
                 variant="primary"
-                ariaLabel="Podyum paketlerimizi inceleyin"
+                label="Podyum Paketlerimiz"
+                title="Podyum paketlerimizi inceleyin"
               >
                 <span className="flex items-center gap-2">
                   Podyum Paketlerimiz
-                  <span className="group-hover:translate-x-1 transition-transform" aria-hidden="true">→</span>
+                  <span
+                    className="transition-transform duration-200"
+                    aria-hidden="true"
+                  >
+                    →
+                  </span>
                 </span>
               </AccessibleCTA>
-              
+
               <AccessibleCTA
                 href="tel:+905453048671"
                 variant="secondary"
-                ariaLabel="Hemen ara - Podyum kiralama için telefon: 905453048671"
+                label="Hemen Ara"
+                title="Podyum kiralama için hemen arayın"
               >
                 <span className="flex items-center gap-2">
-                  <span role="img" aria-label="Telefon">📞</span>
+                  <span role="img" aria-label="Telefon">
+                    📞
+                  </span>
                   Hemen Ara
                 </span>
               </AccessibleCTA>
@@ -327,35 +370,49 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2" aria-hidden="true">
-          <div className="animate-bounce">
+        <div
+          className="absolute bottom-6 left-1/2 -translate-x-1/2"
+          aria-hidden="true"
+        >
+          <div className="motion-safe:animate-bounce">
             <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
-              <div className="w-1 h-3 bg-white/70 rounded-full mt-2"></div>
+              <div className="w-1 h-3 bg-white/70 rounded-full mt-2" />
             </div>
           </div>
         </div>
       </section>
 
       <main id="main-content" tabIndex={-1} className="relative">
-        {/* ✅ GİRİŞ BÖLÜMÜ */}
+        {/* GİRİŞ */}
         <section className="py-20 bg-gradient-to-br from-white to-blue-50/50">
           <div className="container max-w-6xl mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-black text-neutral-900 mb-6">
-                Profesyonel <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Podyum Çözümleri</span>
+                Profesyonel{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                  Podyum Çözümleri
+                </span>
               </h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mb-8" aria-hidden="true"></div>
+              <div
+                className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mb-8"
+                aria-hidden="true"
+              />
             </div>
 
             <div className="prose prose-lg max-w-none text-center">
               <p className="text-xl text-neutral-700 leading-relaxed mb-8">
-                Konser, düğün, lansman veya kurumsal etkinlikleriniz için modern, güvenli ve şık podyum çözümleri sunuyoruz.{" "}
-                <strong className="text-blue-600">Sahneva</strong>, modüler podyum sistemleriyle her ölçekte etkinlik için ideal sahne alanları oluşturur.
+                Konser, düğün, lansman veya kurumsal etkinlikleriniz için
+                modern, güvenli ve şık podyum çözümleri sunuyoruz.{" "}
+                <strong className="text-blue-600">Sahneva</strong>, modüler
+                podyum sistemleriyle her ölçekte etkinlik için ideal sahne
+                alanları oluşturur.
               </p>
-              
+
               <p className="text-xl text-neutral-700 leading-relaxed">
-                1×1 ve 2×1 panellerle esnek kurulum, kaymaz kaplama ve güvenlik ekipmanlarıyla profesyonel sahne deneyimi. 
-                Keşiften planlamaya, kurulumdan söküme kadar tüm süreç Sahneva ekibi tarafından yönetilir.
+                1×1 ve 2×1 panellerle esnek kurulum, kaymaz kaplama ve güvenlik
+                ekipmanlarıyla profesyonel sahne deneyimi. Keşiften planlamaya,
+                kurulumdan söküme kadar tüm süreç Sahneva ekibi tarafından
+                yönetilir.
               </p>
             </div>
 
@@ -363,15 +420,19 @@ export default function Page() {
               {[
                 { icon: "⚡", title: "Hızlı Kurulum", desc: "2-6 saat içinde profesyonel kurulum" },
                 { icon: "🛡️", title: "Güvenlik Garantisi", desc: "Kaymaz kaplama ve güvenlik ekipmanları" },
-                { icon: "🏗️", title: "Modüler Sistem", desc: "1×1 ve 2×1 panellerle esnek kurulum" }
+                { icon: "🏗️", title: "Modüler Sistem", desc: "1×1 ve 2×1 panellerle esnek kurulum" },
               ].map((feature, index) => (
                 <FocusableCard
                   key={index}
                   className="text-center p-6 bg-white rounded-2xl shadow-lg border border-neutral-100 hover:shadow-xl transition-shadow duration-300"
                   role="listitem"
                 >
-                  <div className="text-4xl mb-4" role="img" aria-label={feature.title}>{feature.icon}</div>
-                  <h3 className="text-xl font-black text-neutral-900 mb-2">{feature.title}</h3>
+                  <div className="text-4xl mb-4" role="img" aria-label={feature.title}>
+                    {feature.icon}
+                  </div>
+                  <h3 className="text-xl font-black text-neutral-900 mb-2">
+                    {feature.title}
+                  </h3>
                   <p className="text-neutral-700">{feature.desc}</p>
                 </FocusableCard>
               ))}
@@ -379,42 +440,59 @@ export default function Page() {
           </div>
         </section>
 
-        {/* ✅ HIZLI FİYAT HESAPLAMA */}
+        {/* HIZLI HESAP */}
         <section id="hizli-hesap" className="py-20 bg-gradient-to-br from-neutral-50 to-blue-100/30">
           <div className="container max-w-4xl mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-black text-neutral-900 mb-6">
-                Hızlı <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Fiyat Hesaplama</span>
+                Hızlı{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                  Fiyat Hesaplama
+                </span>
               </h2>
               <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
                 Podyum ölçülerinizi girerek anında fiyat teklifi alın
               </p>
-              <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8" aria-hidden="true"></div>
+              <div
+                className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8"
+                aria-hidden="true"
+              />
             </div>
 
             <FocusableCard className="bg-white rounded-2xl shadow-xl border border-neutral-200 p-8">
               <PriceEstimator unitPrices={UNIT_PRICES} />
               <div className="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
                 <p className="text-sm text-blue-800">
-                  <strong>İstanbul içi nakliye, kurulum ve söküm: {formatTRY(UNIT_PRICES.istanbul_setup)}</strong><br />
-                  *200 m²'ye kadar geçerlidir. Şehir dışı projeler için özel teklif alın.
+                  <strong>
+                    İstanbul içi nakliye, kurulum ve söküm:{" "}
+                    {formatTRY(UNIT_PRICES.istanbul_setup)}
+                  </strong>
+                  <br />
+                  *200 m²'ye kadar geçerlidir. Şehir dışı projeler için özel
+                  teklif alın.
                 </p>
               </div>
             </FocusableCard>
           </div>
         </section>
 
-        {/* ✅ PAKETLER VE FİYATLAR */}
+        {/* PAKETLER */}
         <section id="paketler" className="py-20 bg-white">
           <div className="container max-w-6xl mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-black text-neutral-900 mb-6">
-                Podyum <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Paketlerimiz</span>
+                Podyum{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                  Paketlerimiz
+                </span>
               </h2>
               <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
                 İhtiyaçlarınıza uygun hazır paketler veya özel çözümler
               </p>
-              <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8" aria-hidden="true"></div>
+              <div
+                className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8"
+                aria-hidden="true"
+              />
             </div>
 
             <div className="grid lg:grid-cols-3 gap-8" role="list">
@@ -432,13 +510,18 @@ export default function Page() {
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 33vw"
                       className="object-cover group-hover:scale-110 transition-transform duration-700"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" aria-hidden="true" />
+                    <div
+                      className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"
+                      aria-hidden="true"
+                    />
                     <div className="absolute bottom-4 left-4">
                       <h3 className="text-2xl font-black text-white">{pkg.name}</h3>
-                      <p className="text-white/90 text-sm">{pkg.layout.width}×{pkg.layout.depth} m • {pkg.layout.area} m²</p>
+                      <p className="text-white/90 text-sm">
+                        {pkg.layout.width}×{pkg.layout.depth} m • {pkg.layout.area} m²
+                      </p>
                     </div>
                   </div>
-                  
+
                   <div className="p-6">
                     <ul className="space-y-3 mb-6" role="list">
                       {pkg.includes.map((item, itemIndex) => (
@@ -475,7 +558,8 @@ export default function Page() {
                         href="tel:+905453048671"
                         variant="primary"
                         className="w-full text-center justify-center"
-                        ariaLabel={`${pkg.name} için hemen teklif alın`}
+                        label="Hemen Teklif Al"
+                        title={`${pkg.name} için hemen teklif alın`}
                       >
                         <span className="flex items-center justify-center gap-2">
                           <span role="img" aria-label="Telefon">📞</span>
@@ -490,23 +574,30 @@ export default function Page() {
 
             <div className="mt-8 text-center">
               <p className="text-sm text-neutral-600">
-                *Fiyatlar haftalık kiralama içindir. Günlük kiralama için iletişime geçin.
+                *Fiyatlar haftalık kiralama içindir. Günlük kiralama için
+                iletişime geçin.
               </p>
             </div>
           </div>
         </section>
 
-        {/* ✅ TEKNİK ÖZELLİKLER */}
+        {/* TEKNİK ÖZELLİKLER */}
         <section className="py-20 bg-gradient-to-br from-neutral-50 to-blue-100/30">
           <div className="container max-w-6xl mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-black text-neutral-900 mb-6">
-                Teknik <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Özellikler</span>
+                Teknik{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                  Özellikler
+                </span>
               </h2>
               <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
                 Yüksek kalite malzemeler ve profesyonel standartlar
               </p>
-              <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8" aria-hidden="true"></div>
+              <div
+                className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8"
+                aria-hidden="true"
+              />
             </div>
 
             <div className="grid md:grid-cols-3 gap-8" role="list">
@@ -534,17 +625,23 @@ export default function Page() {
           </div>
         </section>
 
-        {/* ✅ KULLANIM ALANLARI */}
+        {/* KULLANIM ALANLARI */}
         <section className="py-20 bg-gradient-to-br from-neutral-900 to-blue-900/95">
           <div className="container max-w-6xl mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-black text-white mb-6">
-                Kullanım <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Alanları</span>
+                Kullanım{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                  Alanları
+                </span>
               </h2>
               <p className="text-xl text-white/80 max-w-3xl mx-auto">
                 Podyum çözümlerimizin tercih edildiği başlıca etkinlik türleri
               </p>
-              <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-purple-400 mx-auto mt-8" aria-hidden="true"></div>
+              <div
+                className="w-24 h-1 bg-gradient-to-r from-blue-400 to-purple-400 mx-auto mt-8"
+                aria-hidden="true"
+              />
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto" role="list">
@@ -566,34 +663,46 @@ export default function Page() {
           </div>
         </section>
 
-        {/* ✅ POPÜLER ÖLÇÜLER */}
+        {/* POPÜLER ÖLÇÜLER */}
         <section className="py-20 bg-white">
           <div className="container max-w-6xl mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-black text-neutral-900 mb-6">
-                Popüler <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Ölçüler</span>
+                Popüler{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                  Ölçüler
+                </span>
               </h2>
               <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
                 Sık talep edilen ölçüler için hazır fiyatlar
               </p>
-              <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8" aria-hidden="true"></div>
+              <div
+                className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8"
+                aria-hidden="true"
+              />
             </div>
 
             <PriceMatrix unitPrices={UNIT_PRICES} />
           </div>
         </section>
 
-        {/* ✅ GALERİ */}
+        {/* GALERİ */}
         <section className="py-20 bg-gradient-to-br from-neutral-50 to-blue-100/30">
           <div className="container max-w-6xl mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-black text-neutral-900 mb-6">
-                Proje <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Galerimiz</span>
+                Proje{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                  Galerimiz
+                </span>
               </h2>
               <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
                 Gerçekleştirdiğimiz başarılı podyum kurulum projelerinden örnekler
               </p>
-              <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8" aria-hidden="true"></div>
+              <div
+                className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8"
+                aria-hidden="true"
+              />
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4" role="list">
@@ -610,51 +719,68 @@ export default function Page() {
                     sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     className="object-cover group-hover:scale-110 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300" aria-hidden="true" />
+                  <div
+                    className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"
+                    aria-hidden="true"
+                  />
                 </FocusableCard>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ✅ SIKÇA SORULAN SORULAR */}
+        {/* SSS */}
         <section className="py-20 bg-white">
           <div className="container max-w-4xl mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-black text-neutral-900 mb-6">
-                Sıkça Sorulan <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Sorular</span>
+                Sıkça Sorulan{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                  Sorular
+                </span>
               </h2>
               <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
                 Podyum kiralama sürecinde en çok merak edilen sorular ve detaylı cevapları
               </p>
-              <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8" aria-hidden="true"></div>
+              <div
+                className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8"
+                aria-hidden="true"
+              />
             </div>
 
             <div className="space-y-6">
               {[
                 {
                   question: "Podyum kiralama fiyatları nasıl hesaplanır?",
-                  answer: "Alan (m²), yükseklik, aksesuarlar (korkuluk, rampa, skört, halı) ve nakliye esas alınır. Halı m², skört çevre metre üzerinden hesaplanır. Platform: 250 TL/m², Halı: 120 TL/m², Skört: 90 TL/mtül, İstanbul kurulum: 8.000 TL"
+                  answer:
+                    "Alan (m²), yükseklik, aksesuarlar (korkuluk, rampa, skört, halı) ve nakliye esas alınır. Halı m², skört çevre metre üzerinden hesaplanır. Platform: 250 TL/m², Halı: 120 TL/m², Skört: 90 TL/mtül, İstanbul kurulum: 8.000 TL",
                 },
                 {
                   question: "Hangi panelleri kullanıyorsunuz?",
-                  answer: "1×1 m ve 2×1 m modüler paneller. Düzensiz zeminde 1×1, ana sahnede 2×1 paneller önerilir. Her iki panel de kaymaz kaplama ve güvenlik standartlarına uygundur."
+                  answer:
+                    "1×1 m ve 2×1 m modüler paneller. Düzensiz zeminde 1×1, ana sahnede 2×1 paneller önerilir. Her iki panel de kaymaz kaplama ve güvenlik standartlarına uygundur.",
                 },
                 {
                   question: "Kurulum ne kadar sürer?",
-                  answer: "Standart 24-48 m² podyumlar çoğu mekânda aynı gün kurulur. Geniş alanlar ve gece mesaisi ek süre gerektirebilir. Ortalama kurulum süresi 2-6 saat arasındadır."
+                  answer:
+                    "Standart 24-48 m² podyumlar çoğu mekânda aynı gün kurulur. Geniş alanlar ve gece mesaisi ek süre gerektirebilir. Ortalama kurulum süresi 2-6 saat arasındadır.",
                 },
                 {
                   question: "Halı ve skört zorunlu mu?",
-                  answer: "Zorunlu değildir; görsel bütünlük ve güvenlik için önerilir. Fiyatlar opsiyon olarak ayrı hesaplanır. Halı kaymaz özelliktedir, skört ise profesyonel görünüm sağlar."
-                }
+                  answer:
+                    "Zorunlu değildir; görsel bütünlük ve güvenlik için önerilir. Fiyatlar opsiyon olarak ayrı hesaplanır. Halı kaymaz özelliktedir, skört ise profesyonel görünüm sağlar.",
+                },
               ].map((faq, index) => (
                 <FocusableCard
                   key={index}
                   className="bg-white rounded-2xl shadow-lg border border-neutral-200 p-8 hover:shadow-xl transition-shadow duration-300"
                 >
-                  <h3 className="text-2xl font-black text-neutral-900 mb-4">{faq.question}</h3>
-                  <p className="text-neutral-700 leading-relaxed">{faq.answer}</p>
+                  <h3 className="text-2xl font-black text-neutral-900 mb-4">
+                    {faq.question}
+                  </h3>
+                  <p className="text-neutral-700 leading-relaxed">
+                    {faq.answer}
+                  </p>
                 </FocusableCard>
               ))}
             </div>
@@ -662,12 +788,15 @@ export default function Page() {
             <div className="text-center mt-12">
               <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white">
                 <h3 className="text-2xl font-black mb-4">Başka Sorunuz Mu Var?</h3>
-                <p className="text-white/90 mb-6">7/24 canlı destek ekibimiz sorularınızı yanıtlamak için hazır</p>
+                <p className="text-white/90 mb-6">
+                  7/24 canlı destek ekibimiz sorularınızı yanıtlamak için hazır
+                </p>
                 <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
                   <AccessibleCTA
                     href="tel:+905453048671"
                     variant="white"
-                    ariaLabel="Telefon ile hemen podyum kiralama danışmanlığı alın"
+                    label="Hemen Ara"
+                    title="Telefon ile hemen podyum kiralama danışmanlığı alın"
                   >
                     <span className="flex items-center justify-center gap-2">
                       <span role="img" aria-label="Telefon">📞</span>
@@ -677,7 +806,8 @@ export default function Page() {
                   <AccessibleCTA
                     href="https://wa.me/905453048671"
                     variant="primary"
-                    ariaLabel="WhatsApp üzerinden podyum kiralama teklifi alın"
+                    label="WhatsApp"
+                    title="WhatsApp üzerinden podyum kiralama teklifi alın"
                   >
                     <span className="flex items-center justify-center gap-2">
                       <span role="img" aria-label="WhatsApp">💬</span>
@@ -690,33 +820,44 @@ export default function Page() {
           </div>
         </section>
 
-        {/* ✅ İLGİLİ HİZMETLER */}
+        {/* TAMAMLAYICI HİZMETLER */}
         <section className="py-20 bg-gradient-to-br from-neutral-50 to-blue-100/30">
           <div className="container max-w-6xl mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-black text-neutral-900 mb-6">
-                Tamamlayıcı <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Hizmetlerimiz</span>
+                Tamamlayıcı{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                  Hizmetlerimiz
+                </span>
               </h2>
               <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
                 Podyum kurulumunuzu tamamlayacak diğer profesyonel hizmetlerimiz
               </p>
-              <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8" aria-hidden="true"></div>
+              <div
+                className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8"
+                aria-hidden="true"
+              />
             </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto" role="navigation" aria-label="Tamamlayıcı hizmetler">
+            <div
+              className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto"
+              role="navigation"
+              aria-label="Tamamlayıcı hizmetler"
+            >
               {[
                 { href: "/sahne-kiralama", title: "Sahne Kiralama", icon: "🎪" },
                 { href: "/led-ekran-kiralama", title: "LED Ekran", icon: "🖥️" },
                 { href: "/ses-isik-sistemleri", title: "Ses & Işık", icon: "🎵" },
-                { href: "/cadir-kiralama", title: "Çadır Kiralama", icon: "🏕️" }
+                { href: "/cadir-kiralama", title: "Çadır Kiralama", icon: "🏕️" },
               ].map((service, index) => (
                 <Link
                   key={index}
                   href={service.href}
-                  className="group bg-white rounded-xl p-6 shadow-lg hover:shadow-xl border border-neutral-100 hover:border-blue-200 transition-all duration-300 hover:scale-105 text-center focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50"
-                  aria-label={`${service.title} hizmeti sayfasına git`}
+                  className="group bg-white rounded-xl p-6 shadow-lg hover:shadow-xl border border-neutral-100 hover:border-blue-200 transition-all duration-300 hover:scale-105 text-center focus:outline-none focus:ring-4 focus:ring-blue-300/60"
+                  aria-label={service.title}
+                  title={`${service.title} sayfasına git`}
                 >
-                  <div className="text-3xl mb-3" role="img" aria-hidden="true">{service.icon}</div>
+                  <div className="text-3xl mb-3" aria-hidden="true">{service.icon}</div>
                   <h3 className="font-semibold text-neutral-900 group-hover:text-blue-600 transition-colors">
                     {service.title}
                   </h3>
@@ -726,21 +867,23 @@ export default function Page() {
           </div>
         </section>
 
-        {/* ✅ CTA SECTION */}
+        {/* CTA */}
         <section className="py-20 bg-gradient-to-br from-blue-600 to-purple-600">
           <div className="container max-w-4xl mx-auto px-4 text-center text-white">
             <h2 className="text-4xl md:text-5xl font-black mb-6">
               Hemen <span className="text-yellow-300">Podyum Kirala</span>
             </h2>
             <p className="text-xl text-white/90 mb-8 leading-relaxed max-w-2xl mx-auto">
-              Etkinliğiniz için en uygun podyum çözümünü sunalım. 2 saat içinde detaylı teklif hazırlıyoruz.
+              Etkinliğiniz için en uygun podyum çözümünü sunalım. 2 saat içinde
+              detaylı teklif hazırlıyoruz.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-8">
               <AccessibleCTA
                 href="tel:+905453048671"
                 variant="white"
-                ariaLabel="Hemen ara - Podyum kiralama için telefon: 905453048671"
+                label="Hemen Ara"
+                title="Podyum kiralama için telefon"
                 className="min-w-[200px] text-center"
               >
                 <span className="flex items-center justify-center gap-2">
@@ -752,7 +895,8 @@ export default function Page() {
               <AccessibleCTA
                 href="https://wa.me/905453048671"
                 variant="primary"
-                ariaLabel="WhatsApp'tan podyum kiralama teklifi al"
+                label="WhatsApp"
+                title="WhatsApp'tan podyum kiralama teklifi al"
                 className="min-w-[200px] text-center"
               >
                 <span className="flex items-center justify-center gap-2">
@@ -763,8 +907,9 @@ export default function Page() {
 
               <Link
                 href="/iletisim"
-                className="group bg-transparent hover:bg-white/10 text-white font-bold px-8 py-4 rounded-xl border-2 border-white transition-all duration-300 hover:scale-105 min-w-[200px] text-center focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50"
-                aria-label="İletişim formu ile podyum kiralama talebinde bulunun"
+                className="group bg-transparent hover:bg-white/10 text-white font-bold px-8 py-4 rounded-xl border-2 border-white transition-all duration-300 motion-safe:hover:scale-105 min-w-[200px] text-center focus:outline-none focus:ring-4 focus:ring-white/70"
+                aria-label="E-posta"
+                title="İletişim formu ile talepte bulunun"
               >
                 <span className="flex items-center justify-center gap-2">
                   <span role="img" aria-label="E-posta">📧</span>
@@ -775,8 +920,9 @@ export default function Page() {
 
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 max-w-2xl mx-auto">
               <p className="text-white/90 text-sm">
-                <strong>⏱️ 2 Saat İçinde Yanıt:</strong> Mesai saatleri içinde tüm podyum kiralama taleplerinize 
-                2 saat içinde detaylı teklif ve profesyonel danışmanlık sunuyoruz.
+                <strong>⏱️ 2 Saat İçinde Yanıt:</strong> Mesai saatleri içinde
+                tüm podyum kiralama taleplerinize 2 saat içinde detaylı teklif
+                ve profesyonel danışmanlık sunuyoruz.
               </p>
             </div>
           </div>
@@ -800,7 +946,7 @@ function PriceMatrix({ unitPrices }) {
     { w: 6, d: 10 }, // 60 m²
     { w: 8, d: 10 }, // 80 m²
   ];
-  
+
   const rows = PRESETS.map(({ w, d }) => {
     const area = w * d;
     const perimeter = 2 * (w + d);
@@ -808,10 +954,10 @@ function PriceMatrix({ unitPrices }) {
     const carpet = area * unitPrices.carpet_m2_week;
     const skirt = perimeter * unitPrices.skirt_ml_week;
     const setup = unitPrices.istanbul_setup;
-    return { 
-      w, d, area, perimeter, base, 
+    return {
+      w, d, area, perimeter, base,
       carpet, skirt, setup,
-      total: base + carpet + skirt + setup 
+      total: base + carpet + skirt + setup,
     };
   });
 
@@ -878,23 +1024,23 @@ function SchemaBlocks({ packages: pkgs, unitPrices }) {
       priceCurrency: "TRY",
       price: String(priceNumber),
       availability: "https://schema.org/InStock",
-      url: PAGE
+      url: PAGE,
     };
   });
 
   const faq = [
     {
       q: "Podyum kiralama fiyatları nasıl hesaplanır?",
-      a: "Alan (m²), yükseklik, aksesuarlar (korkuluk, rampa, skört, halı) ve nakliye temel alınır. Halı m², skört çevre metre üzerinden hesaplanır."
+      a: "Alan (m²), yükseklik, aksesuarlar (korkuluk, rampa, skört, halı) ve nakliye temel alınır. Halı m², skört çevre metre üzerinden hesaplanır.",
     },
     {
       q: "Hangi panelleri kullanıyorsunuz?",
-      a: "1×1 m ve 2×1 m modüler paneller. Düzensiz zeminde 1×1, ana sahnede 2×1 paneller önerilir."
+      a: "1×1 m ve 2×1 m modüler paneller. Düzensiz zeminde 1×1, ana sahnede 2×1 paneller önerilir.",
     },
     {
       q: "Kurulum ne kadar sürer?",
-      a: "Standart 24–48 m² podyumlar çoğu mekânda aynı gün kurulur. Geniş alanlar ve gece mesaisi ek süre gerektirebilir."
-    }
+      a: "Standart 24–48 m² podyumlar çoğu mekânda aynı gün kurulur. Geniş alanlar ve gece mesaisi ek süre gerektirebilir.",
+    },
   ];
 
   const ldService = {
@@ -903,19 +1049,20 @@ function SchemaBlocks({ packages: pkgs, unitPrices }) {
     "@id": SERVICE_ID,
     serviceType: "Podyum Kiralama",
     name: "Profesyonel Podyum Kiralama",
-    description: "Modüler 1×1 ve 2×1 panellerle podyum kiralama; kaymaz kaplama, rampa/korkuluk ve profesyonel kurulum. İstanbul geneli hizmet.",
+    description:
+      "Modüler 1×1 ve 2×1 panellerle podyum kiralama; kaymaz kaplama, rampa/korkuluk ve profesyonel kurulum. İstanbul geneli hizmet.",
     url: PAGE,
     areaServed: [
       { "@type": "Country", name: "TR" },
-      { "@type": "City", name: "İstanbul" }
+      { "@type": "City", name: "İstanbul" },
     ],
     provider: { "@id": LB_ID },
     offers: offers,
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "Podyum Paketleri (Haftalık)",
-      itemListElement: offers
-    }
+      itemListElement: offers,
+    },
   };
 
   const ldFAQ = {
@@ -925,8 +1072,8 @@ function SchemaBlocks({ packages: pkgs, unitPrices }) {
     mainEntity: faq.map((f) => ({
       "@type": "Question",
       name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a }
-    }))
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
   };
 
   const ldBreadcrumb = {
@@ -935,18 +1082,30 @@ function SchemaBlocks({ packages: pkgs, unitPrices }) {
     "@id": BREAD_ID,
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Anasayfa", item: SITE },
-      { "@type": "ListItem", position: 2, name: "Podyum Kiralama", item: PAGE }
-    ]
+      { "@type": "ListItem", position: 2, name: "Podyum Kiralama", item: PAGE },
+    ],
   };
 
   return (
     <>
-      <Script id="ld-service" type="application/ld+json" strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldService) }} />
-      <Script id="ld-faq" type="application/ld+json" strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldFAQ) }} />
-      <Script id="ld-breadcrumb" type="application/ld+json" strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldBreadcrumb) }} />
+      <Script
+        id="ld-service"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldService) }}
+      />
+      <Script
+        id="ld-faq"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldFAQ) }}
+      />
+      <Script
+        id="ld-breadcrumb"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldBreadcrumb) }}
+      />
     </>
   );
 }
