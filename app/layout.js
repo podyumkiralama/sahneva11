@@ -16,7 +16,6 @@ const inter = Inter({
   adjustFontFallback: true,
 });
 
-// Viewport
 export const viewport = {
   width: "device-width",
   initialScale: 1,
@@ -24,13 +23,9 @@ export const viewport = {
   themeColor: "#6d28d9",
 };
 
-// Metadata (genel)
 export const metadata = {
   metadataBase: new URL("https://www.sahneva.com"),
-  title: {
-    default: "Sahne, Podyum, LED Ekran & Ses-Işık Kiralama | Sahneva",
-    template: "%s | Sahneva",
-  },
+  title: { default: "Sahne, Podyum, LED Ekran & Ses-Işık Kiralama | Sahneva", template: "%s | Sahneva" },
   description:
     "Türkiye genelinde sahne, podyum, LED ekran, ses-ışık sistemleri kiralama ve profesyonel kurulum. Hızlı keşif, teknik ekip ve 7/24 destek.",
   alternates: { canonical: "https://www.sahneva.com" },
@@ -43,6 +38,8 @@ export const metadata = {
     type: "website",
   },
 };
+
+const isProd = process.env.NODE_ENV === "production";
 
 export default function RootLayout({ children }) {
   return (
@@ -58,33 +55,26 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
 
-        {/* 🔮 Speculation Rules */}
-        <Script
-          id="speculation-rules"
-          type="speculationrules"
-          strategy="afterInteractive"
-        >
-          {JSON.stringify({
-            prefetch: [
-              { source: "document", eagerness: "conservative", where: { and: [{ href_matches: "/*" }] } },
-            ],
-            prerender: [
-              { source: "document", eagerness: "moderate", where: { and: [{ href_matches: "/*" }] } },
-            ],
-          })}
-        </Script>
+        {/* 🔮 Speculation Rules → sadece prod DIŞI (inline gerektirir) */}
+        {!isProd && (
+          <Script id="speculation-rules" type="speculationrules" strategy="afterInteractive">
+            {JSON.stringify({
+              prefetch: [
+                { source: "document", eagerness: "conservative", where: { and: [{ href_matches: "/*" }] } },
+              ],
+              prerender: [
+                { source: "document", eagerness: "moderate", where: { and: [{ href_matches: "/*" }] } },
+              ],
+            })}
+          </Script>
+        )}
 
-        {/* ✅ Google Analytics */}
+        {/* ✅ Google Analytics (inline yok) */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-J5YK10YLLC"
           strategy="afterInteractive"
         />
-        <Script id="ga-init" strategy="afterInteractive">
-          {`window.dataLayer = window.dataLayer || [];
-           function gtag(){dataLayer.push(arguments);}
-           gtag('js', new Date());
-           gtag('config', 'G-J5YK10YLLC', { send_page_view: false, anonymize_ip: true });`}
-        </Script>
+        <Script src="/ga-init.js" strategy="afterInteractive" />
       </head>
 
       <body className="min-h-screen bg-white text-neutral-900 antialiased">
@@ -99,13 +89,12 @@ export default function RootLayout({ children }) {
         <Navbar />
         <UtilityBar />
 
-        {/* ✅ Route değişimlerinde GA page_view */}
+        {/* Route değişimlerinde GA page_view */}
         <Suspense fallback={null}>
           <GAClient measurementId="G-J5YK10YLLC" />
         </Suspense>
 
         <main id="main">{children}</main>
-
         <Footer />
       </body>
     </html>
