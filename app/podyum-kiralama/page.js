@@ -61,9 +61,7 @@ const CONTENT = {
   ],
 };
 
-/* =========================
-   Erişilebilirlik Bileşenleri
-   ========================= */
+// 🔎 Erişilebilirlik yardımcıları
 function SkipToMain() {
   return (
     <a
@@ -71,6 +69,43 @@ function SkipToMain() {
       className="sr-only focus:not-sr-only focus:fixed focus:z-[9999] focus:top-4 focus:left-4 focus:bg-blue-600 focus:text-white focus:px-6 focus:py-4 focus:rounded-lg focus:font-bold focus:shadow-2xl focus:border-2 focus:border-white transition-all duration-200"
     >
       Ana içeriğe atla
+    </a>
+  );
+}
+
+// ⚠️ NOT: Görünür metin varsa aria-label vermiyoruz.
+// Sadece SR-only metin olursa aria-label kullan.
+function AccessibleCTA({
+  href,
+  children,
+  variant = "primary",
+  className = "",
+  ariaLabel,
+  ...props
+}) {
+  const base =
+    "inline-flex items-center justify-center font-bold px-8 py-4 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300/70";
+
+  const variants = {
+    primary:
+      "text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700",
+    secondary:
+      "text-white bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/30",
+    white:
+      "text-blue-700 bg-white hover:bg-gray-100 border border-white/0",
+  };
+
+  // aria-label sadece sağlanmışsa uygulanır
+  const maybeAria = ariaLabel ? { "aria-label": ariaLabel } : {};
+
+  return (
+    <a
+      href={href}
+      className={`${base} ${variants[variant]} ${className}`}
+      {...maybeAria}
+      {...props}
+    >
+      {children}
     </a>
   );
 }
@@ -87,44 +122,6 @@ function FocusableCard({ children, className = "", ...props }) {
   );
 }
 
-/**
- * AccessibleCTA
- * - Görünür metin = accessible name (aria-label görünür metni tekrar eder)
- * - Ek açıklamalar gerektiğinde title kullanın (screen reader’lar okur, kuralı bozmaz)
- */
-function AccessibleCTA({
-  href,
-  children,
-  variant = "primary",
-  className = "",
-  label,        // ZORUNLU: butonun görünen metni ile aynı string
-  title,        // İsteğe bağlı: ek ipucu
-  ...props
-}) {
-  const base =
-    "inline-flex items-center justify-center font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 motion-safe:hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300/60";
-
-  const variants = {
-    primary:
-      "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white",
-    secondary:
-      "bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border border-white/20",
-    white: "bg-white text-blue-600 hover:bg-gray-100",
-  };
-
-  return (
-    <a
-      href={href}
-      className={`${base} ${variants[variant]} ${className}`}
-      aria-label={label}
-      title={title}
-      {...props}
-    >
-      {children}
-    </a>
-  );
-}
-
 function OptimizedImage({
   src,
   alt,
@@ -138,14 +135,14 @@ function OptimizedImage({
       alt={alt}
       className={`transition-transform duration-300 ${className}`}
       placeholder="blur"
-      blurDataURL="data:image/gif;base64,R0lGODlhAQABAAAAACw="
+      blurDataURL="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
       priority={priority}
       {...props}
     />
   );
 }
 
-/* ======= Yardımcılar ======= */
+// 💸 Yardımcılar
 function priceBase(area) {
   return area * UNIT_PRICES.platform_m2_week;
 }
@@ -167,7 +164,6 @@ function formatTRY(n) {
   }
 }
 
-/* ======= Meta ======= */
 export const metadata = {
   title:
     "Podyum Kiralama | Sahneva - Profesyonel Sahne ve Podyum Çözümleri",
@@ -202,10 +198,6 @@ export const metadata = {
   },
   robots: { index: true, follow: true },
 };
-
-/* =========================
-         SAYFA
-   ========================= */
 export default function Page() {
   const title = "Profesyonel Podyum Kiralama";
   const desc =
@@ -223,7 +215,8 @@ export default function Page() {
         withCarpetAndSkirt: base + carpet + skirt,
         carpet,
         skirt,
-        totalWithSetup: base + carpet + skirt + UNIT_PRICES.istanbul_setup,
+        totalWithSetup:
+          base + carpet + skirt + UNIT_PRICES.istanbul_setup,
       },
     };
   });
@@ -298,7 +291,6 @@ export default function Page() {
           aria-hidden="true"
         />
 
-        {/* Dekoratif büyük yazı */}
         <div
           className="absolute inset-0 flex items-center justify-center opacity-5"
           aria-hidden="true"
@@ -310,42 +302,40 @@ export default function Page() {
 
         <div className="relative z-10 container text-center text-white">
           <div className="max-w-4xl mx-auto">
-            <div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md rounded-full px-6 py-3 border border-white/20 mb-6">
+            <div className="inline-flex items-center gap-3 bg-white/20 backdrop-blur-md rounded-full px-6 py-3 border border-white/30 mb-6">
               <span
-                className="w-2 h-2 bg-green-400 rounded-full motion-safe:animate-pulse"
+                className="w-2 h-2 bg-green-400 rounded-full animate-pulse"
                 aria-hidden="true"
               />
-              <span className="text-white/90 text-sm font-medium">
+              <span className="text-white/95 text-sm font-medium">
                 İstanbul Geneli Kurulum
               </span>
             </div>
 
-            <h1 id="hero-title" className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight">
+            <h1
+              id="hero-title"
+              className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight"
+            >
               <span className="block">PROFESYONEL</span>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-purple-300 to-cyan-300">
                 Podyum Çözümleri
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-white/90 mb-8 leading-relaxed max-w-3xl mx-auto">
-              1×1 ve 2×1 modüler paneller, kaymaz kaplama
+            <p className="text-xl md:text-2xl text-white/95 mb-8 leading-relaxed max-w-3xl mx-auto">
+              1×1 ve 2×1 modüler paneller, kaymaz kaplama{" "}
               <br />
-              <strong className="text-blue-300">
+              <strong className="text-blue-200">
                 Halı, skört ve profesyonel kurulum dahil
               </strong>
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-              <AccessibleCTA
-                href="#paketler"
-                variant="primary"
-                label="Podyum Paketlerimiz"
-                title="Podyum paketlerimizi inceleyin"
-              >
+              <AccessibleCTA href="#paketler" variant="primary">
                 <span className="flex items-center gap-2">
                   Podyum Paketlerimiz
                   <span
-                    className="transition-transform duration-200"
+                    className="translate-x-0 group-hover:translate-x-1 transition-transform"
                     aria-hidden="true"
                   >
                     →
@@ -353,11 +343,11 @@ export default function Page() {
                 </span>
               </AccessibleCTA>
 
+              {/* Kontrast uyumu: bg-white/20 + border */}
               <AccessibleCTA
                 href="tel:+905453048671"
                 variant="secondary"
-                label="Hemen Ara"
-                title="Podyum kiralama için hemen arayın"
+                title="Podyum kiralama için telefon"
               >
                 <span className="flex items-center gap-2">
                   <span role="img" aria-label="Telefon">
@@ -374,9 +364,9 @@ export default function Page() {
           className="absolute bottom-6 left-1/2 -translate-x-1/2"
           aria-hidden="true"
         >
-          <div className="motion-safe:animate-bounce">
-            <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
-              <div className="w-1 h-3 bg-white/70 rounded-full mt-2" />
+          <div className="animate-bounce">
+            <div className="w-6 h-10 border-2 border-white/60 rounded-full flex justify-center">
+              <div className="w-1 h-3 bg-white/80 rounded-full mt-2"></div>
             </div>
           </div>
         </div>
@@ -403,45 +393,55 @@ export default function Page() {
               <p className="text-xl text-neutral-700 leading-relaxed mb-8">
                 Konser, düğün, lansman veya kurumsal etkinlikleriniz için
                 modern, güvenli ve şık podyum çözümleri sunuyoruz.{" "}
-                <strong className="text-blue-600">Sahneva</strong>, modüler
+                <strong className="text-blue-700">Sahneva</strong>, modüler
                 podyum sistemleriyle her ölçekte etkinlik için ideal sahne
                 alanları oluşturur.
               </p>
 
               <p className="text-xl text-neutral-700 leading-relaxed">
-                1×1 ve 2×1 panellerle esnek kurulum, kaymaz kaplama ve güvenlik
-                ekipmanlarıyla profesyonel sahne deneyimi. Keşiften planlamaya,
-                kurulumdan söküme kadar tüm süreç Sahneva ekibi tarafından
-                yönetilir.
+                1×1 ve 2×1 panellerle esnek kurulum, kaymaz kaplama ve
+                güvenlik ekipmanlarıyla profesyonel sahne deneyimi. Keşiften
+                planlamaya, kurulumdan söküme kadar tüm süreç Sahneva ekibi
+                tarafından yönetilir.
               </p>
             </div>
 
             <div className="mt-12 grid md:grid-cols-3 gap-8" role="list">
               {[
-                { icon: "⚡", title: "Hızlı Kurulum", desc: "2-6 saat içinde profesyonel kurulum" },
-                { icon: "🛡️", title: "Güvenlik Garantisi", desc: "Kaymaz kaplama ve güvenlik ekipmanları" },
-                { icon: "🏗️", title: "Modüler Sistem", desc: "1×1 ve 2×1 panellerle esnek kurulum" },
-              ].map((feature, index) => (
+                { icon: "⚡", title: "Hızlı Kurulum", desc: "2–6 saat" },
+                {
+                  icon: "🛡️",
+                  title: "Güvenlik Garantisi",
+                  desc: "Kaymaz kaplama & ekipman",
+                },
+                {
+                  icon: "🏗️",
+                  title: "Modüler Sistem",
+                  desc: "1×1 ve 2×1 paneller",
+                },
+              ].map((f, i) => (
                 <FocusableCard
-                  key={index}
-                  className="text-center p-6 bg-white rounded-2xl shadow-lg border border-neutral-100 hover:shadow-xl transition-shadow duration-300"
+                  key={i}
+                  className="text-center p-6 bg-white rounded-2xl shadow-lg border border-neutral-100 hover:shadow-xl"
                   role="listitem"
                 >
-                  <div className="text-4xl mb-4" role="img" aria-label={feature.title}>
-                    {feature.icon}
+                  <div className="text-4xl mb-4" role="img" aria-label={f.title}>
+                    {f.icon}
                   </div>
                   <h3 className="text-xl font-black text-neutral-900 mb-2">
-                    {feature.title}
+                    {f.title}
                   </h3>
-                  <p className="text-neutral-700">{feature.desc}</p>
+                  <p className="text-neutral-700">{f.desc}</p>
                 </FocusableCard>
               ))}
             </div>
           </div>
         </section>
-
         {/* HIZLI HESAP */}
-        <section id="hizli-hesap" className="py-20 bg-gradient-to-br from-neutral-50 to-blue-100/30">
+        <section
+          id="hizli-hesap"
+          className="py-20 bg-gradient-to-br from-neutral-50 to-blue-100/30"
+        >
           <div className="container max-w-4xl mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-black text-neutral-900 mb-6">
@@ -467,9 +467,8 @@ export default function Page() {
                     İstanbul içi nakliye, kurulum ve söküm:{" "}
                     {formatTRY(UNIT_PRICES.istanbul_setup)}
                   </strong>
-                  <br />
-                  *200 m²'ye kadar geçerlidir. Şehir dışı projeler için özel
-                  teklif alın.
+                  <br />*200 m²'ye kadar geçerlidir. Şehir dışı projeler için
+                  özel teklif alın.
                 </p>
               </div>
             </FocusableCard>
@@ -515,18 +514,27 @@ export default function Page() {
                       aria-hidden="true"
                     />
                     <div className="absolute bottom-4 left-4">
-                      <h3 className="text-2xl font-black text-white">{pkg.name}</h3>
+                      <h3 className="text-2xl font-black text-white">
+                        {pkg.name}
+                      </h3>
                       <p className="text-white/90 text-sm">
-                        {pkg.layout.width}×{pkg.layout.depth} m • {pkg.layout.area} m²
+                        {pkg.layout.width}×{pkg.layout.depth} m •{" "}
+                        {pkg.layout.area} m²
                       </p>
                     </div>
                   </div>
 
                   <div className="p-6">
                     <ul className="space-y-3 mb-6" role="list">
-                      {pkg.includes.map((item, itemIndex) => (
-                        <li key={itemIndex} className="flex items-center gap-3 text-neutral-700">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0" aria-hidden="true" />
+                      {pkg.includes.map((item, i) => (
+                        <li
+                          key={i}
+                          className="flex items-center gap-3 text-neutral-700"
+                        >
+                          <div
+                            className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"
+                            aria-hidden="true"
+                          />
                           {item}
                         </li>
                       ))}
@@ -536,33 +544,43 @@ export default function Page() {
                       <div className="space-y-2 text-sm">
                         <div className="flex justify-between">
                           <span>Platform:</span>
-                          <span className="font-semibold">{formatTRY(pkg.price.base)}</span>
+                          <span className="font-semibold">
+                            {formatTRY(pkg.price.base)}
+                          </span>
                         </div>
                         <div className="flex justify-between">
                           <span>Halı + Skört:</span>
-                          <span className="font-semibold">{formatTRY(pkg.price.withCarpetAndSkirt)}</span>
+                          <span className="font-semibold">
+                            {formatTRY(pkg.price.withCarpetAndSkirt)}
+                          </span>
                         </div>
                         <div className="flex justify-between border-t border-neutral-300 pt-2">
                           <span className="font-bold">Toplam (İstanbul):</span>
-                          <span className="font-bold text-blue-600">{formatTRY(pkg.price.totalWithSetup)}</span>
+                          <span className="font-bold text-blue-700">
+                            {formatTRY(pkg.price.totalWithSetup)}
+                          </span>
                         </div>
                       </div>
                     </div>
 
                     {pkg.note && (
-                      <p className="mt-4 text-sm text-neutral-600 text-center">{pkg.note}</p>
+                      <p className="mt-4 text-sm text-neutral-600 text-center">
+                        {pkg.note}
+                      </p>
                     )}
 
                     <div className="mt-6">
+                      {/* Görünür metin = erişilebilir ad */}
                       <AccessibleCTA
                         href="tel:+905453048671"
                         variant="primary"
                         className="w-full text-center justify-center"
-                        label="Hemen Teklif Al"
-                        title={`${pkg.name} için hemen teklif alın`}
+                        title="Podyum kiralama için telefon"
                       >
                         <span className="flex items-center justify-center gap-2">
-                          <span role="img" aria-label="Telefon">📞</span>
+                          <span role="img" aria-label="Telefon">
+                            📞
+                          </span>
                           Hemen Teklif Al
                         </span>
                       </AccessibleCTA>
@@ -604,17 +622,25 @@ export default function Page() {
               {TECHNICAL_SPECS.map((spec, index) => (
                 <FocusableCard
                   key={index}
-                  className="bg-gradient-to-br from-blue-50 to-white rounded-2xl p-8 shadow-lg border border-blue-100 hover:shadow-xl transition-shadow duration-300"
+                  className="bg-gradient-to-br from-blue-50 to-white rounded-2xl p-8 shadow-lg border border-blue-100 hover:shadow-xl"
                   role="listitem"
                 >
                   <h3 className="text-2xl font-black text-neutral-900 mb-6 flex items-center gap-3">
-                    <span className="text-3xl" role="img" aria-label={spec.category}>🔧</span>
+                    <span className="text-3xl" role="img" aria-label={spec.category}>
+                      🔧
+                    </span>
                     {spec.category}
                   </h3>
                   <ul className="space-y-4" role="list">
-                    {spec.items.map((item, itemIndex) => (
-                      <li key={itemIndex} className="flex items-start gap-3 text-neutral-700">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" aria-hidden="true" />
+                    {spec.items.map((item, i) => (
+                      <li
+                        key={i}
+                        className="flex items-start gap-3 text-neutral-700"
+                      >
+                        <div
+                          className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"
+                          aria-hidden="true"
+                        />
                         {item}
                       </li>
                     ))}
@@ -635,7 +661,7 @@ export default function Page() {
                   Alanları
                 </span>
               </h2>
-              <p className="text-xl text-white/80 max-w-3xl mx-auto">
+              <p className="text-xl text-white/85 max-w-3xl mx-auto">
                 Podyum çözümlerimizin tercih edildiği başlıca etkinlik türleri
               </p>
               <div
@@ -648,11 +674,13 @@ export default function Page() {
               {USE_CASES.map((useCase, index) => (
                 <FocusableCard
                   key={index}
-                  className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 hover:border-white/40 transition-all duration-300 group"
+                  className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/30 hover:border-white/50 transition-all duration-300 group"
                   role="listitem"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="text-2xl" role="img" aria-label={useCase.text}>{useCase.icon}</div>
+                    <div className="text-2xl" role="img" aria-label={useCase.text}>
+                      {useCase.icon}
+                    </div>
                     <span className="text-white font-medium group-hover:text-blue-300 transition-colors">
                       {useCase.text}
                     </span>
@@ -662,7 +690,6 @@ export default function Page() {
             </div>
           </div>
         </section>
-
         {/* POPÜLER ÖLÇÜLER */}
         <section className="py-20 bg-white">
           <div className="container max-w-6xl mx-auto px-4">
@@ -763,24 +790,22 @@ export default function Page() {
                 {
                   question: "Kurulum ne kadar sürer?",
                   answer:
-                    "Standart 24-48 m² podyumlar çoğu mekânda aynı gün kurulur. Geniş alanlar ve gece mesaisi ek süre gerektirebilir. Ortalama kurulum süresi 2-6 saat arasındadır.",
+                    "Standart 24–48 m² podyumlar çoğu mekânda aynı gün kurulur. Geniş alanlar ve gece mesaisi ek süre gerektirebilir. Ortalama kurulum süresi 2–6 saat arasındadır.",
                 },
                 {
                   question: "Halı ve skört zorunlu mu?",
                   answer:
                     "Zorunlu değildir; görsel bütünlük ve güvenlik için önerilir. Fiyatlar opsiyon olarak ayrı hesaplanır. Halı kaymaz özelliktedir, skört ise profesyonel görünüm sağlar.",
                 },
-              ].map((faq, index) => (
+              ].map((faq, i) => (
                 <FocusableCard
-                  key={index}
-                  className="bg-white rounded-2xl shadow-lg border border-neutral-200 p-8 hover:shadow-xl transition-shadow duration-300"
+                  key={i}
+                  className="bg-white rounded-2xl shadow-lg border border-neutral-200 p-8 hover:shadow-xl"
                 >
                   <h3 className="text-2xl font-black text-neutral-900 mb-4">
                     {faq.question}
                   </h3>
-                  <p className="text-neutral-700 leading-relaxed">
-                    {faq.answer}
-                  </p>
+                  <p className="text-neutral-700 leading-relaxed">{faq.answer}</p>
                 </FocusableCard>
               ))}
             </div>
@@ -788,26 +813,25 @@ export default function Page() {
             <div className="text-center mt-12">
               <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white">
                 <h3 className="text-2xl font-black mb-4">Başka Sorunuz Mu Var?</h3>
-                <p className="text-white/90 mb-6">
+                <p className="text-white/95 mb-6">
                   7/24 canlı destek ekibimiz sorularınızı yanıtlamak için hazır
                 </p>
                 <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
                   <AccessibleCTA
                     href="tel:+905453048671"
                     variant="white"
-                    label="Hemen Ara"
-                    title="Telefon ile hemen podyum kiralama danışmanlığı alın"
+                    title="Telefon ile podyum kiralama danışmanlığı"
                   >
                     <span className="flex items-center justify-center gap-2">
                       <span role="img" aria-label="Telefon">📞</span>
                       Hemen Ara
                     </span>
                   </AccessibleCTA>
+
                   <AccessibleCTA
                     href="https://wa.me/905453048671"
                     variant="primary"
-                    label="WhatsApp"
-                    title="WhatsApp üzerinden podyum kiralama teklifi alın"
+                    title="WhatsApp üzerinden podyum kiralama teklifi"
                   >
                     <span className="flex items-center justify-center gap-2">
                       <span role="img" aria-label="WhatsApp">💬</span>
@@ -820,71 +844,22 @@ export default function Page() {
           </div>
         </section>
 
-        {/* TAMAMLAYICI HİZMETLER */}
-        <section className="py-20 bg-gradient-to-br from-neutral-50 to-blue-100/30">
-          <div className="container max-w-6xl mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-black text-neutral-900 mb-6">
-                Tamamlayıcı{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-                  Hizmetlerimiz
-                </span>
-              </h2>
-              <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
-                Podyum kurulumunuzu tamamlayacak diğer profesyonel hizmetlerimiz
-              </p>
-              <div
-                className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8"
-                aria-hidden="true"
-              />
-            </div>
-
-            <div
-              className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto"
-              role="navigation"
-              aria-label="Tamamlayıcı hizmetler"
-            >
-              {[
-                { href: "/sahne-kiralama", title: "Sahne Kiralama", icon: "🎪" },
-                { href: "/led-ekran-kiralama", title: "LED Ekran", icon: "🖥️" },
-                { href: "/ses-isik-sistemleri", title: "Ses & Işık", icon: "🎵" },
-                { href: "/cadir-kiralama", title: "Çadır Kiralama", icon: "🏕️" },
-              ].map((service, index) => (
-                <Link
-                  key={index}
-                  href={service.href}
-                  className="group bg-white rounded-xl p-6 shadow-lg hover:shadow-xl border border-neutral-100 hover:border-blue-200 transition-all duration-300 hover:scale-105 text-center focus:outline-none focus:ring-4 focus:ring-blue-300/60"
-                  aria-label={service.title}
-                  title={`${service.title} sayfasına git`}
-                >
-                  <div className="text-3xl mb-3" aria-hidden="true">{service.icon}</div>
-                  <h3 className="font-semibold text-neutral-900 group-hover:text-blue-600 transition-colors">
-                    {service.title}
-                  </h3>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA */}
+        {/* CTA (kontrast düzeltilmiş) */}
         <section className="py-20 bg-gradient-to-br from-blue-600 to-purple-600">
           <div className="container max-w-4xl mx-auto px-4 text-center text-white">
             <h2 className="text-4xl md:text-5xl font-black mb-6">
               Hemen <span className="text-yellow-300">Podyum Kirala</span>
             </h2>
-            <p className="text-xl text-white/90 mb-8 leading-relaxed max-w-2xl mx-auto">
-              Etkinliğiniz için en uygun podyum çözümünü sunalım. 2 saat içinde
-              detaylı teklif hazırlıyoruz.
+            <p className="text-xl text-white/95 mb-8 leading-relaxed max-w-2xl mx-auto">
+              Etkinliğiniz için en uygun podyum çözümünü sunalım. 2 saat içinde detaylı teklif hazırlıyoruz.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-8">
               <AccessibleCTA
                 href="tel:+905453048671"
                 variant="white"
-                label="Hemen Ara"
-                title="Podyum kiralama için telefon"
                 className="min-w-[200px] text-center"
+                title="Podyum kiralama için telefon"
               >
                 <span className="flex items-center justify-center gap-2">
                   <span role="img" aria-label="Telefon">📞</span>
@@ -895,9 +870,8 @@ export default function Page() {
               <AccessibleCTA
                 href="https://wa.me/905453048671"
                 variant="primary"
-                label="WhatsApp"
-                title="WhatsApp'tan podyum kiralama teklifi al"
                 className="min-w-[200px] text-center"
+                title="WhatsApp'tan podyum kiralama teklifi"
               >
                 <span className="flex items-center justify-center gap-2">
                   <span role="img" aria-label="WhatsApp">💬</span>
@@ -905,24 +879,22 @@ export default function Page() {
                 </span>
               </AccessibleCTA>
 
-              <Link
+              {/* Kontrast fix: bg-transparent yerine bg-white/20 + border */}
+              <a
                 href="/iletisim"
-                className="group bg-transparent hover:bg-white/10 text-white font-bold px-8 py-4 rounded-xl border-2 border-white transition-all duration-300 motion-safe:hover:scale-105 min-w-[200px] text-center focus:outline-none focus:ring-4 focus:ring-white/70"
-                aria-label="E-posta"
-                title="İletişim formu ile talepte bulunun"
+                className="group text-white font-bold px-8 py-4 rounded-xl border-2 border-white bg-white/20 hover:bg-white/30 transition-all duration-300 min-w-[200px] text-center focus:outline-none focus:ring-4 focus:ring-white/70"
+                title="İletişim formu"
               >
                 <span className="flex items-center justify-center gap-2">
                   <span role="img" aria-label="E-posta">📧</span>
                   E-posta
                 </span>
-              </Link>
+              </a>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 max-w-2xl mx-auto">
-              <p className="text-white/90 text-sm">
-                <strong>⏱️ 2 Saat İçinde Yanıt:</strong> Mesai saatleri içinde
-                tüm podyum kiralama taleplerinize 2 saat içinde detaylı teklif
-                ve profesyonel danışmanlık sunuyoruz.
+            <div className="bg-white/15 backdrop-blur-md rounded-2xl p-6 border border-white/30 max-w-2xl mx-auto">
+              <p className="text-white/95 text-sm">
+                <strong>⏱️ 2 Saat İçinde Yanıt:</strong> Mesai saatleri içinde tüm podyum kiralama taleplerinize 2 saat içinde detaylı teklif ve profesyonel danışmanlık sunuyoruz.
               </p>
             </div>
           </div>
@@ -985,7 +957,7 @@ function PriceMatrix({ unitPrices }) {
               <td>{formatTRY(r.carpet)}</td>
               <td>{formatTRY(r.skirt)}</td>
               <td>{formatTRY(r.setup)}</td>
-              <td className="font-semibold text-blue-600">{formatTRY(r.total)}</td>
+              <td className="font-semibold text-blue-700">{formatTRY(r.total)}</td>
             </tr>
           ))}
         </tbody>
