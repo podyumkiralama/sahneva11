@@ -7,12 +7,7 @@ import dynamic from "next/dynamic";
 // ⚡ Lazy loading components
 const CaseGallery = dynamic(() => import("@/components/CaseGallery"), {
   loading: () => (
-    <div
-      className="flex justify-center items-center h-64"
-      role="status"
-      aria-live="polite"
-      aria-busy="true"
-    >
+    <div className="flex justify-center items-center h-64" aria-live="polite" aria-busy="true">
       <span aria-hidden="true">🖼️</span>
       <span className="sr-only">Galeri yükleniyor...</span>
     </div>
@@ -176,6 +171,9 @@ export default function PremiumLedPage() {
   const formatTRY = (amount) =>
     new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 0 }).format(amount);
 
+  const waText = (name) =>
+    encodeURIComponent(`Merhaba, ${name} hakkında detaylı bilgi ve teklif almak istiyorum.`);
+
   return (
     <div className="min-h-screen bg-white">
       {/* Skip link — her şeyden önce gelmeli */}
@@ -211,7 +209,6 @@ export default function PremiumLedPage() {
         <div className="relative z-10 container mx-auto px-4 text-center text-white py-16">
           <div
             className="inline-flex items-center gap-3 bg-white/20 backdrop-blur-md rounded-2xl px-6 py-3 border border-white/30 mb-10"
-            role="status"
             aria-live="polite"
           >
             <span className="relative flex w-3 h-3" aria-hidden="true">
@@ -234,7 +231,6 @@ export default function PremiumLedPage() {
             <Link
               href="#paketler"
               className={buttonStyles.primary}
-              aria-label="Paketleri İncele — LED ekran paketlerini görüntüle"
             >
               <span aria-hidden="true">🖥️</span>
               <span className="ml-2">Paketleri İncele</span>
@@ -243,7 +239,6 @@ export default function PremiumLedPage() {
             <a
               href="tel:+905453048671"
               className={buttonStyles.success}
-              aria-label="Hemen Teklif Al — Sahneva’yı ara: +90 545 304 86 71"
             >
               <span aria-hidden="true">📞</span>
               <span className="ml-2">Hemen Teklif Al</span>
@@ -252,7 +247,6 @@ export default function PremiumLedPage() {
             <Link
               href="#teknoloji"
               className={buttonStyles.outline}
-              aria-label="Teknoloji — LED ekran teknolojisi bölümüne git"
             >
               <span aria-hidden="true">⚡</span>
               <span className="ml-2">Teknoloji</span>
@@ -267,7 +261,7 @@ export default function PremiumLedPage() {
         </div>
       </section>
 
-      <main id="main-content" tabIndex={-1} role="main">
+      <main id="main-content" tabIndex={-1}>
         {/* ✨ Öne Çıkan Özellikler */}
         <section className="py-20 bg-gradient-to-b from-white to-blue-50/30" aria-labelledby="features-heading">
           <div className="container mx-auto px-4">
@@ -278,7 +272,7 @@ export default function PremiumLedPage() {
               <p className="text-lg text-gray-700 max-w-2xl mx-auto">En son teknoloji LED ekranlar ve profesyonel ekip ile kalite garantisi</p>
             </div>
 
-            <ul className="grid md:grid-cols-2 lg:grid-cols-4 gap-8" role="list">
+            <ul className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {PREMIUM_CONTENT.features.map((feature) => (
                 <li
                   key={feature.title}
@@ -305,11 +299,11 @@ export default function PremiumLedPage() {
               <p className="text-lg text-gray-700 max-w-2xl mx-auto">İhtiyacınıza özel hazırlanmış, anahtar teslim LED ekran çözümleri</p>
             </div>
 
-            <ul className="grid lg:grid-cols-3 gap-10 max-w-6xl mx-auto" aria-label="LED ekran paketleri" role="list">
+            <ul className="grid lg:grid-cols-3 gap-10 max-w-6xl mx-auto" aria-label="LED ekran paketleri">
               {enrichedPackages.map((pkg) => (
                 <li key={pkg.id}>
                   <article
-                    className={`relative bg-white rounded-2xl border border-gray-200 shadow-xl overflow-hidden group hover:shadow-2xl motion-safe:transition-all motion-safe:duration-500 ${
+                    className={`relative bg-white rounded-2zl border border-gray-200 shadow-xl overflow-hidden group hover:shadow-2xl motion-safe:transition-all motion-safe:duration-500 ${
                       pkg.badge === "Çok Satan"
                         ? "ring-4 ring-blue-500/20 motion-safe:transform motion-safe:scale-105 motion-safe:hover:scale-110"
                         : "motion-safe:hover:-translate-y-2"
@@ -319,7 +313,7 @@ export default function PremiumLedPage() {
                     {pkg.badge && (
                       <div
                         className="absolute -top-3 -right-3 px-4 py-2 rounded-full text-sm font-bold z-20 text-white shadow-lg motion-safe:group-hover:scale-110 motion-safe:group-hover:rotate-6 motion-safe:transition-all motion-safe:duration-300"
-                        aria-label={`Öne çıkan: ${pkg.badge}`}
+                        aria-hidden="true"
                       >
                         {pkg.badge}
                       </div>
@@ -338,7 +332,7 @@ export default function PremiumLedPage() {
                             {pkg.id === "dis-mekan" && "🌆"}
                             {pkg.id === "pro-studio" && "🚀"}
                           </div>
-                          <div className="text-right motion-safe:group-hover:scale-105 motion-safe:transition-transform motion-safe:duration-300" aria-label={`Toplam alan ${pkg.specs.area}`}>
+                          <div className="text-right motion-safe:group-hover:scale-105 motion-safe:transition-transform motion-safe:duration-300">
                             <div className="text-2xl font-black text-blue-300">{pkg.specs.area}</div>
                             <div className="text-xs text-blue-200">TOPLAM ALAN</div>
                           </div>
@@ -349,24 +343,25 @@ export default function PremiumLedPage() {
                           <span className="block text-blue-300 text-lg font-semibold mt-2">{pkg.name.split("—")[1].trim()}</span>
                         </h3>
 
-                        <dl className="grid grid-cols-2 gap-3 text-sm" aria-label="Paket özellikleri">
-                          <div className="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm">
-                            <dt className="text-blue-300 text-xs mb-1">ÖLÇÜ</dt>
-                            <dd className="font-bold text-white">{pkg.specs.size}</dd>
-                          </div>
-                          <div className="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm">
-                            <dt className="text-blue-300 text-xs mb-1">PİKSEL</dt>
-                            <dd className="font-bold text-white">{pkg.specs.pixel}</dd>
-                          </div>
-                          <div className="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm">
-                            <dt className="text-blue-300 text-xs mb-1">PARLAKLIK</dt>
-                            <dd className="font-bold text-white">{pkg.specs.brightness}</dd>
-                          </div>
-                          <div className="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm">
-                            <dt className="text-blue-300 text-xs mb-1">ÇÖZÜNÜRLÜK</dt>
-                            <dd className="font-bold text-white">{pkg.specs.resolution}</dd>
-                          </div>
-                        </dl>
+                        {/* dl yerine geçerli liste yapısı */}
+                        <ul className="grid grid-cols-2 gap-3 text-sm" aria-label="Paket özellikleri">
+                          <li className="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm">
+                            <div className="text-blue-300 text-xs mb-1">ÖLÇÜ</div>
+                            <div className="font-bold text-white">{pkg.specs.size}</div>
+                          </li>
+                          <li className="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm">
+                            <div className="text-blue-300 text-xs mb-1">PİKSEL</div>
+                            <div className="font-bold text-white">{pkg.specs.pixel}</div>
+                          </li>
+                          <li className="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm">
+                            <div className="text-blue-300 text-xs mb-1">PARLAKLIK</div>
+                            <div className="font-bold text-white">{pkg.specs.brightness}</div>
+                          </li>
+                          <li className="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm">
+                            <div className="text-blue-300 text-xs mb-1">ÇÖZÜNÜRLÜK</div>
+                            <div className="font-bold text-white">{pkg.specs.resolution}</div>
+                          </li>
+                        </ul>
                       </div>
                     </div>
 
@@ -376,7 +371,7 @@ export default function PremiumLedPage() {
                           <span className="w-2 h-2 bg-blue-600 rounded-full" aria-hidden="true"></span>
                           Paket İçeriği
                         </h4>
-                        <ul className="space-y-3" role="list">
+                        <ul className="space-y-3">
                           {pkg.includes.map((item, i) => (
                             <li key={i} className="flex items-start gap-3 text-gray-700 text-sm p-2 rounded-lg hover:bg-blue-50">
                               <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold mt-0.5 flex-shrink-0" aria-hidden="true">✓</span>
@@ -386,7 +381,7 @@ export default function PremiumLedPage() {
                         </ul>
                       </div>
 
-                      <div className="mb-8 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200" role="note">
+                      <div className="mb-8 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200">
                         <div className="flex items-start gap-3">
                           <span className="text-blue-600 text-lg" aria-hidden="true">💡</span>
                           <p className="text-sm text-blue-800 flex-1">{pkg.note}</p>
@@ -396,13 +391,13 @@ export default function PremiumLedPage() {
                       <div className="bg-gradient-to-br from-slate-50 to-white rounded-xl p-5 border border-gray-200 shadow-sm mb-6" aria-labelledby={`${pkg.id}-pricing-title`}>
                         <div className="text-center mb-5">
                           <div id={`${pkg.id}-pricing-title`} className="text-xs text-gray-500 uppercase tracking-wider font-semibold">HAFTALIK KİRA</div>
-                          <div className="text-3xl font-black text-gray-900 mt-2" aria-label={`Toplam fiyat ${formatTRY(pkg.pricing.total)} artı KDV`}>
+                          <div className="text-3xl font-black text-gray-900 mt-2">
                             {formatTRY(pkg.pricing.total)}
                             <span className="text-sm text-gray-500 font-normal ml-2">+ KDV</span>
                           </div>
                         </div>
 
-                        <div className="space-y-4 text-sm" aria-label="Maliyet dökümü">
+                        <div className="space-y-4 text-sm">
                           <div className="flex justify-between items-center py-2 border-b border-gray-100">
                             <span className="text-gray-600 flex items-center gap-2">
                               <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" aria-hidden="true"></span>
@@ -436,23 +431,21 @@ export default function PremiumLedPage() {
                         </div>
                       </div>
 
-                    <a
-  href={`https://wa.me/905453048671?text=Merhaba, ${encodeURIComponent(pkg.name)} hakkında detaylı bilgi ve teklif almak istiyorum.`}
-  className="group/btn relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-4 px-6 rounded-xl w-full text-center block hover:from-blue-700 hover:to-purple-700 transition-all duration-500"
-  aria-label="Hemen Teklif Al"
-  target="_blank"
-  rel="noopener noreferrer nofollow"
->
-
+                      <a
+                        href={`https://wa.me/905453048671?text=${waText(pkg.name)}`}
+                        className="group/btn relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-4 px-6 rounded-xl w-full text-center block hover:from-blue-700 hover:to-purple-700 transition-all duration-500"
+                        target="_blank"
+                        rel="noopener nofollow"
+                      >
                         <span className="relative z-10 flex items-center justify-center gap-2">
                           <span className="text-lg" aria-hidden="true">💬</span>
                           Hemen Teklif Al
                           <span className="transition-transform duration-300" aria-hidden="true">→</span>
                         </span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -skew-x-12 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000" aria-hidden="true"></div>
+                        <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -skew-x-12 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000" aria-hidden="true"></span>
                       </a>
 
-                      <p className="mt-4 text-center text-xs text-gray-500" aria-live="polite">
+                      <p className="mt-4 text-center text-xs text-gray-500">
                         <span aria-hidden="true">📞</span>
                         <strong> 2 saat içinde</strong> detaylı teklif
                       </p>
@@ -463,13 +456,13 @@ export default function PremiumLedPage() {
             </ul>
 
             <div className="text-center mt-16 max-w-2xl mx-auto">
-              <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-300" role="note" aria-label="Önemli notlar">
+              <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-300" aria-label="Önemli notlar">
                 <h4 className="font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors duration-300">💡 Önemli Notlar</h4>
-                <p className="text-sm text-gray-600 hover:text-gray-700 transition-colors duration-300">
-                  • Fiyatlar günlük kiralama içindir. Haftalık ve aylık kiralama için iletişime geçin.<br />
-                  • Kurulum İstanbul içi geçerlidir. Şehir dışı projeler için özel teklif oluşturulur.<br />
-                  • Tüm ekipmanlar sigortalıdır ve teknik destek garantisi içerir.
-                </p>
+                <ul className="text-sm text-gray-700 text-left list-disc list-inside space-y-2">
+                  <li>Fiyatlar günlük kiralama içindir. Haftalık ve aylık kiralama için iletişime geçin.</li>
+                  <li>Kurulum İstanbul içi geçerlidir. Şehir dışı projeler için özel teklif oluşturulur.</li>
+                  <li>Tüm ekipmanlar sigortalıdır ve teknik destek garantisi içerir.</li>
+                </ul>
               </div>
             </div>
           </div>
@@ -506,7 +499,7 @@ export default function PremiumLedPage() {
             <div className="grid lg:grid-cols-2 gap-10 max-w-5xl mx-auto">
               <div className="bg-gradient-to-br from-blue-50 to-white rounded-2xl p-6 border border-blue-200 hover:shadow-lg hover:border-blue-300 transition-all duration-300">
                 <h3 className="text-2xl font-black mb-5 text-gray-900 hover:text-blue-700 transition-colors duration-300">Teknik Özellikler</h3>
-                <ul className="space-y-2" role="list">
+                <ul className="space-y-2">
                   {Object.entries(PREMIUM_CONTENT.technicalSpecs).map(([key, value]) => (
                     <li key={key} className="flex justify-between items-center py-2 border-b border-gray-200 hover:border-blue-200 hover:bg-blue-50/50 rounded-lg px-2 transition-all duration-300">
                       <span className="font-semibold text-gray-700 text-sm capitalize hover:text-blue-800 transition-colors duration-300">
@@ -520,7 +513,7 @@ export default function PremiumLedPage() {
 
               <div className="bg-gradient-to-br from-purple-50 to-white rounded-2xl p-6 border border-purple-200 hover:shadow-lg hover:border-purple-300 transition-all duration-300">
                 <h3 className="text-2xl font-black mb-5 text-gray-900 hover:text-purple-700 transition-colors duration-300">Kullanım Alanları</h3>
-                <ul className="grid gap-4" role="list">
+                <ul className="grid gap-4">
                   {[
                     { icon: "🎵", title: "Konser & Festival", desc: "Ana sahne ve yan ekranlar" },
                     { icon: "💼", title: "Kurumsal Etkinlik", desc: "Lansman ve toplantılar" },
@@ -566,7 +559,7 @@ function EnhancedLedSeoArticle() {
             <p className="text-lg md:text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
               Etkinlikleriniz için doğru LED ekran seçimi, kurulum süreçleri, maliyet analizi ve profesyonel çözümler hakkında her şey.
             </p>
-            <ul className="flex flex-wrap justify-center gap-4 mt-8 text-sm" role="list">
+            <ul className="flex flex-wrap justify-center gap-4 mt-8 text-sm">
               <li className="bg-white/20 px-4 py-2 rounded-full">✅ 10+ Yıllık Deneyim</li>
               <li className="bg-white/20 px-4 py-2 rounded-full">📊 300+ Başarılı Proje</li>
               <li className="bg-white/20 px-4 py-2 rounded-full">🏆 Teknoloji Lideri</li>
@@ -579,7 +572,7 @@ function EnhancedLedSeoArticle() {
               <h3 className="text-xl font-black text-gray-900 mb-5 flex items-center gap-3">
                 <span aria-hidden="true">📑</span>Bu Makalede Neler Bulacaksınız?
               </h3>
-              <ul className="grid md:grid-cols-2 gap-4 text-sm" role="list">
+              <ul className="grid md:grid-cols-2 gap-4 text-sm">
                 {[
                   "LED Ekran Teknolojisi ve Çeşitleri",
                   "Piksel Aralığı (Pitch) Seçimi Rehberi",
@@ -609,7 +602,7 @@ function EnhancedLedSeoArticle() {
                     LED ekranlarda SMD en yaygın teknolojidir; ekonomik ve servis kolaylığı sağlar. COB paneller ise daha yüksek darbe dayanımı,
                     daha az dikiş çizgisi ve daha iyi ısı yönetimi sunar. İç mekan yakın izleme mesafelerinde COB dikkat çekmektedir.
                   </p>
-                  <ul className="space-y-3 text-sm text-gray-600" role="list">
+                  <ul className="space-y-3 text-sm text-gray-600">
                     <li className="flex items-center gap-2">
                       <span className="w-1.5 h-1.5 bg-green-500 rounded-full" aria-hidden="true"></span>
                       SMD: Yaygın, uygun maliyetli, kolay modül servisi
@@ -627,7 +620,7 @@ function EnhancedLedSeoArticle() {
                     HDR10 eşiklerine yaklaşan LED ekranlar daha yüksek kontrast ve canlı renkler sağlar. 1920–3840 Hz tazeleme hızı,
                     kamerada moiré ve bantlanmayı azaltır; canlı yayınlar için kritik önem taşır.
                   </p>
-                  <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded-lg" role="note" aria-label="Kamera yayını için ipucu">
+                  <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded-lg">
                     <p className="text-sm text-purple-700 font-semibold">
                       💡 İpucu: Kamera yayını varsa en az 3840 Hz ve kaliteli işlemci (Novastar vb.) tercih edin.
                     </p>
@@ -642,7 +635,6 @@ function EnhancedLedSeoArticle() {
                 📊 Piksel Aralığı (Pitch) Seçimi: Doğru Karar İçin Kapsamlı Rehber
               </h3>
 
-              {/* Kontrast fix: cost hücresi emerald-800/900 */}
               <div className="overflow-x-auto mb-8" role="region" aria-label="Piksel aralığı karşılaştırma tablosu">
                 <table className="w-full border-collapse bg-white rounded-lg overflow-hidden shadow-md">
                   <caption className="sr-only">LED ekran piksel aralığı karşılaştırma tablosu</caption>
@@ -674,38 +666,38 @@ function EnhancedLedSeoArticle() {
                 </table>
               </div>
 
-              <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-200" role="note" aria-label="Kritik seçim ipuçları">
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-200">
                 <h4 className="text-lg font-bold mb-4 text-green-700 flex items-center gap-2">
                   <span aria-hidden="true">🎯</span>Kritik Seçim İpuçları
                 </h4>
                 <div className="grid md:grid-cols-2 gap-5 text-sm">
                   <div>
                     <p className="font-semibold text-gray-700 mb-3">✅ Doğru Seçim İçin:</p>
-                    <ul className="space-y-2 text-gray-600" role="list">
-                      <li>• İzleyici mesafesini ve ekran ebatını birlikte planlayın</li>
-                      <li>• İç mekanda P2.5–P4; dış mekanda ≥5000 nit parlaklık şart</li>
-                      <li>• İçerik formatı ve video işlemci kapasitesini doğrulayın</li>
+                    <ul className="space-y-2 text-gray-600">
+                      <li>İzleyici mesafesini ve ekran ebatını birlikte planlayın</li>
+                      <li>İç mekanda P2.5–P4; dış mekanda ≥5000 nit parlaklık şart</li>
+                      <li>İçerik formatı ve video işlemci kapasitesini doğrulayın</li>
                     </ul>
                   </div>
                   <div>
                     <p className="font-semibold text-gray-700 mb-3">❌ Kaçınılması Gerekenler:</p>
-                    <ul className="space-y-2 text-gray-600" role="list">
-                      <li>• Yakın izleme için büyük pitch seçimi</li>
-                      <li>• Yetersiz güç altyapısı/kaçak akım koruması</li>
-                      <li>• Düşük yenileme hızında kamera yayını</li>
+                    <ul className="space-y-2 text-gray-600">
+                      <li>Yakın izleme için büyük pitch seçimi</li>
+                      <li>Yetersiz güç altyapısı/kaçak akım koruması</li>
+                      <li>Düşük yenileme hızında kamera yayını</li>
                     </ul>
                   </div>
                 </div>
               </div>
             </section>
 
-            {/* Bölüm 3 — SSS (kontrast fix: A: etiketi emerald) */}
+            {/* Bölüm 3 — SSS */}
             <section className="mb-14" aria-labelledby="faq-heading">
               <h3 id="faq-heading" className="text-2xl md:text-3xl font-black mb-8 text-gray-900 border-b border-gray-200 pb-5">
                 ❓ Sık Sorulan Sorular
               </h3>
 
-              <ul className="grid md:grid-cols-2 gap-8" role="list">
+              <ul className="grid md:grid-cols-2 gap-8">
                 {[
                   {
                     question: "LED ekran kurulumu ne kadar sürer?",
