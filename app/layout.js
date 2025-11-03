@@ -2,12 +2,8 @@
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import UtilityBar from "../components/UtilityBar";
 import { Inter } from "next/font/google";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import Script from "next/script";
-import { headers } from "next/headers";
+import UtilityBar from "../components/UtilityBar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -17,6 +13,7 @@ const inter = Inter({
   adjustFontFallback: true,
 });
 
+// Viewport
 export const viewport = {
   width: "device-width",
   initialScale: 1,
@@ -24,6 +21,7 @@ export const viewport = {
   themeColor: "#6d28d9",
 };
 
+// Metadata (genel)
 export const metadata = {
   metadataBase: new URL("https://www.sahneva.com"),
   title: {
@@ -44,9 +42,6 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const nonce = headers().get("x-nonce") || undefined;
-  const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
-
   return (
     <html lang="tr" dir="ltr" className={inter.className}>
       <body className="min-h-screen bg-white text-neutral-900 antialiased">
@@ -61,36 +56,12 @@ export default function RootLayout({ children }) {
         <Navbar />
         <UtilityBar />
 
+        {/* Tekil ana içerik landmark'ı: <main> yerine role="main" */}
         <div id="main" role="main" tabIndex={-1}>
           {children}
         </div>
 
         <Footer />
-
-        {/* ✅ Vercel Analytics */}
-        <Analytics />
-
-        {/* ✅ Performance */}
-        <SpeedInsights />
-
-        {/* ✅ GA4 */}
-        {GA_ID && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-              strategy="afterInteractive"
-            />
-
-            <Script id="ga-init" strategy="afterInteractive" nonce={nonce}>
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${GA_ID}', { anonymize_ip: true });
-              `}
-            </Script>
-          </>
-        )}
       </body>
     </html>
   );
