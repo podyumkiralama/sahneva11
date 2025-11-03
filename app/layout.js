@@ -3,9 +3,10 @@ import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import UtilityBar from "../components/UtilityBar";
-import GAClient from "./ga-client";              // ← yeni client bileşen
+import GAClient from "./ga-client";
 import { Inter } from "next/font/google";
 import Script from "next/script";
+import { Suspense } from "react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -57,21 +58,23 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
 
-        {/* 🔮 Speculation Rules (Chrome) */}
+        {/* 🔮 Speculation Rules */}
         <Script
           id="speculation-rules"
           type="speculationrules"
           strategy="afterInteractive"
-        >{JSON.stringify({
-          prefetch: [
-            { source: "document", eagerness: "conservative", where: { and: [{ href_matches: "/*" }] } },
-          ],
-          prerender: [
-            { source: "document", eagerness: "moderate", where: { and: [{ href_matches: "/*" }] } },
-          ],
-        })}</Script>
+        >
+          {JSON.stringify({
+            prefetch: [
+              { source: "document", eagerness: "conservative", where: { and: [{ href_matches: "/*" }] } },
+            ],
+            prerender: [
+              { source: "document", eagerness: "moderate", where: { and: [{ href_matches: "/*" }] } },
+            ],
+          })}
+        </Script>
 
-        {/* ✅ Google Analytics (çift sayım yok) */}
+        {/* ✅ Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-J5YK10YLLC"
           strategy="afterInteractive"
@@ -96,10 +99,13 @@ export default function RootLayout({ children }) {
         <Navbar />
         <UtilityBar />
 
-        {/* SPA rotalarında sayfa görüntüleme */}
-        <GAClient measurementId="G-J5YK10YLLC" />
+        {/* ✅ Route değişimlerinde GA page_view */}
+        <Suspense fallback={null}>
+          <GAClient measurementId="G-J5YK10YLLC" />
+        </Suspense>
 
         <main id="main">{children}</main>
+
         <Footer />
       </body>
     </html>
