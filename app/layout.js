@@ -2,15 +2,8 @@
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import UtilityBar from "../components/UtilityBar";
 import { Inter } from "next/font/google";
-import { headers } from "next/headers";
-import Script from "next/script";
-import { createContext } from "react";
-
-// ⚠️ middleware.ts her istek için "x-nonce" başlığı set eder.
-// Burada onu okuyup Script'lere vereceğiz.
-export const NonceContext = createContext(null);
+import UtilityBar from "../components/UtilityBar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -49,16 +42,9 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  // 🔐 Nonce'u header'dan çek
-  const nonce = headers().get("x-nonce") ?? undefined;
-
   return (
     <html lang="tr" className={inter.className}>
-      <body
-        className="min-h-screen bg-white text-neutral-900 antialiased"
-        // İsteyen client komponentler nonce'u data attribute üzerinden de okuyabilir
-        data-nonce={nonce}
-      >
+      <body className="min-h-screen bg-white text-neutral-900 antialiased">
         {/* Skip link */}
         <a
           href="#main"
@@ -67,26 +53,10 @@ export default function RootLayout({ children }) {
           Ana içeriğe atla
         </a>
 
-        <NonceContext.Provider value={nonce}>
-          <Navbar />
-          <UtilityBar />
-
-          {/* Örnek: GA/Vercel gibi scriptleri ekleyeceğinizde nonce verin */}
-          {/* 
-          <Script
-            src="https://www.googletagmanager.com/gtag/js?id=G-J5YK10YLLC"
-            strategy="afterInteractive"
-            nonce={nonce}
-          />
-          <Script id="ga-init" strategy="afterInteractive" nonce={nonce}>
-            {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
-              gtag('js', new Date()); gtag('config','G-J5YK10YLLC');`}
-          </Script>
-          */}
-
-          <main id="main">{children}</main>
-          <Footer />
-        </NonceContext.Provider>
+        <Navbar />
+       <UtilityBar />
+        <main id="main">{children}</main>
+        <Footer />
       </body>
     </html>
   );
