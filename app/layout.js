@@ -43,7 +43,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="tr" className={inter.className}>
+    <html lang="tr" dir="ltr" className={inter.className}>
       <body className="min-h-screen bg-white text-neutral-900 antialiased">
         {/* Skip link */}
         <a
@@ -54,8 +54,13 @@ export default function RootLayout({ children }) {
         </a>
 
         <Navbar />
-       <UtilityBar />
-        <main id="main">{children}</main>
+        <UtilityBar />
+
+        {/* Tekil ana içerik landmark'ı: <main> yerine role="main" */}
+        <div id="main" role="main" tabIndex={-1}>
+          {children}
+        </div>
+
         <Footer />
       </body>
     </html>
