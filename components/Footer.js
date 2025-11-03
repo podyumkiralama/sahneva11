@@ -47,13 +47,12 @@ export default function Footer() {
 
   return (
     <footer
-      role="contentinfo"
       className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900/80 to-blue-900 border-t border-white/10"
       itemScope
       itemType="https://schema.org/Organization"
     >
       {/* Arkaplan efektleri */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full blur-3xl" />
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-r from-purple-500/10 to-cyan-500/10 rounded-full blur-3xl" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-transparent via-black/20 to-black/60" />
@@ -65,9 +64,9 @@ export default function Footer() {
           <h2 id="ft-brand" className="sr-only">Sahneva Hakkında</h2>
 
           <div className="flex items-center gap-3 text-white font-bold text-2xl mb-6">
-            <div className="relative">
+            <div className="relative" aria-hidden="true">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg blur-sm opacity-75" />
-              <span className="relative bg-gradient-to-r from-blue-500 to-purple-500 text-white p-2 rounded-lg" aria-hidden="true">⭐</span>
+              <span className="relative bg-gradient-to-r from-blue-500 to-purple-500 text-white p-2 rounded-lg">⭐</span>
             </div>
             <span itemProp="name" className="bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
               SAHNEVA
@@ -75,9 +74,10 @@ export default function Footer() {
           </div>
 
           <p className="text-sm leading-6 text-gray-300 mb-6" itemProp="description">
-            Profesyonel etkinlik prodüksiyon & ekipman kiralama hizmetleri.
-            <br />
-            <span className="text-blue-300 font-medium">Türkiye geneli</span> sahne, podyum, LED ekran ve ses-ışık sistemleri.
+            <span className="block">Profesyonel etkinlik prodüksiyon & ekipman kiralama hizmetleri.</span>
+            <span className="block">
+              <span className="text-blue-300 font-medium">Türkiye geneli</span> sahne, podyum, LED ekran ve ses-ışık sistemleri.
+            </span>
           </p>
 
           {/* Sosyal linkler */}
@@ -86,12 +86,12 @@ export default function Footer() {
               href="https://www.instagram.com/sahnevaorganizasyon"
               target="_blank"
               rel="noopener noreferrer me"
-              title="Sahneva Instagram"
+              aria-label="Sahneva Instagram"
               className="group relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 min-h-[40px] min-w-[40px]"
               onClick={burst}
               itemProp="sameAs"
             >
-              <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
               <span aria-hidden="true" className="text-lg relative z-10">📷</span>
             </a>
 
@@ -99,12 +99,12 @@ export default function Footer() {
               href="https://www.youtube.com/@sahneva"
               target="_blank"
               rel="noopener noreferrer me"
-              title="Sahneva YouTube"
+              aria-label="Sahneva YouTube"
               className="group relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 min-h-[40px] min-w-[40px]"
               onClick={burst}
               itemProp="sameAs"
             >
-              <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
               <span aria-hidden="true" className="text-lg relative z-10">▶</span>
             </a>
           </div>
@@ -127,7 +127,6 @@ export default function Footer() {
                 <Link
                   href={href}
                   className="group text-gray-300 hover:text-white focus:text-white transition-all duration-200 block py-1 pl-2 border-l-2 border-transparent hover:border-blue-400 hover:pl-3"
-                  itemProp="url"
                 >
                   <span className="group-hover:text-blue-300 transition-colors">{label}</span>
                 </Link>
@@ -167,10 +166,10 @@ export default function Footer() {
           </h2>
 
           <address className="not-italic space-y-4 text-sm">
-            <div className="flex items-start gap-3 group">
-              <div className="relative">
+            <div className="flex items-start gap-3" aria-label="Adres">
+              <div className="relative" aria-hidden="true">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg blur-sm opacity-50" />
-                <span className="relative text-white text-base p-2 rounded-lg bg-slate-800/50 backdrop-blur-sm" aria-hidden="true">📍</span>
+                <span className="relative text-white text-base p-2 rounded-lg bg-slate-800/50 backdrop-blur-sm">📍</span>
               </div>
               <div>
                 <span className="block text-white font-semibold">İstanbul / Türkiye</span>
@@ -178,40 +177,38 @@ export default function Footer() {
               </div>
             </div>
 
-            <div className="flex items-center gap-3 group">
-              <div className="relative">
+            <div className="flex items-center gap-3">
+              <div className="relative" aria-hidden="true">
                 <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg blur-sm opacity-50" />
-                <span className="relative text-white text-base p-2 rounded-lg bg-slate-800/50 backdrop-blur-sm" aria-hidden="true">📞</span>
+                <span className="relative text-white text-base p-2 rounded-lg bg-slate-800/50 backdrop-blur-sm">📞</span>
               </div>
               <a
                 href="tel:+905453048671"
                 className="text-gray-300 hover:text-white font-semibold transition-all duration-300 hover:scale-105"
-                title="Telefonla ara"
                 itemProp="telephone"
               >
                 +90 545 304 8671
               </a>
             </div>
 
-            <div className="flex items-center gap-3 group">
-              <div className="relative">
+            <div className="flex items-center gap-3">
+              <div className="relative" aria-hidden="true">
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg blur-sm opacity-50" />
-                <span className="relative text-white text-base p-2 rounded-lg bg-slate-800/50 backdrop-blur-sm" aria-hidden="true">✉️</span>
+                <span className="relative text-white text-base p-2 rounded-lg bg-slate-800/50 backdrop-blur-sm">✉️</span>
               </div>
               <a
                 href="mailto:info@sahneva.com"
                 className="text-gray-300 hover:text-white transition-all duration-300 hover:scale-105"
-                title="E-posta gönder"
                 itemProp="email"
               >
                 info@sahneva.com
               </a>
             </div>
 
-            <div className="flex items-start gap-3 group">
-              <div className="relative">
+            <div className="flex items-start gap-3">
+              <div className="relative" aria-hidden="true">
                 <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-orange-500 rounded-lg blur-sm opacity-50" />
-                <span className="relative text-white text-base p-2 rounded-lg bg-slate-800/50 backdrop-blur-sm" aria-hidden="true">⏰</span>
+                <span className="relative text-white text-base p-2 rounded-lg bg-slate-800/50 backdrop-blur-sm">⏰</span>
               </div>
               <div>
                 <span className="block text-white font-semibold">Hafta içi 09:00–19:00</span>
@@ -219,27 +216,27 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Google Business bağlantıları (aria-label kaldırıldı) */}
-            <div className="flex items-center gap-3 group">
+            {/* Google Business bağlantıları */}
+            <div className="flex items-center gap-3">
               <a
                 href="https://g.page/r/CZhkMzkNOdgnEBI"
                 target="_blank"
                 rel="noopener noreferrer nofollow"
                 className="group inline-flex items-center gap-2 text-xs text-gray-300 hover:text-white transition-all duration-300 hover:gap-3"
-                title="Google Haritalar"
+                aria-label="Google Haritalar"
               >
                 <span className="group-hover:scale-110 transition-transform duration-300" aria-hidden="true">📍</span>
                 Google Haritalar'da bizi bulun
               </a>
             </div>
 
-            <div className="flex items-center gap-3 group">
+            <div className="flex items-center gap-3">
               <a
                 href="https://g.page/r/CZhkMzkNOdgnEBI/review"
                 target="_blank"
                 rel="noopener noreferrer nofollow"
                 className="group inline-flex items-center gap-2 text-xs text-gray-300 hover:text-white transition-all duration-300 hover:gap-3"
-                title="Google Yorum"
+                aria-label="Google Yorum"
               >
                 <span className="group-hover:scale-110 transition-transform duration-300" aria-hidden="true">⭐</span>
                 Google'da yorum yazın
@@ -251,15 +248,23 @@ export default function Footer() {
 
       {/* Alt bar */}
       <div className="relative border-t border-white/10 text-center text-sm text-gray-300 py-6 bg-gradient-to-r from-slate-900/50 via-purple-900/30 to-blue-900/50 backdrop-blur-sm">
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" aria-hidden="true" />
         <div className="container mx-auto px-6 relative z-10">
           <p className="mb-3 text-gray-400">
-            Türkiye genelinde profesyonel sahne, podyum, LED ekran, ses-ışık sistemleri ve kurulum hizmetleri.
+            <span className="block">Türkiye genelinde profesyonel sahne, podyum, LED ekran, ses-ışık sistemleri</span>
+            <span className="block">ve kurulum hizmetleri.</span>
           </p>
-          <p suppressHydrationWarning itemProp="copyrightYear" className="text-gray-400">
-            © {new Date().getFullYear()} <span itemProp="name" className="text-white font-semibold">Sahneva</span> — Tüm hakları saklıdır.
+
+          {/* Mikro veri: görünmez meta ile yıl */}
+          <meta itemProp="copyrightYear" content={String(new Date().getFullYear())} />
+          <p className="text-gray-400">
+            © {new Date().getFullYear()}{" "}
+            <span itemProp="name" className="text-white font-semibold">Sahneva</span> — Tüm hakları saklıdır.
             <span className="mx-3 text-blue-400">•</span>
-            <Link href="/kvkk" className="text-gray-300 hover:text-white underline-offset-4 hover:underline transition-colors duration-200">
+            <Link
+              href="/kvkk"
+              className="text-gray-300 hover:text-white underline-offset-4 hover:underline transition-colors duration-200"
+            >
               KVKK Aydınlatma Metni
             </Link>
           </p>
