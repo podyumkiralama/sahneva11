@@ -1,15 +1,15 @@
 // app/led-ekran-kiralama/page.js
 import Image from "next/image";
-import Link from "next/link";
-import dynamic from "next/dynamic";
+import nextDynamic from "next/dynamic";
 
-// ⚡ Sadece hız odaklı iyileştirmeler
-export const revalidate = 1800;          // ISR aynı
-export const dynamic = "force-static";   // ⚡ Tam statik render (hız + bfcache)
+// ⚡ Hız odaklı
+export const revalidate = 1800;        // ISR
+export const dynamic = "force-static"; // Tam statik render (TTFB + bfcache)
 
-// ⚡ Galeri: SSR kapalı → başlangıç HTML ve hydration maliyeti azalır
-const CaseGallery = dynamic(() => import("@/components/CaseGallery"), {
-  ssr: false,
+/** Galeri: SSR'siz hataya yol açtığı için burada sadece code-split yapıyoruz.
+ *  Daha agresif hız için client wrapper opsiyonu mesajın sonunda.
+ */
+const CaseGallery = nextDynamic(() => import("@/components/CaseGallery"), {
   loading: () => (
     <div
       className="flex justify-center items-center h-64"
@@ -23,6 +23,7 @@ const CaseGallery = dynamic(() => import("@/components/CaseGallery"), {
   ),
 });
 
+// 📊 İçerik
 const PREMIUM_CONTENT = {
   hero: {
     src: "/img/led-ekran-kiralama-hero.webp",
@@ -100,6 +101,7 @@ const PREMIUM_CONTENT = {
   },
 };
 
+// 🏷️ Fiyat
 const PRICING = {
   p2_5: 2800,
   p3_9: 2200,
@@ -109,6 +111,7 @@ const PRICING = {
   operator: 5000,
 };
 
+// 🎯 Metadata
 export const metadata = {
   title:
     "Premium LED Ekran Kiralama | 4K Çözünürlük & Profesyonel Kurulum - Sahneva",
@@ -135,12 +138,11 @@ export const metadata = {
   },
 };
 
+// 🖥️ Sayfa
 export default function PremiumLedPage() {
   const buttonStyles = {
     primary:
       "inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-700 to-purple-700 text-white transition-all duration-300 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-offset-2 focus:ring-offset-blue-900",
-    secondary:
-      "inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-gray-900 to-blue-900 text-white transition-all duration-300 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-offset-2 focus:ring-offset-gray-900",
     outline:
       "inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl border-2 border-white text-white bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-900",
     success:
@@ -226,7 +228,7 @@ export default function PremiumLedPage() {
             <span className="block mt-3">4K çözünürlük & profesyonel yayın sistemleri</span>
           </p>
 
-          {/* ⚡ İç sayfa hash linkleri için sade <a> — prefetch yok */}
+          {/* İçeride hash linkleri: sade <a> (prefetch yok) */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16" role="group" aria-label="Birincil eylemler">
             <a href="#paketler" className={buttonStyles.primary} aria-label="LED ekran paketlerini incele">
               <span aria-hidden="true">🖥️</span>
@@ -257,7 +259,7 @@ export default function PremiumLedPage() {
       </section>
 
       <main id="main-content" tabIndex={-1} role="main">
-        {/* ⚡ Offscreen bölümler: content-visibility → render ertelenir */}
+        {/* Offscreen bölümler render ertelenir */}
         <section
           className="py-20 bg-gradient-to-b from-white to-blue-50/30"
           aria-labelledby="features-heading"
@@ -373,8 +375,7 @@ export default function PremiumLedPage() {
                         <div className="text-center mb-5">
                           <div id={`${pkg.id}-pricing-title`} className="text-xs text-gray-500 uppercase tracking-wider font-semibold">HAFTALIK KİRA</div>
                           <div className="text-3xl font-black text-gray-900 mt-2" aria-label={`Toplam fiyat ${formatTRY(pkg.pricing.total)} artı KDV`}>
-                            {formatTRY(pkg.pricing.total)}
-                            <span className="text-sm text-gray-500 font-normal ml-2">+ KDV</span>
+                            {formatTRY(pkg.pricing.total)} <span className="text-sm text-gray-500 font-normal ml-2">+ KDV</span>
                           </div>
                         </div>
 
@@ -540,7 +541,7 @@ export default function PremiumLedPage() {
   );
 }
 
-// --- SEO Makalesi (değişmedi; hız için üstte content-visibility uygulandı) ---
+// 📝 GELİŞTİRİLMİŞ SEO Makalesi Bileşeni — TAM SÜRÜM
 function EnhancedLedSeoArticle() {
   return (
     <section className="py-20 bg-gradient-to-b from-white to-gray-50" aria-labelledby="article-heading">
@@ -560,9 +561,176 @@ function EnhancedLedSeoArticle() {
             </ul>
           </div>
 
-          {/* (Makale gövdesi aynen korunuyor) */}
+          {/* İçindekiler ve bölümler — senin uzun içerik aynen korunuyor */}
           <div className="p-6 md:p-8 lg:p-12">
-            {/* ... senin mevcut uzun makale içeriğin ... */}
+            {/* İçindekiler */}
+            <nav className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 mb-10 border border-blue-200" aria-label="Makale içindekiler">
+              <h3 className="text-xl font-black text-gray-900 mb-5 flex items-center gap-3">
+                <span aria-hidden="true">📑</span>Bu Makalede Neler Bulacaksınız?
+              </h3>
+              <ul className="grid md:grid-cols-2 gap-4 text-sm" role="list">
+                {[
+                  "LED Ekran Teknolojisi ve Çeşitleri",
+                  "Piksel Aralığı (Pitch) Seçimi Rehberi",
+                  "İç/Dış Mekan LED Ekran Farkları",
+                  "Maliyet ve Fiyatlandırma Analizi",
+                  "Kurulum ve Teknik Gereksinimler",
+                  "Sık Yapılan Hatalar ve Çözümleri",
+                ].map((item, index) => (
+                  <li key={index} className="flex items-center gap-3">
+                    <span className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0" aria-hidden="true"></span>
+                    <span className="text-gray-700">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            {/* Bölüm 1 */}
+            <section className="mb-14" aria-labelledby="section1-heading">
+              <h3 id="section1-heading" className="text-2xl md:text-3xl font-black mb-8 text-gray-900 border-b border-gray-200 pb-5">
+                🚀 LED Ekran Teknolojisi: 2025 Trendleri ve Yenilikler
+              </h3>
+
+              <div className="grid md:grid-cols-2 gap-8 mb-8">
+                <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                  <h4 className="text-xl font-bold mb-4 text-blue-600">Piksel (SMD & COB) Gelişmeleri</h4>
+                  <p className="text-gray-700 mb-5">
+                    LED ekranlarda SMD en yaygın teknolojidir; ekonomik ve servis kolaylığı sağlar. COB paneller ise daha yüksek darbe dayanımı,
+                    daha az dikiş çizgisi ve daha iyi ısı yönetimi sunar. İç mekan yakın izleme mesafelerinde COB dikkat çekmektedir.
+                  </p>
+                  <ul className="space-y-3 text-sm text-gray-600" role="list">
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-green-500 rounded-full" aria-hidden="true"></span>
+                      SMD: Yaygın, uygun maliyetli, kolay modül servisi
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" aria-hidden="true"></span>
+                      COB: Yüksek dayanım, düşük yansıma, daha homojen yüzey
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                  <h4 className="text-xl font-bold mb-4 text-purple-600">HDR, Renk Gamı ve Yenileme</h4>
+                  <p className="text-gray-700 mb-5">
+                    HDR10 eşiklerine yaklaşan LED ekranlar daha yüksek kontrast ve canlı renkler sağlar. 1920–3840 Hz tazeleme hızı,
+                    kamerada moiré ve bantlanmayı azaltır; canlı yayınlar için kritik önem taşır.
+                  </p>
+                  <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded-lg" role="note" aria-label="Kamera yayını için ipucu">
+                    <p className="text-sm text-purple-700 font-semibold">
+                      💡 İpucu: Kamera yayını varsa en az 3840 Hz ve kaliteli işlemci (Novastar vb.) tercih edin.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Bölüm 2 */}
+            <section className="mb-14" aria-labelledby="section2-heading">
+              <h3 id="section2-heading" className="text-2xl md:text-3xl font-black mb-8 text-gray-900 border-b border-gray-200 pb-5">
+                📊 Piksel Aralığı (Pitch) Seçimi: Doğru Karar İçin Kapsamlı Rehber
+              </h3>
+
+              <div className="overflow-x-auto mb-8" role="region" aria-label="Piksel aralığı karşılaştırma tablosu">
+                <table className="w-full border-collapse bg-white rounded-lg overflow-hidden shadow-md">
+                  <caption className="sr-only">LED ekran piksel aralığı karşılaştırma tablosu</caption>
+                  <thead className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+                    <tr>
+                      <th scope="col" className="p-4 text-left">Piksel Aralığı</th>
+                      <th scope="col" className="p-4 text-left">İdeal İzleme Mesafesi</th>
+                      <th scope="col" className="p-4 text-left">Kullanım Alanı</th>
+                      <th scope="col" className="p-4 text-left">Ör. Maliyet/m²</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { pitch: "P2.5", distance: "2–8 m", usage: "Toplantı odası, fuar standı", cost: "≈ 2.800 TL" },
+                      { pitch: "P3.9", distance: "4–12 m", usage: "Konser, konferans", cost: "≈ 2.200 TL" },
+                      { pitch: "P4",   distance: "6–18 m", usage: "Dış mekan etkinlikleri", cost: "≈ 1.800 TL" },
+                      { pitch: "P6",   distance: "10–30 m", usage: "Stadyum, büyük festival", cost: "≈ 1.200 TL" },
+                    ].map((row, index) => (
+                      <tr key={index} className="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
+                        <th scope="row" className="p-4 font-semibold text-blue-600">{row.pitch}</th>
+                        <td className="p-4">{row.distance}</td>
+                        <td className="p-4">{row.usage}</td>
+                        <td className="p-4 font-semibold text-green-600">{row.cost}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-200" role="note" aria-label="Kritik seçim ipuçları">
+                <h4 className="text-lg font-bold mb-4 text-green-700 flex items-center gap-2">
+                  <span aria-hidden="true">🎯</span>Kritik Seçim İpuçları
+                </h4>
+                <div className="grid md:grid-cols-2 gap-5 text-sm">
+                  <div>
+                    <p className="font-semibold text-gray-700 mb-3">✅ Doğru Seçim İçin:</p>
+                    <ul className="space-y-2 text-gray-600" role="list">
+                      <li>• İzleyici mesafesini ve ekran ebatını birlikte planlayın</li>
+                      <li>• İç mekanda P2.5–P4; dış mekanda ≥5000 nit parlaklık şart</li>
+                      <li>• İçerik formatı ve video işlemci kapasitesini doğrulayın</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-700 mb-3">❌ Kaçınılması Gerekenler:</p>
+                    <ul className="space-y-2 text-gray-600" role="list">
+                      <li>• Yakın izleme için büyük pitch seçimi</li>
+                      <li>• Yetersiz güç altyapısı/kaçak akım koruması</li>
+                      <li>• Düşük yenileme hızında kamera yayını</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Bölüm 3 — SSS */}
+            <section className="mb-14" aria-labelledby="faq-heading">
+              <h3 id="faq-heading" className="text-2xl md:text-3xl font-black mb-8 text-gray-900 border-b border-gray-200 pb-5">
+                ❓ Sık Sorulan Sorular
+              </h3>
+
+              <ul className="grid md:grid-cols-2 gap-8" role="list">
+                {[
+                  {
+                    question: "LED ekran kurulumu ne kadar sürer?",
+                    answer: "Standart kurulum 2–6 saat, büyük projelerde 24 saate kadar çıkabilir. Ekip, zemin ve güç uygunluğunu önceden keşifle teyit eder.",
+                  },
+                  {
+                    question: "Yağmurlu havada LED ekran kullanılabilir mi?",
+                    answer: "Dış mekan panellerimiz IP65 korumalıdır. Kablo geçişleri ve işlemci konumlandırması da suya karşı korunur.",
+                  },
+                  {
+                    question: "Elektrik ihtiyacı nedir?",
+                    answer: "LED ekranlar m² başına ~300–800W tüketir. 20 m² ekran için yaklaşık 10–16A gerekir. Jeneratör veya trifaze hat opsiyonlanabilir.",
+                  },
+                  {
+                    question: "İçerik ve yayın desteği veriyor musunuz?",
+                    answer: "Evet. 4K grafik, canlı kamera miksajı, scaler ve medya sunucu desteği veriyoruz; sahada operatör bulunur.",
+                  },
+                ].map((faq, index) => (
+                  <li key={index} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                    <h4 className="text-lg font-bold mb-4 text-gray-900 flex items-start gap-3">
+                      <span className="text-blue-600 text-xl flex-shrink-0" aria-hidden="true">Q:</span>
+                      {faq.question}
+                    </h4>
+                    <p className="text-gray-700 text-sm leading-relaxed flex items-start gap-3">
+                      <span className="text-green-600 text-lg flex-shrink-0 mt-0.5" aria-hidden="true">A:</span>
+                      {faq.answer}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            <section aria-labelledby="conclusion" className="mt-10">
+              <h3 id="conclusion" className="sr-only">Sonuç</h3>
+              <p className="text-gray-700 leading-relaxed">
+                Doğru piksel aralığı, parlaklık ve yenileme hızıyla, içerik ve kurulum planlaması bir arada düşünülmelidir.
+                Sahneva olarak keşif, kurulum ve yayın operasyonunu uçtan uca yöneterek riskleri minimize ediyoruz.
+              </p>
+            </section>
           </div>
         </article>
       </div>
@@ -570,7 +738,7 @@ function EnhancedLedSeoArticle() {
   );
 }
 
-// --- Structured Data: inline script; Next Script yok, hydration maliyeti yok ---
+// --- Structured Data: inline <script>; client JS yok (hydrate edilmez)
 function StructuredData({ packages }) {
   const siteUrl = "https://www.sahneva.com";
   const pageUrl = `${siteUrl}/led-ekran-kiralama`;
