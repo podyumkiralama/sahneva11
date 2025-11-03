@@ -8,15 +8,16 @@ export default function GAClient({ measurementId }) {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
     if (!window.gtag || !measurementId) return;
 
-    const url = searchParams?.toString()
+    const page_path = searchParams?.toString()
       ? `${pathname}?${searchParams.toString()}`
       : pathname || "/";
 
     window.gtag("config", measurementId, {
-      page_path: url,
+      page_path,
+      page_location: window.location.href,
+      page_title: document.title,
     });
   }, [pathname, searchParams, measurementId]);
 
