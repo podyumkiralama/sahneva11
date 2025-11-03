@@ -80,7 +80,7 @@ export default function RootLayout({ children }) {
           />
           <Script id="ga-init" strategy="afterInteractive" nonce={nonce}>
             {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
-              gtag('js', new Date()); gtag('config','G-XXXX');`}
+              gtag('js', new Date()); gtag('config','G-J5YK10YLLC');`}
           </Script>
           */}
 
