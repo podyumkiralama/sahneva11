@@ -439,7 +439,7 @@ export default function PremiumLedPage() {
                       <a
                         href={`https://wa.me/905453048671?text=Merhaba, ${encodeURIComponent(pkg.name)} hakkında detaylı bilgi ve teklif almak istiyorum.`}
                         className="group/btn relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-4 px-6 rounded-xl w-full text-center block hover:from-blue-700 hover:to-purple-700 transition-all duration-500"
-                        aria-label={`Hemen Teklif Al — ${pkg.name} hakkında detaylı bilgi alın (WhatsApp)`}
+                        aria-label="Hemen Teklif Al"
                         target="_blank"
                         rel="noopener noreferrer nofollow"
                       >
