@@ -19,20 +19,20 @@ const ROUTES = [
 export default function UtilityBar() {
   const [isSearchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [activeTool, setActiveTool] = useState(null);
+  const [activeTool, setActiveTool] = useState(null); // "accessibility" | "contact" | "search" | null
   const [scrolled, setScrolled] = useState(false);
 
   const dialogRef = useRef(null);
   const toolsRef = useRef(null);
   const lastFocusRef = useRef(null);
 
-  // İlk yüklemede kontrast tercihini uygula
+  // Kontrast tercih yükle
   useEffect(() => {
     const saved = typeof window !== "undefined" ? localStorage.getItem("hc") : null;
     if (saved === "1") document.documentElement.classList.add("hc");
   }, []);
 
-  // Scroll takibi (küçük konum animasyonu için)
+  // Scroll durumu (buton konumu/animasyonu)
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 100);
     handleScroll();
@@ -40,21 +40,20 @@ export default function UtilityBar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // ESC ile kapatma
+  // ESC ile kapat
   useEffect(() => {
-    const handleEscape = (e) => {
+    const onKey = (e) => {
       if (e.key === "Escape") {
         setSearchOpen(false);
         setActiveTool(null);
-        // focus’u geri ver
         lastFocusRef.current?.focus?.();
       }
     };
-    window.addEventListener("keydown", handleEscape);
-    return () => window.removeEventListener("keydown", handleEscape);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Dışarı tıklama: sadece açık tooltip’leri/aramayı kapat
+  // Dış tıklama
   useEffect(() => {
     const onClick = (e) => {
       if (toolsRef.current && !toolsRef.current.contains(e.target)) {
@@ -62,26 +61,28 @@ export default function UtilityBar() {
       }
       if (isSearchOpen && dialogRef.current && !dialogRef.current.contains(e.target)) {
         setSearchOpen(false);
+        lastFocusRef.current?.focus?.();
       }
     };
     document.addEventListener("mousedown", onClick);
     return () => document.removeEventListener("mousedown", onClick);
   }, [isSearchOpen]);
 
-  const filtered = query.trim().length === 0
-    ? ROUTES
-    : ROUTES.filter((r) => r.label.toLowerCase().includes(query.toLowerCase().trim()));
+  const filtered =
+    query.trim().length === 0
+      ? ROUTES
+      : ROUTES.filter((r) => r.label.toLowerCase().includes(query.toLowerCase().trim()));
 
   // Yazı boyutu
   const bumpFont = useCallback((delta) => {
     const root = document.documentElement;
     const current = parseFloat(getComputedStyle(root).fontSize) || 16;
-    const newSize = Math.min(20, Math.max(12, current + delta));
-    root.style.fontSize = `${newSize}px`;
+    const next = Math.min(20, Math.max(12, current + delta));
+    root.style.fontSize = `${next}px`;
     setActiveTool(null);
   }, []);
 
-  // Yüksek kontrast: sadece class toggle, scroll yok, overlay yok
+  // Yüksek kontrast
   const toggleContrast = useCallback(() => {
     const el = document.documentElement;
     const willEnable = !el.classList.contains("hc");
@@ -102,7 +103,7 @@ export default function UtilityBar() {
     if (toolName !== "search") setSearchOpen(false);
   }, []);
 
-  // Arama modalı aç
+  // Arama modal aç
   const openSearchModal = useCallback((e) => {
     lastFocusRef.current = e?.currentTarget || document.activeElement;
     setSearchOpen(true);
@@ -114,6 +115,9 @@ export default function UtilityBar() {
     }, 50);
   }, []);
 
+  const isAccessibilityOpen = activeTool === "accessibility";
+  const isContactOpen = activeTool === "contact";
+
   return (
     <>
       {/* Sağ sabit bar */}
@@ -124,21 +128,29 @@ export default function UtilityBar() {
         aria-label="Hızlı yardımcı araçlar"
       >
         <div className="utility-bar-content">
-          {/* Erişilebilirlik Butonu */}
+          {/* Erişilebilirlik */}
           <div className="utility-tool-wrapper">
             <button
-              className={`utility-btn ${activeTool === "accessibility" ? "utility-btn-active" : ""}`}
+              className={`utility-btn ${isAccessibilityOpen ? "utility-btn-active" : ""}`}
               onClick={() => toggleTool("accessibility")}
               title="Erişilebilirlik araçları"
-              aria-expanded={activeTool === "accessibility"}
-              aria-controls="utility-accessibility"
+              aria-expanded={isAccessibilityOpen}
+              // aria-controls sadece panel DOM'dayken eklenir
+              aria-controls={isAccessibilityOpen ? "utility-accessibility" : undefined}
             >
-              <span className="utility-icon">♿</span>
-              <span className="utility-dot" />
+              <span className="utility-icon" aria-hidden="true">♿</span>
+              <span className="utility-dot" aria-hidden="true" />
             </button>
 
-            {activeTool === "accessibility" && (
-              <div className="utility-tooltip" id="utility-accessibility" role="dialog" aria-modal="false">
+            {/* Modal olmayan panel => role="region" + sr-only başlık */}
+            {isAccessibilityOpen && (
+              <div
+                id="utility-accessibility"
+                className="utility-tooltip"
+                role="region"
+                aria-labelledby="utility-accessibility-title"
+              >
+                <h2 id="utility-accessibility-title" className="sr-only">Erişilebilirlik araçları</h2>
                 <div className="utility-tooltip-content">
                   <div className="font-size-controls">
                     <div className="control-label">Yazı Boyutu</div>
@@ -147,7 +159,11 @@ export default function UtilityBar() {
                       <button onClick={() => bumpFont(1)} className="font-btn" aria-label="Yazı boyutunu büyüt">A+</button>
                     </div>
                   </div>
-                  <button onClick={toggleContrast} className="contrast-btn" aria-pressed={document.documentElement.classList.contains("hc")}>
+                  <button
+                    onClick={toggleContrast}
+                    className="contrast-btn"
+                    aria-pressed={document.documentElement.classList.contains("hc")}
+                  >
                     🎨 Yüksek Kontrast
                   </button>
                 </div>
@@ -155,7 +171,7 @@ export default function UtilityBar() {
             )}
           </div>
 
-          {/* Arama Butonu */}
+          {/* Arama */}
           <div className="utility-tool-wrapper">
             <button
               className={`utility-btn ${activeTool === "search" ? "utility-btn-active" : ""}`}
@@ -163,13 +179,14 @@ export default function UtilityBar() {
               title="Site içi arama"
               aria-haspopup="dialog"
               aria-expanded={isSearchOpen}
+              aria-controls={isSearchOpen ? "search-dialog" : undefined}
             >
-              <span className="utility-icon">🔍</span>
-              <span className="utility-dot" />
+              <span className="utility-icon" aria-hidden="true">🔍</span>
+              <span className="utility-dot" aria-hidden="true" />
             </button>
           </div>
 
-          {/* Yukarı Çık Butonu */}
+          {/* Yukarı */}
           <div className="utility-tool-wrapper">
             <button
               className="utility-btn"
@@ -177,25 +194,32 @@ export default function UtilityBar() {
               title="En üste dön"
               aria-label="Sayfanın en üstüne git"
             >
-              <span className="utility-icon">⬆️</span>
+              <span className="utility-icon" aria-hidden="true">⬆️</span>
             </button>
           </div>
 
-          {/* İletişim Butonu */}
+          {/* İletişim */}
           <div className="utility-tool-wrapper">
             <button
-              className={`utility-btn ${activeTool === "contact" ? "utility-btn-active" : ""}`}
+              className={`utility-btn ${isContactOpen ? "utility-btn-active" : ""}`}
               onClick={() => toggleTool("contact")}
               title="Hızlı iletişim"
-              aria-expanded={activeTool === "contact"}
-              aria-controls="utility-contact"
+              aria-expanded={isContactOpen}
+              aria-controls={isContactOpen ? "utility-contact" : undefined}
             >
-              <span className="utility-icon">📞</span>
-              <span className="utility-dot" />
+              <span className="utility-icon" aria-hidden="true">📞</span>
+              <span className="utility-dot" aria-hidden="true" />
             </button>
 
-            {activeTool === "contact" && (
-              <div className="utility-tooltip" id="utility-contact" role="dialog" aria-modal="false">
+            {/* Modal olmayan panel => role="region" + sr-only başlık */}
+            {isContactOpen && (
+              <div
+                id="utility-contact"
+                className="utility-tooltip"
+                role="region"
+                aria-labelledby="utility-contact-title"
+              >
+                <h2 id="utility-contact-title" className="sr-only">Hızlı iletişim</h2>
                 <div className="utility-tooltip-content">
                   <a
                     href="tel:+905453048671"
@@ -222,15 +246,17 @@ export default function UtilityBar() {
         </div>
       </div>
 
-      {/* Arama Modalı */}
+      {/* Arama Modalı (gerçek dialog) */}
       {isSearchOpen && (
         <div
+          id="search-dialog"
           className="search-modal-overlay"
           role="dialog"
           aria-modal="true"
-          aria-labelledby="search-input"
+          aria-labelledby="search-title"
           onClick={() => {
             setSearchOpen(false);
+            setActiveTool(null);
             lastFocusRef.current?.focus?.();
           }}
         >
@@ -240,8 +266,10 @@ export default function UtilityBar() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="search-header">
+              <h2 id="search-title" className="sr-only">Site içi arama</h2>
+
               <div className="search-input-wrapper">
-                <div className="search-icon">🔍</div>
+                <div className="search-icon" aria-hidden="true">🔍</div>
                 <input
                   type="text"
                   className="search-input"
@@ -254,10 +282,12 @@ export default function UtilityBar() {
                   aria-describedby="search-results"
                 />
               </div>
+
               <button
                 className="search-close-btn"
                 onClick={() => {
                   setSearchOpen(false);
+                  setActiveTool(null);
                   lastFocusRef.current?.focus?.();
                 }}
                 aria-label="Arama penceresini kapat"
@@ -268,13 +298,13 @@ export default function UtilityBar() {
 
             <div id="search-results" className="search-results">
               {filtered.length === 0 ? (
-                <div className="no-results">
-                  <div className="no-results-icon">🔍</div>
+                <div className="no-results" role="status" aria-live="polite">
+                  <div className="no-results-icon" aria-hidden="true">🔍</div>
                   <div className="no-results-title">Sonuç bulunamadı</div>
                   <div className="no-results-description">Farklı anahtar kelimeler deneyin</div>
                 </div>
               ) : (
-                <div className="results-list">
+                <div className="results-list" role="list">
                   {filtered.map((route) => (
                     <Link
                       key={route.href}
@@ -287,7 +317,7 @@ export default function UtilityBar() {
                       }}
                       aria-label={`${route.label} sayfasına git`}
                     >
-                      <span className="result-icon">{route.icon}</span>
+                      <span className="result-icon" aria-hidden="true">{route.icon}</span>
                       <span className="result-label">{route.label}</span>
                     </Link>
                   ))}
