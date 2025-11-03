@@ -1,12 +1,11 @@
+// app/layout.js
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import UtilityBar from "../components/UtilityBar";
 import { Inter } from "next/font/google";
-import { headers } from "next/headers";
 import Link from "next/link";
 
-// Font – preload=false (render-blocking değil)
 const inter = Inter({
   subsets: ["latin"],
   preload: false,
@@ -15,7 +14,6 @@ const inter = Inter({
   adjustFontFallback: true,
 });
 
-// Viewport
 export const viewport = {
   width: "device-width",
   initialScale: 1,
@@ -23,7 +21,6 @@ export const viewport = {
   themeColor: "#6d28d9",
 };
 
-// Metadata
 export const metadata = {
   metadataBase: new URL("https://www.sahneva.com"),
   title: {
@@ -44,14 +41,12 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  // middleware.ts’ten gelen nonce
-  const nonce = headers().get("x-nonce") ?? undefined;
   const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-J5YK10YLLC";
 
   return (
     <html lang="tr" className={inter.className}>
       <head>
-        {/* GA dosyalarını preconnect/preload – inline değil */}
+        {/* Harici scriptler – inline yok */}
         <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="" />
         <link
           rel="preload"
@@ -72,7 +67,7 @@ export default function RootLayout({ children }) {
         <Navbar />
         <UtilityBar />
 
-        {/* GA – tamamı harici dosyalarda, inline yok */}
+        {/* GA – tamamı harici dosyalarda */}
         <script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
           async
@@ -86,7 +81,6 @@ export default function RootLayout({ children }) {
         <main id="main">{children}</main>
         <Footer />
 
-        {/* Basit bir noscript uyarısı (inline style YOK) */}
         <noscript>
           <p>Sahneva: Daha iyi bir deneyim için tarayıcınızda JavaScript’i etkinleştirin.</p>
         </noscript>
