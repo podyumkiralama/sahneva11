@@ -7,12 +7,7 @@ import dynamic from "next/dynamic";
 // ⚡ Lazy loading components
 const CaseGallery = dynamic(() => import("@/components/CaseGallery"), {
   loading: () => (
-    <div
-      className="flex justify-center items-center h-64"
-      aria-live="polite"
-      aria-busy="true"
-      role="status"
-    >
+    <div className="flex justify-center items-center h-64" aria-live="polite" aria-busy="true" role="status">
       <span aria-hidden="true">🖼️</span>
       <span className="sr-only">Galeri yükleniyor...</span>
     </div>
@@ -110,11 +105,12 @@ const PRICING = {
   operator: 5000,
 };
 
-// 🎯 Premium Metadata (sade/SEO dostu)
+// 🎯 Premium Metadata
 export const metadata = {
-  title: "LED Ekran Kiralama | P2.5–P6 | İç-Dış Mekân Kurulum | Sahneva",
+  title:
+    "Premium LED Ekran Kiralama | P2.5–P6 | İç-Dış Mekân Kurulum | Sahneva",
   description:
-    "İç ve dış mekân LED ekran kiralama. P2.5–P6 çözünürlük, 6500 nit parlaklık, IP65 koruma, profesyonel truss kurulum ve 7/24 destek. İstanbul ve Türkiye geneli.",
+    "P2.5–P6 LED ekran kiralama, 6500 nit parlaklık, IP65 koruma, profesyonel kurulum. Konser, fuar, lansman ve etkinlikleriniz için anahtar teslim çözümler.",
   alternates: { canonical: "https://www.sahneva.com/led-ekran-kiralama" },
   openGraph: {
     title: "LED Ekran Kiralama | Sahneva",
@@ -123,7 +119,7 @@ export const metadata = {
     url: "https://www.sahneva.com/led-ekran-kiralama",
     siteName: "Sahneva",
     type: "website",
-    images: [{ url: "/img/led/og-premium.jpg", width: 1200, height: 630, alt: "Sahneva LED ekran kiralama" }],
+    images: [{ url: "/img/led/og-premium.jpg", width: 1200, height: 630, alt: "Sahneva Premium LED Ekran Kiralama Hizmeti" }],
     locale: "tr_TR",
   },
   twitter: {
@@ -177,8 +173,13 @@ export default function PremiumLedPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* DİKKAT: Layout zaten global skip-link veriyor; burada tekrarlamıyoruz. */}
-      {/* :contentReference[oaicite:2]{index=2} */}
+      {/* Skip link — layout’ta yoksa kullan; varsa kaldır. */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded-lg z-[100] focus:outline-none focus:ring-2 focus:ring-white"
+      >
+        Ana içeriğe atla
+      </a>
 
       {/* 🎭 Hero */}
       <section
@@ -290,7 +291,7 @@ export default function PremiumLedPage() {
               {enrichedPackages.map((pkg) => (
                 <li key={pkg.id}>
                   <article
-                    className={`relative bg-white rounded-2zl border border-gray-200 shadow-xl overflow-hidden group hover:shadow-2xl motion-safe:transition-all motion-safe:duration-500 ${
+                    className={`relative bg-white rounded-2xl border border-gray-200 shadow-xl overflow-hidden group hover:shadow-2xl motion-safe:transition-all motion-safe:duration-500 ${
                       pkg.badge === "Çok Satan"
                         ? "ring-4 ring-blue-500/20 motion-safe:transform motion-safe:scale-105 motion-safe:hover:scale-110"
                         : "motion-safe:hover:-translate-y-2"
@@ -530,6 +531,9 @@ export default function PremiumLedPage() {
 
         {/* 📝 SEO Makalesi */}
         <EnhancedLedSeoArticle />
+
+        {/* 📰 Son Makaleler */}
+        <LatestArticles />
       </main>
 
       {/* 🏷️ Structured Data */}
@@ -538,7 +542,9 @@ export default function PremiumLedPage() {
   );
 }
 
-// 📝 GELİŞTİRİLMİŞ SEO Makalesi Bileşeni — TAM SÜRÜM
+/* =========================
+   📝 GELİŞTİRİLMİŞ SEO Makalesi — TAM
+   ========================= */
 function EnhancedLedSeoArticle() {
   return (
     <section className="py-20 bg-gradient-to-b from-white to-gray-50" aria-labelledby="article-heading">
@@ -581,8 +587,155 @@ function EnhancedLedSeoArticle() {
               </ul>
             </nav>
 
-            {/* Bölümler (kısaltılmadan korundu) */}
-            {/* ... aynı içerik ... */}
+            {/* Bölüm 1 — Teknoloji trendleri */}
+            <section className="mb-14" aria-labelledby="section1-heading">
+              <h3 id="section1-heading" className="text-2xl md:text-3xl font-black mb-8 text-gray-900 border-b border-gray-200 pb-5">
+                🚀 LED Ekran Teknolojisi: 2025 Trendleri ve Yenilikler
+              </h3>
+
+              <div className="grid md:grid-cols-2 gap-8 mb-8">
+                <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300">
+                  <h4 className="text-xl font-bold mb-4 text-blue-600">Piksel (SMD & COB) Gelişmeleri</h4>
+                  <p className="text-gray-700 mb-5">
+                    LED ekranlarda SMD en yaygın teknolojidir; ekonomik ve servis kolaylığı sağlar. COB paneller ise daha yüksek darbe dayanımı,
+                    daha az dikiş çizgisi ve daha iyi ısı yönetimi sunar. İç mekan yakın izleme mesafelerinde COB dikkat çekmektedir.
+                  </p>
+                  <ul className="space-y-3 text-sm text-gray-600">
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-green-500 rounded-full" aria-hidden="true"></span>
+                      SMD: Yaygın, uygun maliyetli, kolay modül servisi
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" aria-hidden="true"></span>
+                      COB: Yüksek dayanım, düşük yansıma, daha homojen yüzey
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300">
+                  <h4 className="text-xl font-bold mb-4 text-purple-600">HDR, Renk Gamı ve Yenileme</h4>
+                  <p className="text-gray-700 mb-5">
+                    HDR10 eşiklerine yaklaşan LED ekranlar daha yüksek kontrast ve canlı renkler sağlar. 1920–3840 Hz tazeleme hızı,
+                    kamerada moiré ve bantlanmayı azaltır; canlı yayınlar için kritik önem taşır.
+                  </p>
+                  <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded-lg">
+                    <p className="text-sm text-purple-700 font-semibold">
+                      💡 İpucu: Kamera yayını varsa en az 3840 Hz ve kaliteli işlemci (Novastar vb.) tercih edin.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Bölüm 2 — Pitch tablosu */}
+            <section className="mb-14" aria-labelledby="section2-heading">
+              <h3 id="section2-heading" className="text-2xl md:text-3xl font-black mb-8 text-gray-900 border-b border-gray-200 pb-5">
+                📊 Piksel Aralığı (Pitch) Seçimi: Doğru Karar İçin Kapsamlı Rehber
+              </h3>
+
+              <div className="overflow-x-auto mb-8" role="region" aria-label="Piksel aralığı karşılaştırma tablosu">
+                <table className="w-full border-collapse bg-white rounded-lg overflow-hidden shadow-md">
+                  <caption className="sr-only">LED ekran piksel aralığı karşılaştırma tablosu</caption>
+                  <thead className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+                    <tr>
+                      <th scope="col" className="p-4 text-left">Piksel Aralığı</th>
+                      <th scope="col" className="p-4 text-left">İdeal İzleme Mesafesi</th>
+                      <th scope="col" className="p-4 text-left">Kullanım Alanı</th>
+                      <th scope="col" className="p-4 text-left">Ör. Maliyet/m²</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { pitch: "P2.5", distance: "2–8 m", usage: "Toplantı odası, fuar standı", cost: "≈ 2.800 TL" },
+                      { pitch: "P3.9", distance: "4–12 m", usage: "Konser, konferans", cost: "≈ 2.200 TL" },
+                      { pitch: "P4",   distance: "6–18 m", usage: "Dış mekan etkinlikleri", cost: "≈ 1.800 TL" },
+                      { pitch: "P6",   distance: "10–30 m", usage: "Stadyum, büyük festival", cost: "≈ 1.200 TL" },
+                    ].map((row, index) => (
+                      <tr key={index} className="group border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
+                        <th scope="row" className="p-4 font-semibold text-blue-600">{row.pitch}</th>
+                        <td className="p-4"> {row.distance} </td>
+                        <td className="p-4"> {row.usage} </td>
+                        <td className="p-4 font-semibold text-emerald-800 group-hover:text-emerald-900">
+                          {row.cost}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-200">
+                <h4 className="text-lg font-bold mb-4 text-green-700 flex items-center gap-2">
+                  <span aria-hidden="true">🎯</span>Kritik Seçim İpuçları
+                </h4>
+                <div className="grid md:grid-cols-2 gap-5 text-sm">
+                  <div>
+                    <p className="font-semibold text-gray-700 mb-3">✅ Doğru Seçim İçin:</p>
+                    <ul className="space-y-2 text-gray-600">
+                      <li>İzleyici mesafesini ve ekran ebatını birlikte planlayın</li>
+                      <li>İç mekanda P2.5–P4; dış mekanda ≥5000 nit parlaklık şart</li>
+                      <li>İçerik formatı ve video işlemci kapasitesini doğrulayın</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-700 mb-3">❌ Kaçınılması Gerekenler:</p>
+                    <ul className="space-y-2 text-gray-600">
+                      <li>Yakın izleme için büyük pitch seçimi</li>
+                      <li>Yetersiz güç altyapısı/kaçak akım koruması</li>
+                      <li>Düşük yenileme hızında kamera yayını</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Bölüm 3 — SSS */}
+            <section className="mb-14" aria-labelledby="faq-heading">
+              <h3 id="faq-heading" className="text-2xl md:text-3xl font-black mb-8 text-gray-900 border-b border-gray-200 pb-5">
+                ❓ Sık Sorulan Sorular
+              </h3>
+
+              <ul className="grid md:grid-cols-2 gap-8">
+                {[
+                  {
+                    question: "LED ekran kurulumu ne kadar sürer?",
+                    answer: "Standart kurulum 2–6 saat, büyük projelerde 24 saate kadar çıkabilir. Ekip, zemin ve güç uygunluğunu önceden keşifle teyit eder.",
+                  },
+                  {
+                    question: "Yağmurlu havada LED ekran kullanılabilir mi?",
+                    answer: "Dış mekan panellerimiz IP65 korumalıdır. Kablo geçişleri ve işlemci konumlandırması da suya karşı korunur.",
+                  },
+                  {
+                    question: "Elektrik ihtiyacı nedir?",
+                    answer: "LED ekranlar m² başına ~300–800W tüketir. 20 m² ekran için yaklaşık 10–16A gerekir. Jeneratör veya trifaze hat opsiyonlanabilir.",
+                  },
+                  {
+                    question: "İçerik ve yayın desteği veriyor musunuz?",
+                    answer: "Evet. 4K grafik, canlı kamera miksajı, scaler ve medya sunucu desteği veriyoruz; sahada operatör bulunur.",
+                  },
+                ].map((faq, index) => (
+                  <li key={index} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 hover:border-blue-200">
+                    <h4 className="text-lg font-bold mb-4 text-gray-900 flex items-start gap-3">
+                      <span className="text-blue-600 text-xl flex-shrink-0" aria-hidden="true">Q:</span>
+                      {faq.question}
+                    </h4>
+                    <p className="text-gray-700 text-sm leading-relaxed flex items-start gap-3">
+                      <span className="text-emerald-800 text-lg flex-shrink-0 mt-0.5" aria-hidden="true">A:</span>
+                      {faq.answer}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            {/* Kısa Sonuç */}
+            <section aria-labelledby="conclusion" className="mt-10">
+              <h3 id="conclusion" className="sr-only">Sonuç</h3>
+              <p className="text-gray-700 leading-relaxed">
+                Doğru piksel aralığı, parlaklık ve yenileme hızıyla, içerik ve kurulum planlaması bir arada düşünülmelidir.
+                Sahneva olarak keşif, kurulum ve yayın operasyonunu uçtan uca yöneterek riskleri minimize ediyoruz.
+              </p>
+            </section>
           </div>
         </article>
       </div>
@@ -590,7 +743,85 @@ function EnhancedLedSeoArticle() {
   );
 }
 
-// 🏷️ Structured Data Bileşeni
+/* =========================
+   📰 Son Makaleler — TOP LEVEL
+   ========================= */
+function LatestArticles() {
+  const posts = [
+    {
+      slug: "/blog/led-ekran-pitch-secimi",
+      title: "LED Ekranda Doğru Pitch Seçimi (P2.5–P6) Rehberi",
+      desc: "İzleme mesafesi, parlaklık ve bütçeye göre doğru piksel aralığını seçmenin püf noktaları.",
+      img: "/img/blog/pitch-secimi.webp",
+      date: "2025-10-12",
+      read: "6 dk",
+    },
+    {
+      slug: "/blog/dis-mekan-led-parlaklik-ve-ip65",
+      title: "Dış Mekân LED: Parlaklık (nit) ve IP65 Neden Kritik?",
+      desc: "Güneş altında görünürlük, suya-dayanım ve elektrik güvenliği için kontrol listesi.",
+      img: "/img/blog/dis-mekan-led.webp",
+      date: "2025-09-03",
+      read: "5 dk",
+    },
+    {
+      slug: "/blog/canli-yayin-icin-3840hz-led",
+      title: "Canlı Yayınlarda 3840 Hz LED Ekran Avantajı",
+      desc: "Kamerada moiré/bantlanma sorunlarını azaltmak için işlemci ve yenileme önerileri.",
+      img: "/img/blog/3840hz-led.webp",
+      date: "2025-08-22",
+      read: "4 dk",
+    },
+  ];
+
+  return (
+    <section className="py-20 bg-gradient-to-b from-gray-50 to-white" aria-labelledby="latest-articles-heading">
+      <div className="container mx-auto px-4 max-w-6xl">
+        <div className="text-center mb-12">
+          <h2 id="latest-articles-heading" className="text-3xl md:text-5xl font-black mb-4">
+            Son <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-purple-700">Makaleler</span>
+          </h2>
+          <p className="text-gray-700">LED ekran seçimi, kurulum ve yayın operasyonu üzerine pratik rehberler</p>
+        </div>
+
+        <ul className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" aria-label="Son blog yazıları">
+          {posts.map((p) => (
+            <li key={p.slug}>
+              <article className="h-full bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden">
+                <Link href={p.slug} className="block group">
+                  <div className="relative aspect-[16/9]">
+                    <Image
+                      src={p.img}
+                      alt={p.title}
+                      fill
+                      className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                      sizes="(min-width:1024px) 33vw, (min-width:768px) 50vw, 100vw"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="p-5">
+                    <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-700 transition-colors duration-200">
+                      {p.title}
+                    </h3>
+                    <p className="mt-2 text-sm text-gray-600 line-clamp-3">{p.desc}</p>
+                    <div className="mt-4 flex items-center justify-between text-xs text-gray-500">
+                      <time dateTime={p.date}>{new Date(p.date).toLocaleDateString("tr-TR")}</time>
+                      <span>{p.read}</span>
+                    </div>
+                  </div>
+                </Link>
+              </article>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+/* =========================
+   🏷️ Structured Data
+   ========================= */
 function StructuredData({ packages }) {
   const siteUrl = "https://www.sahneva.com";
   const pageUrl = `${siteUrl}/led-ekran-kiralama`;
