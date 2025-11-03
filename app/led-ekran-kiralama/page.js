@@ -439,9 +439,9 @@ export default function PremiumLedPage() {
                       <a
                         href={`https://wa.me/905453048671?text=Merhaba, ${encodeURIComponent(pkg.name)} hakkında detaylı bilgi ve teklif almak istiyorum.`}
                         className="group/btn relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-4 px-6 rounded-xl w-full text-center block hover:from-blue-700 hover:to-purple-700 transition-all duration-500"
-                        aria-label={`Hemen Teklif Al — ${pkg.name} için WhatsApp üzerinden teklif alın (yeni pencerede açılır)`}
+                        aria-label={`Hemen Teklif Al — ${pkg.name} hakkında detaylı bilgi alın (WhatsApp)`}
                         target="_blank"
-                        rel="noopener nofollow"
+                        rel="noopener noreferrer nofollow"
                       >
                         <span className="relative z-10 flex items-center justify-center gap-2">
                           <span className="text-lg" aria-hidden="true">💬</span>
@@ -641,7 +641,7 @@ function EnhancedLedSeoArticle() {
                 📊 Piksel Aralığı (Pitch) Seçimi: Doğru Karar İçin Kapsamlı Rehber
               </h3>
 
-              {/* A11y+Kontrast fix: row = group, cost cell = emerald-800/900; hover:bg-blue-50 korunur */}
+              {/* Kontrast fix: cost hücresi emerald-800/900 */}
               <div className="overflow-x-auto mb-8" role="region" aria-label="Piksel aralığı karşılaştırma tablosu">
                 <table className="w-full border-collapse bg-white rounded-lg overflow-hidden shadow-md">
                   <caption className="sr-only">LED ekran piksel aralığı karşılaştırma tablosu</caption>
@@ -698,7 +698,7 @@ function EnhancedLedSeoArticle() {
               </div>
             </section>
 
-            {/* Bölüm 3 — SSS */}
+            {/* Bölüm 3 — SSS (kontrast fix: A: etiketi emerald) */}
             <section className="mb-14" aria-labelledby="faq-heading">
               <h3 id="faq-heading" className="text-2xl md:text-3xl font-black mb-8 text-gray-900 border-b border-gray-200 pb-5">
                 ❓ Sık Sorulan Sorular
@@ -729,7 +729,7 @@ function EnhancedLedSeoArticle() {
                       {faq.question}
                     </h4>
                     <p className="text-gray-700 text-sm leading-relaxed flex items-start gap-3">
-                      <span className="text-green-600 text-lg flex-shrink-0 mt-0.5" aria-hidden="true">A:</span>
+                      <span className="text-emerald-800 text-lg flex-shrink-0 mt-0.5" aria-hidden="true">A:</span>
                       {faq.answer}
                     </p>
                   </li>
