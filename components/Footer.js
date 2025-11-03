@@ -62,11 +62,11 @@ export default function Footer() {
       </div>
 
       <div className="relative z-10 container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 py-12 px-6">
-        {/* ✅ PREMIUM: Marka bölümü */}
+
+        {/* ✅ Marka */}
         <section aria-labelledby="ft-brand" itemProp="brand" itemScope itemType="https://schema.org/Brand">
-          <h2 id="ft-brand" className="sr-only">
-            Sahneva Hakkında
-          </h2>
+          <h2 id="ft-brand" className="sr-only">Sahneva Hakkında</h2>
+
           <div className="flex items-center gap-3 text-white font-bold text-2xl mb-6">
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg blur-sm opacity-75"></div>
@@ -76,20 +76,20 @@ export default function Footer() {
               SAHNEVA
             </span>
           </div>
+
           <p className="text-sm leading-6 text-gray-300 mb-6" itemProp="description">
             Profesyonel etkinlik prodüksiyon & ekipman kiralama hizmetleri.
             <br />
             <span className="text-blue-300 font-medium">Türkiye geneli</span> sahne, podyum, LED ekran ve ses-ışık sistemleri.
           </p>
 
-          {/* ✅ PREMIUM: Sosyal medya linkleri */}
+          {/* ✅ Sosyal */}
           <div className="flex gap-3">
             <a
               href="https://www.instagram.com/sahnevaorganizasyon"
               target="_blank"
               rel="noopener noreferrer me"
-              aria-label="Sahneva Instagram sayfası (yeni sekmede açılır)"
-              title="Sahneva Instagram - Etkinlik fotoğrafları ve projeler"
+              title="Sahneva Instagram"
               className="group relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 min-h-[40px] min-w-[40px]"
               onClick={burst}
               itemProp="sameAs"
@@ -97,12 +97,12 @@ export default function Footer() {
               <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
               <span aria-hidden="true" className="text-lg relative z-10">📷</span>
             </a>
+
             <a
               href="https://www.youtube.com/@sahneva"
               target="_blank"
               rel="noopener noreferrer me"
-              aria-label="Sahneva YouTube kanalı (yeni sekmede açılır)"
-              title="Sahneva YouTube - Kurulum videoları ve referanslar"
+              title="Sahneva YouTube"
               className="group relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 min-h-[40px] min-w-[40px]"
               onClick={burst}
               itemProp="sameAs"
@@ -113,24 +113,23 @@ export default function Footer() {
           </div>
         </section>
 
-        {/* ✅ PREMIUM: Hizmetler navigasyonu */}
+        {/* ✅ Hizmetler */}
         <nav aria-labelledby="ft-services">
           <h2 id="ft-services" className="text-white font-bold mb-6 text-lg bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
             Hizmetlerimiz
           </h2>
           <ul className="space-y-3 text-sm">
             {[
-              { href: "/podyum-kiralama", label: "Podyum Kiralama", title: "Modüler podyum kiralama ve kurulum hizmeti" },
-              { href: "/led-ekran-kiralama", label: "LED Ekran Kiralama", title: "Yüksek çözünürlüklü LED ekran kiralama" },
-              { href: "/ses-isik-sistemleri", label: "Ses & Işık Sistemleri", title: "Profesyonel ses ve ışık sistemi kiralama" },
-              { href: "/sahne-kiralama", label: "Sahne Kiralama", title: "Profesyonel sahne kiralama ve kurulum" },
-              { href: "/cadir-kiralama", label: "Çadır Kiralama", title: "Etkinlik çadırı kiralama ve kurulum hizmeti" },
-            ].map(({ href, label, title }) => (
+              { href: "/podyum-kiralama", label: "Podyum Kiralama" },
+              { href: "/led-ekran-kiralama", label: "LED Ekran Kiralama" },
+              { href: "/ses-isik-sistemleri", label: "Ses & Işık Sistemleri" },
+              { href: "/sahne-kiralama", label: "Sahne Kiralama" },
+              { href: "/cadir-kiralama", label: "Çadır Kiralama" },
+            ].map(({ href, label }) => (
               <li key={href}>
                 <Link
                   href={href}
                   className="group text-gray-300 hover:text-white focus:text-white transition-all duration-200 block py-1 pl-2 border-l-2 border-transparent hover:border-blue-400 hover:pl-3"
-                  title={title}
                   itemProp="url"
                 >
                   <span className="group-hover:text-blue-300 transition-colors">{label}</span>
@@ -140,23 +139,22 @@ export default function Footer() {
           </ul>
         </nav>
 
-        {/* ✅ PREMIUM: Hızlı erişim */}
+        {/* ✅ Hızlı erişim */}
         <nav aria-labelledby="ft-quick">
           <h2 id="ft-quick" className="text-white font-bold mb-6 text-lg bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
             Hızlı Erişim
           </h2>
           <ul className="space-y-3 text-sm">
             {[
-              { href: "/hakkimizda", label: "Hakkımızda", title: "Sahneva hakkında bilgi ve referanslar" },
-              { href: "/hizmetler", label: "Hizmetler", title: "Tüm hizmetlerimiz ve çözümler" },
-              { href: "/sss", label: "Sık Sorulan Sorular", title: "Sıkça sorulan sorular ve cevapları" },
-              { href: "/kvkk", label: "KVKK / Gizlilik", title: "Gizlilik politikası ve KVKK bilgilendirmesi" },
-            ].map(({ href, label, title }) => (
+              { href: "/hakkimizda", label: "Hakkımızda" },
+              { href: "/hizmetler", label: "Hizmetler" },
+              { href: "/sss", label: "Sık Sorulan Sorular" },
+              { href: "/kvkk", label: "KVKK / Gizlilik" },
+            ].map(({ href, label }) => (
               <li key={href}>
                 <Link
                   href={href}
                   className="group text-gray-300 hover:text-white focus:text-white transition-all duration-200 block py-1 pl-2 border-l-2 border-transparent hover:border-purple-400 hover:pl-3"
-                  title={title}
                 >
                   <span className="group-hover:text-purple-300 transition-colors">{label}</span>
                 </Link>
@@ -165,98 +163,42 @@ export default function Footer() {
           </ul>
         </nav>
 
-        {/* ✅ PREMIUM: İletişim bölümü */}
+        {/* ✅ İletişim */}
         <section aria-labelledby="ft-contact">
           <h2 id="ft-contact" className="text-white font-bold mb-6 text-lg bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
             İletişim Bilgileri
           </h2>
 
           <address className="not-italic space-y-4 text-sm">
-            <div className="flex items-start gap-3 group">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg blur-sm opacity-50"></div>
-                <span className="relative text-white text-base p-2 rounded-lg bg-slate-800/50 backdrop-blur-sm" aria-hidden="true">📍</span>
-              </div>
-              <div>
-                <span className="block text-white font-semibold">İstanbul / Türkiye</span>
-                <span className="text-gray-300">Türkiye geneli hizmet</span>
-              </div>
-            </div>
-            
+
             <div className="flex items-center gap-3 group">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg blur-sm opacity-50"></div>
-                <span className="relative text-white text-base p-2 rounded-lg bg-slate-800/50 backdrop-blur-sm" aria-hidden="true">📞</span>
-              </div>
               <a
-                href="tel:+905453048671"
-                className="text-gray-300 hover:text-white font-semibold transition-all duration-300 hover:scale-105"
-                aria-label="Hemen Ara – Telefon: +90 545 304 8671"
-                title="Sahneva telefon iletişim - Hemen arayın"
-                itemProp="telephone"
+                href="https://g.page/r/CZhkMzkNOdgnEBI"
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+                className="group inline-flex items-center gap-2 text-xs text-gray-300 hover:text-white transition-all duration-300 hover:gap-3"
               >
-                +90 545 304 8671
+                <span aria-hidden="true">📍</span>
+                Google Haritalar'da bizi bulun
               </a>
             </div>
-            
+
             <div className="flex items-center gap-3 group">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg blur-sm opacity-50"></div>
-                <span className="relative text-white text-base p-2 rounded-lg bg-slate-800/50 backdrop-blur-sm" aria-hidden="true">✉️</span>
-              </div>
               <a
-                href="mailto:info@sahneva.com"
-                className="text-gray-300 hover:text-white transition-all duration-300 hover:scale-105"
-                aria-label="E-posta: info@sahneva.com"
-                title="Sahneva e-posta iletişim"
-                itemProp="email"
+                href="https://g.page/r/CZhkMzkNOdgnEBI/review"
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+                className="group inline-flex items-center gap-2 text-xs text-gray-300 hover:text-white transition-all duration-300 hover:gap-3"
               >
-                info@sahneva.com
+                <span aria-hidden="true">⭐</span>
+                Google'da yorum yazın
               </a>
-            </div>
-            
-            <div className="flex items-start gap-3 group">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-orange-500 rounded-lg blur-sm opacity-50"></div>
-                <span className="relative text-white text-base p-2 rounded-lg bg-slate-800/50 backdrop-blur-sm" aria-hidden="true">⏰</span>
-              </div>
-              <div>
-                <span className="block text-white font-semibold">Hafta içi 09:00–19:00</span>
-                <span className="text-gray-300">7/24 acil destek</span>
-              </div>
             </div>
           </address>
-
-          {/* ✅ PREMIUM: Google Business bağlantıları */}
-          <div className="mt-6 space-y-3">
-            <a
-              href="https://g.page/r/CZhkMzkNOdgnEBI"
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-              className="group inline-flex items-center gap-2 text-xs text-gray-300 hover:text-white transition-all duration-300 hover:gap-3"
-              aria-label="Google Haritalar'da Sahneva lokasyonu (yeni sekmede açılır)"
-              title="Google Haritalar'da Sahneva - İstanbul lokasyonu"
-            >
-              <span className="group-hover:scale-110 transition-transform duration-300" aria-hidden="true">📍</span>
-              Google Haritalar'da bizi bulun
-            </a>
-            <br />
-            <a
-              href="https://g.page/r/CZhkMzkNOdgnEBI/review"
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-              className="group inline-flex items-center gap-2 text-xs text-gray-300 hover:text-white transition-all duration-300 hover:gap-3"
-              aria-label="Google'da Sahneva için yorum yazın (yeni sekmede açılır)"
-              title="Google Yorum - Müşteri deneyiminizi paylaşın"
-            >
-              <span className="group-hover:scale-110 transition-transform duration-300" aria-hidden="true">⭐</span>
-              Google'da yorum yazın
-            </a>
-          </div>
         </section>
       </div>
 
-      {/* ✅ PREMIUM: Alt bar */}
+      {/* ✅ Alt bar */}
       <div className="relative border-t border-white/10 text-center text-sm text-gray-300 py-6 bg-gradient-to-r from-slate-900/50 via-purple-900/30 to-blue-900/50 backdrop-blur-sm">
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
         <div className="container mx-auto px-6 relative z-10">
@@ -266,15 +208,16 @@ export default function Footer() {
           <p suppressHydrationWarning itemProp="copyrightYear" className="text-gray-400">
             © {new Date().getFullYear()} <span itemProp="name" className="text-white font-semibold">Sahneva</span> — Tüm hakları saklıdır.
             <span className="mx-3 text-blue-400">•</span>
-            <Link href="/kvkk" className="text-gray-300 hover:text-white underline-offset-4 hover:underline transition-colors duration-200" title="KVKK Aydınlatma Metni">
+            <Link href="/kvkk" className="text-gray-300 hover:text-white underline-offset-4 hover:underline transition-colors duration-200">
               KVKK Aydınlatma Metni
             </Link>
           </p>
         </div>
       </div>
 
-      {/* ✅ PREMIUM: Burst particle styles */}
-      <style jsx>{`
+      {/* PREMIUM: Particle style */}
+      <style jsx>
+        {`
         .burst-particle {
           position: fixed;
           pointer-events: none;
@@ -294,7 +237,8 @@ export default function Footer() {
             opacity: 0;
           }
         }
-      `}</style>
+      `}
+      </style>
     </footer>
   );
 }
