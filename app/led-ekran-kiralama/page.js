@@ -112,9 +112,9 @@ const PRICING = {
 
 // 🎯 Premium Metadata (sade/SEO dostu)
 export const metadata = {
-  title: "LED Ekran Kiralama | P2.5–P6 | İç-Dış Mekân Kurulum | Sahneva",
+  title: "LED Ekran Kiralama | Sahneva",
   description:
-    "İç ve dış mekân LED ekran kiralama. P2.5–P6 çözünürlük, 6500 nit parlaklık, IP65 koruma, profesyonel truss kurulum ve 7/24 destek. İstanbul ve Türkiye geneli.",
+    "P2–P6 aralığında iç/dış mekân LED ekran kiralama. Yüksek parlaklık, profesyonel yayın ve teknik ekip. LED Ekran Kiralama Nedir?",
   alternates: { canonical: "https://www.sahneva.com/led-ekran-kiralama" },
   openGraph: {
     title: "LED Ekran Kiralama | Sahneva",
