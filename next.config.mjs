@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // ✅ React ve üretim optimizasyonları
+  // ✅ React/üretim
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
@@ -8,7 +8,7 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
   trailingSlash: false,
 
-  // ⚡ Bundle küçültme (Next 16’da etkili)
+  // ⚡ Bundle küçültme
   compiler: {
     removeConsole:
       process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
@@ -16,13 +16,13 @@ const nextConfig = {
       process.env.NODE_ENV === "production" ? { properties: ["^data-testid$"] } : false,
   },
 
-  // 🖼️ Görsel optimizasyonu (LCP/CLS iyileşir)
+  // 🖼️ Görsel optimizasyonu (LCP byte’ını düşürür)
   images: {
     deviceSizes: [320, 420, 640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 gün
-    remotePatterns: [],                 // harici yoksa boş bırak
+    remotePatterns: [], // harici kullanmıyorsan boş bırak
     dangerouslyAllowSVG: false,
   },
 
@@ -43,28 +43,24 @@ const nextConfig = {
     NEXT_PUBLIC_APP_ENV: process.env.NODE_ENV || "development",
   },
 
-  // ⚠️ Sadece Node.js self-host’ta anlamlıdır; Vercel’da etkisi yok ama zararı da yok
-  output: process.env.NODE_ENV === "production" ? "standalone" : undefined,
-
-  // ⏱️ Statik SSG timeout
+  // ⏱️ SSG timeout
   staticPageGenerationTimeout: 300,
 
-  // 🛡️ Güvenlik + Cache başlıkları (render’ı bloklamadan hız)
+  // ⚠️ Self-host’ta anlamlı; Vercel’da zararı yok
+  output: process.env.NODE_ENV === "production" ? "standalone" : undefined,
+
+  // 🔒 Güvenlik + 📦 agresif cache (middleware’siz → daha hızlı)
   async headers() {
     const securityHeaders = [
       { key: "X-Content-Type-Options", value: "nosniff" },
       { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
       { key: "X-Frame-Options", value: "DENY" },
       { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
-
-      // ⬇️ NOT: CORP "same-origin", harici font/iframe/görsel isteklerini engelleyebilir.
-      // Next/font + yerel görsellerle sorun yok. Harici (fonts.gstatic.com vb.) gerekiyorsa "same-site" yap.
+      // Not: sadece senin sitenden sunulan varlıkları etkiler; harici kaynak tüketimini engellemez.
       { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
-
       {
         key: "Permissions-Policy",
-        value:
-          "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=()",
+        value: "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=()",
       },
       {
         key: "Strict-Transport-Security",
@@ -72,8 +68,7 @@ const nextConfig = {
       },
     ];
 
-    // ⚠️ CSP: inline JSON-LD / Next iç scriptler için 'unsafe-inline' açık.
-    // Harici GA/Vercel scriptleri izinli. Worker ve blob desteği eklendi (video/galeri için iyi).
+    // CSP — GA & Vercel izinli; JSON-LD/Next inline için 'unsafe-inline' açık.
     const csp = `
       default-src 'self';
       base-uri 'self';
@@ -112,18 +107,36 @@ const nextConfig = {
     securityHeaders.push({ key: "Content-Security-Policy", value: csp });
 
     return [
-      // 🔒 Tüm istekler: güvenlik başlıkları
+      // Tüm sayfalara güvenlik başlıkları
       { source: "/(.*)", headers: securityHeaders },
 
-      // 📦 Next statik dosyalar: uzun, immutable cache
+      // Next statik bundle (JS/CSS/chunks): immutable 1 yıl
       {
         source: "/_next/static/(.*)",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
 
-      // 🖼️ Public varlıklar (görsel/icon): uzun, immutable cache
+      // Public görseller/ikonlar
       {
         source: "/(.*)\\.(ico|png|jpg|jpeg|webp|avif|svg|gif)",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
+
+      // Public fontlar
+      {
+        source: "/(.*)\\.(woff2|woff|ttf|otf)",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
+
+      // Public CSS
+      {
+        source: "/(.*)\\.(css)",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
+
+      // Büyük medya (isteğe bağlı)
+      {
+        source: "/(.*)\\.(mp4|webm|ogg|mp3|wav)",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
     ];
