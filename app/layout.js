@@ -4,7 +4,13 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import UtilityBar from "../components/UtilityBar";
 import { Inter } from "next/font/google";
-import Link from "next/link";
+import { headers } from "next/headers";
+import Script from "next/script";
+import { createContext } from "react";
+
+// ⚠️ middleware.ts her istek için "x-nonce" başlığı set eder.
+// Burada onu okuyup Script'lere vereceğiz.
+export const NonceContext = createContext(null);
 
 const inter = Inter({
   subsets: ["latin"],
@@ -14,6 +20,7 @@ const inter = Inter({
   adjustFontFallback: true,
 });
 
+// Viewport
 export const viewport = {
   width: "device-width",
   initialScale: 1,
@@ -21,6 +28,7 @@ export const viewport = {
   themeColor: "#6d28d9",
 };
 
+// Metadata (genel)
 export const metadata = {
   metadataBase: new URL("https://www.sahneva.com"),
   title: {
@@ -41,21 +49,16 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-J5YK10YLLC";
+  // 🔐 Nonce'u header'dan çek
+  const nonce = headers().get("x-nonce") ?? undefined;
 
   return (
     <html lang="tr" className={inter.className}>
-      <head>
-        {/* Harici scriptler – inline yok */}
-        <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="" />
-        <link
-          rel="preload"
-          href={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-          as="script"
-        />
-        <link rel="preload" href="/ga-init.js" as="script" />
-      </head>
-      <body className="min-h-screen bg-white text-neutral-900 antialiased">
+      <body
+        className="min-h-screen bg-white text-neutral-900 antialiased"
+        // İsteyen client komponentler nonce'u data attribute üzerinden de okuyabilir
+        data-nonce={nonce}
+      >
         {/* Skip link */}
         <a
           href="#main"
@@ -64,26 +67,26 @@ export default function RootLayout({ children }) {
           Ana içeriğe atla
         </a>
 
-        <Navbar />
-        <UtilityBar />
+        <NonceContext.Provider value={nonce}>
+          <Navbar />
+          <UtilityBar />
 
-        {/* GA – tamamı harici dosyalarda */}
-        <script
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-          async
-        ></script>
-        <script
-          src="/ga-init.js"
-          defer
-          data-ga-id={GA_ID}
-        ></script>
+          {/* Örnek: GA/Vercel gibi scriptleri ekleyeceğinizde nonce verin */}
+          {/* 
+          <Script
+            src="https://www.googletagmanager.com/gtag/js?id=G-J5YK10YLLC"
+            strategy="afterInteractive"
+            nonce={nonce}
+          />
+          <Script id="ga-init" strategy="afterInteractive" nonce={nonce}>
+            {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
+              gtag('js', new Date()); gtag('config','G-XXXX');`}
+          </Script>
+          */}
 
-        <main id="main">{children}</main>
-        <Footer />
-
-        <noscript>
-          <p>Sahneva: Daha iyi bir deneyim için tarayıcınızda JavaScript’i etkinleştirin.</p>
-        </noscript>
+          <main id="main">{children}</main>
+          <Footer />
+        </NonceContext.Provider>
       </body>
     </html>
   );
