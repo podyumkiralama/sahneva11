@@ -546,8 +546,8 @@ export default function PremiumLedPage() {
   );
 }
 
-// 📝 GELİŞTİRİLMİŞ SEO Makalesi Bileşeni — TAM SÜRÜM
-function EnhancedLedSeoArticle() {
+// 📝 GELİŞTİRİLMİŞ SEO Makalesi Bileşeni — TAM SÜRÜM (W3C düzenli)
+export default function EnhancedLedSeoArticle() {
   return (
     <section className="py-20 bg-gradient-to-b from-white to-gray-50" aria-labelledby="article-heading">
       <div className="container mx-auto px-4 max-w-6xl">
@@ -559,7 +559,7 @@ function EnhancedLedSeoArticle() {
             <p className="text-lg md:text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
               Etkinlikleriniz için doğru LED ekran seçimi, kurulum süreçleri, maliyet analizi ve profesyonel çözümler hakkında her şey.
             </p>
-            <ul className="flex flex-wrap justify-center gap-4 mt-8 text-sm">
+            <ul className="flex flex-wrap justify-center gap-4 mt-8 text-sm" role="list">
               <li className="bg-white/20 px-4 py-2 rounded-full">✅ 10+ Yıllık Deneyim</li>
               <li className="bg-white/20 px-4 py-2 rounded-full">📊 300+ Başarılı Proje</li>
               <li className="bg-white/20 px-4 py-2 rounded-full">🏆 Teknoloji Lideri</li>
@@ -568,11 +568,14 @@ function EnhancedLedSeoArticle() {
 
           <div className="p-6 md:p-8 lg:p-12">
             {/* İçindekiler */}
-            <nav className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 mb-10 border border-blue-200" aria-label="Makale içindekiler">
-              <h3 className="text-xl font-black text-gray-900 mb-5 flex items-center gap-3">
+            <nav
+              className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 mb-10 border border-blue-200"
+              aria-labelledby="toc-title"
+            >
+              <h3 id="toc-title" className="text-xl font-black text-gray-900 mb-5 flex items-center gap-3">
                 <span aria-hidden="true">📑</span>Bu Makalede Neler Bulacaksınız?
               </h3>
-              <ul className="grid md:grid-cols-2 gap-4 text-sm">
+              <ul className="grid md:grid-cols-2 gap-4 text-sm" role="list">
                 {[
                   "LED Ekran Teknolojisi ve Çeşitleri",
                   "Piksel Aralığı (Pitch) Seçimi Rehberi",
@@ -597,12 +600,12 @@ function EnhancedLedSeoArticle() {
 
               <div className="grid md:grid-cols-2 gap-8 mb-8">
                 <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300">
-                  <h4 className="text-xl font-bold mb-4 text-blue-600">Piksel (SMD & COB) Gelişmeleri</h4>
+                  <h4 className="text-xl font-bold mb-4 text-blue-600">Piksel (SMD &amp; COB) Gelişmeleri</h4>
                   <p className="text-gray-700 mb-5">
                     LED ekranlarda SMD en yaygın teknolojidir; ekonomik ve servis kolaylığı sağlar. COB paneller ise daha yüksek darbe dayanımı,
                     daha az dikiş çizgisi ve daha iyi ısı yönetimi sunar. İç mekan yakın izleme mesafelerinde COB dikkat çekmektedir.
                   </p>
-                  <ul className="space-y-3 text-sm text-gray-600">
+                  <ul className="space-y-3 text-sm text-gray-600" role="list">
                     <li className="flex items-center gap-2">
                       <span className="w-1.5 h-1.5 bg-green-500 rounded-full" aria-hidden="true"></span>
                       SMD: Yaygın, uygun maliyetli, kolay modül servisi
@@ -655,11 +658,9 @@ function EnhancedLedSeoArticle() {
                     ].map((row, index) => (
                       <tr key={index} className="group border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
                         <th scope="row" className="p-4 font-semibold text-blue-600">{row.pitch}</th>
-                        <td className="p-4"> {row.distance} </td>
-                        <td className="p-4"> {row.usage} </td>
-                        <td className="p-4 font-semibold text-emerald-800 group-hover:text-emerald-900">
-                          {row.cost}
-                        </td>
+                        <td className="p-4">{row.distance}</td>
+                        <td className="p-4">{row.usage}</td>
+                        <td className="p-4 font-semibold text-emerald-800 group-hover:text-emerald-900">{row.cost}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -673,7 +674,7 @@ function EnhancedLedSeoArticle() {
                 <div className="grid md:grid-cols-2 gap-5 text-sm">
                   <div>
                     <p className="font-semibold text-gray-700 mb-3">✅ Doğru Seçim İçin:</p>
-                    <ul className="space-y-2 text-gray-600">
+                    <ul className="space-y-2 text-gray-600" role="list">
                       <li>İzleyici mesafesini ve ekran ebatını birlikte planlayın</li>
                       <li>İç mekanda P2.5–P4; dış mekanda ≥5000 nit parlaklık şart</li>
                       <li>İçerik formatı ve video işlemci kapasitesini doğrulayın</li>
@@ -681,7 +682,7 @@ function EnhancedLedSeoArticle() {
                   </div>
                   <div>
                     <p className="font-semibold text-gray-700 mb-3">❌ Kaçınılması Gerekenler:</p>
-                    <ul className="space-y-2 text-gray-600">
+                    <ul className="space-y-2 text-gray-600" role="list">
                       <li>Yakın izleme için büyük pitch seçimi</li>
                       <li>Yetersiz güç altyapısı/kaçak akım koruması</li>
                       <li>Düşük yenileme hızında kamera yayını</li>
@@ -697,7 +698,7 @@ function EnhancedLedSeoArticle() {
                 ❓ Sık Sorulan Sorular
               </h3>
 
-              <ul className="grid md:grid-cols-2 gap-8">
+              <ul className="grid md:grid-cols-2 gap-8" role="list">
                 {[
                   {
                     question: "LED ekran kurulumu ne kadar sürer?",
@@ -744,6 +745,7 @@ function EnhancedLedSeoArticle() {
     </section>
   );
 }
+
 
 // 🏷️ Structured Data Bileşeni
 function StructuredData({ packages }) {
