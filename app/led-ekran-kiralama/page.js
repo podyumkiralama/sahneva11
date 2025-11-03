@@ -1,15 +1,11 @@
 // app/led-ekran-kiralama/page.js
 import Image from "next/image";
-import nextDynamic from "next/dynamic";
+import Link from "next/link";
+import Script from "next/script";
+import dynamic from "next/dynamic";
 
-// ⚡ Hız odaklı
-export const revalidate = 1800;        // ISR
-export const dynamic = "force-static"; // Tam statik render (TTFB + bfcache)
-
-/** Galeri: SSR'siz hataya yol açtığı için burada sadece code-split yapıyoruz.
- *  Daha agresif hız için client wrapper opsiyonu mesajın sonunda.
- */
-const CaseGallery = nextDynamic(() => import("@/components/CaseGallery"), {
+// ⚡ Lazy loading components
+const CaseGallery = dynamic(() => import("@/components/CaseGallery"), {
   loading: () => (
     <div
       className="flex justify-center items-center h-64"
@@ -23,7 +19,10 @@ const CaseGallery = nextDynamic(() => import("@/components/CaseGallery"), {
   ),
 });
 
-// 📊 İçerik
+// ⚡ ISR - 30 dakika
+export const revalidate = 1800;
+
+// 📊 Premium içerik yapısı
 const PREMIUM_CONTENT = {
   hero: {
     src: "/img/led-ekran-kiralama-hero.webp",
@@ -101,7 +100,7 @@ const PREMIUM_CONTENT = {
   },
 };
 
-// 🏷️ Fiyat
+// 🏷️ Güncel fiyatlandırma
 const PRICING = {
   p2_5: 2800,
   p3_9: 2200,
@@ -111,7 +110,7 @@ const PRICING = {
   operator: 5000,
 };
 
-// 🎯 Metadata
+// 🎯 Premium Metadata
 export const metadata = {
   title:
     "Premium LED Ekran Kiralama | 4K Çözünürlük & Profesyonel Kurulum - Sahneva",
@@ -138,17 +137,20 @@ export const metadata = {
   },
 };
 
-// 🖥️ Sayfa
+// 🎨 Ana sayfa bileşeni
 export default function PremiumLedPage() {
   const buttonStyles = {
     primary:
-      "inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-700 to-purple-700 text-white transition-all duration-300 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-offset-2 focus:ring-offset-blue-900",
+      "inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-700 to-purple-700 text-white motion-safe:hover:scale-105 motion-safe:transform transition-all duration-300 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-offset-2 focus:ring-offset-blue-900 motion-safe:focus:scale-105",
+    secondary:
+      "inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-gray-900 to-blue-900 text-white motion-safe:hover:scale-105 motion-safe:transform transition-all duration-300 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-offset-2 focus:ring-offset-gray-900 motion-safe:focus:scale-105",
     outline:
-      "inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl border-2 border-white text-white bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-900",
+      "inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl border-2 border-white text-white bg-white/10 backdrop-blur-sm hover:bg-white/20 motion-safe:hover:scale-105 motion-safe:transform transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-900 motion-safe:focus:scale-105",
     success:
-      "inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-green-600 to-emerald-700 text-white transition-all duration-300 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-green-300 focus:ring-offset-2 focus:ring-offset-green-900",
+      "inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-green-600 to-emerald-700 text-white motion-safe:hover:scale-105 motion-safe:transform transition-all duration-300 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-green-300 focus:ring-offset-2 focus:ring-offset-green-900 motion-safe:focus:scale-105",
   };
 
+  // 🧮 Fiyat hesaplama
   const calculatePackagePrice = (pkg) => {
     const area = parseFloat(pkg.specs.area);
     let basePrice;
@@ -176,7 +178,7 @@ export default function PremiumLedPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Skip link */}
+      {/* Skip link — her şeyden önce gelmeli */}
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded-lg z-[100] focus:outline-none focus:ring-2 focus:ring-white"
@@ -184,7 +186,7 @@ export default function PremiumLedPage() {
         Ana içeriğe atla
       </a>
 
-      {/* 🎭 Hero (LCP) */}
+      {/* 🎭 Hero */}
       <section
         className="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-slate-900 pt-20"
         aria-labelledby="main-heading"
@@ -213,44 +215,51 @@ export default function PremiumLedPage() {
             aria-live="polite"
           >
             <span className="relative flex w-3 h-3" aria-hidden="true">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+              <span className="motion-safe:animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
               <span className="relative inline-flex rounded-full w-3 h-3 bg-green-500" />
             </span>
             <span className="text-sm font-semibold">İstanbul'da 7/24 Profesyonel Kurulum</span>
           </div>
 
-          <h1 id="main-heading" className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight mb-8">
+          <h1 id="main-heading" className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight mb-8 drop-shadow-2xl">
             LED Ekran Çözümleri
           </h1>
 
-          <p className="text-lg md:text-xl lg:text-2xl text-white/95 max-w-3xl mx-auto leading-relaxed font-light mb-10">
+          <p className="text-lg md:text-xl lg:text-2xl text-white/95 max-w-3xl mx-auto leading-relaxed font-light mb-10 drop-shadow-lg">
             P2.5–P6 piksel aralığı • 6500 nit parlaklık • IP65 koruma
             <span className="block mt-3">4K çözünürlük & profesyonel yayın sistemleri</span>
           </p>
 
-          {/* İçeride hash linkleri: sade <a> (prefetch yok) */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16" role="group" aria-label="Birincil eylemler">
-            <a href="#paketler" className={buttonStyles.primary} aria-label="LED ekran paketlerini incele">
+            <Link
+              href="#paketler"
+              className={buttonStyles.primary}
+              aria-label="Paketleri İncele — LED ekran paketlerini görüntüle"
+            >
               <span aria-hidden="true">🖥️</span>
               <span className="ml-2">Paketleri İncele</span>
-            </a>
+            </Link>
 
             <a
               href="tel:+905453048671"
               className={buttonStyles.success}
-              aria-label="Sahneva’yı arayarak hemen teklif al: +90 545 304 86 71"
+              aria-label="Hemen Teklif Al — Sahneva’yı ara: +90 545 304 86 71"
             >
               <span aria-hidden="true">📞</span>
               <span className="ml-2">Hemen Teklif Al</span>
             </a>
 
-            <a href="#teknoloji" className={buttonStyles.outline} aria-label="LED ekran teknolojisi bölümüne git">
+            <Link
+              href="#teknoloji"
+              className={buttonStyles.outline}
+              aria-label="Teknoloji — LED ekran teknolojisi bölümüne git"
+            >
               <span aria-hidden="true">⚡</span>
               <span className="ml-2">Teknoloji</span>
-            </a>
+            </Link>
           </div>
 
-          <ul className="flex flex-wrap justify-center items-center gap-8 text-white/90 text-sm">
+          <ul className="flex flex-wrap justify-center items-center gap-8 text-white/90 text-sm drop-shadow" aria-label="Firma özellikleri">
             <li className="flex items-center gap-2"><span aria-hidden="true">⭐</span><span>4.9/5 (183 Değerlendirme)</span></li>
             <li className="flex items-center gap-2"><span aria-hidden="true">🏆</span><span>300+ Başarılı Proje</span></li>
             <li className="flex items-center gap-2"><span aria-hidden="true">🚀</span><span>2–6 Saatte Kurulum</span></li>
@@ -259,12 +268,8 @@ export default function PremiumLedPage() {
       </section>
 
       <main id="main-content" tabIndex={-1} role="main">
-        {/* Offscreen bölümler render ertelenir */}
-        <section
-          className="py-20 bg-gradient-to-b from-white to-blue-50/30"
-          aria-labelledby="features-heading"
-          style={{ contentVisibility: "auto", containIntrinsicSize: "1px 800px" }}
-        >
+        {/* ✨ Öne Çıkan Özellikler */}
+        <section className="py-20 bg-gradient-to-b from-white to-blue-50/30" aria-labelledby="features-heading">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <h2 id="features-heading" className="text-3xl md:text-5xl font-black mb-6">
@@ -277,9 +282,11 @@ export default function PremiumLedPage() {
               {PREMIUM_CONTENT.features.map((feature) => (
                 <li
                   key={feature.title}
-                  className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 text-center"
+                  className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 text-center group hover:shadow-xl motion-safe:hover:scale-105 motion-safe:transition-all motion-safe:duration-300 motion-safe:focus-within:scale-105"
                 >
-                  <div className="text-3xl mb-4" aria-hidden="true">{feature.icon}</div>
+                  <div className="text-3xl mb-4 motion-safe:group-hover:scale-110 motion-safe:transition-transform motion-safe:duration-300" aria-hidden="true">
+                    {feature.icon}
+                  </div>
                   <h3 className="text-lg font-bold mb-3 text-gray-900">{feature.title}</h3>
                   <p className="text-gray-700 text-sm leading-relaxed">{feature.description}</p>
                 </li>
@@ -288,12 +295,8 @@ export default function PremiumLedPage() {
           </div>
         </section>
 
-        <section
-          id="paketler"
-          className="py-20 bg-gradient-to-b from-gray-50 to-blue-100/20"
-          aria-labelledby="packages-heading"
-          style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1400px" }}
-        >
+        {/* 🎪 Paketler */}
+        <section id="paketler" className="py-20 bg-gradient-to-b from-gray-50 to-blue-100/20" aria-labelledby="packages-heading">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <h2 id="packages-heading" className="text-3xl md:text-5xl font-black mb-6">
@@ -306,30 +309,42 @@ export default function PremiumLedPage() {
               {enrichedPackages.map((pkg) => (
                 <li key={pkg.id}>
                   <article
-                    className="relative bg-white rounded-2xl border border-gray-200 shadow-xl overflow-hidden"
+                    className={`relative bg-white rounded-2xl border border-gray-200 shadow-xl overflow-hidden group hover:shadow-2xl motion-safe:transition-all motion-safe:duration-500 ${
+                      pkg.badge === "Çok Satan"
+                        ? "ring-4 ring-blue-500/20 motion-safe:transform motion-safe:scale-105 motion-safe:hover:scale-110"
+                        : "motion-safe:hover:-translate-y-2"
+                    }`}
                     aria-labelledby={`${pkg.id}-title`}
                   >
                     {pkg.badge && (
-                      <div className="absolute -top-3 -right-3 px-4 py-2 rounded-full text-sm font-bold z-20 text-white shadow-lg">
+                      <div
+                        className="absolute -top-3 -right-3 px-4 py-2 rounded-full text-sm font-bold z-20 text-white shadow-lg motion-safe:group-hover:scale-110 motion-safe:group-hover:rotate-6 motion-safe:transition-all motion-safe:duration-300"
+                        aria-label={`Öne çıkan: ${pkg.badge}`}
+                      >
                         {pkg.badge}
                       </div>
                     )}
 
-                    <div className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 p-6 text-white overflow-hidden">
+                    <div className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 p-6 text-white overflow-hidden motion-safe:group-hover:from-slate-800 motion-safe:group-hover:via-blue-800 motion-safe:group-hover:to-purple-800 motion-safe:transition-all motion-safe:duration-500">
+                      <div className="absolute inset-0 opacity-10" aria-hidden="true">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full -translate-y-16 translate-x-16 motion-safe:group-hover:translate-x-12 motion-safe:transition-transform motion-safe:duration-700"></div>
+                        <div className="absolute bottom-0 left-0 w-24 h-24 bg-blue-400 rounded-full translate-y-12 -translate-x-12 motion-safe:group-hover:-translate-x-8 motion-safe:transition-transform motion-safe:duration-700"></div>
+                      </div>
+
                       <div className="relative z-10">
                         <div className="flex items-center justify-between mb-5">
-                          <div className="text-3xl" aria-hidden="true">
+                          <div className="text-3xl motion-safe:group-hover:scale-110 motion-safe:transition-transform motion-safe:duration-300" aria-hidden="true">
                             {pkg.id === "ic-mekan" && "🏢"}
                             {pkg.id === "dis-mekan" && "🌆"}
                             {pkg.id === "pro-studio" && "🚀"}
                           </div>
-                          <div className="text-right" aria-label={`Toplam alan ${pkg.specs.area}`}>
+                          <div className="text-right motion-safe:group-hover:scale-105 motion-safe:transition-transform motion-safe:duration-300" aria-label={`Toplam alan ${pkg.specs.area}`}>
                             <div className="text-2xl font-black text-blue-300">{pkg.specs.area}</div>
                             <div className="text-xs text-blue-200">TOPLAM ALAN</div>
                           </div>
                         </div>
 
-                        <h3 id={`${pkg.id}-title`} className="text-xl font-black mb-5 leading-tight border-b border-white/20 pb-4">
+                        <h3 id={`${pkg.id}-title`} className="text-xl font-black mb-5 leading-tight border-b border-white/20 pb-4 motion-safe:group-hover:border-white/30">
                           {pkg.name.split("—")[0].trim()}
                           <span className="block text-blue-300 text-lg font-semibold mt-2">{pkg.name.split("—")[1].trim()}</span>
                         </h3>
@@ -363,7 +378,7 @@ export default function PremiumLedPage() {
                         </h4>
                         <ul className="space-y-3" role="list">
                           {pkg.includes.map((item, i) => (
-                            <li key={i} className="flex items-start gap-3 text-gray-700 text-sm p-2 rounded-lg">
+                            <li key={i} className="flex items-start gap-3 text-gray-700 text-sm p-2 rounded-lg hover:bg-blue-50">
                               <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold mt-0.5 flex-shrink-0" aria-hidden="true">✓</span>
                               <span>{item}</span>
                             </li>
@@ -371,11 +386,19 @@ export default function PremiumLedPage() {
                         </ul>
                       </div>
 
+                      <div className="mb-8 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200" role="note">
+                        <div className="flex items-start gap-3">
+                          <span className="text-blue-600 text-lg" aria-hidden="true">💡</span>
+                          <p className="text-sm text-blue-800 flex-1">{pkg.note}</p>
+                        </div>
+                      </div>
+
                       <div className="bg-gradient-to-br from-slate-50 to-white rounded-xl p-5 border border-gray-200 shadow-sm mb-6" aria-labelledby={`${pkg.id}-pricing-title`}>
                         <div className="text-center mb-5">
                           <div id={`${pkg.id}-pricing-title`} className="text-xs text-gray-500 uppercase tracking-wider font-semibold">HAFTALIK KİRA</div>
                           <div className="text-3xl font-black text-gray-900 mt-2" aria-label={`Toplam fiyat ${formatTRY(pkg.pricing.total)} artı KDV`}>
-                            {formatTRY(pkg.pricing.total)} <span className="text-sm text-gray-500 font-normal ml-2">+ KDV</span>
+                            {formatTRY(pkg.pricing.total)}
+                            <span className="text-sm text-gray-500 font-normal ml-2">+ KDV</span>
                           </div>
                         </div>
 
@@ -415,8 +438,8 @@ export default function PremiumLedPage() {
 
                       <a
                         href={`https://wa.me/905453048671?text=Merhaba, ${encodeURIComponent(pkg.name)} hakkında detaylı bilgi ve teklif almak istiyorum.`}
-                        className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-4 px-6 rounded-xl w-full text-center block hover:from-blue-700 hover:to-purple-700 transition-all duration-500"
-                        aria-label={`${pkg.name} paketi için WhatsApp üzerinden teklif alın (yeni pencerede açılır)`}
+                        className="group/btn relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-4 px-6 rounded-xl w-full text-center block hover:from-blue-700 hover:to-purple-700 transition-all duration-500"
+                        aria-label={`Hemen Teklif Al — ${pkg.name} için WhatsApp üzerinden teklif alın (yeni pencerede açılır)`}
                         target="_blank"
                         rel="noopener nofollow"
                       >
@@ -425,7 +448,7 @@ export default function PremiumLedPage() {
                           Hemen Teklif Al
                           <span className="transition-transform duration-300" aria-hidden="true">→</span>
                         </span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -skew-x-12 -translate-x-full hover:translate-x-full transition-transform duration-1000" aria-hidden="true"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -skew-x-12 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000" aria-hidden="true"></div>
                       </a>
 
                       <p className="mt-4 text-center text-xs text-gray-500" aria-live="polite">
@@ -439,9 +462,9 @@ export default function PremiumLedPage() {
             </ul>
 
             <div className="text-center mt-16 max-w-2xl mx-auto">
-              <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm" role="note" aria-label="Önemli notlar">
-                <h4 className="font-bold text-gray-900 mb-3">💡 Önemli Notlar</h4>
-                <p className="text-sm text-gray-600">
+              <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-300" role="note" aria-label="Önemli notlar">
+                <h4 className="font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors duration-300">💡 Önemli Notlar</h4>
+                <p className="text-sm text-gray-600 hover:text-gray-700 transition-colors duration-300">
                   • Fiyatlar günlük kiralama içindir. Haftalık ve aylık kiralama için iletişime geçin.<br />
                   • Kurulum İstanbul içi geçerlidir. Şehir dışı projeler için özel teklif oluşturulur.<br />
                   • Tüm ekipmanlar sigortalıdır ve teknik destek garantisi içerir.
@@ -451,11 +474,8 @@ export default function PremiumLedPage() {
           </div>
         </section>
 
-        <section
-          className="py-20 bg-gradient-to-b from-white to-purple-50/30"
-          aria-labelledby="gallery-heading"
-          style={{ contentVisibility: "auto", containIntrinsicSize: "1px 900px" }}
-        >
+        {/* 🖼️ Proje Galerisi */}
+        <section className="py-20 bg-gradient-to-b from-white to-purple-50/30" aria-labelledby="gallery-heading">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <h2 id="gallery-heading" className="text-3xl md:text-5xl font-black mb-6">
@@ -472,12 +492,8 @@ export default function PremiumLedPage() {
           </div>
         </section>
 
-        <section
-          id="teknoloji"
-          className="py-20 bg-white"
-          aria-labelledby="technology-heading"
-          style={{ contentVisibility: "auto", containIntrinsicSize: "1px 800px" }}
-        >
+        {/* 🛠️ Teknoloji */}
+        <section id="teknoloji" className="py-20 bg-white" aria-labelledby="technology-heading">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <h2 id="technology-heading" className="text-3xl md:text-5xl font-black mb-6">
@@ -487,22 +503,22 @@ export default function PremiumLedPage() {
             </div>
 
             <div className="grid lg:grid-cols-2 gap-10 max-w-5xl mx-auto">
-              <div className="bg-gradient-to-br from-blue-50 to-white rounded-2xl p-6 border border-blue-200">
-                <h3 className="text-2xl font-black mb-5 text-gray-900">Teknik Özellikler</h3>
+              <div className="bg-gradient-to-br from-blue-50 to-white rounded-2xl p-6 border border-blue-200 hover:shadow-lg hover:border-blue-300 transition-all duration-300">
+                <h3 className="text-2xl font-black mb-5 text-gray-900 hover:text-blue-700 transition-colors duration-300">Teknik Özellikler</h3>
                 <ul className="space-y-2" role="list">
                   {Object.entries(PREMIUM_CONTENT.technicalSpecs).map(([key, value]) => (
-                    <li key={key} className="flex justify-between items-center py-2 border-b border-gray-200 rounded-lg px-2">
-                      <span className="font-semibold text-gray-700 text-sm capitalize">
+                    <li key={key} className="flex justify-between items-center py-2 border-b border-gray-200 hover:border-blue-200 hover:bg-blue-50/50 rounded-lg px-2 transition-all duration-300">
+                      <span className="font-semibold text-gray-700 text-sm capitalize hover:text-blue-800 transition-colors duration-300">
                         {key.replace(/([A-Z])/g, " $1").trim()}:
                       </span>
-                      <span className="text-blue-600 font-bold text-sm">{value}</span>
+                      <span className="text-blue-600 font-bold text-sm hover:text-blue-800 transition-colors duration-300">{value}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="bg-gradient-to-br from-purple-50 to-white rounded-2xl p-6 border border-purple-200">
-                <h3 className="text-2xl font-black mb-5 text-gray-900">Kullanım Alanları</h3>
+              <div className="bg-gradient-to-br from-purple-50 to-white rounded-2xl p-6 border border-purple-200 hover:shadow-lg hover:border-purple-300 transition-all duration-300">
+                <h3 className="text-2xl font-black mb-5 text-gray-900 hover:text-purple-700 transition-colors duration-300">Kullanım Alanları</h3>
                 <ul className="grid gap-4" role="list">
                   {[
                     { icon: "🎵", title: "Konser & Festival", desc: "Ana sahne ve yan ekranlar" },
@@ -512,11 +528,11 @@ export default function PremiumLedPage() {
                     { icon: "🎬", title: "TV & Yayın", desc: "Canlı yayın ve prodüksiyon" },
                     { icon: "💒", title: "Özel Etkinlikler", desc: "Düğün ve kutlamalar" },
                   ].map((item, index) => (
-                    <li key={index} className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200">
-                      <div className="text-xl" aria-hidden="true">{item.icon}</div>
+                    <li key={index} className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-purple-300 hover:shadow-md transition-all duration-300 group">
+                      <div className="text-xl group-hover:scale-110 transition-transform duration-300" aria-hidden="true">{item.icon}</div>
                       <div>
-                        <div className="font-semibold text-gray-900 text-sm">{item.title}</div>
-                        <div className="text-xs text-gray-600">{item.desc}</div>
+                        <div className="font-semibold text-gray-900 text-sm group-hover:text-purple-700 transition-colors duration-300">{item.title}</div>
+                        <div className="text-xs text-gray-600 group-hover:text-gray-700 transition-colors duration-300">{item.desc}</div>
                       </div>
                     </li>
                   ))}
@@ -526,16 +542,11 @@ export default function PremiumLedPage() {
           </div>
         </section>
 
-        {/* 📝 SEO Makalesi — içerik aynı, render ertelenir */}
-        <section
-          aria-labelledby="article-heading"
-          style={{ contentVisibility: "auto", containIntrinsicSize: "1px 1800px" }}
-        >
-          <EnhancedLedSeoArticle />
-        </section>
+        {/* 📝 SEO Makalesi */}
+        <EnhancedLedSeoArticle />
       </main>
 
-      {/* ⚡ Structured Data: inline <script>, client JS yok */}
+      {/* 🏷️ Structured Data */}
       <StructuredData packages={enrichedPackages} />
     </div>
   );
@@ -561,7 +572,6 @@ function EnhancedLedSeoArticle() {
             </ul>
           </div>
 
-          {/* İçindekiler ve bölümler — senin uzun içerik aynen korunuyor */}
           <div className="p-6 md:p-8 lg:p-12">
             {/* İçindekiler */}
             <nav className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 mb-10 border border-blue-200" aria-label="Makale içindekiler">
@@ -585,14 +595,14 @@ function EnhancedLedSeoArticle() {
               </ul>
             </nav>
 
-            {/* Bölüm 1 */}
+            {/* Bölüm 1 — Teknoloji trendleri */}
             <section className="mb-14" aria-labelledby="section1-heading">
               <h3 id="section1-heading" className="text-2xl md:text-3xl font-black mb-8 text-gray-900 border-b border-gray-200 pb-5">
                 🚀 LED Ekran Teknolojisi: 2025 Trendleri ve Yenilikler
               </h3>
 
               <div className="grid md:grid-cols-2 gap-8 mb-8">
-                <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300">
                   <h4 className="text-xl font-bold mb-4 text-blue-600">Piksel (SMD & COB) Gelişmeleri</h4>
                   <p className="text-gray-700 mb-5">
                     LED ekranlarda SMD en yaygın teknolojidir; ekonomik ve servis kolaylığı sağlar. COB paneller ise daha yüksek darbe dayanımı,
@@ -610,7 +620,7 @@ function EnhancedLedSeoArticle() {
                   </ul>
                 </div>
 
-                <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300">
                   <h4 className="text-xl font-bold mb-4 text-purple-600">HDR, Renk Gamı ve Yenileme</h4>
                   <p className="text-gray-700 mb-5">
                     HDR10 eşiklerine yaklaşan LED ekranlar daha yüksek kontrast ve canlı renkler sağlar. 1920–3840 Hz tazeleme hızı,
@@ -625,12 +635,13 @@ function EnhancedLedSeoArticle() {
               </div>
             </section>
 
-            {/* Bölüm 2 */}
+            {/* Bölüm 2 — Pitch tablosu */}
             <section className="mb-14" aria-labelledby="section2-heading">
               <h3 id="section2-heading" className="text-2xl md:text-3xl font-black mb-8 text-gray-900 border-b border-gray-200 pb-5">
                 📊 Piksel Aralığı (Pitch) Seçimi: Doğru Karar İçin Kapsamlı Rehber
               </h3>
 
+              {/* A11y+Kontrast fix: row = group, cost cell = emerald-800/900; hover:bg-blue-50 korunur */}
               <div className="overflow-x-auto mb-8" role="region" aria-label="Piksel aralığı karşılaştırma tablosu">
                 <table className="w-full border-collapse bg-white rounded-lg overflow-hidden shadow-md">
                   <caption className="sr-only">LED ekran piksel aralığı karşılaştırma tablosu</caption>
@@ -649,11 +660,13 @@ function EnhancedLedSeoArticle() {
                       { pitch: "P4",   distance: "6–18 m", usage: "Dış mekan etkinlikleri", cost: "≈ 1.800 TL" },
                       { pitch: "P6",   distance: "10–30 m", usage: "Stadyum, büyük festival", cost: "≈ 1.200 TL" },
                     ].map((row, index) => (
-                      <tr key={index} className="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
+                      <tr key={index} className="group border-b border-gray-200 hover:bg-blue-50 transition-colors duration-200">
                         <th scope="row" className="p-4 font-semibold text-blue-600">{row.pitch}</th>
-                        <td className="p-4">{row.distance}</td>
-                        <td className="p-4">{row.usage}</td>
-                        <td className="p-4 font-semibold text-green-600">{row.cost}</td>
+                        <td className="p-4"> {row.distance} </td>
+                        <td className="p-4"> {row.usage} </td>
+                        <td className="p-4 font-semibold text-emerald-800 group-hover:text-emerald-900">
+                          {row.cost}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -710,7 +723,7 @@ function EnhancedLedSeoArticle() {
                     answer: "Evet. 4K grafik, canlı kamera miksajı, scaler ve medya sunucu desteği veriyoruz; sahada operatör bulunur.",
                   },
                 ].map((faq, index) => (
-                  <li key={index} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                  <li key={index} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 hover:border-blue-200">
                     <h4 className="text-lg font-bold mb-4 text-gray-900 flex items-start gap-3">
                       <span className="text-blue-600 text-xl flex-shrink-0" aria-hidden="true">Q:</span>
                       {faq.question}
@@ -724,6 +737,7 @@ function EnhancedLedSeoArticle() {
               </ul>
             </section>
 
+            {/* Kısa Sonuç */}
             <section aria-labelledby="conclusion" className="mt-10">
               <h3 id="conclusion" className="sr-only">Sonuç</h3>
               <p className="text-gray-700 leading-relaxed">
@@ -738,7 +752,7 @@ function EnhancedLedSeoArticle() {
   );
 }
 
-// --- Structured Data: inline <script>; client JS yok (hydrate edilmez)
+// 🏷️ Structured Data Bileşeni
 function StructuredData({ packages }) {
   const siteUrl = "https://www.sahneva.com";
   const pageUrl = `${siteUrl}/led-ekran-kiralama`;
@@ -795,12 +809,9 @@ function StructuredData({ packages }) {
 
   return (
     <>
-      <script id="service-schema" type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
-      <script id="faq-schema" type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <script id="breadcrumb-schema" type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <Script id="service-schema" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      <Script id="faq-schema" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <Script id="breadcrumb-schema" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
     </>
   );
 }
