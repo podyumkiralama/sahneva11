@@ -10,7 +10,8 @@ const CaseGallery = dynamic(() => import("@/components/CaseGallery"), {
     <div
       className="flex justify-center items-center h-64"
       role="status"
-      aria-label="Galeri yükleniyor"
+      aria-live="polite"
+      aria-busy="true"            // A11y: yükleme anında yardımcı teknolojilere “meşgul”
     >
       <span aria-hidden="true">🖼️</span>
       <span className="sr-only">Galeri yükleniyor...</span>
@@ -177,12 +178,20 @@ export default function PremiumLedPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Skip link — her şeyden önce gelmeli */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded-lg z-[100] focus:outline-none focus:ring-2 focus:ring-white"
+      >
+        Ana içeriğe atla
+      </a>
+
       {/* 🎭 Hero */}
       <section
         className="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-slate-900 pt-20"
         aria-labelledby="main-heading"
       >
-        <div className="absolute inset-0">
+        <div className="absolute inset-0" aria-hidden="true">  {/* A11y: dekoratif katmanlar gizli */}
           {/* Fotoğraf */}
           <Image
             src={PREMIUM_CONTENT.hero.src}
@@ -193,13 +202,11 @@ export default function PremiumLedPage() {
             className="object-cover"
             sizes="100vw"
           />
-
           {/* Yarı saydam overlay’ler */}
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-purple-900/30 to-slate-950/60" aria-hidden="true" />
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/15 to-purple-600/15" aria-hidden="true" />
-
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-purple-900/30 to-slate-950/60" />
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/15 to-purple-600/15" />
           {PREMIUM_CONTENT.hero.overlay && (
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-900/30 via-blue-900/25 to-purple-900/30" aria-hidden="true" />
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-900/30 via-blue-900/25 to-purple-900/30" />
           )}
         </div>
 
@@ -208,11 +215,11 @@ export default function PremiumLedPage() {
           <div
             className="inline-flex items-center gap-3 bg-white/20 backdrop-blur-md rounded-2xl px-6 py-3 border border-white/30 mb-10"
             role="status"
-            aria-label="Hizmet durumu: İstanbul'da 7/24 Profesyonel Kurulum mevcut"
+            aria-live="polite"
           >
-            <span className="relative flex w-3 h-3">
-              <span className="motion-safe:animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" aria-hidden="true" />
-              <span className="relative inline-flex rounded-full w-3 h-3 bg-green-500" aria-hidden="true" />
+            <span className="relative flex w-3 h-3" aria-hidden="true">
+              <span className="motion-safe:animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+              <span className="relative inline-flex rounded-full w-3 h-3 bg-green-500" />
             </span>
             <span className="text-sm font-semibold">İstanbul'da 7/24 Profesyonel Kurulum</span>
           </div>
@@ -226,8 +233,12 @@ export default function PremiumLedPage() {
             <span className="block mt-3">4K çözünürlük & profesyonel yayın sistemleri</span>
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-            <Link href="#paketler" className={buttonStyles.primary} aria-label="LED ekran paketlerini inceleyin">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16" role="group" aria-label="Birincil eylemler">
+            <Link
+              href="#paketler"
+              className={buttonStyles.primary}
+              aria-label="LED ekran paketlerini incele"
+            >
               <span aria-hidden="true">🖥️</span>
               <span className="ml-2">Paketleri İncele</span>
             </Link>
@@ -235,35 +246,32 @@ export default function PremiumLedPage() {
             <a
               href="tel:+905453048671"
               className={buttonStyles.success}
-              aria-label="Hemen telefonla teklif alın - +90 545 304 86 71"
+              aria-label="Sahneva’yı arayarak hemen teklif al: +90 545 304 86 71"
             >
               <span aria-hidden="true">📞</span>
               <span className="ml-2">Hemen Teklif Al</span>
             </a>
 
-            <Link href="#teknoloji" className={buttonStyles.outline} aria-label="LED ekran teknolojileri">
+            <Link
+              href="#teknoloji"
+              className={buttonStyles.outline}
+              aria-label="LED ekran teknolojisi bölümüne git"
+            >
               <span aria-hidden="true">⚡</span>
               <span className="ml-2">Teknoloji</span>
             </Link>
           </div>
 
-          <div className="flex flex-wrap justify-center items-center gap-8 text-white/90 text-sm drop-shadow" role="list" aria-label="Firma özellikleri">
-            <div className="flex items-center gap-2" role="listitem"><span aria-hidden="true">⭐</span><span>4.9/5 (183 Değerlendirme)</span></div>
-            <div className="flex items-center gap-2" role="listitem"><span aria-hidden="true">🏆</span><span>300+ Başarılı Proje</span></div>
-            <div className="flex items-center gap-2" role="listitem"><span aria-hidden="true">🚀</span><span>2–6 Saatte Kurulum</span></div>
-          </div>
+          {/* Güven göstergeleri */}
+          <ul className="flex flex-wrap justify-center items-center gap-8 text-white/90 text-sm drop-shadow" aria-label="Firma özellikleri">
+            <li className="flex items-center gap-2"><span aria-hidden="true">⭐</span><span>4.9/5 (183 Değerlendirme)</span></li>
+            <li className="flex items-center gap-2"><span aria-hidden="true">🏆</span><span>300+ Başarılı Proje</span></li>
+            <li className="flex items-center gap-2"><span aria-hidden="true">🚀</span><span>2–6 Saatte Kurulum</span></li>
+          </ul>
         </div>
       </section>
 
-      {/* Skip link */}
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded-lg z-50 focus:outline-none focus:ring-2 focus:ring-white"
-      >
-        Ana içeriğe atla
-      </a>
-
-      <main id="main-content" tabIndex={-1}>
+      <main id="main-content" tabIndex={-1} role="main"> {/* A11y: landmark + odak */}
         {/* ✨ Öne Çıkan Özellikler */}
         <section className="py-20 bg-gradient-to-b from-white to-blue-50/30" aria-labelledby="features-heading">
           <div className="container mx-auto px-4">
@@ -274,22 +282,20 @@ export default function PremiumLedPage() {
               <p className="text-lg text-gray-700 max-w-2xl mx-auto">En son teknoloji LED ekranlar ve profesyonel ekip ile kalite garantisi</p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8" role="list">
+            <ul className="grid md:grid-cols-2 lg:grid-cols-4 gap-8" role="list"> {/* A11y: rol açık */}
               {PREMIUM_CONTENT.features.map((feature) => (
-                <div
+                <li
                   key={feature.title}
                   className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 text-center group hover:shadow-xl motion-safe:hover:scale-105 motion-safe:transition-all motion-safe:duration-300 motion-safe:focus-within:scale-105"
-                  role="listitem"
-                  tabIndex={0}
                 >
                   <div className="text-3xl mb-4 motion-safe:group-hover:scale-110 motion-safe:transition-transform motion-safe:duration-300" aria-hidden="true">
                     {feature.icon}
                   </div>
                   <h3 className="text-lg font-bold mb-3 text-gray-900">{feature.title}</h3>
                   <p className="text-gray-700 text-sm leading-relaxed">{feature.description}</p>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </section>
 
@@ -303,172 +309,164 @@ export default function PremiumLedPage() {
               <p className="text-lg text-gray-700 max-w-2xl mx-auto">İhtiyacınıza özel hazırlanmış, anahtar teslim LED ekran çözümleri</p>
             </div>
 
-            <div className="grid lg:grid-cols-3 gap-10 max-w-6xl mx-auto" role="list" aria-label="LED ekran paketleri">
+            <ul className="grid lg:grid-cols-3 gap-10 max-w-6xl mx-auto" aria-label="LED ekran paketleri" role="list">
               {enrichedPackages.map((pkg) => (
-                <article
-                  key={pkg.id}
-                  className={`relative bg-white rounded-2xl border border-gray-200 shadow-xl overflow-hidden group hover:shadow-2xl motion-safe:transition-all motion-safe:duration-500 ${
-                    pkg.badge === "Çok Satan"
-                      ? "ring-4 ring-blue-500/20 motion-safe:transform motion-safe:scale-105 motion-safe:hover:scale-110"
-                      : "motion-safe:hover:-translate-y-2 motion-safe:focus:-translate-y-2"
-                  }`}
-                  role="listitem"
-                  tabIndex={0}
-                >
-                  {pkg.badge && (
-                    <div
-                      className={`absolute -top-3 -right-3 px-4 py-2 rounded-full text-sm font-bold z-20 text-white shadow-lg motion-safe:group-hover:scale-110 motion-safe:group-hover:rotate-6 motion-safe:transition-all motion-safe:duration-300 ${
-                        pkg.badge === "Çok Satan"
-                          ? "bg-gradient-to-r from-orange-500 to-red-500"
-                          : pkg.badge === "Premium"
-                          ? "bg-gradient-to-r from-purple-600 to-blue-600"
-                          : "bg-gradient-to-r from-green-500 to-emerald-600"
-                      }`}
-                    >
-                      {pkg.badge}
-                    </div>
-                  )}
+                <li key={pkg.id}>
+                  <article
+                    className={`relative bg-white rounded-2xl border border-gray-200 shadow-xl overflow-hidden group hover:shadow-2xl motion-safe:transition-all motion-safe:duration-500 ${
+                      pkg.badge === "Çok Satan"
+                        ? "ring-4 ring-blue-500/20 motion-safe:transform motion-safe:scale-105 motion-safe:hover:scale-110"
+                        : "motion-safe:hover:-translate-y-2"
+                    }`}
+                    aria-labelledby={`${pkg.id}-title`}
+                  >
+                    {pkg.badge && (
+                      <div
+                        className={`absolute -top-3 -right-3 px-4 py-2 rounded-full text-sm font-bold z-20 text-white shadow-lg motion-safe:group-hover:scale-110 motion-safe:group-hover:rotate-6 motion-safe:transition-all motion-safe:duration-300`}
+                        aria-label={`Öne çıkan: ${pkg.badge}`}
+                      >
+                        {pkg.badge}
+                      </div>
+                    )}
 
-                  <div className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 p-6 text-white overflow-hidden motion-safe:group-hover:from-slate-800 motion-safe:group-hover:via-blue-800 motion-safe:group-hover:to-purple-800 motion-safe:transition-all motion-safe:duration-500">
-                    <div className="absolute inset-0 opacity-10" aria-hidden="true">
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full -translate-y-16 translate-x-16 motion-safe:group-hover:translate-x-12 motion-safe:transition-transform motion-safe:duration-700"></div>
-                      <div className="absolute bottom-0 left-0 w-24 h-24 bg-blue-400 rounded-full translate-y-12 -translate-x-12 motion-safe:group-hover:-translate-x-8 motion-safe:transition-transform motion-safe:duration-700"></div>
-                    </div>
-
-                    <div className="relative z-10">
-                      <div className="flex items-center justify-between mb-5">
-                        <div className="text-3xl motion-safe:group-hover:scale-110 motion-safe:transition-transform motion-safe:duration-300" aria-hidden="true">
-                          {pkg.id === "ic-mekan" && "🏢"}
-                          {pkg.id === "dis-mekan" && "🌆"}
-                          {pkg.id === "pro-studio" && "🚀"}
-                        </div>
-                        <div className="text-right motion-safe:group-hover:scale-105 motion-safe:transition-transform motion-safe:duration-300">
-                          <div className="text-2xl font-black text-blue-300">{pkg.specs.area}</div>
-                          <div className="text-xs text-blue-200">TOPLAM ALAN</div>
-                        </div>
+                    <div className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 p-6 text-white overflow-hidden motion-safe:group-hover:from-slate-800 motion-safe:group-hover:via-blue-800 motion-safe:group-hover:to-purple-800 motion-safe:transition-all motion-safe:duration-500">
+                      <div className="absolute inset-0 opacity-10" aria-hidden="true">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full -translate-y-16 translate-x-16 motion-safe:group-hover:translate-x-12 motion-safe:transition-transform motion-safe:duration-700"></div>
+                        <div className="absolute bottom-0 left-0 w-24 h-24 bg-blue-400 rounded-full translate-y-12 -translate-x-12 motion-safe:group-hover:-translate-x-8 motion-safe:transition-transform motion-safe:duration-700"></div>
                       </div>
 
-                      <h3 className="text-xl font-black mb-5 leading-tight border-b border-white/20 pb-4 motion-safe:group-hover:border-white/30">
-                        {pkg.name.split("—")[0].trim()}
-                        <span className="block text-blue-300 text-lg font-semibold mt-2">{pkg.name.split("—")[1].trim()}</span>
-                      </h3>
+                      <div className="relative z-10">
+                        <div className="flex items-center justify-between mb-5">
+                          <div className="text-3xl motion-safe:group-hover:scale-110 motion-safe:transition-transform motion-safe:duration-300" aria-hidden="true">
+                            {pkg.id === "ic-mekan" && "🏢"}
+                            {pkg.id === "dis-mekan" && "🌆"}
+                            {pkg.id === "pro-studio" && "🚀"}
+                          </div>
+                          <div className="text-right motion-safe:group-hover:scale-105 motion-safe:transition-transform motion-safe:duration-300" aria-label={`Toplam alan ${pkg.specs.area}`}>
+                            <div className="text-2xl font-black text-blue-300">{pkg.specs.area}</div>
+                            <div className="text-xs text-blue-200">TOPLAM ALAN</div>
+                          </div>
+                        </div>
 
-                      <div className="grid grid-cols-2 gap-3 text-sm" role="list" aria-label="Paket özellikleri">
-                        <div className="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm" role="listitem">
-                          <div className="text-blue-300 text-xs mb-1">ÖLÇÜ</div>
-                          <div className="font-bold text-white">{pkg.specs.size}</div>
-                        </div>
-                        <div className="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm" role="listitem">
-                          <div className="text-blue-300 text-xs mb-1">PİKSEL</div>
-                          <div className="font-bold text-white">{pkg.specs.pixel}</div>
-                        </div>
-                        <div className="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm" role="listitem">
-                          <div className="text-blue-300 text-xs mb-1">PARLAKLIK</div>
-                          <div className="font-bold text-white">{pkg.specs.brightness}</div>
-                        </div>
-                        <div className="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm" role="listitem">
-                          <div className="text-blue-300 text-xs mb-1">ÇÖZÜNÜRLÜK</div>
-                          <div className="font-bold text-white">{pkg.specs.resolution}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                        <h3 id={`${pkg.id}-title`} className="text-xl font-black mb-5 leading-tight border-b border-white/20 pb-4 motion-safe:group-hover:border-white/30">
+                          {pkg.name.split("—")[0].trim()}
+                          <span className="block text-blue-300 text-lg font-semibold mt-2">{pkg.name.split("—")[1].trim()}</span>
+                        </h3>
 
-                  <div className="p-6">
-                    <div className="mb-8">
-                      <h4 className="font-bold text-gray-900 mb-4 text-lg flex items-center gap-2">
-                        <span className="w-2 h-2 bg-blue-600 rounded-full" aria-hidden="true"></span>
-                        Paket İçeriği
-                      </h4>
-                      <ul className="space-y-3" role="list">
-                        {pkg.includes.map((item, i) => (
-                          <li key={i} className="flex items-start gap-3 text-gray-700 text-sm p-2 rounded-lg hover:bg-blue-50" role="listitem">
-                            <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold mt-0.5 flex-shrink-0" aria-hidden="true">✓</span>
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div className="mb-8 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200" role="note">
-                      <div className="flex items-start gap-3">
-                        <span className="text-blue-600 text-lg" aria-hidden="true">💡</span>
-                        <p className="text-sm text-blue-800 flex-1">{pkg.note}</p>
+                        <dl className="grid grid-cols-2 gap-3 text-sm" aria-label="Paket özellikleri">
+                          <div className="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm">
+                            <dt className="text-blue-300 text-xs mb-1">ÖLÇÜ</dt>
+                            <dd className="font-bold text-white">{pkg.specs.size}</dd>
+                          </div>
+                          <div className="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm">
+                            <dt className="text-blue-300 text-xs mb-1">PİKSEL</dt>
+                            <dd className="font-bold text-white">{pkg.specs.pixel}</dd>
+                          </div>
+                          <div className="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm">
+                            <dt className="text-blue-300 text-xs mb-1">PARLAKLIK</dt>
+                            <dd className="font-bold text-white">{pkg.specs.brightness}</dd>
+                          </div>
+                          <div className="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm">
+                            <dt className="text-blue-300 text-xs mb-1">ÇÖZÜNÜRLÜK</dt>
+                            <dd className="font-bold text-white">{pkg.specs.resolution}</dd>
+                          </div>
+                        </dl>
                       </div>
                     </div>
 
-                    <div className="bg-gradient-to-br from-slate-50 to-white rounded-xl p-5 border border-gray-200 shadow-sm mb-6">
-                      <div className="text-center mb-5">
-                        <div className="text-xs text-gray-500 uppercase tracking-wider font-semibold">HAFTALIK KİRA</div>
-                        <div className="text-3xl font-black text-gray-900 mt-2">
-                          {formatTRY(pkg.pricing.total)}
-                          <span className="text-sm text-gray-500 font-normal ml-2">+ KDV</span>
+                    <div className="p-6">
+                      <div className="mb-8">
+                        <h4 className="font-bold text-gray-900 mb-4 text-lg flex items-center gap-2">
+                          <span className="w-2 h-2 bg-blue-600 rounded-full" aria-hidden="true"></span>
+                          Paket İçeriği
+                        </h4>
+                        <ul className="space-y-3" role="list">
+                          {pkg.includes.map((item, i) => (
+                            <li key={i} className="flex items-start gap-3 text-gray-700 text-sm p-2 rounded-lg hover:bg-blue-50">
+                              <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold mt-0.5 flex-shrink-0" aria-hidden="true">✓</span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="mb-8 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200" role="note">
+                        <div className="flex items-start gap-3">
+                          <span className="text-blue-600 text-lg" aria-hidden="true">💡</span>
+                          <p className="text-sm text-blue-800 flex-1">{pkg.note}</p>
                         </div>
                       </div>
 
-                      <div className="space-y-4 text-sm">
-                        <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                          <span className="text-gray-600 flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" aria-hidden="true"></span>
-                            LED Ekran Kiralama
-                          </span>
-                          <span className="font-semibold text-gray-900">{formatTRY(pkg.pricing.base)}</span>
-                        </div>
-                        <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                          <span className="text-gray-600 flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 bg-green-500 rounded-full" aria-hidden="true"></span>
-                            Profesyonel Kurulum
-                          </span>
-                          <span className="font-semibold text-gray-900">{formatTRY(pkg.pricing.setup)}</span>
-                        </div>
-                        <div className="flex justify-between items-center py-2">
-                          <span className="text-gray-600 flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 bg-purple-500 rounded-full" aria-hidden="true"></span>
-                            Teknisyen & Operatör
-                          </span>
-                          <span className="font-semibold text-gray-900">{formatTRY(pkg.pricing.operator)}</span>
+                      <div className="bg-gradient-to-br from-slate-50 to-white rounded-xl p-5 border border-gray-200 shadow-sm mb-6" aria-labelledby={`${pkg.id}-pricing-title`}>
+                        <div className="text-center mb-5">
+                          <div id={`${pkg.id}-pricing-title`} className="text-xs text-gray-500 uppercase tracking-wider font-semibold">HAFTALIK KİRA</div>
+                          <div className="text-3xl font-black text-gray-900 mt-2" aria-label={`Toplam fiyat ${formatTRY(pkg.pricing.total)} artı KDV`}>
+                            {formatTRY(pkg.pricing.total)}
+                            <span className="text-sm text-gray-500 font-normal ml-2">+ KDV</span>
+                          </div>
                         </div>
 
-                        <div className="mt-5 pt-4 border-t border-gray-200">
-                          <div className="flex justify-between items-center">
-                            <span className="font-bold text-gray-900 text-base">Toplam (İstanbul)</span>
-                            <span className="font-black text-xl text-blue-600 bg-blue-50 px-3 py-1 rounded-lg">
-                              {formatTRY(pkg.pricing.total)}
+                        <div className="space-y-4 text-sm" aria-label="Maliyet dökümü">
+                          <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span className="text-gray-600 flex items-center gap-2">
+                              <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" aria-hidden="true"></span>
+                              LED Ekran Kiralama
                             </span>
+                            <span className="font-semibold text-gray-900">{formatTRY(pkg.pricing.base)}</span>
+                          </div>
+                          <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span className="text-gray-600 flex items-center gap-2">
+                              <span className="w-1.5 h-1.5 bg-green-500 rounded-full" aria-hidden="true"></span>
+                              Profesyonel Kurulum
+                            </span>
+                            <span className="font-semibold text-gray-900">{formatTRY(pkg.pricing.setup)}</span>
+                          </div>
+                          <div className="flex justify-between items-center py-2">
+                            <span className="text-gray-600 flex items-center gap-2">
+                              <span className="w-1.5 h-1.5 bg-purple-500 rounded-full" aria-hidden="true"></span>
+                              Teknisyen & Operatör
+                            </span>
+                            <span className="font-semibold text-gray-900">{formatTRY(pkg.pricing.operator)}</span>
+                          </div>
+
+                          <div className="mt-5 pt-4 border-t border-gray-200">
+                            <div className="flex justify-between items-center">
+                              <span className="font-bold text-gray-900 text-base">Toplam (İstanbul)</span>
+                              <span className="font-black text-xl text-blue-600 bg-blue-50 px-3 py-1 rounded-lg">
+                                {formatTRY(pkg.pricing.total)}
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
 
-                    <a
-                      href={`https://wa.me/905453048671?text=Merhaba, ${encodeURIComponent(pkg.name)} hakkında detaylı bilgi ve teklif almak istiyorum.`}
-                      className="group/btn relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-4 px-6 rounded-xl w-full text-center block hover:from-blue-700 hover:to-purple-700 transition-all duration-500"
-                      aria-label={`${pkg.name} için WhatsApp üzerinden hemen teklif alın`}
-                      target="_blank"
-                      rel="noopener nofollow"
-                    >
-                      <span className="relative z-10 flex items-center justify-center gap-2">
-                        <span className="text-lg" aria-hidden="true">💬</span>
-                        Hemen Teklif Al
-                        <span className="transition-transform duration-300" aria-hidden="true">→</span>
-                      </span>
-                      <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -skew-x-12 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000" aria-hidden="true"></div>
-                    </a>
+                      <a
+                        href={`https://wa.me/905453048671?text=Merhaba, ${encodeURIComponent(pkg.name)} hakkında detaylı bilgi ve teklif almak istiyorum.`}
+                        className="group/btn relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-4 px-6 rounded-xl w-full text-center block hover:from-blue-700 hover:to-purple-700 transition-all duration-500"
+                        aria-label={`${pkg.name} paketi için WhatsApp üzerinden teklif alın (yeni pencerede açılır)`}
+                        target="_blank"
+                        rel="noopener nofollow"
+                      >
+                        <span className="relative z-10 flex items-center justify-center gap-2">
+                          <span className="text-lg" aria-hidden="true">💬</span>
+                          Hemen Teklif Al
+                          <span className="transition-transform duration-300" aria-hidden="true">→</span>
+                        </span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -skew-x-12 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000" aria-hidden="true"></div>
+                      </a>
 
-                    <div className="mt-4 text-center">
-                      <p className="text-xs text-gray-500">
+                      <p className="mt-4 text-center text-xs text-gray-500" aria-live="polite">
                         <span aria-hidden="true">📞</span>
-                        <span className="sr-only">Telefon:</span>
                         <strong> 2 saat içinde</strong> detaylı teklif
                       </p>
                     </div>
-                  </div>
-                </article>
+                  </article>
+                </li>
               ))}
-            </div>
+            </ul>
 
             <div className="text-center mt-16 max-w-2xl mx-auto">
-              <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-300" role="note">
+              <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-300" role="note" aria-label="Önemli notlar">
                 <h4 className="font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors duration-300">💡 Önemli Notlar</h4>
                 <p className="text-sm text-gray-600 hover:text-gray-700 transition-colors duration-300">
                   • Fiyatlar günlük kiralama içindir. Haftalık ve aylık kiralama için iletişime geçin.<br />
@@ -493,6 +491,7 @@ export default function PremiumLedPage() {
             </div>
 
             <div className="max-w-6xl mx-auto">
+              {/* CaseGallery alt metinler zaten sağlanıyor */}
               <CaseGallery images={PREMIUM_CONTENT.gallery} />
             </div>
           </div>
@@ -511,21 +510,21 @@ export default function PremiumLedPage() {
             <div className="grid lg:grid-cols-2 gap-10 max-w-5xl mx-auto">
               <div className="bg-gradient-to-br from-blue-50 to-white rounded-2xl p-6 border border-blue-200 hover:shadow-lg hover:border-blue-300 transition-all duration-300">
                 <h3 className="text-2xl font-black mb-5 text-gray-900 hover:text-blue-700 transition-colors duration-300">Teknik Özellikler</h3>
-                <div className="space-y-4">
+                <ul className="space-y-2" role="list">
                   {Object.entries(PREMIUM_CONTENT.technicalSpecs).map(([key, value]) => (
-                    <div key={key} className="flex justify-between items-center py-2 border-b border-gray-200 hover:border-blue-200 hover:bg-blue-50/50 rounded-lg px-2 transition-all duration-300">
+                    <li key={key} className="flex justify-between items-center py-2 border-b border-gray-200 hover:border-blue-200 hover:bg-blue-50/50 rounded-lg px-2 transition-all duration-300">
                       <span className="font-semibold text-gray-700 text-sm capitalize hover:text-blue-800 transition-colors duration-300">
                         {key.replace(/([A-Z])/g, " $1").trim()}:
                       </span>
                       <span className="text-blue-600 font-bold text-sm hover:text-blue-800 transition-colors duration-300">{value}</span>
-                    </div>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
 
               <div className="bg-gradient-to-br from-purple-50 to-white rounded-2xl p-6 border border-purple-200 hover:shadow-lg hover:border-purple-300 transition-all duration-300">
                 <h3 className="text-2xl font-black mb-5 text-gray-900 hover:text-purple-700 transition-colors duration-300">Kullanım Alanları</h3>
-                <div className="grid gap-4">
+                <ul className="grid gap-4" role="list">
                   {[
                     { icon: "🎵", title: "Konser & Festival", desc: "Ana sahne ve yan ekranlar" },
                     { icon: "💼", title: "Kurumsal Etkinlik", desc: "Lansman ve toplantılar" },
@@ -534,15 +533,15 @@ export default function PremiumLedPage() {
                     { icon: "🎬", title: "TV & Yayın", desc: "Canlı yayın ve prodüksiyon" },
                     { icon: "💒", title: "Özel Etkinlikler", desc: "Düğün ve kutlamalar" },
                   ].map((item, index) => (
-                    <div key={index} className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-purple-300 hover:shadow-md transition-all duration-300 group">
+                    <li key={index} className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-purple-300 hover:shadow-md transition-all duration-300 group">
                       <div className="text-xl group-hover:scale-110 transition-transform duration-300" aria-hidden="true">{item.icon}</div>
                       <div>
                         <div className="font-semibold text-gray-900 text-sm group-hover:text-purple-700 transition-colors duration-300">{item.title}</div>
                         <div className="text-xs text-gray-600 group-hover:text-gray-700 transition-colors duration-300">{item.desc}</div>
                       </div>
-                    </div>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
             </div>
           </div>
@@ -571,20 +570,20 @@ function EnhancedLedSeoArticle() {
             <p className="text-lg md:text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
               Etkinlikleriniz için doğru LED ekran seçimi, kurulum süreçleri, maliyet analizi ve profesyonel çözümler hakkında her şey.
             </p>
-            <div className="flex flex-wrap justify-center gap-4 mt-8 text-sm" role="list">
-              <span className="bg-white/20 px-4 py-2 rounded-full" role="listitem">✅ 10+ Yıllık Deneyim</span>
-              <span className="bg-white/20 px-4 py-2 rounded-full" role="listitem">📊 300+ Başarılı Proje</span>
-              <span className="bg-white/20 px-4 py-2 rounded-full" role="listitem">🏆 Teknoloji Lideri</span>
-            </div>
+            <ul className="flex flex-wrap justify-center gap-4 mt-8 text-sm" role="list">
+              <li className="bg-white/20 px-4 py-2 rounded-full">✅ 10+ Yıllık Deneyim</li>
+              <li className="bg-white/20 px-4 py-2 rounded-full">📊 300+ Başarılı Proje</li>
+              <li className="bg-white/20 px-4 py-2 rounded-full">🏆 Teknoloji Lideri</li>
+            </ul>
           </div>
 
           <div className="p-6 md:p-8 lg:p-12">
             {/* İçindekiler */}
-            <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 mb-10 border border-blue-200" role="navigation" aria-label="Makale içindekiler">
+            <nav className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 mb-10 border border-blue-200" aria-label="Makale içindekiler">
               <h3 className="text-xl font-black text-gray-900 mb-5 flex items-center gap-3">
                 <span aria-hidden="true">📑</span>Bu Makalede Neler Bulacaksınız?
               </h3>
-              <div className="grid md:grid-cols-2 gap-4 text-sm" role="list">
+              <ul className="grid md:grid-cols-2 gap-4 text-sm" role="list">
                 {[
                   "LED Ekran Teknolojisi ve Çeşitleri",
                   "Piksel Aralığı (Pitch) Seçimi Rehberi",
@@ -593,13 +592,13 @@ function EnhancedLedSeoArticle() {
                   "Kurulum ve Teknik Gereksinimler",
                   "Sık Yapılan Hatalar ve Çözümleri",
                 ].map((item, index) => (
-                  <div key={index} className="flex items-center gap-3" role="listitem">
+                  <li key={index} className="flex items-center gap-3">
                     <span className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0" aria-hidden="true"></span>
                     <span className="text-gray-700">{item}</span>
-                  </div>
+                  </li>
                 ))}
-              </div>
-            </div>
+              </ul>
+            </nav>
 
             {/* Bölüm 1 — Teknoloji trendleri */}
             <section className="mb-14" aria-labelledby="section1-heading">
@@ -615,11 +614,11 @@ function EnhancedLedSeoArticle() {
                     daha az dikiş çizgisi ve daha iyi ısı yönetimi sunar. İç mekan yakın izleme mesafelerinde COB dikkat çekmektedir.
                   </p>
                   <ul className="space-y-3 text-sm text-gray-600" role="list">
-                    <li className="flex items-center gap-2" role="listitem">
+                    <li className="flex items-center gap-2">
                       <span className="w-1.5 h-1.5 bg-green-500 rounded-full" aria-hidden="true"></span>
                       SMD: Yaygın, uygun maliyetli, kolay modül servisi
                     </li>
-                    <li className="flex items-center gap-2" role="listitem">
+                    <li className="flex items-center gap-2">
                       <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" aria-hidden="true"></span>
                       COB: Yüksek dayanım, düşük yansıma, daha homojen yüzey
                     </li>
@@ -632,7 +631,7 @@ function EnhancedLedSeoArticle() {
                     HDR10 eşiklerine yaklaşan LED ekranlar daha yüksek kontrast ve canlı renkler sağlar. 1920–3840 Hz tazeleme hızı,
                     kamerada moiré ve bantlanmayı azaltır; canlı yayınlar için kritik önem taşır.
                   </p>
-                  <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded-lg" role="note">
+                  <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded-lg" role="note" aria-label="Kamera yayını için ipucu">
                     <p className="text-sm text-purple-700 font-semibold">
                       💡 İpucu: Kamera yayını varsa en az 3840 Hz ve kaliteli işlemci (Novastar vb.) tercih edin.
                     </p>
@@ -647,7 +646,7 @@ function EnhancedLedSeoArticle() {
                 📊 Piksel Aralığı (Pitch) Seçimi: Doğru Karar İçin Kapsamlı Rehber
               </h3>
 
-              <div className="overflow-x-auto mb-8">
+              <div className="overflow-x-auto mb-8" role="region" aria-label="Piksel aralığı karşılaştırma tablosu">
                 <table className="w-full border-collapse bg-white rounded-lg overflow-hidden shadow-md">
                   <caption className="sr-only">LED ekran piksel aralığı karşılaştırma tablosu</caption>
                   <thead className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
@@ -676,7 +675,7 @@ function EnhancedLedSeoArticle() {
                 </table>
               </div>
 
-              <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-200" role="note">
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-200" role="note" aria-label="Kritik seçim ipuçları">
                 <h4 className="text-lg font-bold mb-4 text-green-700 flex items-center gap-2">
                   <span aria-hidden="true">🎯</span>Kritik Seçim İpuçları
                 </h4>
@@ -684,17 +683,17 @@ function EnhancedLedSeoArticle() {
                   <div>
                     <p className="font-semibold text-gray-700 mb-3">✅ Doğru Seçim İçin:</p>
                     <ul className="space-y-2 text-gray-600" role="list">
-                      <li role="listitem">• İzleyici mesafesini ve ekran ebatını birlikte planlayın</li>
-                      <li role="listitem">• İç mekanda P2.5–P4; dış mekanda ≥5000 nit parlaklık şart</li>
-                      <li role="listitem">• İçerik formatı ve video işlemci kapasitesini doğrulayın</li>
+                      <li>• İzleyici mesafesini ve ekran ebatını birlikte planlayın</li>
+                      <li>• İç mekanda P2.5–P4; dış mekanda ≥5000 nit parlaklık şart</li>
+                      <li>• İçerik formatı ve video işlemci kapasitesini doğrulayın</li>
                     </ul>
                   </div>
                   <div>
                     <p className="font-semibold text-gray-700 mb-3">❌ Kaçınılması Gerekenler:</p>
                     <ul className="space-y-2 text-gray-600" role="list">
-                      <li role="listitem">• Yakın izleme için büyük pitch seçimi</li>
-                      <li role="listitem">• Yetersiz güç altyapısı/kaçak akım koruması</li>
-                      <li role="listitem">• Düşük yenileme hızında kamera yayını</li>
+                      <li>• Yakın izleme için büyük pitch seçimi</li>
+                      <li>• Yetersiz güç altyapısı/kaçak akım koruması</li>
+                      <li>• Düşük yenileme hızında kamera yayını</li>
                     </ul>
                   </div>
                 </div>
@@ -707,7 +706,7 @@ function EnhancedLedSeoArticle() {
                 ❓ Sık Sorulan Sorular
               </h3>
 
-              <div className="grid md:grid-cols-2 gap-8" role="list">
+              <ul className="grid md:grid-cols-2 gap-8" role="list">
                 {[
                   {
                     question: "LED ekran kurulumu ne kadar sürer?",
@@ -726,7 +725,7 @@ function EnhancedLedSeoArticle() {
                     answer: "Evet. 4K grafik, canlı kamera miksajı, scaler ve medya sunucu desteği veriyoruz; sahada operatör bulunur.",
                   },
                 ].map((faq, index) => (
-                  <div key={index} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 hover:border-blue-200" role="listitem">
+                  <li key={index} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 hover:border-blue-200">
                     <h4 className="text-lg font-bold mb-4 text-gray-900 flex items-start gap-3">
                       <span className="text-blue-600 text-xl flex-shrink-0" aria-hidden="true">Q:</span>
                       {faq.question}
@@ -735,9 +734,9 @@ function EnhancedLedSeoArticle() {
                       <span className="text-green-600 text-lg flex-shrink-0 mt-0.5" aria-hidden="true">A:</span>
                       {faq.answer}
                     </p>
-                  </div>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </section>
 
             {/* Kısa Sonuç */}
@@ -812,6 +811,7 @@ function StructuredData({ packages }) {
 
   return (
     <>
+      {/* A11y: structured data aynı, erişilebilirlik etkilenmez */}
       <Script id="service-schema" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
       <Script id="faq-schema" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <Script id="breadcrumb-schema" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
