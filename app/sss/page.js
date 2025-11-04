@@ -205,18 +205,23 @@ function FaqSection({ id, icon, title, items }) {
 /* ——— SAYFA ——— */
 export default function FaqPage() {
   // Tekil ve stabil JSON-LD (id ile)
+  const mainEntity = [];
+  for (const category of FAQ_CATEGORIES) {
+    for (const item of category.items) {
+      mainEntity.push({
+        "@type": "Question",
+        "name": item.q,
+        "acceptedAnswer": { "@type": "Answer", "text": stripTags(item.a) },
+      });
+    }
+  }
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "@id": "https://www.sahneva.com/sss#faq",
     "inLanguage": "tr-TR",
-    "mainEntity": FAQ_CATEGORIES.flatMap((cat) =>
-      cat.items.map((it) => ({
-        "@type": "Question",
-        "name": it.q,
-        "acceptedAnswer": { "@type": "Answer", "text": stripTags(it.a) },
-      }))
-    ),
+    "mainEntity": mainEntity,
   };
 
   return (
