@@ -2,16 +2,7 @@
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Inter } from "next/font/google";
 import UtilityBar from "../components/UtilityBar";
-
-const inter = Inter({
-  subsets: ["latin"],
-  preload: false,
-  display: "optional",
-  fallback: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "Arial", "sans-serif"],
-  adjustFontFallback: true,
-});
 
 // Viewport
 export const viewport = {
@@ -43,8 +34,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="tr" dir="ltr" className={inter.className}>
-      <body className="min-h-screen bg-white text-neutral-900 antialiased">
+    <html lang="tr" dir="ltr">
+      <body className="min-h-screen bg-white font-sans text-neutral-900 antialiased">
 
         {/* Skip link (sayfa içindeki #main-content <main>’e gider) */}
         <a

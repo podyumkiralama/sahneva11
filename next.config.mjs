@@ -37,7 +37,7 @@ const nextConfig = {
     esmExternals: true,
   },
 
-  webpack: (config) => {
+  webpack: (config, { webpack }) => {
     config.resolve = config.resolve || {};
     config.resolve.alias = {
       ...(config.resolve.alias || {}),
@@ -45,9 +45,23 @@ const nextConfig = {
       "next/dist/build/polyfills/polyfill-nomodule": require.resolve("./lib/empty-polyfill.js"),
     };
 
+    config.plugins = config.plugins || [];
+    const emptyPolyfillPath = require.resolve("./lib/empty-polyfill.js");
+    config.plugins.push(
+      new webpack.NormalModuleReplacementPlugin(
+        /next[\\/](dist|esm)[\\/]build[\\/]polyfills[\\/]polyfill-(?:module|nomodule)/,
+        emptyPolyfillPath
+      )
+    );
+
     const originalEntry = config.entry;
     config.entry = async () => {
       const entries = await originalEntry();
+
+      if ("polyfills" in entries) {
+        delete entries.polyfills;
+      }
+
       for (const key of Object.keys(entries)) {
         const value = entries[key];
         if (Array.isArray(value)) {
@@ -56,8 +70,62 @@ const nextConfig = {
           );
         }
       }
+
       return entries;
     };
+
+    config.plugins.push({
+      name: "RemoveLegacyPolyfillsPlugin",
+      apply(compiler) {
+        compiler.hooks.thisCompilation.tap("RemoveLegacyPolyfillsPlugin", (compilation) => {
+          const compilationName = compilation.compiler?.options?.name;
+          if (compilationName && compilationName !== "client") {
+            return;
+          }
+
+          const { Compilation, sources } = compiler.webpack;
+          compilation.hooks.processAssets.tap(
+            {
+              name: "RemoveLegacyPolyfillsPlugin",
+              stage: Compilation.PROCESS_ASSETS_STAGE_SUMMARIZE,
+            },
+            (assets) => {
+              for (const assetKey of Object.keys(assets)) {
+                if (assetKey.startsWith("static/chunks/polyfills")) {
+                  compilation.deleteAsset(assetKey);
+                }
+              }
+
+              const manifestAsset = compilation.getAsset("build-manifest.json");
+              if (!manifestAsset) {
+                return;
+              }
+
+              try {
+                const manifest = JSON.parse(manifestAsset.source.source().toString());
+                if (Array.isArray(manifest.polyfillFiles) && manifest.polyfillFiles.length > 0) {
+                  manifest.polyfillFiles = [];
+                  compilation.updateAsset(
+                    "build-manifest.json",
+                    new sources.RawSource(JSON.stringify(manifest, null, 2))
+                  );
+                }
+              } catch (error) {
+                const message =
+                  error instanceof Error
+                    ? error.message
+                    : "RemoveLegacyPolyfillsPlugin: Unable to update build-manifest";
+                compilation.warnings.push(
+                  new compiler.webpack.WebpackError(
+                    `RemoveLegacyPolyfillsPlugin: ${message}`
+                  )
+                );
+              }
+            }
+          );
+        });
+      },
+    });
 
     return config;
   },
