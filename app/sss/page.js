@@ -1,5 +1,6 @@
 // app/sss/page.js
-import Script from "next/script";
+import { Fragment } from "react";
+import JsonLd from "@/components/security/JsonLd";
 
 /* ——— META ——— */
 export const metadata = {
@@ -157,12 +158,47 @@ function injectLinks(text) {
     { key: "çadır", href: "/cadir-kiralama" },
     { key: "teklif", href: "/iletisim" },
   ];
-  let html = text;
-  for (const { key, href } of pairs) {
-    const re = new RegExp(`(${escapeRegex(key)})`, "gi");
-    html = html.replace(re, `<a href="${href}" class="underline hover:no-underline font-medium">$1</a>`);
-  }
-  return <span dangerouslySetInnerHTML={{ __html: html }} />;
+
+  const segments = pairs.reduce((acc, { key, href }) => {
+    return acc.flatMap((segment) => {
+      if (typeof segment !== "string") {
+        return [segment];
+      }
+
+      const regex = new RegExp(`(${escapeRegex(key)})`, "gi");
+      const parts = segment.split(regex);
+
+      return parts
+        .map((part, index) => {
+          if (!part) {
+            return null;
+          }
+
+          if (index % 2 === 1) {
+            return { href, text: part };
+          }
+
+          return part;
+        })
+        .filter(Boolean);
+    });
+  }, [text]);
+
+  return segments.map((segment, index) => {
+    if (typeof segment === "string") {
+      return <Fragment key={`text-${index}`}>{segment}</Fragment>;
+    }
+
+    return (
+      <a
+        key={`link-${index}`}
+        href={segment.href}
+        className="underline hover:no-underline font-medium"
+      >
+        {segment.text}
+      </a>
+    );
+  });
 }
 
 /* ——— BİLEŞENLER ——— */
@@ -222,12 +258,7 @@ export default function FaqPage() {
   return (
     <>
       {/* JSON-LD sadece bir kez enjekte edilir */}
-      <Script
-        id="ld-faq"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd id="ld-faq" data={jsonLd} />
 
       <div className="container py-10 md:py-14">
         <h1 className="text-3xl md:text-[34px] font-extrabold tracking-tight text-center mb-6">

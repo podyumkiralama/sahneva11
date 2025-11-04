@@ -1,7 +1,5 @@
 // components/JsonLdService.jsx
-"use client";
-
-import Script from "next/script";
+import JsonLd from "@/components/security/JsonLd";
 
 export default function JsonLdService({ site = "https://www.sahneva.com", service, images = [] }) {
   if (!service) return null;
@@ -37,12 +35,5 @@ export default function JsonLdService({ site = "https://www.sahneva.com", servic
     mainEntityOfPage: `${site}/${service.slug}`,
   };
 
-  return (
-    <Script
-      id={`ld-service-${service.slug}`}
-      type="application/ld+json"
-      strategy="afterInteractive"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
-    />
-  );
+  return <JsonLd id={`ld-service-${service.slug}`} data={data} />;
 }

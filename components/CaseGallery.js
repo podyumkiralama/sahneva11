@@ -89,9 +89,8 @@ export default function CaseGallery({ images = [] }) {
           aria-labelledby="lightbox-title"
           aria-describedby="lightbox-desc"
           tabIndex={-1}
-          className="fixed inset-0 z-[9999] bg-black/85 backdrop-blur-sm flex items-center justify-center p-3"
+          className="fixed inset-0 z-[9999] bg-black/85 backdrop-blur-sm flex items-center justify-center p-3 overscroll-contain"
           onClick={(e) => e.target === e.currentTarget && close()}
-          style={{ overscrollBehavior: "contain" }}
         >
           {/* Erişilebilir başlık + açıklama (görünmez) */}
           <h2 id="lightbox-title" className="sr-only">
@@ -148,8 +147,7 @@ export default function CaseGallery({ images = [] }) {
 
           {/* Mobil bar */}
           <div
-            className="md:hidden fixed inset-x-0 bottom-0 bg-black/70 backdrop-blur"
-            style={{ paddingBottom: "max(12px, env(safe-area-inset-bottom))" }}
+            className="md:hidden fixed inset-x-0 bottom-0 bg-black/70 backdrop-blur pb-[max(12px,env(safe-area-inset-bottom))]"
           >
             <div className="max-w-xl mx-auto flex gap-2 px-4 py-3">
               <button

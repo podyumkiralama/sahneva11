@@ -1,6 +1,7 @@
 // app/(site)/hakkimizda/page.js
 import Image from "next/image";
 import Link from "next/link";
+import JsonLd from "@/components/security/JsonLd";
 
 /* ───── META & ISR ───── */
 export const metadata = {
@@ -69,51 +70,42 @@ function StaticStats() {
   );
 }
 
-/* ───── STRUCTURED DATA ───── */
-function AboutStructuredData() {
-  const schema = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    'name': 'Sahneva',
-    'description': 'Profesyonel sahne kiralama, LED ekran, ses-ışık sistemleri ve etkinlik prodüksiyon hizmetleri',
-    'url': 'https://sahneva.com',
-    'foundingDate': '2012',
-    'founders': [
-      {
-        '@type': 'Person',
-        'name': 'Sahneva Ekibi'
-      }
-    ],
-    'numberOfEmployees': '15-50',
-    'slogan': 'Türkiye\'nin 1 Numaralı Etkinlik Teknoloji Partneri',
-    'address': {
-      '@type': 'PostalAddress',
-      'addressCountry': 'TR'
+const ABOUT_ORG_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Sahneva",
+  description:
+    "Profesyonel sahne kiralama, LED ekran, ses-ışık sistemleri ve etkinlik prodüksiyon hizmetleri",
+  url: "https://www.sahneva.com",
+  foundingDate: "2012",
+  founders: [
+    {
+      "@type": "Person",
+      name: "Sahneva Ekibi",
     },
-    'contactPoint': {
-      '@type': 'ContactPoint',
-      'telephone': '+905453048671',
-      'contactType': 'customer service',
-      'availableLanguage': ['Turkish']
-    },
-    'sameAs': [
-      'https://www.instagram.com/sahneva/',
-      'https://www.facebook.com/sahneva/'
-    ],
-    'aggregateRating': {
-      '@type': 'AggregateRating',
-      'ratingValue': '4.9',
-      'ratingCount': '500'
-    }
-  };
-
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
-  );
-}
+  ],
+  numberOfEmployees: "15-50",
+  slogan: "Türkiye'nin 1 Numaralı Etkinlik Teknoloji Partneri",
+  address: {
+    "@type": "PostalAddress",
+    addressCountry: "TR",
+  },
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: "+905453048671",
+    contactType: "customer service",
+    availableLanguage: ["Turkish"],
+  },
+  sameAs: [
+    "https://www.instagram.com/sahneva/",
+    "https://www.facebook.com/sahneva/",
+  ],
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "4.9",
+    ratingCount: "500",
+  },
+};
 
 /* ───── MAIN COMPONENT ───── */
 export default function HakkimizdaPage() {
@@ -188,7 +180,7 @@ export default function HakkimizdaPage() {
 
   return (
     <div className="min-h-screen bg-white overflow-hidden">
-      <AboutStructuredData />
+      <JsonLd id="ld-about-org" data={ABOUT_ORG_SCHEMA} />
 
       {/* Skip to Main Content */}
       <a
@@ -211,11 +203,7 @@ export default function HakkimizdaPage() {
             priority
             quality={80}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
-            className="object-cover object-center"
-            style={{
-              transform: 'scale(1.02)',
-              filter: 'brightness(0.6) contrast(1.1) saturate(1.1)'
-            }}
+            className="object-cover object-center hero-image-dark"
           />
         </div>
 

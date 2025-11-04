@@ -1,7 +1,7 @@
 // app/masa-sandalye-kiralama/page.js
 import Image from "next/image";
 import Link from "next/link";
-import Script from "next/script";
+import JsonLd from "@/components/security/JsonLd";
 import dynamic from "next/dynamic";
 import { getService } from "@/lib/data";
 
@@ -853,24 +853,9 @@ function StructuredData({ packages }) {
 
   return (
     <>
-      <Script
-        id="service-schema-masa"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
-      />
-      <Script
-        id="faq-schema-masa"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-      <Script
-        id="breadcrumb-schema-masa"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
+      <JsonLd id="ld-furniture-service" data={serviceSchema} />
+      <JsonLd id="ld-furniture-faq" data={faqSchema} />
+      <JsonLd id="ld-furniture-breadcrumb" data={breadcrumbSchema} />
     </>
   );
 }

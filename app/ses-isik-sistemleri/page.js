@@ -1,7 +1,7 @@
 // app/ses-isik-sistemleri/page.js
 import Image from "next/image";
 import Link from "next/link";
-import Script from "next/script";
+import JsonLd from "@/components/security/JsonLd";
 
 // ---------- META ----------
 export const metadata = {
@@ -218,6 +218,36 @@ export default function Page() {
   const desc =
     "Line array, dijital mikser ve robot ışıklarla profesyonel ses & ışık çözümleri. Keşif, kurulum, canlı operasyon ve söküm dahil.";
 
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    serviceType: "Ses ve Işık Sistemleri Kiralama",
+    name: "Ses ve Işık Sistemleri Kiralama",
+    description:
+      "Line array, dijital mikser, kablosuz mikrofon, robot ışık, truss ve teknik operasyonla Türkiye genelinde ses & ışık sistemleri kiralama.",
+    areaServed: { "@type": "Country", name: "TR" },
+    provider: {
+      "@type": "LocalBusiness",
+      name: "Sahneva",
+      url: "https://www.sahneva.com",
+      telephone: "+90 545 304 8671",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "İstanbul",
+        addressCountry: "TR",
+      },
+    },
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Anasayfa", item: "https://www.sahneva.com" },
+      { "@type": "ListItem", position: 2, name: "Ses ve Işık Sistemleri", item: "https://www.sahneva.com/ses-isik-sistemleri" },
+    ],
+  };
+
   return (
     <>
       {/* HERO (LED sayfasıyla aynı yükseklik/stil) */}
@@ -328,48 +358,8 @@ export default function Page() {
       </section>
 
       {/* JSON-LD: Service + Breadcrumb */}
-      <Script
-        id="ld-service-audio-light"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Service",
-            serviceType: "Ses ve Işık Sistemleri Kiralama",
-            name: "Ses ve Işık Sistemleri Kiralama",
-            description:
-              "Line array, dijital mikser, kablosuz mikrofon, robot ışık, truss ve teknik operasyonla Türkiye genelinde ses & ışık sistemleri kiralama.",
-            areaServed: { "@type": "Country", name: "TR" },
-            provider: {
-              "@type": "LocalBusiness",
-              name: "Sahneva",
-              url: "https://www.sahneva.com",
-              telephone: "+90 545 304 8671",
-              address: {
-                "@type": "PostalAddress",
-                addressLocality: "İstanbul",
-                addressCountry: "TR",
-              },
-            },
-          }),
-        }}
-      />
-      <Script
-        id="ld-breadcrumb-audio-light"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Anasayfa", item: "https://www.sahneva.com" },
-              { "@type": "ListItem", position: 2, name: "Ses ve Işık Sistemleri", item: "https://www.sahneva.com/ses-isik-sistemleri" },
-            ],
-          }),
-        }}
-      />
+      <JsonLd id="ld-audio-light-service" data={serviceSchema} />
+      <JsonLd id="ld-audio-light-breadcrumb" data={breadcrumbSchema} />
     </>
   );
 }

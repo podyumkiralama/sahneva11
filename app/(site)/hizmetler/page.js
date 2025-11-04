@@ -1,6 +1,7 @@
 // app/hizmetler/page.js
 import Image from "next/image";
 import Link from "next/link";
+import JsonLd from "@/components/security/JsonLd";
 
 /* ───── META & ISR ───── */
 export const metadata = {
@@ -28,57 +29,48 @@ export const metadata = {
 
 export const revalidate = 3600;
 
-/* ───── STRUCTURED DATA ───── */
-function ServicesStructuredData() {
-  const schema = {
-    '@context': 'https://schema.org',
-    '@type': 'Service',
-    'name': 'Sahneva Hizmetler',
-    'description': 'Profesyonel sahne kiralama, LED ekran, ses-ışık sistemleri, podyum, çadır kiralama ve etkinlik prodüksiyon hizmetleri',
-    'provider': {
-      '@type': 'Organization',
-      'name': 'Sahneva'
-    },
-    'areaServed': 'TR',
-    'hasOfferCatalog': {
-      '@type': 'OfferCatalog',
-      'name': 'Etkinlik Ekipmanları Kiralama Hizmetleri',
-      'itemListElement': [
-        {
-          '@type': 'Offer',
-          'itemOffered': {
-            '@type': 'Service',
-            'name': 'Sahne Kiralama',
-            'description': 'Profesyonel sahne kurulumu ve kiralama hizmetleri'
-          }
+const SERVICES_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Sahneva Hizmetler",
+  description:
+    "Profesyonel sahne kiralama, LED ekran, ses-ışık sistemleri, podyum, çadır kiralama ve etkinlik prodüksiyon hizmetleri",
+  provider: {
+    "@type": "Organization",
+    name: "Sahneva",
+  },
+  areaServed: "TR",
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Etkinlik Ekipmanları Kiralama Hizmetleri",
+    itemListElement: [
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Sahne Kiralama",
+          description: "Profesyonel sahne kurulumu ve kiralama hizmetleri",
         },
-        {
-          '@type': 'Offer',
-          'itemOffered': {
-            '@type': 'Service',
-            'name': 'LED Ekran Kiralama',
-            'description': 'Yüksek çözünürlüklü LED ekran kiralama hizmetleri'
-          }
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "LED Ekran Kiralama",
+          description: "Yüksek çözünürlüklü LED ekran kiralama hizmetleri",
         },
-        {
-          '@type': 'Offer',
-          'itemOffered': {
-            '@type': 'Service',
-            'name': 'Ses ve Işık Sistemleri',
-            'description': 'Profesyonel ses ve ışık sistemi kiralama hizmetleri'
-          }
-        }
-      ]
-    }
-  };
-
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
-  );
-}
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Ses ve Işık Sistemleri",
+          description: "Profesyonel ses ve ışık sistemi kiralama hizmetleri",
+        },
+      },
+    ],
+  },
+};
 
 /* ───── SERVICES TABS FALLBACK ───── */
 function ServicesTabsFallback() {
@@ -247,7 +239,7 @@ export default function ServicesPage() {
 
   return (
     <div className="min-h-screen bg-white overflow-hidden">
-      <ServicesStructuredData />
+      <JsonLd id="ld-services" data={SERVICES_SCHEMA} />
 
       {/* Skip to Main Content */}
       <a
@@ -270,11 +262,7 @@ export default function ServicesPage() {
             priority
             quality={80}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
-            className="object-cover object-center"
-            style={{
-              transform: 'scale(1.02)',
-              filter: 'brightness(0.6) contrast(1.1) saturate(1.1)'
-            }}
+            className="object-cover object-center hero-image-dark"
           />
         </div>
 

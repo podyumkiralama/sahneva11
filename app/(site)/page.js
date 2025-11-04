@@ -2,6 +2,10 @@
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
+import JsonLd from "@/components/security/JsonLd";
+import { SEO_ARTICLES, buildArticlesSchema } from "@/lib/articlesData";
+import { FAQ_ITEMS, buildFaqSchema } from "@/lib/faqData";
+import styles from "./page.module.css";
 /**
  * HERO görseli — statik import (LCP + otomatik blurDataURL)
  * Projende "@/public/..." alias'ı yoksa:
@@ -27,6 +31,28 @@ const ProjectsGalleryLazy = dynamic(
 
 export const revalidate = 3600;
 
+const SERVICE_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Etkinlik Ekipmanları Kiralama",
+  description:
+    "Türkiye genelinde sahne, podyum, LED ekran, ses ve ışık sistemleri kiralama; kurulum ve teknik operasyon.",
+  url: "https://www.sahneva.com",
+  areaServed: { "@type": "Country", name: "TR" },
+  provider: { "@type": "Organization", name: "Sahneva" },
+  serviceType: [
+    "Sahne Kiralama",
+    "Podyum Kiralama",
+    "LED Ekran Kiralama",
+    "Ses Sistemi Kiralama",
+    "Işık Sistemi Kiralama",
+    "Etkinlik Prodüksiyon",
+  ],
+};
+
+const FAQ_SCHEMA = buildFaqSchema(FAQ_ITEMS);
+const ARTICLES_SCHEMA = buildArticlesSchema(SEO_ARTICLES);
+
 // Erişilebilir skeleton (animasyonlar motion-reduce ile kapanır)
 function SectionSkeleton({ label = "İçerik yükleniyor" }) {
   return (
@@ -45,40 +71,12 @@ function SectionSkeleton({ label = "İçerik yükleniyor" }) {
   );
 }
 
-/* JSON-LD — SADECE Service (Organization/WebSite layout’tan gelsin) */
-function StructuredData() {
-  const service = {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    name: "Etkinlik Ekipmanları Kiralama",
-    description:
-      "Türkiye genelinde sahne, podyum, LED ekran, ses ve ışık sistemleri kiralama; kurulum ve teknik operasyon.",
-    url: "https://sahneva.com",
-    areaServed: { "@type": "Country", name: "TR" },
-    provider: { "@type": "Organization", name: "Sahneva" },
-    serviceType: [
-      "Sahne Kiralama",
-      "Podyum Kiralama",
-      "LED Ekran Kiralama",
-      "Ses Sistemi Kiralama",
-      "Işık Sistemi Kiralama",
-      "Etkinlik Prodüksiyon",
-    ],
-  };
-
-  return (
-    <script
-      type="application/ld+json"
-      // Not: Next 16'da Script yerine inline <script> ok.
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(service) }}
-    />
-  );
-}
-
 export default function HomePage() {
   return (
     <div className="overflow-x-hidden">
-      <StructuredData />
+      <JsonLd id="ld-service-home" data={SERVICE_SCHEMA} />
+      <JsonLd id="ld-faq-home" data={FAQ_SCHEMA} />
+      <JsonLd id="ld-articles-home" data={ARTICLES_SCHEMA} />
 
       {/* Skip link */}
       <a
@@ -103,11 +101,7 @@ export default function HomePage() {
             priority
             sizes="100vw"
             placeholder="blur"
-            className="object-cover object-center"
-            style={{
-              transform: "scale(1.02)",
-              filter: "brightness(0.7) contrast(1.1) saturate(1.1)",
-            }}
+            className={`object-cover object-center ${styles.heroImageDim}`}
           />
         </div>
 
@@ -117,8 +111,7 @@ export default function HomePage() {
           aria-hidden="true"
         />
         <div
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-pulse motion-reduce:animate-none"
-          style={{ animationDuration: "8s" }}
+          className={`absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent motion-reduce:animate-none ${styles.heroSheen}`}
           aria-hidden="true"
         />
 

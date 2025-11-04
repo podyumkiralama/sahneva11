@@ -1,7 +1,7 @@
 // app/led-ekran-kiralama/page.js
 import Image from "next/image";
 import Link from "next/link";
-import Script from "next/script";
+import JsonLd from "@/components/security/JsonLd";
 import dynamic from "next/dynamic";
 
 // ⚡ Lazy loading components
@@ -647,9 +647,9 @@ function StructuredData({ packages }) {
 
   return (
     <>
-      <Script id="service-schema" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
-      <Script id="faq-schema" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <Script id="breadcrumb-schema" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <JsonLd id="ld-led-service" data={serviceSchema} />
+      <JsonLd id="ld-led-faq" data={faqSchema} />
+      <JsonLd id="ld-led-breadcrumb" data={breadcrumbSchema} />
     </>
   );
 }

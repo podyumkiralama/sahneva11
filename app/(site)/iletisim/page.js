@@ -1,6 +1,7 @@
 // app/(site)/iletisim/page.jsx
 import React from "react";
 import Link from "next/link";
+import JsonLd from "@/components/security/JsonLd";
 
 export const metadata = {
   title: "İletişim | Sahneva - Profesyonel Etkinlik Çözümleri",
@@ -33,42 +34,32 @@ const WHATSAPP_URL = `https://wa.me/${PHONE.replace("+", "")}?text=${encodeURICo
 const GMB_PROFILE_URL = "https://g.page/r/CZhkMzkNOdgnEBI";
 const GMB_REVIEW_URL  = "https://g.page/r/CZhkMzkNOdgnEBI/review";
 
-/* ───── STRUCTURED DATA ───── */
-function ContactStructuredData() {
-  const schema = {
-    '@context': 'https://schema.org',
-    '@type': 'ContactPage',
-    'name': 'Sahneva İletişim',
-    'description': 'Profesyonel sahne kiralama, LED ekran, ses-ışık sistemleri iletişim bilgileri',
-    'url': 'https://sahneva.com/iletisim',
-    'mainEntity': {
-      '@type': 'Organization',
-      'name': 'Sahneva',
-      'telephone': '+905453048671',
-      'email': 'info@sahneva.com',
-      'address': {
-        '@type': 'PostalAddress',
-        'addressCountry': 'TR'
-      },
-      'sameAs': [
-        'https://www.instagram.com/sahneva/',
-        'https://www.facebook.com/sahneva/'
-      ]
-    }
-  };
-
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
-  );
-}
+const CONTACT_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  name: "Sahneva İletişim",
+  description: "Profesyonel sahne kiralama, LED ekran, ses-ışık sistemleri iletişim bilgileri",
+  url: "https://www.sahneva.com/iletisim",
+  mainEntity: {
+    "@type": "Organization",
+    name: "Sahneva",
+    telephone: "+905453048671",
+    email: "info@sahneva.com",
+    address: {
+      "@type": "PostalAddress",
+      addressCountry: "TR",
+    },
+    sameAs: [
+      "https://www.instagram.com/sahneva/",
+      "https://www.facebook.com/sahneva/",
+    ],
+  },
+};
 
 export default function ContactPage() {
   return (
     <div className="min-h-screen bg-white overflow-hidden">
-      <ContactStructuredData />
+      <JsonLd id="ld-contact" data={CONTACT_SCHEMA} />
 
       {/* Skip to Main Content */}
       <a
@@ -92,13 +83,7 @@ export default function ContactPage() {
 
         {/* Geometrik desen */}
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `radial-gradient(circle at 25% 25%, rgba(255,255,255,0.2) 0%, transparent 50%),
-                              radial-gradient(circle at 75% 75%, rgba(255,255,255,0.1) 0%, transparent 50%)`,
-            backgroundSize: '50% 50%, 30% 30%',
-            backgroundPosition: '0 0, 100% 100%',
-            backgroundRepeat: 'no-repeat'
-          }}></div>
+          <div className="absolute inset-0 contact-hero-pattern"></div>
         </div>
 
         {/* ✅ BÜYÜK ARKA PLAN YAZISI */}
@@ -210,11 +195,10 @@ export default function ContactPage() {
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3006.7561988118778!2d28.97663777518891!3d41.09737131400938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab7eef124ac6d%3A0x27d8390d39336498!2sSahneva%20Organizasyon!5e0!3m2!1str!2str!4v1691234567890!5m2!1str!2str"
                     width="100%"
                     height="300"
-                    style={{ border: 0 }}
                     allowFullScreen
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    className="w-full"
+                    className="w-full border-0"
                   />
                 </div>
 

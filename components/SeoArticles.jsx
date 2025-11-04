@@ -3,7 +3,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import Script from "next/script";
 import { SEO_ARTICLES } from "@/lib/articlesData";
 
 // Responsive sizes (kutucuk 3 sütun -> mobil 1, tablet 2, desktop 3)
@@ -14,47 +13,6 @@ const CARD_SIZES =
 
 const BLUR =
   "data:image/webp;base64,UklGRiIAAABXRUJQVlA4ICAAAABwAQCdASoEAAQAAP7/AAcAAABAAAAAAAAAAAAAAAAAAAAAAAA=";
-
-// JSON-LD (yalnızca Article/BlogPosting; Organization/Website yok)
-function ArticlesJsonLd({ items = [] }) {
-  // Ana sayfada çok şişmesin diye ilk 6’yı şemaya dahil edelim
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    itemListElement: items.slice(0, 6).map((a, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      item: {
-        "@type": a.schemaType || "BlogPosting",
-        headline: a.title,
-        description: a.desc,
-        url: a.href || `/${a.slug || ""}`,
-        image: a.image
-          ? [`https://sahneva.com${a.image}`] // cdn yok; kendi domain
-          : undefined,
-        datePublished: a.datePublished || undefined,
-        dateModified: a.dateModified || a.datePublished || undefined,
-        author: a.author
-          ? { "@type": "Organization", name: a.author }
-          : { "@type": "Organization", name: "Sahneva" },
-        publisher: { "@type": "Organization", name: "Sahneva" },
-        mainEntityOfPage: {
-          "@type": "WebPage",
-          "@id": "https://sahneva.com",
-        },
-      },
-    })),
-  };
-
-  return (
-    <Script
-      id="home-articles-jsonld"
-      type="application/ld+json"
-      strategy="afterInteractive"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
-  );
-}
 
 export default function SeoArticles({ compact = false, title = "Teknik Bilgi & SEO Makaleleri" }) {
   const items = SEO_ARTICLES?.filter(Boolean) ?? [];
@@ -167,7 +125,6 @@ export default function SeoArticles({ compact = false, title = "Teknik Bilgi & S
         </div>
 
         {/* JSON-LD (yalnızca makaleler) */}
-        <ArticlesJsonLd items={items} />
       </div>
     </section>
   );
