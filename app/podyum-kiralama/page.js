@@ -202,7 +202,7 @@ export default function Page() {
   const title = "Profesyonel Podyum Kiralama";
   const desc =
     "Modüler podyum sistemleri ile her türlü etkinlik için profesyonel sahne çözümleri. 1×1 ve 2×1 paneller, kaymaz kaplama, güvenlik ekipmanları ve uzman kurulum ekibi.";
-  const heroSrc = "/img/podyum/hero.webp";
+  const heroSrc = "/img/hizmet-podyum.webp";
 
   const enrichedPkgs = CONTENT.packages.map((p) => {
     const base = priceBase(p.layout.area);
