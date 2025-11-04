@@ -1,5 +1,4 @@
 // components/security/JsonLd.jsx
-import Script from "next/script";
 import { headers } from "next/headers";
 
 export default function JsonLd({ id, data }) {
@@ -7,14 +6,15 @@ export default function JsonLd({ id, data }) {
     return null;
   }
 
-  const nonce = headers().get("x-nonce") ?? undefined;
+  const headerList = headers();
+  const nonce = headerList?.get("x-nonce") ?? undefined;
 
   return (
-    <Script
+    <script
       id={id}
       type="application/ld+json"
-      strategy="afterInteractive"
       nonce={nonce}
+      // JSON.stringify güvenli veri üretir; nonce CSP uyumluluğunu sağlar.
       dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
     />
   );
