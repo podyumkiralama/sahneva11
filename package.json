@@ -33,16 +33,16 @@
   },
   "browserslist": {
     "production": [
-      "chrome >= 64",
-      "edge >= 79",
-      "firefox >= 67",
-      "opera >= 51",
-      "safari >= 12"
+      "chrome >= 115",
+      "edge >= 115",
+      "firefox >= 115",
+      "safari >= 17"
     ],
     "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
+      "chrome >= 115",
+      "edge >= 115",
+      "firefox >= 115",
+      "safari >= 17"
     ]
   },
   "engines": {
