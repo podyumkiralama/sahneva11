@@ -113,6 +113,14 @@ function buildCsp(nonce) {
       "prefetch-src",
       ["'self'"]
     ],
+    [
+      "require-trusted-types-for",
+      ["'script'"]
+    ],
+    [
+      "trusted-types",
+      ["'default'"]
+    ],
   ]);
 
   return Array.from(cspDirectives.entries())

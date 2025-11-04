@@ -9,13 +9,11 @@ export default async function JsonLd({ id, data }) {
   const headerList = await headers();
   const nonce = headerList?.get("x-nonce") ?? undefined;
 
+  const json = JSON.stringify(data);
+
   return (
-    <script
-      id={id}
-      type="application/ld+json"
-      nonce={nonce}
-      // JSON.stringify güvenli veri üretir; nonce CSP uyumluluğunu sağlar.
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
-    />
+    <script id={id} type="application/ld+json" nonce={nonce}>
+      {json}
+    </script>
   );
 }

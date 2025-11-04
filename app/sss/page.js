@@ -1,4 +1,5 @@
 // app/sss/page.js
+import { Fragment } from "react";
 import JsonLd from "@/components/security/JsonLd";
 
 /* ——— META ——— */
@@ -157,12 +158,47 @@ function injectLinks(text) {
     { key: "çadır", href: "/cadir-kiralama" },
     { key: "teklif", href: "/iletisim" },
   ];
-  let html = text;
-  for (const { key, href } of pairs) {
-    const re = new RegExp(`(${escapeRegex(key)})`, "gi");
-    html = html.replace(re, `<a href="${href}" class="underline hover:no-underline font-medium">$1</a>`);
-  }
-  return <span dangerouslySetInnerHTML={{ __html: html }} />;
+
+  const segments = pairs.reduce((acc, { key, href }) => {
+    return acc.flatMap((segment) => {
+      if (typeof segment !== "string") {
+        return [segment];
+      }
+
+      const regex = new RegExp(`(${escapeRegex(key)})`, "gi");
+      const parts = segment.split(regex);
+
+      return parts
+        .map((part, index) => {
+          if (!part) {
+            return null;
+          }
+
+          if (index % 2 === 1) {
+            return { href, text: part };
+          }
+
+          return part;
+        })
+        .filter(Boolean);
+    });
+  }, [text]);
+
+  return segments.map((segment, index) => {
+    if (typeof segment === "string") {
+      return <Fragment key={`text-${index}`}>{segment}</Fragment>;
+    }
+
+    return (
+      <a
+        key={`link-${index}`}
+        href={segment.href}
+        className="underline hover:no-underline font-medium"
+      >
+        {segment.text}
+      </a>
+    );
+  });
 }
 
 /* ——— BİLEŞENLER ——— */
