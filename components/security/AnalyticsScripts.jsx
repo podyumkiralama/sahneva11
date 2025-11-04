@@ -4,11 +4,11 @@ import { headers } from "next/headers";
 
 const DEFAULT_GA_ID = "G-J5YK10YLLC";
 
-export default function AnalyticsScripts({
+export default async function AnalyticsScripts({
   gaId = process.env.NEXT_PUBLIC_GA_ID || DEFAULT_GA_ID,
   gtmId = process.env.NEXT_PUBLIC_GTM_ID,
 } = {}) {
-  const headerList = headers();
+  const headerList = await headers();
   const nonce = headerList?.get("x-nonce") ?? undefined;
 
   const resolvedGaId = gaId || undefined;

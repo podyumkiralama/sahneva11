@@ -1,12 +1,12 @@
 // components/security/JsonLd.jsx
 import { headers } from "next/headers";
 
-export default function JsonLd({ id, data }) {
+export default async function JsonLd({ id, data }) {
   if (!data) {
     return null;
   }
 
-  const headerList = headers();
+  const headerList = await headers();
   const nonce = headerList?.get("x-nonce") ?? undefined;
 
   return (
