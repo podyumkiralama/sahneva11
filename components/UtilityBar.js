@@ -5,6 +5,38 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import styles from "./UtilityBar.module.css";
 
+const CONTRAST_KEY = "hc";
+const FONT_SIZE_KEY = "fs";
+const MIN_FONT_SIZE = 12;
+const MAX_FONT_SIZE = 20;
+const DEFAULT_FONT_SIZE = 16;
+
+const readNumberPref = (key) => {
+  try {
+    return Number.parseFloat(localStorage.getItem(key) || "");
+  } catch {
+    return Number.NaN;
+  }
+};
+
+const readPref = (key) => {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+};
+
+const writePref = (key, value) => {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    // Depolama devre dışı bırakılmış olabilir — sessizce yoksay
+  }
+};
+
+const clampFontSize = (value) => Math.min(MAX_FONT_SIZE, Math.max(MIN_FONT_SIZE, value));
+
 const ROUTES = [
   { href: "/", label: "Anasayfa", title: "Sahneva Ana Sayfa", icon: "🏠" },
   { href: "/hakkimizda", label: "Hakkımızda", title: "Sahneva Hakkında", icon: "👥" },
@@ -28,17 +60,46 @@ export default function UtilityBar() {
   const toolsRef = useRef(null);
   const lastFocusRef = useRef(null);
 
-  // Kontrast tercih yükle
+  // Kontrast ve font tercihini yükle + sekmeler arası senkronize et
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const saved = localStorage.getItem("hc");
-    const prefersHighContrast = saved === "1";
-    const alreadyEnabled = document.documentElement.classList.contains("hc");
-    const shouldEnable = prefersHighContrast || alreadyEnabled;
+    const root = document.documentElement;
 
-    document.documentElement.classList.toggle("hc", shouldEnable);
+    const savedFontSize = readNumberPref(FONT_SIZE_KEY);
+    if (!Number.isNaN(savedFontSize)) {
+      const clampedFont = clampFontSize(savedFontSize);
+      root.style.fontSize = `${clampedFont}px`;
+    }
+
+    const storedContrast = readPref(CONTRAST_KEY);
+    let shouldEnable = storedContrast === "1";
+
+    if (storedContrast === null && typeof window.matchMedia === "function") {
+      shouldEnable = window.matchMedia("(prefers-contrast: more)").matches;
+    }
+
+    root.classList.toggle("hc", shouldEnable);
     setHighContrast(shouldEnable);
+
+    const handleStorage = (event) => {
+      if (event.key === CONTRAST_KEY) {
+        const enable = event.newValue === "1";
+        root.classList.toggle("hc", enable);
+        setHighContrast(enable);
+      }
+
+      if (event.key === FONT_SIZE_KEY) {
+        const newSize = Number.parseFloat(event.newValue || "");
+        if (!Number.isNaN(newSize)) {
+          const clamped = clampFontSize(newSize);
+          root.style.fontSize = `${clamped}px`;
+        }
+      }
+    };
+
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
   }, []);
 
   // Scroll durumu (buton konumu/animasyonu)
@@ -84,10 +145,13 @@ export default function UtilityBar() {
 
   // Yazı boyutu
   const bumpFont = useCallback((delta) => {
+    if (typeof document === "undefined") return;
+
     const root = document.documentElement;
-    const current = parseFloat(getComputedStyle(root).fontSize) || 16;
-    const next = Math.min(20, Math.max(12, current + delta));
+    const current = Number.parseFloat(getComputedStyle(root).fontSize) || DEFAULT_FONT_SIZE;
+    const next = clampFontSize(current + delta);
     root.style.fontSize = `${next}px`;
+    writePref(FONT_SIZE_KEY, String(next));
     setActiveTool(null);
   }, []);
 
@@ -98,7 +162,7 @@ export default function UtilityBar() {
     const el = document.documentElement;
     const willEnable = !el.classList.contains("hc");
     el.classList.toggle("hc", willEnable);
-    localStorage.setItem("hc", willEnable ? "1" : "0");
+    writePref(CONTRAST_KEY, willEnable ? "1" : "0");
     setHighContrast(willEnable);
     setActiveTool(null);
   }, []);
