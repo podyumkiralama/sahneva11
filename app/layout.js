@@ -45,25 +45,21 @@ export default function RootLayout({ children }) {
   return (
     <html lang="tr" dir="ltr" className={inter.className}>
       <body className="min-h-screen bg-white text-neutral-900 antialiased">
-      {/* Skip link */}
-<a
-  href="#main-content"
-  className="sr-only focus:not-sr-only focus:fixed focus:z-[9999] focus:top-3 focus:left-3 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-3 focus:rounded-lg focus:font-semibold focus:shadow-lg"
->
-  Ana içeriğe atla
-</a>
 
-// ...
-<main id="main-content">{children}</main>
+        {/* Skip link (sayfa içindeki #main-content <main>’e gider) */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:z-[9999] focus:top-3 focus:left-3 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-3 focus:rounded-lg focus:font-semibold focus:shadow-lg"
+        >
+          Ana içeriğe atla
+        </a>
 
-
-        <Navbar />
+        {/* Üst bileşenler */}
         <UtilityBar />
+        <Navbar />
 
-        {/* Tekil ana içerik landmark'ı: <main> yerine role="main" */}
-        <div id="main" role="main" tabIndex={-1}>
-          {children}
-        </div>
+        {/* DİKKAT: Layout içinde <main> yok; children sadece 1 kez render edilir */}
+        {children}
 
         <Footer />
       </body>
