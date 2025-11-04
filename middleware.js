@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import crypto from "node:crypto";
 
 const allowedScriptHosts = [
   "https://www.googletagmanager.com",
@@ -63,8 +62,28 @@ const securityHeaders = [
   ["Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload"],
 ];
 
+function toBase64(uint8Array) {
+  if (typeof Buffer !== "undefined") {
+    return Buffer.from(uint8Array).toString("base64");
+  }
+
+  let binary = "";
+
+  uint8Array.forEach((value) => {
+    binary += String.fromCharCode(value);
+  });
+
+  return btoa(binary);
+}
+
+function generateNonce() {
+  const array = new Uint8Array(16);
+  crypto.getRandomValues(array);
+  return toBase64(array);
+}
+
 export function middleware(request) {
-  const nonce = crypto.randomBytes(16).toString("base64");
+  const nonce = generateNonce();
   const csp = buildCsp(nonce);
 
   const requestHeaders = new Headers(request.headers);
