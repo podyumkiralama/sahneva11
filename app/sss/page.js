@@ -1,5 +1,5 @@
 // app/sss/page.js
-import Script from "next/script";
+import JsonLd from "@/components/security/JsonLd";
 
 /* ——— META ——— */
 export const metadata = {
@@ -222,12 +222,7 @@ export default function FaqPage() {
   return (
     <>
       {/* JSON-LD sadece bir kez enjekte edilir */}
-      <Script
-        id="ld-faq"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd id="ld-faq" data={jsonLd} />
 
       <div className="container py-10 md:py-14">
         <h1 className="text-3xl md:text-[34px] font-extrabold tracking-tight text-center mb-6">

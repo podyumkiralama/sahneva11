@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
+import JsonLd from "@/components/security/JsonLd";
 
 /** ───── META & ISR ───── */
 export const metadata = {
@@ -62,54 +63,45 @@ function FocusableCard({ children, className = "", ...props }) {
   );
 }
 
-/** ───── STRUCTURED DATA ───── */
-function CadirStructuredData() {
-  const schema = {
-    '@context': 'https://schema.org',
-    '@type': 'Service',
-    'serviceType': 'Çadır Kiralama',
-    'name': 'Çadır Kiralama Hizmeti',
-    'description': 'Profesyonel pagoda, şeffaf ve endüstriyel çadır kiralama, kurulum ve tamamlayıcı hizmetler',
-    'provider': {
-      '@type': 'Organization',
-      'name': 'Sahneva',
-      'url': 'https://www.sahneva.com'
-    },
-    'areaServed': {
-      '@type': 'Country',
-      'name': 'TR'
-    },
-    'hasOfferCatalog': {
-      '@type': 'OfferCatalog',
-      'name': 'Çadır Kiralama Hizmetleri',
-      'itemListElement': [
-        {
-          '@type': 'Offer',
-          'itemOffered': {
-            '@type': 'Service',
-            'name': 'Pagoda Çadır Kiralama',
-            'description': '5x5m ve 6x6m modüler pagoda çadır sistemleri'
-          }
+const CADIR_SERVICE_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  serviceType: "Çadır Kiralama",
+  name: "Çadır Kiralama Hizmeti",
+  description:
+    "Profesyonel pagoda, şeffaf ve endüstriyel çadır kiralama, kurulum ve tamamlayıcı hizmetler",
+  provider: {
+    "@type": "Organization",
+    name: "Sahneva",
+    url: "https://www.sahneva.com",
+  },
+  areaServed: {
+    "@type": "Country",
+    name: "TR",
+  },
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Çadır Kiralama Hizmetleri",
+    itemListElement: [
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Pagoda Çadır Kiralama",
+          description: "5x5m ve 6x6m modüler pagoda çadır sistemleri",
         },
-        {
-          '@type': 'Offer',
-          'itemOffered': {
-            '@type': 'Service',
-            'name': 'Şeffaf Dome Çadır Kiralama',
-            'description': 'Şeffaf kubbe çadır sistemleri ve aydınlatma çözümleri'
-          }
-        }
-      ]
-    }
-  };
-
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
-  );
-}
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Şeffaf Dome Çadır Kiralama",
+          description: "Şeffaf kubbe çadır sistemleri ve aydınlatma çözümleri",
+        },
+      },
+    ],
+  },
+};
 
 /** ───── SKELETON COMPONENT ───── */
 function SectionSkeleton() {
@@ -245,7 +237,7 @@ export default function CadirKiralamaPage() {
 
   return (
     <div className="min-h-screen bg-white overflow-hidden">
-      <CadirStructuredData />
+      <JsonLd id="ld-service-tent" data={CADIR_SERVICE_SCHEMA} />
       <SkipToMain />
 
       {/* ✅ HERO SECTION - Premium Design with Accessibility */}
@@ -262,11 +254,7 @@ export default function CadirKiralamaPage() {
             priority
             quality={80}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
-            className="object-cover object-center"
-            style={{
-              transform: 'scale(1.02)',
-              filter: 'brightness(0.6) contrast(1.1) saturate(1.1)'
-            }}
+            className="object-cover object-center hero-image-dark"
           />
         </div>
 

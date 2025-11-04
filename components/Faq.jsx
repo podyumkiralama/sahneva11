@@ -1,26 +1,13 @@
 // components/Faq.jsx
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { FAQ_ITEMS } from "../lib/faqData";
-import Script from "next/script";
 
 function FaqRow({ question, answer, slug }) {
   const [open, setOpen] = useState(false);
-  const [contentHeight, setContentHeight] = useState("0px");
-  const contentRef = useRef(null);
   const summaryId = `${slug}-summary`;
   const panelId = `${slug}-panel`;
-
-  useEffect(() => {
-    if (open && contentRef.current) {
-      requestAnimationFrame(() => {
-        setContentHeight(`${contentRef.current.scrollHeight}px`);
-      });
-    } else {
-      setContentHeight("0px");
-    }
-  }, [open]);
 
   return (
     <div
@@ -58,16 +45,16 @@ function FaqRow({ question, answer, slug }) {
       </button>
 
       <div
-        ref={contentRef}
         id={panelId}
-        className="overflow-hidden transition-all duration-200 ease-in-out"
-        style={{ maxHeight: contentHeight }}
+        className={`grid transition-[grid-template-rows] duration-200 ease-in-out ${
+          open ? "mt-2 grid-rows-[1fr]" : "mt-0 grid-rows-[0fr]"
+        }`}
         aria-hidden={!open}
         itemScope
         itemType="https://schema.org/Answer"
         itemProp="acceptedAnswer"
       >
-        <div className="mt-2 text-gray-700 border-t border-gray-100/60 pt-2">
+        <div className="overflow-hidden text-gray-700 border-t border-gray-100/60 pt-2">
           <div itemProp="text" className="leading-relaxed text-sm text-gray-600">
             <p>{answer}</p>
           </div>
@@ -77,24 +64,8 @@ function FaqRow({ question, answer, slug }) {
   );
 }
 
-// ✅ FAQ Schema.org
-const generateFaqSchema = (items) => ({
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: items.map((item) => ({
-    "@type": "Question",
-    name: item.question,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: item.answer,
-    },
-  })),
-});
-
 // ✅ TAM SÜRÜM — boşluk minimum
 export default function Faq({ compact = false }) {
-  const faqSchema = generateFaqSchema(FAQ_ITEMS);
-
   return (
     <section
       className="relative pt-4 pb-0 bg-gradient-to-br from-gray-50 via-white to-purple-50/30 overflow-hidden"
@@ -236,16 +207,6 @@ export default function Faq({ compact = false }) {
         {/* Footer’a boşluk bırakılmasın */}
         <div className="h-0 p-0 m-0" />
       </div>
-
-      {/* JSON-LD */}
-      <Script
-        id="faq-schema"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(faqSchema),
-        }}
-      />
     </section>
   );
 }

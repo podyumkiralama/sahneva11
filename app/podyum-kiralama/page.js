@@ -1,7 +1,7 @@
 // app/podyum-kiralama/page.js
 import Image from "next/image";
 import Link from "next/link";
-import Script from "next/script";
+import JsonLd from "@/components/security/JsonLd";
 import { getService } from "@/lib/data";
 import PriceEstimator from "@/components/PriceEstimatorPodyum";
 
@@ -278,11 +278,7 @@ export default function Page() {
             priority
             quality={80}
             sizes="100vw"
-            className="object-cover object-center"
-            style={{
-              transform: "scale(1.02)",
-              filter: "brightness(0.6) contrast(1.1) saturate(1.1)",
-            }}
+            className="object-cover object-center hero-image-dark"
           />
         </div>
 
@@ -1060,24 +1056,9 @@ function SchemaBlocks({ packages: pkgs, unitPrices }) {
 
   return (
     <>
-      <Script
-        id="ld-service"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldService) }}
-      />
-      <Script
-        id="ld-faq"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldFAQ) }}
-      />
-      <Script
-        id="ld-breadcrumb"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldBreadcrumb) }}
-      />
+      <JsonLd id="ld-podium-service" data={ldService} />
+      <JsonLd id="ld-podium-faq" data={ldFAQ} />
+      <JsonLd id="ld-podium-breadcrumb" data={ldBreadcrumb} />
     </>
   );
 }
