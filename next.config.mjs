@@ -6,6 +6,10 @@ const nextConfig = {
   generateEtags: true,
   productionBrowserSourceMaps: false,
   trailingSlash: false,
+  
+  // ✅ MODERN JAVASCRIPT OPTIMIZATIONS - ESKI POLYFILL'LERI ENGELLER
+  swcMinify: true,
+  transpilePackages: [], // Gereksiz polyfill'leri engelle
 
   images: {
     deviceSizes: [320, 420, 640, 750, 828, 1080, 1200, 1920],
@@ -26,6 +30,8 @@ const nextConfig = {
   experimental: {
     scrollRestoration: true,
     optimizePackageImports: ["lucide-react", "@headlessui/react", "framer-motion", "react-icons"],
+    // ✅ MODERN JS ICIN EKLENDI
+    esmExternals: true,
   },
 
   env: {
