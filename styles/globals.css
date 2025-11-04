@@ -79,3 +79,20 @@ img, video, canvas, svg { max-width:100%; height:auto; }
 
 html.hc body{ background:#000; color:#fff; }
 html.hc a{ color:#00eaff; text-decoration:underline; text-decoration-thickness:2px; }
+
+@layer components{
+  html.hc .utility-surface,
+  html.hc .utility-panel,
+  html.hc .utility-panel-content{ background:#000 !important; color:#fff !important; border:2px solid #fff !important; }
+
+  html.hc .utility-hc-button{ background:#000 !important; color:#fff !important; border:2px solid #fff !important; }
+  html.hc .utility-hc-button:hover{ background:#333 !important; }
+
+  @keyframes utility-tooltip-fade{ from{ opacity:0; transform:translateY(-50%) translateX(-10px); } to{ opacity:1; transform:translateY(-50%) translateX(0); } }
+  @keyframes utility-overlay-fade{ from{ opacity:0; } to{ opacity:1; } }
+  @keyframes utility-modal-slide{ from{ opacity:0; transform:translateY(-20px); } to{ opacity:1; transform:translateY(0); } }
+
+  .animate-tooltip{ animation:utility-tooltip-fade .2s ease-out; }
+  .animate-overlay{ animation:utility-overlay-fade .2s ease-out; }
+  .animate-modal{ animation:utility-modal-slide .2s ease-out; }
+}
