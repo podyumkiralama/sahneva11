@@ -6,9 +6,9 @@ import Image from "next/image";
 
 // Optimize edilmiş sizes değerleri
 const COVER_SIZES =
-  "(max-width: 640px) calc(100vw - 2rem), " +
-  "(max-width: 1024px) calc((100vw - 3rem) / 2), " +
-  "calc((100vw - 4rem) / 3)";
+  "(max-width: 640px) 100vw, " +
+  "(max-width: 1024px) 50vw, " +
+  "33vw";
 
 const LIGHTBOX_SIZES =
   "(max-width: 768px) 100vw, " +
@@ -270,7 +270,7 @@ export default function ProjectsGallery() {
                     onClick={() => open(groupTitle, images, 0)}
                     className="absolute inset-0 w-full h-full focus:outline-none focus:ring-4 focus:ring-blue-500/50 rounded-t-2xl"
                   >
-                    {/* OPTİMİZE EDİLMİŞ GÖRSEL - Lighthouse tavsiyeleri uygulandı */}
+                    {/* ÖZELLİKLE İLK GÖRSEL İÇİN OPTİMİZE EDİLMİŞ AYARLAR */}
                     <Image
                       src={cover}
                       alt={`${groupTitle} - Sahneva profesyonel kurulum referansı`}
@@ -279,14 +279,15 @@ export default function ProjectsGallery() {
                         prefersReducedMotion ? "" : "group-hover:scale-110"
                       }`}
                       sizes={COVER_SIZES}
-                      quality={65}  // 75'ten 65'e düşürüldü - 10.7 KiB tasarruf
-                      loading={i < 2 ? "eager" : "lazy"}
+                      quality={i === 0 ? 60 : 65} // İlk görsel için daha düşük kalite
+                      loading={i === 0 ? "eager" : "lazy"} // İlk görsel eager yüklensin
                       decoding="async"
                       placeholder="blur"
                       blurDataURL={BLUR_DATA_URL}
-                      priority={i === 0}
-                      // Ek optimizasyonlar
+                      priority={i === 0} // Sadece ilk görsel priority olsun
                       fetchPriority={i === 0 ? "high" : "auto"}
+                      // LCP optimizasyonu için ek ayarlar
+                      unoptimized={false}
                     />
 
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -388,7 +389,6 @@ export default function ProjectsGallery() {
               prefersReducedMotion ? "" : "transition-all duration-500"
             } ${anim ? "scale-100 opacity-100" : "scale-90 opacity-0"}`}
           >
-            {/* OPTİMİZE EDİLMİŞ LIGHTBOX GÖRSELİ */}
             <Image
               key={items[index]}
               src={items[index]}
@@ -396,7 +396,7 @@ export default function ProjectsGallery() {
               fill
               className="object-contain rounded-xl"
               sizes={LIGHTBOX_SIZES}
-              quality={75}  // 85'ten 75'e düşürüldü
+              quality={70}
               priority
               loading="eager"
               decoding="sync"
