@@ -1,7 +1,7 @@
 // components/ReviewBanner.jsx
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 
 const REVIEW_URL = "https://g.page/r/CZhkMzkNOdgnEBI/review";
 const LS_KEY = "rvb.dismissed.v1";
@@ -14,16 +14,56 @@ export default function ReviewBanner({
   ctaLabel = "Yorum Yaz",
 }) {
   const [hidden, setHidden] = useState(true);
+  const wrapRef = useRef(null);
+
+  // Banner yüksekliğini ölçüp :root'a CSS var olarak yaz
+  const applyRootOffset = useCallback(() => {
+    if (!wrapRef.current) return;
+    const h = wrapRef.current.offsetHeight || 0;
+    const root = document.documentElement;
+    root.style.setProperty("--rb-bottom", `${h + 8}px`); // +8px ekstra nefes payı
+    root.classList.add("has-review-banner");
+  }, []);
+
+  const clearRootOffset = useCallback(() => {
+    const root = document.documentElement;
+    root.style.removeProperty("--rb-bottom");
+    root.classList.remove("has-review-banner");
+  }, []);
 
   useEffect(() => {
-    const dismissed = typeof window !== "undefined" && localStorage.getItem(LS_KEY) === "1";
+    const dismissed =
+      typeof window !== "undefined" && localStorage.getItem(LS_KEY) === "1";
     setHidden(dismissed);
   }, []);
 
+  useEffect(() => {
+    if (hidden || mode !== "sticky") {
+      clearRootOffset();
+      return;
+    }
+    // İlk ölçüm
+    applyRootOffset();
+
+    // Resize’da yeniden hesapla
+    const ro = new ResizeObserver(() => applyRootOffset());
+    if (wrapRef.current) ro.observe(wrapRef.current);
+    window.addEventListener("orientationchange", applyRootOffset);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("orientationchange", applyRootOffset);
+      clearRootOffset();
+    };
+  }, [hidden, mode, applyRootOffset, clearRootOffset]);
+
   const dismiss = useCallback(() => {
-    try { localStorage.setItem(LS_KEY, "1"); } catch {}
+    try {
+      localStorage.setItem(LS_KEY, "1");
+    } catch {}
     setHidden(true);
-  }, []);
+    clearRootOffset();
+  }, [clearRootOffset]);
 
   if (hidden) return null;
 
@@ -38,8 +78,12 @@ export default function ReviewBanner({
       </div>
 
       <div className="min-w-0">
-        <p className="text-sm sm:text-base font-semibold text-neutral-900" id="review-title">{title}</p>
-        <p className="text-xs sm:text-sm text-neutral-600" id="review-subtitle">{subtitle}</p>
+        <p className="text-sm sm:text-base font-semibold text-neutral-900" id="review-title">
+          {title}
+        </p>
+        <p className="text-xs sm:text-sm text-neutral-600" id="review-subtitle">
+          {subtitle}
+        </p>
       </div>
 
       <div className="flex-1" />
@@ -84,7 +128,11 @@ export default function ReviewBanner({
       aria-live="polite"
       aria-labelledby="review-title"
       aria-describedby="review-subtitle"
-      className={`fixed bottom-3 left-3 right-3 z-[60] ${className}`}
+      className={`fixed left-3 right-3 z-[60] ${className}`}
+      style={{
+        bottom: "max(0.75rem, env(safe-area-inset-bottom))",
+      }}
+      ref={wrapRef}
     >
       <div className="mx-auto max-w-3xl rounded-2xl border bg-white shadow-lg p-3 sm:p-4">
         <Content />
