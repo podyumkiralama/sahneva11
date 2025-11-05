@@ -16,27 +16,31 @@ const ROUTES = [
   { href: "/sahne-kiralama", label: "Sahne", title: "Sahne Kiralama", icon: "🎪" },
 ];
 
+const LS_HC = "ub.hc.v1";
+const LS_COLLAPSED = "ub.collapsed.v1";
+
 export default function UtilityBar() {
   const [isSearchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [activeTool, setActiveTool] = useState(null); // "accessibility" | "contact" | "search" | null
   const [isHighContrast, setHighContrast] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
 
   const dialogRef = useRef(null);
   const toolsRef = useRef(null);
   const lastFocusRef = useRef(null);
 
-  const syncHighContrastState = useCallback(() => {
-    if (typeof document === "undefined") return;
+  // ---- Persisted prefs
+  useEffect(() => {
+    const savedHC = typeof window !== "undefined" ? localStorage.getItem(LS_HC) : null;
+    if (savedHC === "1") document.documentElement.classList.add("hc");
     setHighContrast(document.documentElement.classList.contains("hc"));
+
+    const savedCol = typeof window !== "undefined" ? localStorage.getItem(LS_COLLAPSED) : null;
+    setCollapsed(savedCol === "1");
   }, []);
 
-  useEffect(() => {
-    const saved = typeof window !== "undefined" ? localStorage.getItem("hc") : null;
-    if (saved === "1") document.documentElement.classList.add("hc");
-    syncHighContrastState();
-  }, [syncHighContrastState]);
-
+  // ---- Global ESC
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Escape") {
@@ -49,6 +53,7 @@ export default function UtilityBar() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  // ---- Outside click
   useEffect(() => {
     const onClick = (e) => {
       if (toolsRef.current && !toolsRef.current.contains(e.target)) setActiveTool(null);
@@ -68,6 +73,7 @@ export default function UtilityBar() {
     return ROUTES.filter((r) => r.label.toLowerCase().includes(lower));
   }, [query]);
 
+  // ---- Actions
   const bumpFont = useCallback((delta) => {
     const root = document.documentElement;
     const current = parseFloat(getComputedStyle(root).fontSize) || 16;
@@ -80,7 +86,7 @@ export default function UtilityBar() {
     const el = document.documentElement;
     const willEnable = !el.classList.contains("hc");
     el.classList.toggle("hc");
-    localStorage.setItem("hc", willEnable ? "1" : "0");
+    try { localStorage.setItem(LS_HC, willEnable ? "1" : "0"); } catch {}
     setActiveTool(null);
     setHighContrast(willEnable);
   }, []);
@@ -106,6 +112,15 @@ export default function UtilityBar() {
     }, 50);
   }, []);
 
+  const handleCollapse = useCallback(() => {
+    setCollapsed(true);
+    try { localStorage.setItem(LS_COLLAPSED, "1"); } catch {}
+  }, []);
+  const handleExpand = useCallback(() => {
+    setCollapsed(false);
+    try { localStorage.setItem(LS_COLLAPSED, "0"); } catch {}
+  }, []);
+
   const isAccessibilityOpen = activeTool === "accessibility";
   const isContactOpen = activeTool === "contact";
 
@@ -116,14 +131,35 @@ export default function UtilityBar() {
     "focus-visible:outline-offset-2 focus-visible:outline-indigo-500 motion-reduce:transform-none motion-reduce:transition-none";
   const iconCls = "text-2xl md:text-3xl";
 
+  // ---- Common fixed position (respects ReviewBanner)
+  const fixedStyle = {
+    right: "max(0.5rem, env(safe-area-inset-right))",
+    bottom: "calc(env(safe-area-inset-bottom) + var(--rb-bottom, 0px) + 12px)",
+  };
+
+  // -------- Collapsed FAB (tiny opener) --------
+  if (collapsed) {
+    return (
+      <button
+        onClick={handleExpand}
+        className="fixed z-[1000] rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-2xl outline outline-1 outline-black/5 backdrop-blur-md
+                   h-12 w-12 md:h-14 md:w-14 flex items-center justify-center hover:scale-105 transition-transform"
+        style={fixedStyle}
+        aria-label="Yardımcı araçları aç"
+        title="Araçları aç"
+      >
+        ⋮
+      </button>
+    );
+  }
+
+  // -------- Expanded toolbar --------
   return (
     <>
-      {/* Sağ-alt sabit bar — alt offset, ReviewBanner varken otomatik yükselir */}
       <div
         ref={toolsRef}
         className="
           fixed
-          right-0
           z-[1000]
           flex
           max-w-[80px]
@@ -139,14 +175,20 @@ export default function UtilityBar() {
           outline outline-1 outline-black/5
           backdrop-blur-lg
         "
-        style={{
-          right: "max(0.5rem, env(safe-area-inset-right))",
-          bottom:
-            "calc(env(safe-area-inset-bottom) + var(--rb-bottom, 0px) + 12px)",
-        }}
+        style={fixedStyle}
         role="region"
         aria-label="Hızlı yardımcı araçlar"
       >
+        {/* Kapama (collapse) düğmesi */}
+        <button
+          onClick={handleCollapse}
+          className="group -mt-1 mb-1 flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+          aria-label="Araçları gizle"
+          title="Araçları gizle"
+        >
+          <span className="text-base leading-none group-hover:rotate-90 transition-transform">✕</span>
+        </button>
+
         <div className="flex flex-col items-center gap-3">
           {/* Erişilebilirlik */}
           <div className="relative flex justify-center">
@@ -172,7 +214,7 @@ export default function UtilityBar() {
                 aria-labelledby="utility-accessibility-title"
               >
                 <h2 id="utility-accessibility-title" className="sr-only">Erişilebilirlik araçları</h2>
-                <div className="space-y-4 rounded-2xl border border-black/10 bg-white/95 p-4 text-sm text-slate-700 shadow-xl w-56">
+                <div className="w-56 space-y-4 rounded-2xl border border-black/10 bg-white/95 p-4 text-sm text-slate-700 shadow-xl">
                   <div className="space-y-3">
                     <div className="text-center text-sm font-semibold text-slate-600">Yazı Boyutu</div>
                     <div className="flex gap-2">
@@ -343,9 +385,7 @@ export default function UtilityBar() {
                 </div>
               ) : (
                 <div className="flex flex-col gap-2" role="list">
-                  {ROUTES.filter((r) =>
-                    r.label.toLowerCase().includes(query.trim().toLowerCase())
-                  ).map((route) => (
+                  {filtered.map((route) => (
                     <Link
                       key={route.href}
                       href={route.href}
