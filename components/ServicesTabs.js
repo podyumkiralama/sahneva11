@@ -1,3 +1,4 @@
+// components/ServicesTabs.jsx
 "use client";
 
 import { useState, useMemo, useCallback } from "react";
@@ -130,7 +131,7 @@ export default function ServicesTabs() {
 
   return (
     <div className="w-full">
-      {/* Tab Butonları - Mobil için kaydırılabilir */}
+      {/* Tab Butonları */}
       <div className="relative mb-12">
         <div
           className="flex overflow-x-auto pb-4 gap-2 scrollbar-hide -mx-4 px-4"
@@ -265,24 +266,27 @@ export default function ServicesTabs() {
               </div>
             </div>
 
-            {/* Görsel */}
-            <div className="relative h-64 md:h-80 lg:h-96 rounded-2xl overflow-hidden shadow-xl order-1 lg:order-2 group lg:max-w-[560px]">
+            {/* Görsel — PİKSEL KİLİT + DOĞRU sizes */}
+            <div className="order-1 lg:order-2 group w-full lg:w-[560px] rounded-2xl overflow-hidden shadow-xl relative">
               <Image
                 src={activeService.image}
                 alt={`${activeService.title} - Sahneva profesyonel hizmeti`}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-500 motion-reduce:transition-none"
-                // Mobil: 100vw, tablet: ~90vw (container paddingleri düşünülerek), lg+: maksimum 560px gerçek genişlik
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 560px"
-                quality={65}
+                width={560}
+                height={384} // oranı görseline göre değiştirebilirsin
+                sizes="(max-width: 1024px) 100vw, 560px"
+                quality={60}
                 loading="lazy"
                 decoding="async"
                 fetchPriority="low"
+                // Retina'da doğru w seçimi için genişlik %100
+                style={{ width: "100%", height: "auto" }}
+                className="object-cover group-hover:scale-105 transition-transform duration-500 motion-reduce:transition-none"
                 placeholder="empty"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" aria-hidden="true" />
-              <div className="absolute bottom-4 left-4 right-4">
-                <div className="bg-white/90 backdrop-blur-sm rounded-lg p-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 motion-reduce:transition-none">
+
+              {/* Kart overlay */}
+              <div className="absolute inset-x-4 bottom-4 pointer-events-none">
+                <div className="bg-white/90 backdrop-blur-sm rounded-lg p-4">
                   <h4 className="font-bold text-gray-900 text-lg">
                     {activeService.title}
                   </h4>
