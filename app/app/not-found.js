@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function NotFound() {
   return (
-    <main className="min-h-[60vh] flex items-center justify-center bg-white">
+    <main id="main-content" tabIndex={-1} className="min-h-[60vh] flex items-center justify-center bg-white">
       <section className="text-center px-6">
         <h1 className="text-3xl md:text-4xl font-black text-neutral-900 mb-3">404 — Sayfa Bulunamadı</h1>
         <p className="text-neutral-600 mb-6 max-w-xl mx-auto">

@@ -285,7 +285,7 @@ export default function HakkimizdaPage() {
       {/* ✅ STATIC STATS - Hero section'ın hemen altında */}
       <StaticStats />
 
-      <main id="main" className="relative">
+      <main id="main-content" tabIndex={-1} className="relative">
         {/* ✅ BİZ KİMİZ SECTION */}
         <section 
           className="py-20 bg-gradient-to-br from-white to-blue-50/50"

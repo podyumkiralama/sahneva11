@@ -281,7 +281,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <main id="main" className="relative">
+      <main id="main-content" tabIndex={-1} className="relative">
         {/* CLS guard: sticky ReviewBanner için boşluk */}
         <div aria-hidden="true" className="h-12 lg:h-16" />
         <div className="sticky top-0 z-40">

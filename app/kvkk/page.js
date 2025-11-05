@@ -11,7 +11,7 @@ export default function KvkkPage() {
   const updatedAt = "11 Ekim 2025"; // ihtiyaç oldukça güncelle
 
   return (
-    <main className="container max-w-3xl mx-auto px-4 py-10 md:py-14">
+    <main id="main-content" tabIndex={-1} className="container max-w-3xl mx-auto px-4 py-10 md:py-14">
       <header className="mb-8">
         <h1 className="text-2xl md:text-3xl font-bold">KVKK / Gizlilik Politikası</h1>
         <p className="text-sm text-neutral-600 mt-1">Son güncelleme: {updatedAt}</p>

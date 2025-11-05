@@ -58,10 +58,27 @@ export default function UtilityBar() {
 
   // Scroll durumu (buton konumu/animasyonu)
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 100);
-    handleScroll();
+    if (typeof window === "undefined") return undefined;
+
+    let ticking = false;
+    const update = () => {
+      const next = window.scrollY > 120;
+      setScrolled((prev) => (prev === next ? prev : next));
+      ticking = false;
+    };
+
+    const handleScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(update);
+    };
+
+    update();
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   // ESC ile kapat
