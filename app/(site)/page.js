@@ -2,11 +2,6 @@
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
-/**
- * HERO görseli — statik import (LCP + otomatik blurDataURL)
- * Projende "@/public/..." alias'ı yoksa:
- *   import heroImg from "../../public/img/hero-bg.webp";
- */
 import heroImg from "@/public/img/hero-bg.webp";
 
 // Statik bileşenler
@@ -14,7 +9,7 @@ import CorporateEvents from "../../components/CorporateEvents";
 import Faq from "../../components/Faq";
 import ReviewBanner from "../../components/ReviewBanner";
 
-// Dinamik bileşenler (SSR kapatılmıyor; Suspense ile yüklenir)
+// Dinamik bileşenler
 const ServicesTabsLazy = dynamic(
   () => import("../../components/ServicesTabs"),
   { loading: () => <SectionSkeleton label="Hizmetler yükleniyor" /> }
@@ -27,7 +22,7 @@ const ProjectsGalleryLazy = dynamic(
 
 export const revalidate = 3600;
 
-// Erişilebilir skeleton (animasyonlar motion-reduce ile kapanır)
+// Erişilebilir skeleton
 function SectionSkeleton({ label = "İçerik yükleniyor" }) {
   return (
     <div
@@ -45,14 +40,13 @@ function SectionSkeleton({ label = "İçerik yükleniyor" }) {
   );
 }
 
-/* JSON-LD — SADECE Service (Organization/WebSite layout’tan gelsin) */
+// JSON-LD
 function StructuredData() {
   const service = {
     "@context": "https://schema.org",
     "@type": "Service",
     name: "Etkinlik Ekipmanları Kiralama",
-    description:
-      "Türkiye genelinde sahne, podyum, LED ekran, ses ve ışık sistemleri kiralama; kurulum ve teknik operasyon.",
+    description: "Türkiye genelinde sahne, podyum, LED ekran, ses ve ışık sistemleri kiralama; kurulum ve teknik operasyon.",
     url: "https://sahneva.com",
     areaServed: { "@type": "Country", name: "TR" },
     provider: { "@type": "Organization", name: "Sahneva" },
@@ -69,7 +63,6 @@ function StructuredData() {
   return (
     <script
       type="application/ld+json"
-      // Not: Next 16'da Script yerine inline <script> ok.
       dangerouslySetInnerHTML={{ __html: JSON.stringify(service) }}
     />
   );
@@ -80,21 +73,22 @@ export default function HomePage() {
     <div className="overflow-x-hidden">
       <StructuredData />
 
-      {/* Skip link */}
+      {/* Skip link - DÜZELTİLDİ */}
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:z-[9999] focus:top-3 focus:left-3 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-3 focus:rounded-lg focus:font-semibold focus:shadow-lg transition-all duration-200"
+        aria-label="Ana içeriğe atla"
       >
         Ana içeriğe atla
       </a>
 
-      {/* HERO — tasarıma dokunulmadı (sadece performans korumaları) */}
+      {/* HERO SECTION */}
       <section
         className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 pt-16 lg:pt-20"
         aria-labelledby="hero-title"
         role="banner"
       >
-        {/* Arka plan görseli (LCP) */}
+        {/* Arka plan görseli */}
         <div className="absolute inset-0">
           <Image
             src={heroImg}
@@ -111,7 +105,7 @@ export default function HomePage() {
           />
         </div>
 
-        {/* Overlay katmanları */}
+        {/* Overlay katmanları - DÜZELTİLDİ: aria-hidden ve focusable düzeltmeleri */}
         <div
           className="absolute inset-0 bg-gradient-to-br from-slate-900/85 via-blue-900/70 to-purple-900/75"
           aria-hidden="true"
@@ -127,7 +121,7 @@ export default function HomePage() {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-10">
               <div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md rounded-full px-6 py-3 border border-white/20 mb-6">
-                <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse motion-reduce:animate-none" />
+                <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse motion-reduce:animate-none" aria-hidden="true" />
                 <span className="text-white/90 text-sm font-medium">
                   Türkiye Geneli Profesyonel Hizmet
                 </span>
@@ -175,7 +169,7 @@ export default function HomePage() {
                   </span>
                   Hemen Ara
                 </span>
-                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
               </a>
 
               <a
@@ -191,7 +185,7 @@ export default function HomePage() {
                   </span>
                   WhatsApp Teklif
                 </span>
-                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
               </a>
             </div>
 
@@ -271,8 +265,8 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Scroll cue (animasyon motion-reduce ile kapanır) */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2">
+        {/* Scroll cue - DÜZELTİLDİ: aria-hidden eklendi */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2" aria-hidden="true">
           <div className="animate-bounce motion-reduce:animate-none">
             <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
               <div className="w-1 h-3 bg-white/70 rounded-full mt-2" />
@@ -282,7 +276,7 @@ export default function HomePage() {
       </section>
 
       <main id="main" className="relative">
-        {/* CLS guard: sticky ReviewBanner için boşluk */}
+        {/* CLS guard - DÜZELTİLDİ: aria-hidden eklendi */}
         <div aria-hidden="true" className="h-12 lg:h-16" />
         <div className="sticky top-0 z-40">
           <ReviewBanner />
@@ -348,6 +342,7 @@ export default function HomePage() {
                     <div
                       key={item}
                       className="bg-neutral-800 rounded-2xl animate-pulse motion-reduce:animate-none h-80"
+                      aria-hidden="true"
                     />
                   ))}
                 </div>
@@ -452,7 +447,6 @@ export default function HomePage() {
                 <article
                   key={i}
                   className="group relative bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-500 p-6 border border-neutral-100 hover:border-blue-200/70 hover:scale-105"
-                  aria-label={keyword}
                 >
                   <div className="absolute top-3 right-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                     {stat}
@@ -540,7 +534,7 @@ export default function HomePage() {
                       "DMX kontrollü ışık sistemleri ve ambiyans aydınlatma çözümleri",
                     ].map((item, i) => (
                       <li key={i} className="flex items-center gap-3">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0" />
+                        <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0" aria-hidden="true" />
                         {item}
                       </li>
                     ))}
@@ -654,7 +648,7 @@ export default function HomePage() {
                         "Modüler sahne ve podyum sistemleriyle esnek kurulum",
                       ].map((item, i) => (
                         <li key={i} className="flex items-start gap-3">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
+                          <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" aria-hidden="true" />
                           {item}
                         </li>
                       ))}
@@ -678,7 +672,7 @@ export default function HomePage() {
                         "Türkiye geneli lojistik ve koordinasyon ağı",
                       ].map((item, i) => (
                         <li key={i} className="flex items-start gap-3">
-                          <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0" />
+                          <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0" aria-hidden="true" />
                           {item}
                         </li>
                       ))}
