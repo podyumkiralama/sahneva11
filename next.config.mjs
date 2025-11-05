@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const isProd = process.env.NODE_ENV === "production";
+
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
@@ -6,14 +8,14 @@ const nextConfig = {
   generateEtags: true,
   productionBrowserSourceMaps: false,
   trailingSlash: false,
-  
-  // ✅ MODERN JAVASCRIPT OPTIMIZATIONS - ESKI POLYFILL'LERI ENGELLER
+
   swcMinify: true,
-  transpilePackages: [], // Gereksiz polyfill'leri engelle
+  transpilePackages: [],
 
   images: {
-    deviceSizes: [320, 420, 640, 750, 828, 1080, 1200, 1920],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    // 🔧 750/828 çıkarıldı; 336 ve 560 eklendi → kart/sekme/hero hedeflerine uyumlu
+    deviceSizes: [320, 336, 560, 640, 768, 896, 1024, 1280, 1536, 1920],
+    imageSizes: [16, 24, 32, 48, 64, 96, 128, 256, 384],
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 30,
     remotePatterns: [],
@@ -21,16 +23,13 @@ const nextConfig = {
   },
 
   compiler: {
-    removeConsole:
-      process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
-    reactRemoveProperties:
-      process.env.NODE_ENV === "production" ? { properties: ["^data-testid$"] } : false,
+    removeConsole: isProd ? { exclude: ["error", "warn"] } : false,
+    reactRemoveProperties: isProd ? { properties: ["^data-testid$"] } : false,
   },
 
   experimental: {
     scrollRestoration: true,
     optimizePackageImports: ["lucide-react", "@headlessui/react", "framer-motion", "react-icons"],
-    // ✅ MODERN JS ICIN EKLENDI
     esmExternals: true,
   },
 
@@ -39,11 +38,11 @@ const nextConfig = {
     NEXT_PUBLIC_APP_ENV: process.env.NODE_ENV || "development",
   },
 
-  output: process.env.NODE_ENV === "production" ? "standalone" : undefined,
+  output: isProd ? "standalone" : undefined,
   staticPageGenerationTimeout: 300,
 
   async headers() {
-    // ✨ Vercel Live için İZİN — her ortamda açık
+    // iframe ile DIŞ KAYNAK gömmek için (ör. vercel.live) gereken kaynak listesi
     const frameSrc = [
       "'self'",
       "https://www.google.com",
@@ -60,9 +59,11 @@ const nextConfig = {
       "https://www.sahneva.com",
     ].join(" ");
 
+    // Not: middleware/nonce kullanılmadığından inline scriptlere mecburen izin veriyoruz.
+    // İleride nonce’a geçince 'unsafe-inline' kaldırılabilir.
     const scriptSrcCommon = [
       "'self'",
-      "'unsafe-inline'", // middleware/nonce yokken Next'in inline scriptleri için gerekli
+      "'unsafe-inline'",
       "https://www.googletagmanager.com",
       "https://www.google-analytics.com",
       "https://va.vercel-scripts.com",
@@ -73,7 +74,6 @@ const nextConfig = {
       default-src 'self';
       base-uri 'self';
       object-src 'none';
-      frame-ancestors 'none';
       upgrade-insecure-requests;
 
       img-src 'self' data: blob: https:;
@@ -87,6 +87,10 @@ const nextConfig = {
       connect-src ${connectSrc};
       worker-src 'self' blob:;
       frame-src ${frameSrc};
+
+      /* Sizin sayfanızı KİM frame'leyebilir? Güvenlik için kapalı kalsın. */
+      frame-ancestors 'none';
+
       form-action 'self' https://formspree.io https://wa.me;
     `.replace(/\s{2,}/g, " ").trim();
 
@@ -94,7 +98,8 @@ const nextConfig = {
       { key: "Content-Security-Policy", value: csp },
       { key: "X-Content-Type-Options", value: "nosniff" },
       { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-      { key: "X-Frame-Options", value: "DENY" }, // başkalarının seni frame etmesini engeller
+      // Başkalarının SİZİ frame'lemesini engeller (frame-ancestors ile aynı yönde)
+      { key: "X-Frame-Options", value: "DENY" },
       { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
       { key: "Cross-Origin-Resource-Policy", value: "same-site" },
       { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=()" },
