@@ -3,10 +3,107 @@
 
 import { useState, useMemo, useCallback } from "react";
 import Image from "next/image";
-import Link from "next-link";
+import Link from "next/link";
 
 const services = [
-  // ... your services array remains the same
+  {
+    id: "sahne",
+    title: "Sahne Kiralama",
+    icon: "🎪",
+    description:
+      "Profesyonel modüler sahne sistemleri, truss yapılar ve güvenlik ekipmanları. Konser, festival, fuar ve özel etkinlikler için özel tasarım sahne çözümleri.",
+    image: "/img/hizmet-sahne.webp",
+    features: [
+      "Modüler sahne sistemleri (1x1m, 1x2m, 2x2m)",
+      "Alüminyum truss ve scaffolding sistemleri",
+      "Güvenlik bariyerleri ve crowd control",
+      "Profesyonel kurulum ve söküm hizmeti",
+      "Yüksek kapasiteli sahne platformları",
+    ],
+    href: "/sahne-kiralama",
+  },
+  {
+    id: "podyum",
+    title: "Podyum Kiralama",
+    icon: "👑",
+    description:
+      "Modüler podyum sistemleri, özel tasarım podyumlar ve protokol masaları. Toplantı, lansman ve ödül törenleri için profesyonel çözümler.",
+    image: "/img/hizmet-podyum.webp",
+    features: [
+      "Modüler podyum sistemleri (30cm, 60cm, 90cm)",
+      "Protokol masaları ve arkalık sistemleri",
+      "Halı kaplama ve özel yüzey seçenekleri",
+      "Hızlı kurulum ve taşınabilirlik",
+      "Çeşitli renk ve boyut seçenekleri",
+    ],
+    href: "/podyum-kiralama",
+  },
+  {
+    id: "led",
+    title: "LED Ekran Kiralama",
+    icon: "🖥️",
+    description:
+      "Yüksek çözünürlüklü indoor/outdoor LED ekran çözümleri. P2, P3, P4, P5, P6 pixel pitch seçenekleri ile her türlü etkinlik için ideal.",
+    image: "/img/galeri/led-ekran-kiralama-1.webp",
+    features: [
+      "P2-P6 pixel pitch seçenekleri",
+      "IP65 su geçirmez outdoor ekranlar",
+      "4500+ nit yüksek parlaklık",
+      "HD video işleme ve kontrol sistemleri",
+      "Kurulum ve teknik destek",
+    ],
+    href: "/led-ekran-kiralama",
+  },
+  {
+    id: "ses-isik",
+    title: "Ses & Işık Sistemleri",
+    icon: "🎭",
+    description:
+      "Profesyonel ses ve ışık sistemleri kiralama hizmeti. Konser, tiyatro, konferans ve özel etkinlikleriniz için komple ses ve ışık çözümleri.",
+    image: "/img/ses-isik/ses-sistemi.webp",
+    features: [
+      "Line-array ses sistemleri ve dijital mikserler",
+      "Kablosuz mikrofon ve monitor sistemleri",
+      "Moving head, spot ve LED ışık sistemleri",
+      "DMX kontrol ve ışık programlama",
+      "Lazer, smoke machine ve özel efektler",
+      "Ses ve ışık operatörlüğü hizmeti",
+      "Alan akustiğine özel ses optimizasyonu",
+    ],
+    href: "/ses-isik-sistemleri",
+  },
+  {
+    id: "cadir",
+    title: "Çadır Kiralama",
+    icon: "⛺",
+    description:
+      "Açık hava etkinlikleri için profesyonel çadır kurulumları. Su geçirmez, rüzgar dayanıklı çadır sistemleri ve aksesuarları.",
+    image: "/img/galeri/cadir-kiralama-1.webp",
+    features: [
+      "3x3m, 3x6m, 6x6m çadır sistemleri",
+      "Su geçirmez ve UV dayanıklı kumaş",
+      "Yan duvar ve zemin sistemleri",
+      "Aydınlatma ve dekorasyon",
+      "Profesyonel montaj ve demontaj",
+    ],
+    href: "/cadir-kiralama",
+  },
+  {
+    id: "masa-sandalye",
+    title: "Masa & Sandalye Kiralama",
+    icon: "🪑",
+    description:
+      "Toplantı, davet, düğün ve özel etkinlikler için profesyonel masa ve sandalye kiralama hizmeti. Şık ve konforlu çözümler.",
+    image: "/img/hizmet-masa.webp",
+    features: [
+      "Toplantı masaları (yuvarlak, dikdörtgen)",
+      "Konforlu sandalye ve oturma grupları",
+      "Süslü düğün sandalyeleri",
+      "Masa örtüsü ve dekorasyon",
+      "Teslimat, kurulum ve toplama hizmeti",
+    ],
+    href: "/masa-sandalye-kiralama",
+  },
 ];
 
 export default function ServicesTabs() {
@@ -34,7 +131,7 @@ export default function ServicesTabs() {
 
   return (
     <div className="w-full">
-      {/* Tab Butonları - unchanged */}
+      {/* Tab Butonları */}
       <div className="relative mb-12">
         <div
           className="flex overflow-x-auto pb-4 gap-2 scrollbar-hide -mx-4 px-4"
@@ -85,7 +182,7 @@ export default function ServicesTabs() {
       >
         {activeService && (
           <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-start">
-            {/* Metin - unchanged */}
+            {/* Metin */}
             <div className="space-y-6 order-2 lg:order-1">
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-3xl">{activeService.icon}</span>
@@ -98,7 +195,7 @@ export default function ServicesTabs() {
                 {activeService.description}
               </p>
 
-              {/* Özellikler - unchanged */}
+              {/* Özellikler */}
               <div className="space-y-4">
                 <h4 className="text-xl font-bold text-gray-900 flex items-center gap-2">
                   <svg
@@ -144,7 +241,7 @@ export default function ServicesTabs() {
                 </ul>
               </div>
 
-              {/* CTA - unchanged */}
+              {/* CTA */}
               <div className="pt-4">
                 <Link
                   href={activeService.href}
@@ -174,8 +271,8 @@ export default function ServicesTabs() {
               <Image
                 src={activeService.image}
                 alt={`${activeService.title} - Sahneva profesyonel hizmeti`}
-                width={700}  // Increased to match expected size
-                height={525} // Maintain aspect ratio: 700x525 = 4:3
+                width={700}
+                height={525}
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 560px"
                 quality={75}
                 loading="lazy"
