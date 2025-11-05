@@ -116,13 +116,15 @@ export default function Faq({ compact = false }) {
         </h2>
 
         {/* SORU LİSTESİ */}
-        <div className="mx-auto max-w-3xl mt-0 pt-0">
-          <div className="grid gap-2" role="list">
-            {FAQ_ITEMS.map((item) => (
-              <FaqRow key={item.slug} {...item} />
-            ))}
-          </div>
-        </div>
+<div className="mx-auto max-w-3xl mt-0 pt-0">
+  <ul className="grid gap-2">
+    {FAQ_ITEMS.map((item) => (
+      <li key={item.slug}>
+        <FaqRow {...item} />
+      </li>
+    ))}
+  </ul>
+</div>
 
         {/* CTA bölüm */}
         <div className="text-center mt-8 last:mb-0">
