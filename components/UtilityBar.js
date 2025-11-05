@@ -31,14 +31,12 @@ export default function UtilityBar() {
     setHighContrast(document.documentElement.classList.contains("hc"));
   }, []);
 
-  // Yüksek kontrast state yükle
   useEffect(() => {
     const saved = typeof window !== "undefined" ? localStorage.getItem("hc") : null;
     if (saved === "1") document.documentElement.classList.add("hc");
     syncHighContrastState();
   }, [syncHighContrastState]);
 
-  // ESC ile kapat
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Escape") {
@@ -51,7 +49,6 @@ export default function UtilityBar() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Dış tıklama
   useEffect(() => {
     const onClick = (e) => {
       if (toolsRef.current && !toolsRef.current.contains(e.target)) setActiveTool(null);
@@ -71,7 +68,6 @@ export default function UtilityBar() {
     return ROUTES.filter((r) => r.label.toLowerCase().includes(lower));
   }, [query]);
 
-  // Yazı boyutu
   const bumpFont = useCallback((delta) => {
     const root = document.documentElement;
     const current = parseFloat(getComputedStyle(root).fontSize) || 16;
@@ -80,7 +76,6 @@ export default function UtilityBar() {
     setActiveTool(null);
   }, []);
 
-  // Yüksek kontrast
   const toggleContrast = useCallback(() => {
     const el = document.documentElement;
     const willEnable = !el.classList.contains("hc");
@@ -90,19 +85,16 @@ export default function UtilityBar() {
     setHighContrast(willEnable);
   }, []);
 
-  // En üste dön
   const scrollTop = useCallback(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     setActiveTool(null);
   }, []);
 
-  // Araç toggle
   const toggleTool = useCallback((toolName) => {
     setActiveTool((prev) => (prev === toolName ? null : toolName));
     if (toolName !== "search") setSearchOpen(false);
   }, []);
 
-  // Arama modal aç
   const openSearchModal = useCallback((e) => {
     lastFocusRef.current = e?.currentTarget || document.activeElement;
     setSearchOpen(true);
@@ -117,24 +109,21 @@ export default function UtilityBar() {
   const isAccessibilityOpen = activeTool === "accessibility";
   const isContactOpen = activeTool === "contact";
 
-  // ★ BÜYÜTÜLMÜŞ BUTON STİLİ (mobilde de görünür)
   const utilityButtonBase =
     "relative flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-xl " +
     "bg-gradient-to-br from-indigo-500 via-indigo-500 to-purple-600 text-white shadow-xl " +
     "transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 " +
     "focus-visible:outline-offset-2 focus-visible:outline-indigo-500 motion-reduce:transform-none motion-reduce:transition-none";
-
   const iconCls = "text-2xl md:text-3xl";
 
   return (
     <>
-      {/* Sağ-alt sabit bar (DAHA BÜYÜK + belirgin) */}
+      {/* Sağ-alt sabit bar — alt offset, ReviewBanner varken otomatik yükselir */}
       <div
         ref={toolsRef}
         className="
           fixed
           right-0
-          bottom-0
           z-[1000]
           flex
           max-w-[80px]
@@ -151,9 +140,9 @@ export default function UtilityBar() {
           backdrop-blur-lg
         "
         style={{
-          // ekranın tam köşesine otururken safe-area payını koru
-          paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))",
-          paddingRight: "max(0.5rem, env(safe-area-inset-right))",
+          right: "max(0.5rem, env(safe-area-inset-right))",
+          bottom:
+            "calc(env(safe-area-inset-bottom) + var(--rb-bottom, 0px) + 12px)",
         }}
         role="region"
         aria-label="Hızlı yardımcı araçlar"
@@ -178,7 +167,7 @@ export default function UtilityBar() {
             {isAccessibilityOpen && (
               <div
                 id="utility-accessibility"
-                className="utility-panel absolute right-full top-1/2 z-[1001] mr-2 -translate-y-1/2 animate-tooltip"
+                className="absolute right-full top-1/2 z-[1001] mr-2 -translate-y-1/2"
                 role="region"
                 aria-labelledby="utility-accessibility-title"
               >
@@ -197,7 +186,7 @@ export default function UtilityBar() {
                       <button
                         onClick={() => bumpFont(1)}
                         className="flex-1 rounded-lg border border-slate-200 px-3 py-2 font-semibold text-slate-600 transition hover:border-indigo-500 hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                        aria-label="Yazı boyutunu büyüt"
+                        aria-label="Yazı boyutunu büyült"
                       >
                         A+
                       </button>
@@ -264,7 +253,7 @@ export default function UtilityBar() {
             {isContactOpen && (
               <div
                 id="utility-contact"
-                className="utility-panel absolute right-full top-1/2 z-[1001] mr-2 -translate-y-1/2 animate-tooltip"
+                className="absolute right-full top-1/2 z-[1001] mr-2 -translate-y-1/2"
                 role="region"
                 aria-labelledby="utility-contact-title"
               >
@@ -354,7 +343,9 @@ export default function UtilityBar() {
                 </div>
               ) : (
                 <div className="flex flex-col gap-2" role="list">
-                  {filtered.map((route) => (
+                  {ROUTES.filter((r) =>
+                    r.label.toLowerCase().includes(query.trim().toLowerCase())
+                  ).map((route) => (
                     <Link
                       key={route.href}
                       href={route.href}
