@@ -1,12 +1,14 @@
 // components/ProjectsGallery.js
 "use client";
+
 import { useEffect, useState, useCallback, useRef } from "react";
 import Image from "next/image";
 
+// Optimize edilmiş sizes değerleri
 const COVER_SIZES = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw";
 const LIGHTBOX_SIZES = "(max-width: 768px) 100vw, (max-width: 1200px) 90vw, min(1024px, 80vw)";
 
-const GALLERIES = { /* ... aynı ... */ };
+// Galeriler
 const GALLERIES = {
   "LED Ekran Kiralama": {
     images: [
@@ -47,8 +49,7 @@ const GALLERIES = {
       "/img/galeri/led-ekran-kiralama-35.webp",
       "/img/galeri/led-ekran-kiralama-36.webp",
     ],
-    description:
-      "Yüksek çözünürlüklü LED ekran kurulumları ve profesyonel etkinlik prodüksiyonları",
+    description: "Yüksek çözünürlüklü LED ekran kurulumları ve profesyonel etkinlik prodüksiyonları",
     stats: "50+ Kurumsal Etkinlik",
     icon: "🖥️",
   },
@@ -74,8 +75,7 @@ const GALLERIES = {
       "/img/galeri/cadir-kiralama-18.webp",
       "/img/galeri/cadir-kiralama-19.webp",
     ],
-    description:
-      "Açık hava etkinlikleri için premium çadır kurulumları ve profesyonel çözümler",
+    description: "Açık hava etkinlikleri için premium çadır kurulumları ve profesyonel çözümler",
     stats: "100+ Açık Hava Organizasyonu",
     icon: "⛺",
   },
@@ -118,14 +118,15 @@ const GALLERIES = {
       "/img/galeri/podyum-kiralama-35.webp",
       "/img/galeri/podyum-kiralama-36.webp",
     ],
-    description:
-      "Profesyonel podyum kurulumları ve modüler podyum sistemleri",
+    description: "Profesyonel podyum kurulumları ve modüler podyum sistemleri",
     stats: "200+ Profesyonel Kurulum",
     icon: "👑",
   },
 };
 
-const BLUR_DATA_URL = "data:image/jpeg;base64,...";
+// Daha küçük blur placeholder
+const BLUR_DATA_URL =
+  "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R";
 
 export default function ProjectsGallery() {
   const [isOpen, setIsOpen] = useState(false);
@@ -144,8 +145,13 @@ export default function ProjectsGallery() {
   const liveRef = useRef(null);
 
   useEffect(() => setMounted(true), []);
-  const handleImageError = (id) => setImageErrors((p) => ({ ...p, [id]: true }));
-  const getImageSrc = (s) => (imageErrors[s] ? "/img/placeholder-service.webp" : s);
+
+  const handleImageError = (serviceId) => {
+    setImageErrors((prev) => ({ ...prev, [serviceId]: true }));
+  };
+
+  const getImageSrc = (service) =>
+    imageErrors[service] ? "/img/placeholder-service.webp" : service;
 
   const open = useCallback((groupTitle, images, startIndex = 0) => {
     lastFocus.current = document.activeElement;
@@ -154,10 +160,13 @@ export default function ProjectsGallery() {
     setIndex(startIndex);
     setIsOpen(true);
     setTimeout(() => setAnim(true), 10);
+
     if (liveRef.current) {
       setTimeout(() => {
         liveRef.current.textContent = `${groupTitle} galerisi açıldı, ${images.length} profesyonel proje`;
-        setTimeout(() => (liveRef.current && (liveRef.current.textContent = "")), 2000);
+        setTimeout(() => {
+          if (liveRef.current) liveRef.current.textContent = "";
+        }, 2000);
       }, 100);
     }
   }, []);
@@ -166,24 +175,39 @@ export default function ProjectsGallery() {
     setAnim(false);
     setTimeout(() => {
       setIsOpen(false);
-      if (lastFocus.current?.focus) lastFocus.current.focus();
+      if (lastFocus.current && lastFocus.current.focus) lastFocus.current.focus();
     }, 200);
   }, []);
 
-  const prev = useCallback(() => items.length > 1 && setIndex((c) => (c - 1 + items.length) % items.length), [items]);
-  const next = useCallback(() => items.length > 1 && setIndex((c) => (c + 1) % items.length), [items]);
+  const prev = useCallback(() => {
+    if (items.length <= 1) return;
+    setIndex((c) => (c - 1 + items.length) % items.length);
+  }, [items]);
+
+  const next = useCallback(() => {
+    if (items.length <= 1) return;
+    setIndex((c) => (c + 1) % items.length);
+  }, [items]);
 
   useEffect(() => {
     if (!isOpen) return;
+
     scrollYRef.current = window.scrollY;
     const sw = window.innerWidth - document.documentElement.clientWidth;
+
     document.body.style.position = "fixed";
     document.body.style.top = `-${scrollYRef.current}px`;
     document.body.style.overflow = "hidden";
     if (sw > 0) document.body.style.paddingRight = `${sw}px`;
-    const onKey = (e) => { if (e.key === "Escape") close(); if (e.key === "ArrowLeft") prev(); if (e.key === "ArrowRight") next(); };
+
+    const onKey = (e) => {
+      if (e.key === "Escape") close();
+      if (e.key === "ArrowLeft") prev();
+      if (e.key === "ArrowRight") next();
+    };
     window.addEventListener("keydown", onKey);
-    setTimeout(() => closeBtnRef.current?.focus(), 100);
+    setTimeout(() => closeBtnRef.current && closeBtnRef.current.focus(), 100);
+
     return () => {
       const y = scrollYRef.current;
       document.body.style.position = "";
@@ -209,10 +233,22 @@ export default function ProjectsGallery() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((k) => (
               <div key={k} className="group">
-                <div className="h-80 bg-gradient-to-br from-gray-200 to-gray-300 rounded-2xl animate-pulse motion-reduce:animate-none mb-3" aria-hidden="true" />
-                <div className="h-5 bg-gray-200 rounded animate-pulse w-3/4 mb-1.5" aria-hidden="true" />
-                <div className="h-4 bg-gray-200 rounded animate-pulse w-full mb-1" aria-hidden="true" />
-                <div className="h-4 bg-gray-200 rounded animate-pulse w-2/3" aria-hidden="true" />
+                <div
+                  className="h-80 bg-gradient-to-br from-gray-200 to-gray-300 rounded-2xl animate-pulse motion-reduce:animate-none mb-3"
+                  aria-hidden="true"
+                />
+                <div
+                  className="h-5 bg-gray-200 rounded animate-pulse w-3/4 mb-1.5"
+                  aria-hidden="true"
+                />
+                <div
+                  className="h-4 bg-gray-200 rounded animate-pulse w-full mb-1"
+                  aria-hidden="true"
+                />
+                <div
+                  className="h-4 bg-gray-200 rounded animate-pulse w-2/3"
+                  aria-hidden="true"
+                />
               </div>
             ))}
           </div>
@@ -226,9 +262,12 @@ export default function ProjectsGallery() {
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   return (
-    <section className="relative pt-2 pb-8 bg-transparent" aria-labelledby="projeler-title">
+    <section
+      className="relative pt-2 pb-8 bg-transparent"
+      aria-labelledby="projeler-title"
+    >
       <div className="container relative z-10">
-        {/* div/role yerine ul/li */}
+        {/* div/role yerine ul/li kullanıldı */}
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {Object.entries(GALLERIES).map(([groupTitle, galleryData], i) => {
             const images = galleryData.images;
@@ -245,11 +284,14 @@ export default function ProjectsGallery() {
                       className="absolute inset-0 w-full h-full focus:outline-none focus:ring-4 focus:ring-blue-500/50 rounded-t-2xl"
                       aria-label={`Galeriyi İncele – ${groupTitle} (${images.length} proje)`}
                     >
+                      {/* OPTİMİZE EDİLMİŞ GÖRSEL */}
                       <Image
                         src={getImageSrc(cover)}
                         alt={`${groupTitle} - Sahneva profesyonel kurulum referansı`}
                         fill
-                        className={`object-cover transition-transform duration-700 ${prefersReducedMotion ? "" : "group-hover:scale-110"}`}
+                        className={`object-cover transition-transform duration-700 ${
+                          prefersReducedMotion ? "" : "group-hover:scale-110"
+                        }`}
                         sizes={COVER_SIZES}
                         quality={i === 0 ? 60 : 65}
                         loading={i === 0 ? "eager" : "lazy"}
@@ -261,23 +303,37 @@ export default function ProjectsGallery() {
                         onError={() => handleImageError(cover)}
                       />
 
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" aria-hidden="true" />
+                      {/* Gradient overlay */}
+                      <div
+                        className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                        aria-hidden="true"
+                      />
 
+                      {/* Alt bant */}
                       <div className="absolute bottom-0 left-0 right-0 p-5 text-white transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
                         <div className="flex items-center gap-3 mb-2.5">
-                          <span className="text-2xl" aria-hidden="true">{galleryData.icon}</span>
-                          <span className="text-xs font-medium bg-white/20 backdrop-blur-sm rounded-full px-2.5 py-1">
+                          <span className="text-2xl" aria-hidden="true">
+                            {galleryData.icon}
+                          </span>
+                          <span
+                            id={`pg-${i}-count`}
+                            className="text-xs font-medium bg-white/20 backdrop-blur-sm rounded-full px-2.5 py-1"
+                          >
                             {images.length} Profesyonel Proje
                           </span>
                         </div>
                       </div>
 
+                      {/* Orta overlay – görünen metin: Galeriyi İncele */}
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                         <div className="bg-white/90 backdrop-blur-sm rounded-full px-5 py-2.5 transform -translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
                           <span className="font-semibold text-gray-900 text-sm flex items-center gap-2">
                             <span aria-hidden="true">🔍</span>
                             Galeriyi İncele
-                            <span className="sr-only"> — {groupTitle} ({images.length} proje)</span>
+                            <span className="sr-only">
+                              {" "}
+                              — {groupTitle} ({images.length} proje)
+                            </span>
                           </span>
                         </div>
                       </div>
@@ -286,23 +342,37 @@ export default function ProjectsGallery() {
 
                   <div className="p-5">
                     <div className="flex items-center gap-3 mb-2.5">
-                      <span className="text-2xl text-gray-700" aria-hidden="true">{galleryData.icon}</span>
+                      <span className="text-2xl text-gray-700" aria-hidden="true">
+                        {galleryData.icon}
+                      </span>
                       <h3 className="text-lg font-bold text-gray-900">{groupTitle}</h3>
                     </div>
 
-                    <p className="text-gray-600 leading-relaxed mb-3 line-clamp-2">{galleryData.description}</p>
+                    <p className="text-gray-600 leading-relaxed mb-3 line-clamp-2">
+                      {galleryData.description}
+                    </p>
 
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-semibold text-blue-600 bg-blue-50 rounded-full px-3 py-1">
                         {galleryData.stats}
                       </span>
+
+                      {/* İkincil buton: adı görünen metinden gelir */}
                       <button
                         onClick={() => open(groupTitle, images, 0)}
                         className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200 flex items-center gap-1 group/btn focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/70"
                       >
                         Tümünü Gör
-                        <span className="transform group-hover/btn:translate-x-1 transition-transform duration-200" aria-hidden="true">→</span>
-                        <span className="sr-only"> — {groupTitle} ({images.length} proje)</span>
+                        <span
+                          className="transform group-hover/btn:translate-x-1 transition-transform duration-200"
+                          aria-hidden="true"
+                        >
+                          →
+                        </span>
+                        <span className="sr-only">
+                          {" "}
+                          — {groupTitle} ({images.length} proje)
+                        </span>
                       </button>
                     </div>
                   </div>
@@ -313,11 +383,14 @@ export default function ProjectsGallery() {
         </ul>
       </div>
 
+      {/* Screen reader live region */}
       <div ref={liveRef} aria-live="polite" className="sr-only" />
 
       {isOpen && (
         <div
-          className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-md ${prefersReducedMotion ? "" : "transition-all duration-500"} ${anim ? "opacity-100" : "opacity-0"}`}
+          className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-md ${
+            prefersReducedMotion ? "" : "transition-all duration-500"
+          } ${anim ? "opacity-100" : "opacity-0"}`}
           role="dialog"
           aria-modal="true"
           aria-label={`${title} profesyonel proje galerisi`}
@@ -327,7 +400,7 @@ export default function ProjectsGallery() {
         >
           <button
             ref={closeBtnRef}
-            className="absolute top-6 right-6 z-10 text-white/90 hover:text-white bg-white/10 hover:bg-white/20 rounded-2xl p-4 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/50 transition-all duration-300 min-h[52px] min-w[52px] flex items-center justify-center backdrop-blur-sm border border-white/20"
+            className="absolute top-6 right-6 z-10 text-white/90 hover:text-white bg-white/10 hover:bg-white/20 rounded-2xl p-4 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/50 transition-all duration-300 min-h-[52px] min-w-[52px] flex items-center justify-center backdrop-blur-sm border border-white/20"
             onClick={close}
           >
             <span className="text-lg font-bold">✕</span>
@@ -336,16 +409,26 @@ export default function ProjectsGallery() {
 
           {items.length > 1 && (
             <>
-              <button className="hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white rounded-2xl w-14 h-14 items-center justify-center text-2xl transition-all duration-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/50 backdrop-blur-sm border border-white/20" onClick={prev}>
+              <button
+                className="hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white rounded-2xl w-14 h-14 items-center justify-center text-2xl transition-all duration-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/50 backdrop-blur-sm border border-white/20"
+                onClick={prev}
+              >
                 ‹<span className="sr-only">Önceki proje</span>
               </button>
-              <button className="hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white rounded-2xl w-14 h-14 items-center justify-center text-2xl transition-all duration-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/50 backdrop-blur-sm border border-white/20" onClick={next}>
+              <button
+                className="hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white rounded-2xl w-14 h-14 items-center justify-center text-2xl transition-all duration-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/50 backdrop-blur-sm border border-white/20"
+                onClick={next}
+              >
                 ›<span className="sr-only">Sonraki proje</span>
               </button>
             </>
           )}
 
-          <div className={`relative w-full max-w-6xl aspect-[16/10] ${prefersReducedMotion ? "" : "transition-all duration-500"} ${anim ? "scale-100 opacity-100" : "scale-90 opacity-0"}`}>
+          <div
+            className={`relative w-full max-w-6xl aspect-[16/10] ${
+              prefersReducedMotion ? "" : "transition-all duration-500"
+            } ${anim ? "scale-100 opacity-100" : "scale-90 opacity-0"}`}
+          >
             <Image
               key={items[index]}
               src={getImageSrc(items[index])}
@@ -364,9 +447,32 @@ export default function ProjectsGallery() {
           {items.length > 1 && (
             <div className="md:hidden fixed inset-x-0 bottom-0 z-50 bg-black/80 backdrop-blur-lg border-t border-white/20 py-4">
               <div className="mx-auto max-w-sm flex items-center justify-between gap-3 px-4">
-                <button onClick={prev} className="flex-1 rounded-xl bg-white/20 text-white py-4 font-semibold text-sm transition-all duration-300 hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 min-h-[52px] backdrop-blur-sm border border-white/20">‹ Önceki</button>
-                <span className="text-white text-sm font-medium px-2">{index + 1} / {items.length}</span>
-                <button onClick={next} className="flex-1 rounded-xl bg-white/20 text-white py-4 font-semibold text-sm transition-all duration-300 hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 min-h-[52px] backdrop-blur-sm border border-white/20">Sonraki ›</button>
+                <button
+                  onClick={prev}
+                  className="flex-1 rounded-xl bg-white/20 text-white py-4 font-semibold text-sm transition-all duration-300 hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 min-h-[52px] backdrop-blur-sm border border-white/20"
+                >
+                  ‹ Önceki
+                </button>
+                <span className="text-white text-sm font-medium px-2">
+                  {index + 1} / {items.length}
+                </span>
+                <button
+                  onClick={next}
+                  className="flex-1 rounded-xl bg-white/20 text-white py-4 font-semibold text-sm transition-all duration-300 hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 min-h-[52px] backdrop-blur-sm border border-white/20"
+                >
+                  Sonraki ›
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Sayfa numarası – masaüstü */}
+          {items.length > 1 && (
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:block">
+              <div className="bg-black/50 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20">
+                <span className="text-white text-sm font-medium">
+                  {index + 1} / {items.length}
+                </span>
               </div>
             </div>
           )}
