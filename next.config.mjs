@@ -77,16 +77,14 @@ const nextConfig = {
     config.plugins.push({
       name: "RemoveLegacyPolyfillsPlugin",
       apply(compiler) {
-        compiler.hooks.thisCompilation.tap("RemoveLegacyPolyfillsPlugin", (compilation) => {
-          const compilationName = compilation.compiler?.options?.name;
-          if (compilationName && compilationName !== "client") {
-            return;
-          }
+        const pluginName = "RemoveLegacyPolyfillsPlugin";
 
+        compiler.hooks.thisCompilation.tap(pluginName, (compilation) => {
           const { Compilation, sources } = compiler.webpack;
+
           compilation.hooks.processAssets.tap(
             {
-              name: "RemoveLegacyPolyfillsPlugin",
+              name: pluginName,
               stage: Compilation.PROCESS_ASSETS_STAGE_SUMMARIZE,
             },
             (assets) => {
@@ -97,29 +95,42 @@ const nextConfig = {
               }
 
               const manifestAsset = compilation.getAsset("build-manifest.json");
-              if (!manifestAsset) {
-                return;
-              }
-
-              try {
-                const manifest = JSON.parse(manifestAsset.source.source().toString());
-                if (Array.isArray(manifest.polyfillFiles) && manifest.polyfillFiles.length > 0) {
-                  manifest.polyfillFiles = [];
-                  compilation.updateAsset(
-                    "build-manifest.json",
-                    new sources.RawSource(JSON.stringify(manifest, null, 2))
+              if (manifestAsset) {
+                try {
+                  const manifest = JSON.parse(manifestAsset.source.source().toString());
+                  if (Array.isArray(manifest.polyfillFiles) && manifest.polyfillFiles.length > 0) {
+                    manifest.polyfillFiles = [];
+                    compilation.updateAsset(
+                      "build-manifest.json",
+                      new sources.RawSource(JSON.stringify(manifest, null, 2))
+                    );
+                  }
+                } catch (error) {
+                  const message =
+                    error instanceof Error
+                      ? error.message
+                      : `${pluginName}: Unable to update build-manifest`;
+                  compilation.warnings.push(
+                    new compiler.webpack.WebpackError(`${pluginName}: ${message}`)
                   );
                 }
-              } catch (error) {
-                const message =
-                  error instanceof Error
-                    ? error.message
-                    : "RemoveLegacyPolyfillsPlugin: Unable to update build-manifest";
-                compilation.warnings.push(
-                  new compiler.webpack.WebpackError(
-                    `RemoveLegacyPolyfillsPlugin: ${message}`
-                  )
+              }
+
+              const middlewareManifestAsset = compilation.getAsset(
+                "server/middleware-build-manifest.js"
+              );
+              if (middlewareManifestAsset) {
+                const source = middlewareManifestAsset.source.source().toString();
+                const normalized = source.replace(
+                  /polyfillFiles:\[[^\]]*]/,
+                  "polyfillFiles:[]"
                 );
+                if (normalized !== source) {
+                  compilation.updateAsset(
+                    "server/middleware-build-manifest.js",
+                    new sources.RawSource(normalized)
+                  );
+                }
               }
             }
           );
