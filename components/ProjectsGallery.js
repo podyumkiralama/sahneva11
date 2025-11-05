@@ -279,7 +279,7 @@ export default function ProjectsGallery() {
                         prefersReducedMotion ? "" : "group-hover:scale-110"
                       }`}
                       sizes={COVER_SIZES}
-                      quality={75}         // → byte düşür
+                      quality={65}         // → byte düşür
                       loading={i < 2 ? "eager" : "lazy"}
                       placeholder="blur"
                       blurDataURL={BLUR_DATA_URL}
