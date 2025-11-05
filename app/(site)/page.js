@@ -420,93 +420,106 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Neden Sahneva? */}
-        <section
-          className="py-12 bg-gradient-to-br from-blue-50/80 to-purple-50/60"
-          aria-labelledby="neden-tercih-heading"
-        >
-          <div className="container">
-            <div className="text-center mb-12">
-              <h2
-                id="neden-tercih-heading"
-                className="text-3xl md:text-4xl font-black text-neutral-900 mb-6"
-              >
-                Neden{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-                  Sahneva
-                </span>
-                'yı Tercih Etmelisiniz?
-              </h2>
-              <p className="text-lg text-neutral-600 max-w-3xl mx-auto">
-                10 yılı aşkın deneyimimiz, uzman ekibimiz ve kaliteli ekipmanlarımızla
-                fark yaratıyoruz
-              </p>
-            </div>
+       {/* Neden Sahneva? */}
+<section
+  className="py-12 bg-gradient-to-br from-blue-50/80 to-purple-50/60"
+  aria-labelledby="neden-tercih-heading"
+>
+  <div className="container">
+    <div className="text-center mb-12">
+      <h2
+        id="neden-tercih-heading"
+        className="text-3xl md:text-4xl font-black text-neutral-900 mb-6"
+      >
+        Neden{" "}
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+          Sahneva
+        </span>
+        'yı Tercih Etmelisiniz?
+      </h2>
+      <p className="text-lg text-neutral-600 max-w-3xl mx-auto">
+        10 yılı aşkın deneyimimiz, uzman ekibimiz ve kaliteli ekipmanlarımızla fark yaratıyoruz
+      </p>
+    </div>
 
-            {/* role=list + role=listitem: uygun semantik */}
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3" role="list">
-              {[
-                {
-                  icon: "⭐",
-                  title: "Yüksek Müşteri Memnuniyeti",
-                  desc: "Her organizasyonda %98'in üzerinde müşteri memnuniyeti sağlıyoruz. Referanslarımız ve Google yorumlarımız en büyük güvencemiz.",
-                  stat: "%98 Memnuniyet",
-                },
-                {
-                  icon: "⚡",
-                  title: "Hızlı Kurulum ve Teslimat",
-                  desc: "Aynı gün içinde profesyonel sahne, LED ekran ve ses-ışık kurulumunu tamamlıyoruz.",
-                  stat: "2–6 Saat",
-                },
-                {
-                  icon: "🖥️",
-                  title: "Premium LED Ekran Teknolojisi",
-                  desc: "P2–P6 pixel pitch ile yüksek çözünürlüklü indoor/outdoor LED ekran kiralama.",
-                  stat: "P2–P6",
-                },
-                {
-                  icon: "👷",
-                  title: "Uzman Teknik Ekip",
-                  desc: "10+ yıl deneyimli sahne, ses, ışık ve LED uzmanlarından oluşan kadro.",
-                  stat: "15+ Uzman",
-                },
-                {
-                  icon: "💰",
-                  title: "Rekabetçi Fiyat Garantisi",
-                  desc: "Kaliteli hizmeti uygun fiyatla sunuyor, bütçenize uygun çözümler üretiyoruz.",
-                  stat: "%30 Tasarruf",
-                },
-                {
-                  icon: "🏙️",
-                  title: "Türkiye Geneli Hizmet",
-                  desc: "İstanbul, Ankara, İzmir başta 81 ilde profesyonel hizmet.",
-                  stat: "81 İl",
-                },
-              ].map(({ icon, title, desc, stat }, i) => (
-                <article
-                  key={i}
-                  className="group relative bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-500 p-6 border border-neutral-100 hover:border-blue-200/70 hover:scale-105"
-                  role="listitem"
-                  aria-label={`${title} – ${stat}`}
-                >
-                  <div className="absolute top-3 right-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                    {stat}
-                  </div>
-                  <div
-                    className="text-3xl mb-4 bg-gradient-to-r from-blue-500 to-purple-500 text-transparent bg-clip-text"
-                    aria-hidden="true"
-                  >
-                    {icon}
-                  </div>
-                  <h3 className="font-black text-lg mb-3 text-neutral-900 group-hover:text-blue-600 transition-colors">
-                    {title}
-                  </h3>
-                  <p className="text-neutral-700 leading-relaxed text-sm">{desc}</p>
-                </article>
-              ))}
-            </div>
+    {/* role=list + role=listitem: semantik doğru; aria-label YOK */}
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3" role="list">
+      {[
+        {
+          icon: "⭐",
+          title: "Yüksek Müşteri Memnuniyeti",
+          desc:
+            "Her organizasyonda %98'in üzerinde müşteri memnuniyeti sağlıyoruz. Referanslarımız ve Google yorumlarımız en büyük güvencemiz.",
+          stat: "%98 Memnuniyet",
+        },
+        {
+          icon: "⚡",
+          title: "Hızlı Kurulum ve Teslimat",
+          desc:
+            "Aynı gün içinde profesyonel sahne, LED ekran ve ses-ışık kurulumunu tamamlıyoruz.",
+          stat: "2–6 Saat",
+        },
+        {
+          icon: "🖥️",
+          title: "Premium LED Ekran Teknolojisi",
+          desc:
+            "P2–P6 pixel pitch ile yüksek çözünürlüklü indoor/outdoor LED ekran kiralama.",
+          stat: "P2–P6",
+        },
+        {
+          icon: "👷",
+          title: "Uzman Teknik Ekip",
+          desc:
+            "10+ yıl deneyimli sahne, ses, ışık ve LED uzmanlarından oluşan kadro.",
+          stat: "15+ Uzman",
+        },
+        {
+          icon: "💰",
+          title: "Rekabetçi Fiyat Garantisi",
+          desc:
+            "Kaliteli hizmeti uygun fiyatla sunuyor, bütçenize uygun çözümler üretiyoruz.",
+          stat: "%30 Tasarruf",
+        },
+        {
+          icon: "🏙️",
+          title: "Türkiye Geneli Hizmet",
+          desc:
+            "İstanbul, Ankara, İzmir başta 81 ilde profesyonel hizmet.",
+          stat: "81 İl",
+        },
+      ].map(({ icon, title, desc, stat }, i) => (
+        <article
+          key={i}
+          className="group relative bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-500 p-6 border border-neutral-100 hover:border-blue-200/70 hover:scale-105"
+          role="listitem"
+          aria-labelledby={`why-card-${i}-title`}
+        >
+          <div className="absolute top-3 right-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+            {stat}
           </div>
-        </section>
+
+          <div
+            className="text-3xl mb-4 bg-gradient-to-r from-blue-500 to-purple-500 text-transparent bg-clip-text"
+            aria-hidden="true"
+          >
+            {icon}
+          </div>
+
+          {/* Görünen başlık = erişilebilir ad (aria-labelledby) */}
+          <h3
+            id={`why-card-${i}-title`}
+            className="font-black text-lg mb-3 text-neutral-900 group-hover:text-blue-600 transition-colors"
+          >
+            {title}
+          </h3>
+
+          <p className="text-neutral-700 leading-relaxed text-sm">{desc}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
 
         {/* SEO metinleri + WhatsApp CTA */}
         <section className="py-12 bg-white" aria-labelledby="seo-title">
