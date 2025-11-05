@@ -79,6 +79,36 @@ const nextConfig = {
       apply(compiler) {
         const pluginName = "RemoveLegacyPolyfillsPlugin";
 
+        const stripModernHelperUsage = (code) => {
+          let mutated = false;
+
+          const stripFlatMapPattern = /([A-Za-z_$][\w$]*)\.slice\(t\)\.flatMap\(e=>\{let t=\(0,u\.getSegmentParam\)\(e\);return t\?a\[t\.param]:e\}\)\.filter\(e=>void 0!==e\)/g;
+          code = code.replace(stripFlatMapPattern, (_match, arrayVar) => {
+            mutated = true;
+            return `(()=>{const __baseline=[];for(const e of ${arrayVar}.slice(t)){const __param=(0,u.getSegmentParam)(e);const __value=__param?a[__param.param]:e;if(void 0!==__value){__baseline.push(__value);}}return __baseline;})()`;
+          });
+
+          const fromEntriesURLPattern = /Object\.fromEntries\(new URLSearchParams\(([^)]+)\)\)/g;
+          code = code.replace(fromEntriesURLPattern, (_match, inner) => {
+            mutated = true;
+            return `(()=>{const __baselineResult={};for(const [__baselineKey,__baselineValue] of new URLSearchParams(${inner})){__baselineResult[__baselineKey]=__baselineValue;}return __baselineResult;})()`;
+          });
+
+          const negativeAtIdentifierPattern = /\b([A-Za-z_$][\w$]*)\.at\(-([0-9]+)\)/g;
+          code = code.replace(negativeAtIdentifierPattern, (_match, identifier, depth) => {
+            mutated = true;
+            return `${identifier}[${identifier}.length-${depth}]`;
+          });
+
+          const splitNegativeAtPattern = /((?:[A-Za-z_$][\w$]*)(?:\.[A-Za-z_$][\w$]*|\[[^\]]+\])*)\.split\(([^)]*)\)\.at\(-([0-9]+)\)/g;
+          code = code.replace(splitNegativeAtPattern, (_match, expr, args, depth) => {
+            mutated = true;
+            return `(()=>{const __baselineArray=${expr}.split(${args});return __baselineArray[__baselineArray.length-${depth}];})()`;
+          });
+
+          return { code, mutated };
+        };
+
         compiler.hooks.thisCompilation.tap(pluginName, (compilation) => {
           const { Compilation, sources } = compiler.webpack;
 
@@ -130,6 +160,23 @@ const nextConfig = {
                     "server/middleware-build-manifest.js",
                     new sources.RawSource(normalized)
                   );
+                }
+              }
+
+              for (const assetKey of Object.keys(assets)) {
+                if (!assetKey.endsWith(".js")) {
+                  continue;
+                }
+
+                const asset = compilation.getAsset(assetKey);
+                if (!asset) {
+                  continue;
+                }
+
+                const originalSource = asset.source.source().toString();
+                const { code, mutated } = stripModernHelperUsage(originalSource);
+                if (mutated) {
+                  compilation.updateAsset(assetKey, new sources.RawSource(code));
                 }
               }
             }
