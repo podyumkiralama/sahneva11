@@ -5,6 +5,11 @@ import { useState, useMemo, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+const SERVICE_IMAGE_SIZES =
+  "(max-width: 640px) calc(100vw - 3rem), " +
+  "(max-width: 1024px) 360px, " +
+  "560px";
+
 const services = [
   {
     id: "sahne",
@@ -273,8 +278,8 @@ export default function ServicesTabs() {
                 alt={`${activeService.title} - Sahneva profesyonel hizmeti`}
                 width={560}
                 height={384} // oranı görseline göre değiştirebilirsin
-                sizes="(max-width: 1024px) 100vw, 560px"
-                quality={60}
+                sizes={SERVICE_IMAGE_SIZES}
+                quality={55}
                 loading="lazy"
                 decoding="async"
                 fetchPriority="low"
