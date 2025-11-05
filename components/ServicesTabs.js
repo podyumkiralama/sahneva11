@@ -1,3 +1,4 @@
+// components/ServicesTabs.jsx
 "use client";
 
 import { useState } from 'react';
@@ -121,7 +122,7 @@ export default function ServicesTabs() {
 
   return (
     <div className="w-full">
-      {/* Tab Butonları - Mobil için kaydırılabilir */}
+      {/* Tab Butonları */}
       <div className="relative mb-12">
         <div 
           className="flex overflow-x-auto pb-4 gap-2 scrollbar-hide -mx-4 px-4"
@@ -156,7 +157,7 @@ export default function ServicesTabs() {
         </div>
         
         {/* Scroll gradient overlay */}
-        <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none" aria-hidden="true" />
       </div>
 
       {/* Tab İçeriği */}
@@ -275,7 +276,7 @@ export default function ServicesTabs() {
               />
               
               {/* Gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" aria-hidden="true" />
               
               {/* Bilgi Kartı */}
               <div className="absolute bottom-4 left-4 right-4">
