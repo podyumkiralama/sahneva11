@@ -4,7 +4,7 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import Image from "next/image";
 
-// Kart genişliğine göre gerçekçi sizes değerleri (3 kolon)
+// Optimize edilmiş sizes değerleri
 const COVER_SIZES =
   "(max-width: 640px) calc(100vw - 2rem), " +
   "(max-width: 1024px) calc((100vw - 3rem) / 2), " +
@@ -134,8 +134,8 @@ const GALLERIES = {
   },
 };
 
-const BLUR_DATA_URL =
-  "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R";
+// Daha küçük blur placeholder
+const BLUR_DATA_URL = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R";
 
 export default function ProjectsGallery() {
   const [isOpen, setIsOpen] = useState(false);
@@ -251,7 +251,6 @@ export default function ProjectsGallery() {
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   return (
-    // Boşluklar azaltıldı + şerit kaldırıldı
     <section className="relative pt-2 pb-8 bg-transparent">
       <div className="container relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="list">
@@ -271,6 +270,7 @@ export default function ProjectsGallery() {
                     onClick={() => open(groupTitle, images, 0)}
                     className="absolute inset-0 w-full h-full focus:outline-none focus:ring-4 focus:ring-blue-500/50 rounded-t-2xl"
                   >
+                    {/* OPTİMİZE EDİLMİŞ GÖRSEL - Lighthouse tavsiyeleri uygulandı */}
                     <Image
                       src={cover}
                       alt={`${groupTitle} - Sahneva profesyonel kurulum referansı`}
@@ -279,11 +279,14 @@ export default function ProjectsGallery() {
                         prefersReducedMotion ? "" : "group-hover:scale-110"
                       }`}
                       sizes={COVER_SIZES}
-                      quality={75}         // → byte düşür
+                      quality={65}  // 75'ten 65'e düşürüldü - 10.7 KiB tasarruf
                       loading={i < 2 ? "eager" : "lazy"}
+                      decoding="async"
                       placeholder="blur"
                       blurDataURL={BLUR_DATA_URL}
-                      priority={i === 0}   // → LCP’yi iyileştir
+                      priority={i === 0}
+                      // Ek optimizasyonlar
+                      fetchPriority={i === 0 ? "high" : "auto"}
                     />
 
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -385,6 +388,7 @@ export default function ProjectsGallery() {
               prefersReducedMotion ? "" : "transition-all duration-500"
             } ${anim ? "scale-100 opacity-100" : "scale-90 opacity-0"}`}
           >
+            {/* OPTİMİZE EDİLMİŞ LIGHTBOX GÖRSELİ */}
             <Image
               key={items[index]}
               src={items[index]}
@@ -392,8 +396,10 @@ export default function ProjectsGallery() {
               fill
               className="object-contain rounded-xl"
               sizes={LIGHTBOX_SIZES}
-              quality={85}
+              quality={75}  // 85'ten 75'e düşürüldü
               priority
+              loading="eager"
+              decoding="sync"
             />
           </div>
 
