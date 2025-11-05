@@ -144,6 +144,7 @@ export default function ProjectsGallery() {
   const [items, setItems] = useState([]);
   const [index, setIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
+  const [imageErrors, setImageErrors] = useState({});
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
@@ -153,6 +154,20 @@ export default function ProjectsGallery() {
   const liveRef = useRef(null);
 
   useEffect(() => setMounted(true), []);
+
+  const handleImageError = (serviceId) => {
+    setImageErrors(prev => ({
+      ...prev,
+      [serviceId]: true
+    }));
+  };
+
+  const getImageSrc = (service) => {
+    if (imageErrors[service]) {
+      return '/img/placeholder-service.webp';
+    }
+    return service;
+  };
 
   const open = useCallback((groupTitle, images, startIndex = 0) => {
     lastFocus.current = document.activeElement;
@@ -234,10 +249,10 @@ export default function ProjectsGallery() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((k) => (
               <div key={k} className="group">
-                <div className="h-80 bg-gradient-to-br from-gray-200 to-gray-300 rounded-2xl animate-pulse mb-3" />
-                <div className="h-5 bg-gray-200 rounded animate-pulse w-3/4 mb-1.5" />
-                <div className="h-4 bg-gray-200 rounded animate-pulse w-full mb-1" />
-                <div className="h-4 bg-gray-200 rounded animate-pulse w-2/3" />
+                <div className="h-80 bg-gradient-to-br from-gray-200 to-gray-300 rounded-2xl animate-pulse motion-reduce:animate-none mb-3" aria-hidden="true" />
+                <div className="h-5 bg-gray-200 rounded animate-pulse w-3/4 mb-1.5" aria-hidden="true" />
+                <div className="h-4 bg-gray-200 rounded animate-pulse w-full mb-1" aria-hidden="true" />
+                <div className="h-4 bg-gray-200 rounded animate-pulse w-2/3" aria-hidden="true" />
               </div>
             ))}
           </div>
@@ -251,7 +266,7 @@ export default function ProjectsGallery() {
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   return (
-    <section className="relative pt-2 pb-8 bg-transparent">
+    <section className="relative pt-2 pb-8 bg-transparent" aria-labelledby="projeler-title">
       <div className="container relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="list">
           {Object.entries(GALLERIES).map(([groupTitle, galleryData], i) => {
@@ -269,32 +284,33 @@ export default function ProjectsGallery() {
                     type="button"
                     onClick={() => open(groupTitle, images, 0)}
                     className="absolute inset-0 w-full h-full focus:outline-none focus:ring-4 focus:ring-blue-500/50 rounded-t-2xl"
+                    aria-label={`${groupTitle} galerisini aç - ${images.length} profesyonel proje`}
                   >
-                    {/* ÖZELLİKLE İLK GÖRSEL İÇİN OPTİMİZE EDİLMİŞ AYARLAR */}
+                    {/* OPTİMİZE EDİLMİŞ GÖRSEL */}
                     <Image
-                      src={cover}
+                      src={getImageSrc(cover)}
                       alt={`${groupTitle} - Sahneva profesyonel kurulum referansı`}
                       fill
                       className={`object-cover transition-transform duration-700 ${
                         prefersReducedMotion ? "" : "group-hover:scale-110"
                       }`}
                       sizes={COVER_SIZES}
-                      quality={i === 0 ? 60 : 65} // İlk görsel için daha düşük kalite
-                      loading={i === 0 ? "eager" : "lazy"} // İlk görsel eager yüklensin
+                      quality={i === 0 ? 60 : 65}
+                      loading={i === 0 ? "eager" : "lazy"}
                       decoding="async"
                       placeholder="blur"
                       blurDataURL={BLUR_DATA_URL}
-                      priority={i === 0} // Sadece ilk görsel priority olsun
+                      priority={i === 0}
                       fetchPriority={i === 0 ? "high" : "auto"}
-                      // LCP optimizasyonu için ek ayarlar
-                      unoptimized={false}
+                      onError={() => handleImageError(cover)}
                     />
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    {/* Gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" aria-hidden="true" />
 
                     <div className="absolute bottom-0 left-0 right-0 p-5 text-white transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
                       <div className="flex items-center gap-3 mb-2.5">
-                        <span className="text-2xl">{galleryData.icon}</span>
+                        <span className="text-2xl" aria-hidden="true">{galleryData.icon}</span>
                         <span className="text-xs font-medium bg-white/20 backdrop-blur-sm rounded-full px-2.5 py-1">
                           {images.length} Profesyonel Proje
                         </span>
@@ -304,7 +320,7 @@ export default function ProjectsGallery() {
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                       <div className="bg-white/90 backdrop-blur-sm rounded-full px-5 py-2.5 transform -translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
                         <span className="font-semibold text-gray-900 text-sm flex items-center gap-2">
-                          <span>🔍</span>
+                          <span aria-hidden="true">🔍</span>
                           Galeriyi İncele
                         </span>
                       </div>
@@ -314,7 +330,7 @@ export default function ProjectsGallery() {
 
                 <div className="p-5">
                   <div className="flex items-center gap-3 mb-2.5">
-                    <span className="text-2xl text-gray-700">{galleryData.icon}</span>
+                    <span className="text-2xl text-gray-700" aria-hidden="true">{galleryData.icon}</span>
                     <h3 className="text-lg font-bold text-gray-900">{groupTitle}</h3>
                   </div>
 
@@ -328,10 +344,11 @@ export default function ProjectsGallery() {
                     </span>
                     <button
                       onClick={() => open(groupTitle, images, 0)}
-                      className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200 flex items-center gap-1 group/btn"
+                      className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200 flex items-center gap-1 group/btn focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/70"
+                      aria-label={`${groupTitle} tüm projelerini görüntüle`}
                     >
                       Tümünü Gör
-                      <span className="transform group-hover/btn:translate-x-1 transition-transform duration-200">→</span>
+                      <span className="transform group-hover/btn:translate-x-1 transition-transform duration-200" aria-hidden="true">→</span>
                     </button>
                   </div>
                 </div>
@@ -391,7 +408,7 @@ export default function ProjectsGallery() {
           >
             <Image
               key={items[index]}
-              src={items[index]}
+              src={getImageSrc(items[index])}
               alt={`${title} - ${index + 1}. profesyonel referans projemiz`}
               fill
               className="object-contain rounded-xl"
@@ -400,6 +417,7 @@ export default function ProjectsGallery() {
               priority
               loading="eager"
               decoding="sync"
+              onError={() => handleImageError(items[index])}
             />
           </div>
 
@@ -413,6 +431,9 @@ export default function ProjectsGallery() {
                 >
                   ‹ Önceki
                 </button>
+                <span className="text-white text-sm font-medium px-2">
+                  {index + 1} / {items.length}
+                </span>
                 <button
                   onClick={next}
                   className="flex-1 rounded-xl bg-white/20 text-white py-4 font-semibold text-sm transition-all duration-300 hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 min-h-[52px] backdrop-blur-sm border border-white/20"
@@ -420,6 +441,17 @@ export default function ProjectsGallery() {
                 >
                   Sonraki ›
                 </button>
+              </div>
+            </div>
+          )}
+
+          {/* Sayfa numarası gösterimi - masaüstü */}
+          {items.length > 1 && (
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:block">
+              <div className="bg-black/50 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20">
+                <span className="text-white text-sm font-medium">
+                  {index + 1} / {items.length}
+                </span>
               </div>
             </div>
           )}
