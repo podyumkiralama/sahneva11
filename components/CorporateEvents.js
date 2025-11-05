@@ -1,211 +1,232 @@
-// components/CorporateEvents.jsx
+// components/CorporateEvents.js
 "use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from "next/image";
+import Link from "next/link";
 
-const events = [
+const CARD_SIZES =
+  "(max-width: 768px) 100vw, " +
+  "(max-width: 1024px) calc((100vw - 4rem) / 2), " +
+  "calc((1280px - 4rem) / 3)";
+
+const CARDS = [
   {
-    id: 'konferans',
-    title: 'Konferans & Toplantılar',
-    description: 'Kurumsal toplantılar, seminerler ve konferanslar için profesyonel sahne, podyum ve teknik ekipman çözümleri.',
-    image: '/img/kurumsal/konferans.webp',
-    features: ['Protokol podyumu', 'Ses sistemi', 'Projeksiyon', 'Işıklandırma'],
-    stats: '250+ Kurumsal Etkinlik',
-    color: 'from-blue-500 to-cyan-500'
+    slug: "lansman",
+    title: "Ürün Lansmanları",
+    img: "/img/kurumsal/lansman.webp",
+    alt: "Kurumsal ürün lansmanı için profesyonel sahne, LED ekran ve ışık sistemi kurulumu - Sahneva",
+    text: "LED ekran kurgu, sahne tasarımı, ışık şovları ve canlı yayın altyapısıyla etkileyici sunumlar.",
+    icon: "🚀",
+    gradient: "from-purple-500/10 to-blue-500/10",
+    color: "text-purple-600"
   },
   {
-    id: 'lansman',
-    title: 'Ürün Lansmanları',
-    description: 'Yeni ürün ve hizmet lansmanları için etkileyici sahne tasarımları ve yüksek çözünürlüklü LED ekran çözümleri.',
-    image: '/img/kurumsal/lansman.webp',
-    features: ['LED Ekran', 'Özel sahne tasarımı', 'Ses sistemi', 'Işık şovu'],
-    stats: '150+ Lansman',
-    color: 'from-purple-500 to-pink-500'
+    slug: "konferans", 
+    title: "Konferans & Kongre",
+    img: "/img/kurumsal/konferans.webp",
+    alt: "Konferans ve kongre organizasyonları için sahne, ses-ışık sistemleri ve teknik ekipman - Sahneva",
+    text: "Çoklu mikrofon, simultane çeviri, sunum yönetimi ve kayıt çözümleriyle kusursuz akış.",
+    icon: "🎤",
+    gradient: "from-green-500/10 to-emerald-500/10",
+    color: "text-green-600"
   },
   {
-    id: 'fuar',
-    title: 'Fuar & Sergiler',
-    description: 'Fuarlar ve sergiler için modüler sahne sistemleri, podyumlar ve etkileşimli LED ekran kurulumları.',
-    image: '/img/kurumsal/fuar.webp',
-    features: ['Modüler sahne', 'LED ekran', 'Ses sistemi', 'Aydınlatma'],
-    stats: '300+ Fuar Standı',
-    color: 'from-green-500 to-emerald-500'
+    slug: "bayi-toplantisi",
+    title: "Bayi & İç İletişim",
+    img: "/img/kurumsal/bayi-toplantisi.webp", 
+    alt: "Bayi toplantısı ve kurumsal iletişim etkinlikleri için özel sahne, ekran ve aydınlatma çözümleri - Sahneva",
+    text: "Kurumsal kimliğe uygun sahne–dekor, çoklu ekran, video–ses yönetimi ve teknik ekip.",
+    icon: "🤝",
+    gradient: "from-orange-500/10 to-red-500/10",
+    color: "text-orange-600"
   },
-  {
-    id: 'odul',
-    title: 'Ödül Törenleri',
-    description: 'Ödül törenleri ve galalar için şık podyum tasarımları, özel ışıklandırma ve profesyonel ses sistemleri.',
-    image: '/img/kurumsal/odul-toreni.webp',
-    features: ['Özel podyum', 'Spot ışıklar', 'Ses sistemi', 'Kırmızı halı'],
-    stats: '100+ Ödül Töreni',
-    color: 'from-orange-500 to-red-500'
-  }
+];
+
+const ADVANTAGES = [
+  { 
+    icon: "⚡", 
+    label: "Aynı Gün Kurulum", 
+    desc: "Hızlı ve profesyonel kurulum hizmeti",
+    bg: "bg-blue-50",
+    border: "border-blue-200"
+  },
+  { 
+    icon: "🎛", 
+    label: "Güncel Ekipman Parkı", 
+    desc: "En son teknoloji ekipmanlar",
+    bg: "bg-green-50",
+    border: "border-green-200"
+  },
+  { 
+    icon: "👷", 
+    label: "Deneyimli Teknik Ekip", 
+    desc: "Uzman profesyonel ekip",
+    bg: "bg-purple-50", 
+    border: "border-purple-200"
+  },
+  { 
+    icon: "🛡", 
+    label: "Güvenlik & Yedek Plan", 
+    desc: "Güvenlik öncelikli hizmet",
+    bg: "bg-amber-50",
+    border: "border-amber-200"
+  },
 ];
 
 export default function CorporateEvents() {
-  const [imageErrors, setImageErrors] = useState({});
-
-  const handleImageError = (eventId) => {
-    setImageErrors(prev => ({
-      ...prev,
-      [eventId]: true
-    }));
-  };
-
-  const getImageSrc = (event, image) => {
-    if (imageErrors[event.id]) {
-      return '/img/placeholder-service.webp';
-    }
-    return image;
-  };
-
   return (
-    <div className="w-full">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {events.map((event, index) => (
-          <article
-            key={event.id}
-            className="group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 border border-gray-200 overflow-hidden"
-            role="article"
-            aria-labelledby={`event-${event.id}`}
-          >
-            {/* Görsel */}
-            <div className="relative h-48 overflow-hidden">
-              <Image
-                src={getImageSrc(event, event.image)}
-                alt={`${event.title} - Sahneva kurumsal çözümü`}
-                fill
-                className="object-cover group-hover:scale-110 transition-transform duration-700"
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 45vw"
-                quality={75}
-                loading={index < 2 ? "eager" : "lazy"}
-                decoding="async"
-                placeholder="empty"
-                onError={() => handleImageError(event.id)}
-              />
-              
-              {/* Gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" aria-hidden="true" />
-              
-              {/* İstatistik */}
-              <div className="absolute top-4 right-4">
-                <span className="bg-white/90 backdrop-blur-sm text-gray-900 text-xs font-bold px-3 py-1 rounded-full">
-                  {event.stats}
-                </span>
-              </div>
-              
-              {/* Başlık */}
-              <div className="absolute bottom-4 left-4 right-4">
-                <h3 
-                  id={`event-${event.id}`}
-                  className="text-white font-black text-xl mb-2"
-                >
-                  {event.title}
-                </h3>
-                <div className="h-1 w-12 bg-gradient-to-r from-white to-white/70 rounded-full" aria-hidden="true" />
-              </div>
-            </div>
+    <section className="relative py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50/30 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-gradient-to-r from-blue-100/20 to-purple-100/20 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-gradient-to-r from-green-100/20 to-cyan-100/20 rounded-full blur-3xl"></div>
+      </div>
 
-            {/* İçerik */}
-            <div className="p-6">
-              <p className="text-gray-600 leading-relaxed mb-4">
-                {event.description}
-              </p>
-
-              {/* Özellikler */}
-              <div className="mb-4">
-                <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                  <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  Hizmet Özellikleri:
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {event.features.map((feature, featureIndex) => (
-                    <span
-                      key={featureIndex}
-                      className="inline-flex items-center gap-1 bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full"
-                    >
-                      <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" aria-hidden="true" />
-                      {feature}
-                    </span>
-                  ))}
+      <div className="container relative z-10">
+        <div className="grid gap-8 md:grid-cols-3 mb-16" role="list">
+          {CARDS.map((card) => (
+            <article
+              key={card.slug}
+              className="group relative bg-white rounded-3xl border border-gray-200/60 shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden hover:border-blue-200/80"
+              role="listitem"
+            >
+              <div className={`absolute inset-0 bg-gradient-to-br ${card.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
+              
+              <div className="relative aspect-[16/10] w-full overflow-hidden">
+                <Image
+                  src={card.img}
+                  alt={card.alt}
+                  fill
+                  sizes={CARD_SIZES}
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  loading="lazy"
+                  decoding="async"
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R"
+                  quality={80}
+                />
+                
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-500"></div>
+                
+                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-2xl p-3 transform -translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                  <span className="text-2xl">{card.icon}</span>
                 </div>
               </div>
 
-              {/* CTA Butonu */}
-              <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-                <span className="text-sm text-gray-500">
-                  Detaylı bilgi için
-                </span>
-                <Link
-                  href="/iletisim"
-                  className="group/btn inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold text-sm px-4 py-2 rounded-lg transition-all duration-300 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/70"
-                  aria-label={`${event.title} için teklif al`}
-                >
-                  <span>Teklif Al</span>
-                  <svg 
-                    className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
+              <div className="relative p-6 bg-white/80 backdrop-blur-sm">
+                <h3 className={`font-bold text-xl mb-3 ${card.color}`}>
+                  {card.title}
+                </h3>
+                <p className="text-gray-600 leading-relaxed mb-4">
+                  {card.text}
+                </p>
+                
+                <div className="flex items-center justify-between">
+                  <Link
+                    href="/iletisim"
+                    prefetch={false}
+                    className="inline-flex items-center gap-2 font-semibold text-gray-700 hover:text-blue-600 transition-colors duration-200 group/link"
+                    aria-label={`${card.title} için teklif al - Sahneva kurumsal çözümler`}
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
+                    <span>Teklif Al</span>
+                    <span className="transform group-hover/link:translate-x-1 transition-transform duration-200">→</span>
+                  </Link>
+                  
+                  <span className="text-xs font-medium text-gray-700 bg-gray-200 rounded-full px-3 py-1">
+                    Profesyonel Çözüm
+                  </span>
+                </div>
               </div>
-            </div>
-          </article>
-        ))}
-      </div>
+            </article>
+          ))}
+        </div>
 
-      {/* Kurumsal Çözümler Özet */}
-      <div className="mt-12 bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 border border-blue-200">
-        <div className="grid md:grid-cols-2 gap-8 items-center">
-          <div>
-            <h3 className="text-2xl font-black text-gray-900 mb-4">
-              Kurumsal Etkinliklerde <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Neden Sahneva?</span>
+        <div className="mb-16">
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-full px-6 py-3 shadow-sm mb-4">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <span className="text-sm font-medium text-gray-700">Neden Sahneva?</span>
+            </div>
+            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+              Kurumsal Çözümlerde <span className="text-blue-600">Farkımız</span>
             </h3>
-            <ul className="space-y-3 text-gray-700">
-              {[
-                "10+ yıl deneyimli profesyonel ekip",
-                "7/24 teknik destek ve sahne yönetimi",
-                "ISO standartlarında kalite güvencesi",
-                "Türkiye geneli lojistik ve kurulum",
-                "Yedekli ekipman stoğu ve acil durum planı"
-              ].map((item, index) => (
-                <li key={index} className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0" aria-hidden="true" />
-                  {item}
-                </li>
-              ))}
-            </ul>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4" role="list">
+            {ADVANTAGES.map((item, i) => (
+              <div
+                key={i}
+                className={`group relative ${item.bg} ${item.border} rounded-2xl border-2 p-6 transition-all duration-300 hover:shadow-lg hover:scale-105 hover:border-blue-300/50`}
+                role="listitem"
+                title={item.desc}
+              >
+                <div className="flex items-center gap-4">
+                  <span className="text-3xl transition-transform duration-300 group-hover:scale-110" aria-hidden="true">
+                    {item.icon}
+                  </span>
+                  <div>
+                    <span className="block font-bold text-gray-900 text-lg mb-1">
+                      {item.label}
+                    </span>
+                    <span className="text-sm text-gray-600">{item.desc}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="relative rounded-3xl bg-gradient-to-r from-blue-600 to-purple-600 p-8 md:p-12 text-center text-white overflow-hidden">
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute -top-20 -right-20 w-40 h-40 bg-white rounded-full"></div>
+            <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-white rounded-full"></div>
           </div>
           
-          <div className="text-center">
-            <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
-              <div className="text-3xl mb-2" aria-hidden="true">🚀</div>
-              <h4 className="font-bold text-gray-900 mb-2">Hızlı Teklif</h4>
-              <p className="text-sm text-gray-600 mb-4">
-                2 saat içinde detaylı teklif ve profesyonel danışmanlık
-              </p>
-              <Link
-                href="https://wa.me/905453048671?text=Merhaba%2C+kurumsal+etkinli%C4%9Fim+i%C3%A7in+profesyonel+%C3%A7%C3%B6z%C3%BCmlere+ihtiyac%C4%B1m+var.+Detayl%C4%B1+teklif+almak+istiyorum.&utm_source=corporate&utm_medium=component&utm_campaign=whatsapp"
+          <div className="relative z-10">
+            <h3 className="text-2xl md:text-3xl font-bold mb-4">
+              Kurumsal Etkinlikleriniz İçin <span className="text-yellow-300">Anahtar Teslim</span> Çözüm
+            </h3>
+            <p className="text-blue-100 text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
+              Profesyonel sahne, podyum, LED ekran, ses–ışık ve yayın çözümleri için 
+              uzman ekibimizle hemen iletişime geçin.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row justify-center gap-4 mb-6">
+              <a
+                href="tel:+905453048671"
+                className="inline-flex items-center justify-center gap-3 bg-white text-blue-600 font-semibold px-8 py-4 rounded-2xl hover:bg-gray-100 transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1 min-h-[60px]"
+                aria-label="Kurumsal etkinlik için telefonla görüş – +90 545 304 86 71"
+                title="Telefonla ücretsiz danışmanlık alın"
+              >
+                <span className="text-2xl">📞</span>
+                <span>Telefonla Görüş</span>
+              </a>
+              
+              <a
+                href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ulaşıyorum.+Sahne+kiralama+ve+LED+ekran+fiyatları+hakkında+detaylı+teklif+almak+istiyorum."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:scale-105 w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500/70"
-                aria-label="WhatsApp üzerinden kurumsal teklif iste"
+                className="inline-flex items-center justify-center gap-3 bg-green-100 hover:bg-green-200 border-2 border-green-600 text-green-900 font-bold px-5 py-4 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl min-h-[60px]"
+                aria-label="WhatsApp üzerinden kurumsal etkinlik teklifi iste"
               >
-                <span className="text-lg" aria-hidden="true">💬</span>
-                <span>WhatsApp'tan Yaz</span>
-              </Link>
+                <span className="text-xl">💬</span>
+                <span className="text-sm font-bold">WhatsApp'tan Yaz</span>
+              </a>
+            </div>
+            
+            <div className="flex items-center justify-center gap-4 text-blue-100 text-sm">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span>7/24 Müşteri Desteği</span>
+              </div>
+              <div className="w-px h-4 bg-blue-400"></div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span>15 Dakikada Yanıt</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
