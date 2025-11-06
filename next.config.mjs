@@ -64,6 +64,7 @@ const nextConfig = {
 
       // Herhangi bir patika sonu %24 / %26 (url-encoded $ / & ) → temizle
       { source: "/:path*%24", destination: "/:path*", permanent: true },
+      { source: "/_next/static/media/83afe278b6a6bb3c.p.3a6ba036.woff2", destination: "/:path*", permanent: true },
       { source: "/:path*%26", destination: "/:path*", permanent: true },
 
       // (Bazı tarayıcılar encode etmeyebilir; açık hâllerini de dene)
