@@ -7,7 +7,8 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
   trailingSlash: false,
 
-  swcMinify: true,
+  // swcMinify: true, // ❌ Next 16'da artık yok
+
   transpilePackages: [],
 
   images: {
@@ -42,36 +43,33 @@ const nextConfig = {
 
   async redirects() {
     return [
-      // /search?q=...  → /?q=...
+      // /search?q=...  → /?q=...  (sorguyu korur)
       {
         source: "/search",
         has: [{ type: "query", key: "q", value: "(?<term>.*)" }],
         destination: "/?q=:term",
         permanent: true,
       },
-      // /search (q yoksa) → /
+      // q yoksa ana sayfaya
       { source: "/search", destination: "/", permanent: true },
 
       // Eski slug → yeni slug
       { source: "/sahne-kurulumu", destination: "/sahne-kiralama", permanent: true },
 
-      // Next static font kalıntıları → fallback
+      // Tüm .woff2 static media → tek bir fallback font
       { source: "/_next/static/media/:file*\\.woff2", destination: "/fonts/fallback.woff2", permanent: true },
 
-      // KÖTÜ URL sonu işaretleri (tek başına kök)
-      { source: "/%24", destination: "/", permanent: true }, // /
-      { source: "/%26", destination: "/", permanent: true }, // /
+      // Kötü encode edilmiş kök URL'ler
+      { source: "/%24", destination: "/", permanent: true },
+      { source: "/%26", destination: "/", permanent: true },
 
-      // Herhangi bir patika sonu %24 / %26 (url-encoded $ / & ) → temizle
+      // Herhangi bir patika sonu %24 / %26 ise → temizle
       { source: "/:path*%24", destination: "/:path*", permanent: true },
-      { source: "/_next/static/media/83afe278b6a6bb3c.p.3a6ba036.woff2", destination: "/:path*", permanent: true },
       { source: "/:path*%26", destination: "/:path*", permanent: true },
 
-      // (Bazı tarayıcılar encode etmeyebilir; açık hâllerini de dene)
-      { source: "/$", destination: "/", permanent: true },
-      { source: "/&", destination: "/", permanent: true },
-      { source: "/:path*$", destination: "/:path*", permanent: true }, // bazı ortamlarda çalışır
-      { source: "/:path*&", destination: "/:path*", permanent: true }, // bazı ortamlarda çalışır
+      // (NOT) Aşağıdaki gibi "açık" $ / & kurallarını eklemiyoruz; Next bunları sağlıklı parse etmeyebilir
+      // { source: "/$", ... }  { source: "/&", ... }
+      // Ayrıca sabit kaynağı "/:path*" hedefine yönlendiren kuralı da KALDIRDIK (build hatasına sebep oluyordu).
     ];
   },
 
@@ -87,7 +85,7 @@ const nextConfig = {
     ].join(" ");
     const scriptSrcCommon = [
       "'self'",
-      "'unsafe-inline'",
+      "'unsafe-inline'", // middleware/nonce yokken bazı inline'lar için gerekli
       "https://www.googletagmanager.com",
       "https://www.google-analytics.com",
       "https://va.vercel-scripts.com",
