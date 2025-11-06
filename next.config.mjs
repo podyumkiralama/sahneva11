@@ -41,68 +41,46 @@ const nextConfig = {
   output: process.env.NODE_ENV === "production" ? "standalone" : undefined,
   staticPageGenerationTimeout: 300,
 
-  // ─────────────────────────────────────────────────────────────────────────────
-  // REDIRECTS – Sorunlu URL’leri güvenli şekilde köke yönlendir
-  // ─────────────────────────────────────────────────────────────────────────────
+  // ✅ REDIRECTS (middleware YOK)
   async redirects() {
     return [
-      // GSC / reklam kaynaklı placeholder query ⇒ köke temiz 301
+      // 1) /search?q=... → /?q=...  (sorguyu koru)
+      // "has" + named capture ile query değeri destination'da :term olarak kullanılır.
       {
         source: "/search",
-        has: [{ type: "query", key: "q", value: "%7Bsearch_term_string%7D" }],
-        destination: "/",
+        has: [
+          {
+            type: "query",
+            key: "q",
+            value: "(?<term>.*)", // q değerini yakala
+          },
+        ],
+        destination: "/?q=:term",
         permanent: true,
       },
+      // 1a) /search (q yoksa) → /
       {
         source: "/search",
-        has: [{ type: "query", key: "q", value: "{search_term_string}" }],
-        destination: "/",
-        permanent: true,
-      },
-      // Aynı placeholder kökte görünürse (/?q=...) ⇒ köke temiz 301 (loop olmaz; query kalkar)
-      {
-        source: "/",
-        has: [{ type: "query", key: "q", value: "%7Bsearch_term_string%7D" }],
-        destination: "/",
-        permanent: true,
-      },
-      {
-        source: "/",
-        has: [{ type: "query", key: "q", value: "{search_term_string}" }],
         destination: "/",
         permanent: true,
       },
 
-      // GSC’de görülen tek-karakter hatalı yollar → kök
-      { source: "/$", destination: "/", permanent: true },
-      { source: "/&", destination: "/", permanent: true },
-
-      // Belirli eski font hash’i için 301 (kalıcı)
+      // 2) Eski/bot kaynaklı Next static font istekleri → public/fonts/fallback.woff2
+      // Örn: /_next/static/media/83afe278b6a6bb3c.p.3a6ba036.woff2
       {
-        source: "/_next/static/media/83afe278b6a6bb3c.p.3a6ba036.woff2",
+        source: "/_next/static/media/:file*\\.woff2",
         destination: "/fonts/fallback.woff2",
         permanent: true,
       },
+
+      // (Opsiyonel) Eski tema kalıntıları için benzer desenler eklenebilir:
+      // { source: "/wp-content/:path*", destination: "/", permanent: true },
     ];
   },
 
-  // ─────────────────────────────────────────────────────────────────────────────
-  // REWRITES – Tüm eksik .woff2 hash isteklerini fallback’e geçir (404 ve GSC gürültüsünü keser)
-  // ─────────────────────────────────────────────────────────────────────────────
-  async rewrites() {
-    return [
-      {
-        source: "/_next/static/media/:any*.woff2",
-        destination: "/fonts/fallback.woff2",
-      },
-    ];
-  },
-
-  // ─────────────────────────────────────────────────────────────────────────────
-  // HEADERS – CSP + cache + dizinden çıkarma (X-Robots-Tag)
-  // ─────────────────────────────────────────────────────────────────────────────
+  // ✅ HEADERS (CSP + güvenlik)
   async headers() {
-    // Vercel Live iFrame izni
+    // Vercel Live için izin
     const frameSrc = ["'self'", "https://www.google.com", "https://vercel.live", "https://*.vercel.live"].join(" ");
 
     const connectSrc = [
@@ -114,9 +92,9 @@ const nextConfig = {
       "https://www.sahneva.com",
     ].join(" ");
 
-    // Not: middleware/nonce kullanmadığımız için Next’in küçük inline script’leri için 'unsafe-inline' bırakıldı.
     const scriptSrcCommon = [
       "'self'",
+      // middleware/nonce kullanmadığımız için Next'in inline scriptlerine izin (minimum)
       "'unsafe-inline'",
       "https://www.googletagmanager.com",
       "https://www.google-analytics.com",
@@ -154,15 +132,15 @@ const nextConfig = {
       { key: "X-Frame-Options", value: "DENY" },
       { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
       { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-      { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=()" },
+      {
+        key: "Permissions-Policy",
+        value: "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=()",
+      },
       { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
     ];
 
     return [
-      // Global security headers
       { source: "/(.*)", headers: securityHeaders },
-
-      // Statik dosyalar (Next build çıktısı)
       {
         source: "/_next/static/(.*)",
         headers: [
@@ -170,38 +148,12 @@ const nextConfig = {
           { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
         ],
       },
-
-      // Görseller
       {
         source: "/(.*)\\.(ico|png|jpg|jpeg|webp|avif|svg|gif)",
         headers: [
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
           { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
         ],
-      },
-
-      // Fontlar (fallback dâhil)
-      {
-        source: "/(.*)\\.(woff2|woff|ttf|otf|eot)",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-          { key: "Access-Control-Allow-Origin", value: "*" },
-        ],
-      },
-
-      // Placeholder arama sayfalarını dizinden çıkar
-      {
-        source: "/search",
-        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
-      },
-      // Çöplük yolları da dizinden çıksın
-      {
-        source: "/$",
-        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
-      },
-      {
-        source: "/&",
-        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
       },
     ];
   },
