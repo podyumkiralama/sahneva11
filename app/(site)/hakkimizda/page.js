@@ -484,12 +484,6 @@ export default function HakkimizdaPage() {
                 </p>
                 <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
                   <a
-                    href="/referanslar"
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold px-8 py-4 rounded-xl transition-all duration-300 hover:scale-105"
-                  >
-                    Referanslarımızı Görün
-                  </a>
-                  <a
                     href="https://wa.me/905453048671"
                     target="_blank"
                     rel="noopener noreferrer"
