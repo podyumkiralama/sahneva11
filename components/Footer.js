@@ -70,7 +70,7 @@ export default function Footer() {
             <span className="block"><span className="text-blue-300 font-medium">Türkiye geneli</span> sahne, podyum, LED ekran ve ses-ışık sistemleri.</span>
           </p>
 
-          {/* sosyal linkler */}
+          {/* sosyal linkler (yeni sekme uyarısı: sr-only) */}
           <div className="flex gap-3">
             <a
               href="https://www.instagram.com/sahnevaorganizasyon"
@@ -83,6 +83,7 @@ export default function Footer() {
             >
               <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
               <span aria-hidden="true" className="text-lg relative z-10">📷</span>
+              <span className="sr-only">(yeni sekmede açılır)</span>
             </a>
 
             <a
@@ -96,6 +97,7 @@ export default function Footer() {
             >
               <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
               <span aria-hidden="true" className="text-lg relative z-10">▶</span>
+              <span className="sr-only">(yeni sekmede açılır)</span>
             </a>
           </div>
         </section>
@@ -127,7 +129,7 @@ export default function Footer() {
           <h2 id="ft-quick" className="text-white font-bold mb-6 text-lg bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
             Hızlı Erişim
           </h2>
-        <ul className="space-y-3 text-sm">
+          <ul className="space-y-3 text-sm">
             {[
               { href: "/hakkimizda", label: "Hakkımızda" },
               { href: "/hizmetler", label: "Hizmetler" },
@@ -181,18 +183,7 @@ export default function Footer() {
               </a>
             </div>
 
-            <div className="flex items-start gap-3">
-              <div className="relative" aria-hidden="true">
-                <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-orange-500 rounded-lg blur-sm opacity-50" />
-                <span className="relative text-white text-base p-2 rounded-lg bg-slate-800/50 backdrop-blur-sm">⏰</span>
-              </div>
-              <div>
-                <span className="block text-white font-semibold">Hafta içi 09:00–19:00</span>
-                <span className="text-gray-300">7/24 acil destek</span>
-              </div>
-            </div>
-
-            {/* Google Business bağlantıları — aria-label kaldırıldı, ikonlar aria-hidden */}
+            {/* Google Business bağlantıları — yeni sekme uyarısı eklendi */}
             <div className="flex items-center gap-3">
               <a
                 href="https://g.page/r/CZhkMzkNOdgnEBI"
@@ -203,6 +194,7 @@ export default function Footer() {
               >
                 <span className="group-hover:scale-110 transition-transform duration-300" aria-hidden="true">📍</span>
                 Google Haritalar'da bizi bulun
+                <span className="sr-only">(yeni sekmede açılır)</span>
               </a>
             </div>
 
@@ -216,6 +208,7 @@ export default function Footer() {
               >
                 <span className="group-hover:scale-110 transition-transform duration-300" aria-hidden="true">⭐</span>
                 Google'da yorum yazın
+                <span className="sr-only">(yeni sekmede açılır)</span>
               </a>
             </div>
           </address>
