@@ -1,7 +1,6 @@
 // app/cadir-kiralama/page.js
 import Image from "next/image";
 import Link from "next/link";
-import Script from "next/script";
 import { Suspense } from "react";
 import { getCspNonce } from "@/lib/csp";
 
@@ -109,11 +108,11 @@ function CadirStructuredData() {
   if (!nonce) return null;
 
   return (
-    <Script
+    <script
       id="ld-tent-service"
       type="application/ld+json"
       nonce={nonce}
-      strategy="beforeInteractive"
+      suppressHydrationWarning
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />
   );

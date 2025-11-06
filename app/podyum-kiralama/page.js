@@ -1,7 +1,6 @@
 // app/podyum-kiralama/page.js
 import Image from "next/image";
 import Link from "next/link";
-import Script from "next/script";
 import { getService } from "@/lib/data";
 import PriceEstimator from "@/components/PriceEstimatorPodyum";
 import { getCspNonce } from "@/lib/csp";
@@ -1064,25 +1063,25 @@ function SchemaBlocks({ packages: pkgs, unitPrices }) {
 
   return (
     <>
-      <Script
+      <script
         id="ld-service"
         type="application/ld+json"
         nonce={nonce}
-        strategy="afterInteractive"
+        suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: JSON.stringify(ldService) }}
       />
-      <Script
+      <script
         id="ld-faq"
         type="application/ld+json"
         nonce={nonce}
-        strategy="afterInteractive"
+        suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: JSON.stringify(ldFAQ) }}
       />
-      <Script
+      <script
         id="ld-breadcrumb"
         type="application/ld+json"
         nonce={nonce}
-        strategy="afterInteractive"
+        suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: JSON.stringify(ldBreadcrumb) }}
       />
     </>

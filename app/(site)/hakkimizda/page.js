@@ -1,7 +1,6 @@
 // app/(site)/hakkimizda/page.js
 import Image from "next/image";
 import Link from "next/link";
-import Script from "next/script";
 import { getCspNonce } from "@/lib/csp";
 
 /* ───── META & ISR ───── */
@@ -94,11 +93,11 @@ function AboutStructuredData() {
   if (!nonce) return null;
 
   return (
-    <Script
+    <script
       id="ld-about-organization"
       type="application/ld+json"
       nonce={nonce}
-      strategy="beforeInteractive"
+      suppressHydrationWarning
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />
   );

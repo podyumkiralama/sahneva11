@@ -1,7 +1,6 @@
 // app/masa-sandalye-kiralama/page.js
 import Image from "next/image";
 import Link from "next/link";
-import Script from "next/script";
 import dynamic from "next/dynamic";
 import { getService } from "@/lib/data";
 import { getCspNonce } from "@/lib/csp";
@@ -857,25 +856,25 @@ function StructuredData({ packages }) {
 
   return (
     <>
-      <Script
+      <script
         id="service-schema-masa"
         type="application/ld+json"
         nonce={nonce}
-        strategy="afterInteractive"
+        suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
       />
-      <Script
+      <script
         id="faq-schema-masa"
         type="application/ld+json"
         nonce={nonce}
-        strategy="afterInteractive"
+        suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-      <Script
+      <script
         id="breadcrumb-schema-masa"
         type="application/ld+json"
         nonce={nonce}
-        strategy="afterInteractive"
+        suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
     </>

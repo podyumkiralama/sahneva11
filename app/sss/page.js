@@ -1,5 +1,4 @@
 // app/sss/page.js
-import Script from "next/script";
 import { getCspNonce } from "@/lib/csp";
 
 /* ——— META ——— */
@@ -230,11 +229,11 @@ export default function FaqPage() {
     <>
       {/* JSON-LD sadece bir kez enjekte edilir */}
       {nonce && (
-        <Script
+        <script
           id="ld-faq"
           type="application/ld+json"
           nonce={nonce}
-          strategy="afterInteractive"
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       )}

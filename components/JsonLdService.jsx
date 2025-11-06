@@ -1,6 +1,5 @@
 // components/JsonLdService.tsx  (veya .jsx)
 import { headers } from "next/headers";
-import Script from "next/script";
 
 const absUrl = (site: string, path = "") => {
   if (!path) return site.replace(/\/+$/,"");
@@ -76,11 +75,11 @@ export default function JsonLdService({
   if (!nonce) return null;
 
   return (
-    <Script
+    <script
       id={service?.slug ? `${service.slug}-jsonld` : "service-jsonld"}
       type="application/ld+json"
       nonce={nonce}
-      strategy="beforeInteractive"
+      suppressHydrationWarning
       dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
     />
   );

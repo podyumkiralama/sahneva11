@@ -1,7 +1,6 @@
 // app/ses-isik-sistemleri/page.js
 import Image from "next/image";
 import Link from "next/link";
-import Script from "next/script";
 import { getCspNonce } from "@/lib/csp";
 
 // ---------- META ----------
@@ -331,11 +330,11 @@ export default function Page() {
 
       {/* JSON-LD: Service + Breadcrumb */}
       {nonce && (
-        <Script
+        <script
           id="ld-service-audio-light"
           type="application/ld+json"
           nonce={nonce}
-          strategy="afterInteractive"
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
@@ -361,11 +360,11 @@ export default function Page() {
         />
       )}
       {nonce && (
-        <Script
+        <script
           id="ld-breadcrumb-audio-light"
           type="application/ld+json"
           nonce={nonce}
-          strategy="afterInteractive"
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",

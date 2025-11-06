@@ -1,7 +1,6 @@
 // app/(site)/iletisim/page.jsx
 import React from "react";
 import Link from "next/link";
-import Script from "next/script";
 import { getCspNonce } from "@/lib/csp";
 
 export const metadata = {
@@ -63,11 +62,11 @@ function ContactStructuredData() {
   if (!nonce) return null;
 
   return (
-    <Script
+    <script
       id="ld-contact"
       type="application/ld+json"
       nonce={nonce}
-      strategy="beforeInteractive"
+      suppressHydrationWarning
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />
   );

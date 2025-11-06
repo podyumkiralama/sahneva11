@@ -1,7 +1,6 @@
 // app/(site)/page.js
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import Script from "next/script";
 import { getCspNonce } from "@/lib/csp";
 import heroImg from "@/public/img/hero-bg.webp";
 
@@ -84,11 +83,11 @@ function StructuredData() {
   if (!nonce) return null;
 
   return (
-    <Script
+    <script
       id="ld-home-service"
       type="application/ld+json"
       nonce={nonce}
-      strategy="afterInteractive"
+      suppressHydrationWarning
       dangerouslySetInnerHTML={{ __html: JSON.stringify(service) }}
     />
   );

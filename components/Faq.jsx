@@ -3,7 +3,6 @@
 
 import { useState, useRef, useEffect } from "react";
 import { FAQ_ITEMS } from "../lib/faqData";
-import Script from "next/script";
 
 /* Nonce'ı meta'dan okuyan küçük yardımcı */
 function useCspNonce() {
@@ -217,11 +216,11 @@ export default function Faq({ compact = false }) {
 
       {/* JSON-LD: Nonce gelmeden render etme */}
       {nonce && (
-        <Script
+        <script
           id="faq-schema"
           type="application/ld+json"
           nonce={nonce}
-          strategy="afterInteractive"
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       )}

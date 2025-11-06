@@ -1,7 +1,6 @@
 // app/hizmetler/page.js
 import Image from "next/image";
 import Link from "next/link";
-import Script from "next/script";
 import { getCspNonce } from "@/lib/csp";
 
 /* ───── META & ISR ───── */
@@ -78,11 +77,11 @@ function ServicesStructuredData() {
   if (!nonce) return null;
 
   return (
-    <Script
+    <script
       id="ld-services"
       type="application/ld+json"
       nonce={nonce}
-      strategy="beforeInteractive"
+      suppressHydrationWarning
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />
   );

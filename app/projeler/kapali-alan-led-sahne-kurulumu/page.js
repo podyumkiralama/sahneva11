@@ -1,7 +1,6 @@
 // app/projeler/kapali-alan-led-sahne-kurulumu/page.js
 import Image from "next/image";
 import Link from "next/link";
-import Script from "next/script";
 import CaseGallery from "../../../components/CaseGallery";
 import { getCspNonce } from "@/lib/csp";
 
@@ -198,11 +197,11 @@ export default function CasePage() {
 
       {/* JSON-LD: Project */}
       {nonce && (
-        <Script
+        <script
           id="ld-project"
           type="application/ld+json"
           nonce={nonce}
-          strategy="beforeInteractive"
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
