@@ -3,8 +3,17 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 function makeNonce() {
-  // kısa, URL-safe bir nonce
-  return Buffer.from(crypto.randomUUID()).toString("base64url");
+  // kısa, URL-safe bir nonce — Edge runtime'da Buffer yok, web API'lerini kullanalım
+  const randomValues = new Uint8Array(16);
+  crypto.getRandomValues(randomValues);
+
+  // base64url dönüştürme
+  let binary = "";
+  randomValues.forEach((value) => {
+    binary += String.fromCharCode(value);
+  });
+
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
 }
 
 export function middleware(req: NextRequest) {
