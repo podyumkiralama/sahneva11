@@ -59,7 +59,7 @@ function SectionSkeleton({ label = "İçerik yükleniyor" }) {
   );
 }
 
-// JSON-LD (App Router: suppressHydrationWarning ile)
+// JSON-LD
 function StructuredData() {
   const service = {
     "@context": "https://schema.org",
@@ -148,27 +148,47 @@ export default function HomePage() {
               </span>
             </div>
 
+            {/* h1 – gradient metin görsel, erişilebilir ad düz metin */}
             <h1
               id="hero-title"
               className="text-white text-3xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight tracking-tight"
+              aria-label="Profesyonel Sahne Sistemleri"
             >
               <span className="block">Profesyonel</span>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-purple-300 to-cyan-300 bg-[length:300%_100%] animate-[gradient_8s_ease_infinite] motion-reduce:animate-none">
+              <span
+                className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-purple-300 to-cyan-300 bg-[length:300%_100%] animate-[gradient_8s_ease_infinite] motion-reduce:animate-none"
+                aria-hidden="true"
+              >
                 Sahne Sistemleri
               </span>
             </h1>
 
-            <p className="text-white/90 text-lg md:text-xl lg:text-2xl mb-6 leading-relaxed font-medium max-w-4xl mx-auto">
-              <span className="bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text font-bold">
+            {/* Paragraf – gradient kelimeler aria-hidden; SR için tek parça düz metin */}
+            <p
+              className="text-white/90 text-lg md:text-xl lg:text-2xl mb-6 leading-relaxed font-medium max-w-4xl mx-auto"
+            >
+              <span
+                className="bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text font-bold"
+                aria-hidden="true"
+              >
                 Sahne Kiralama
               </span>
               ,{" "}
-              <span className="bg-gradient-to-r from-purple-400 to-cyan-400 text-transparent bg-clip-text font-bold">
+              <span
+                className="bg-gradient-to-r from-purple-400 to-cyan-400 text-transparent bg-clip-text font-bold"
+                aria-hidden="true"
+              >
                 LED Ekran
               </span>
               ,{" "}
-              <span className="bg-gradient-to-r from-cyan-400 to-blue-400 text-transparent bg-clip-text font-bold">
+              <span
+                className="bg-gradient-to-r from-cyan-400 to-blue-400 text-transparent bg-clip-text font-bold"
+                aria-hidden="true"
+              >
                 Ses-Işık Sistemleri
+              </span>
+              <span className="sr-only">
+                Sahne Kiralama, LED Ekran, Ses-Işık Sistemleri
               </span>
             </p>
 
@@ -200,11 +220,12 @@ export default function HomePage() {
                   <span className="text-lg" aria-hidden="true">💬</span>
                   WhatsApp Teklif
                 </span>
+                <span className="sr-only"> (yeni sekmede açılır)</span>
                 <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
               </a>
             </div>
 
-            {/* Üst bilgi kutuları – ✅ ul/li semantik */}
+            {/* Üst bilgi kutuları */}
             <ul
               className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-12 list-none p-0 m-0"
               aria-label="Öne çıkan özellikler"
@@ -323,7 +344,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Neden Sahneva? – ✅ ul/li semantik */}
+        {/* Neden Sahneva? */}
         <section className="py-12 bg-gradient-to-br from-blue-50/80 to-purple-50/60" aria-labelledby="neden-tercih-heading">
           <div className="container">
             <div className="text-center mb-12">
@@ -412,6 +433,7 @@ export default function HomePage() {
                     >
                       <span className="text-xl" aria-hidden="true">💬</span>
                       <span className="text-sm font-bold">WhatsApp'tan Yaz</span>
+                      <span className="sr-only"> (yeni sekmede açılır)</span>
                     </a>
                     <p className="text-xs text-neutral-600 mt-2">
                       <strong>2 saat içinde</strong> detaylı teklif ve profesyonel danışmanlık
