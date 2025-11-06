@@ -5,156 +5,142 @@ const nextConfig = {
   compress: true,
   generateEtags: true,
   productionBrowserSourceMaps: false,
-  trailingSlash: false,
-
-  // ✅ MODERN JAVASCRIPT OPTIMIZATIONS
+  trailingSlash: true, // ✅ 404 sorunlarını çözmek için true yapın
+  
+  // ✅ SWC Optimizasyonları
   swcMinify: true,
   transpilePackages: [],
-
+  
+  // ✅ Görsel Optimizasyonu
   images: {
+    domains: ['www.sahneva.com'], // ✅ Domain ekleyin
     deviceSizes: [320, 420, 640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 30,
-    remotePatterns: [],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'www.sahneva.com',
+        pathname: '/**',
+      }
+    ],
     dangerouslyAllowSVG: false,
   },
 
+  // ✅ Compiler Ayarları
   compiler: {
-    removeConsole:
-      process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
-    reactRemoveProperties:
-      process.env.NODE_ENV === "production" ? { properties: ["^data-testid$"] } : false,
+    removeConsole: process.env.NODE_ENV === "production" ? { 
+      exclude: ["error", "warn"] 
+    } : false,
+    reactRemoveProperties: process.env.NODE_ENV === "production" ? { 
+      properties: ["^data-testid$"] 
+    } : false,
   },
 
+  // ✅ Deneysel Özellikler
   experimental: {
     scrollRestoration: true,
     optimizePackageImports: ["lucide-react", "@headlessui/react", "framer-motion", "react-icons"],
     esmExternals: true,
   },
 
+  // ✅ Çevre Değişkenleri
   env: {
     SITE_URL: process.env.SITE_URL || "https://www.sahneva.com",
     NEXT_PUBLIC_APP_ENV: process.env.NODE_ENV || "development",
   },
 
+  // ✅ Output Ayarları
   output: process.env.NODE_ENV === "production" ? "standalone" : undefined,
   staticPageGenerationTimeout: 300,
 
-  // ✅ REDIRECTS (middleware YOK)
+  // ✅ Yeniden Yönlendirmeler (404 sorunları için)
   async redirects() {
     return [
-      // 1) /search?q=... → /?q=...  (sorguyu koru)
-      // "has" + named capture ile query değeri destination'da :term olarak kullanılır.
+      // Geçersiz $ route'larını ana sayfaya yönlendir
       {
-        source: "/search",
-        has: [
-          {
-            type: "query",
-            key: "q",
-            value: "(?<term>.*)", // q değerini yakala
-          },
-        ],
-        destination: "/?q=:term",
+        source: '/$',
+        destination: '/',
         permanent: true,
       },
-      // 1a) /search (q yoksa) → /
-      {
-        source: "/search",
-        destination: "/",
-        permanent: true,
-      },
-
-      // 2) Eski/bot kaynaklı Next static font istekleri → public/fonts/fallback.woff2
-      // Örn: /_next/static/media/83afe278b6a6bb3c.p.3a6ba036.woff2
-      {
-        source: "/_next/static/media/:file*\\.woff2",
-        destination: "/fonts/fallback.woff2",
-        permanent: true,
-      },
-
-      // (Opsiyonel) Eski tema kalıntıları için benzer desenler eklenebilir:
-      // { source: "/wp-content/:path*", destination: "/", permanent: true },
     ];
   },
 
-  // ✅ HEADERS (CSP + güvenlik)
+  // ✅ Başlık Ayarları
   async headers() {
-    // Vercel Live için izin
-    const frameSrc = ["'self'", "https://www.google.com", "https://vercel.live", "https://*.vercel.live"].join(" ");
-
-    const connectSrc = [
+    const frameSrc = [
       "'self'",
-      "https://vitals.vercel-insights.com",
-      "https://www.google-analytics.com",
-      "https://region1.google-analytics.com",
-      "https://stats.g.doubleclick.net",
-      "https://www.sahneva.com",
-    ].join(" ");
-
-    const scriptSrcCommon = [
-      "'self'",
-      // middleware/nonce kullanmadığımız için Next'in inline scriptlerine izin (minimum)
-      "'unsafe-inline'",
-      "https://www.googletagmanager.com",
-      "https://www.google-analytics.com",
-      "https://va.vercel-scripts.com",
+      "https://www.google.com",
       "https://vercel.live",
+      "https://*.vercel.live",
     ].join(" ");
 
-    const csp = `
-      default-src 'self';
-      base-uri 'self';
-      object-src 'none';
-      frame-ancestors 'none';
-      upgrade-insecure-requests;
+    const connectSrc = [  
+      "'self'",  
+      "https://vitals.vercel-insights.com",  
+      "https://www.google-analytics.com",  
+      "https://region1.google-analytics.com",  
+      "https://stats.g.doubleclick.net",  
+      "https://www.sahneva.com",  
+      "ws://localhost:3000", // ✅ Geliştirme için WebSocket
+    ].join(" ");  
 
-      img-src 'self' data: blob: https:;
-      font-src 'self' data: https://fonts.gstatic.com;
-      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    const scriptSrcCommon = [  
+      "'self'",  
+      "'unsafe-inline'",
+      "https://www.googletagmanager.com",  
+      "https://www.google-analytics.com",  
+      "https://va.vercel-scripts.com",  
+      "https://vercel.live",  
+    ].join(" ");  
 
-      script-src ${scriptSrcCommon};
-      script-src-elem ${scriptSrcCommon};
-      script-src-attr 'none';
+    const csp = `  
+      default-src 'self';  
+      base-uri 'self';  
+      object-src 'none';  
+      frame-ancestors 'none';  
+      upgrade-insecure-requests;  
 
-      connect-src ${connectSrc};
-      worker-src 'self' blob:;
-      frame-src ${frameSrc};
-      form-action 'self' https://formspree.io https://wa.me;
-    `
-      .replace(/\s{2,}/g, " ")
-      .trim();
+      img-src 'self' data: blob: https:;  
+      font-src 'self' data: https://fonts.gstatic.com https://www.sahneva.com;  
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;  
 
-    const securityHeaders = [
-      { key: "Content-Security-Policy", value: csp },
-      { key: "X-Content-Type-Options", value: "nosniff" },
-      { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+      script-src ${scriptSrcCommon};  
+      script-src-elem ${scriptSrcCommon};  
+      script-src-attr 'none';  
+
+      connect-src ${connectSrc};  
+      worker-src 'self' blob:;  
+      frame-src ${frameSrc};  
+      form-action 'self' https://formspree.io https://wa.me;  
+    `.replace(/\s{2,}/g, " ").trim();  
+
+    const securityHeaders = [  
+      { key: "Content-Security-Policy", value: csp },  
+      { key: "X-Content-Type-Options", value: "nosniff" },  
+      { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },  
       { key: "X-Frame-Options", value: "DENY" },
-      { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
-      { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-      {
-        key: "Permissions-Policy",
-        value: "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=()",
-      },
-      { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
-    ];
+      { key: "Cross-Origin-Opener-Policy", value: "same-origin" },  
+      { key: "Cross-Origin-Resource-Policy", value: "same-site" },  
+      { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=()" },  
+      { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },  
+    ];  
 
-    return [
-      { source: "/(.*)", headers: securityHeaders },
-      {
-        source: "/_next/static/(.*)",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-          { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
-        ],
-      },
-      {
-        source: "/(.*)\\.(ico|png|jpg|jpeg|webp|avif|svg|gif)",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-          { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
-        ],
-      },
+    return [  
+      { source: "/(.*)", headers: securityHeaders },  
+      {  
+        source: "/_next/static/(.*)",  
+        headers: [  
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },  
+        ],  
+      },  
+      {  
+        source: "/(.*)\\.(ico|png|jpg|jpeg|webp|avif|svg|gif|woff2)", // ✅ woff2 eklendi
+        headers: [  
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },  
+        ],  
+      },  
     ];
   },
 };
