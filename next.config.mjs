@@ -54,7 +54,11 @@ const nextConfig = {
         destination: '/sahne-kiralama',
         permanent: true,
       },
-      
+      {
+  source: '/_next/static/media/83afe278b6a6bb3c.p.3a6ba036.woff2',
+  destination: '/',
+  permanent: true,
+}
       // 2. SEARCH YÖNLENDİRMELERİ - Basit versiyon
       {
         source: '/search',
