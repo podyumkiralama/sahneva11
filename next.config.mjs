@@ -5,7 +5,7 @@ const nextConfig = {
   compress: true,
   generateEtags: true,
   productionBrowserSourceMaps: false,
-  trailingSlash: true, // ✅ 404 sorunlarını çözmek için true yapın
+  trailingSlash: true, // ✅ 404 sorunlarını önlemek için true yapın
   
   // ✅ SWC Optimizasyonları
   swcMinify: true,
@@ -13,7 +13,7 @@ const nextConfig = {
   
   // ✅ Görsel Optimizasyonu
   images: {
-    domains: ['www.sahneva.com'], // ✅ Domain ekleyin
+    domains: ['www.sahneva.com'],
     deviceSizes: [320, 420, 640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ["image/avif", "image/webp"],
@@ -55,14 +55,42 @@ const nextConfig = {
   output: process.env.NODE_ENV === "production" ? "standalone" : undefined,
   staticPageGenerationTimeout: 300,
 
-  // ✅ Yeniden Yönlendirmeler (404 sorunları için)
+  // ✅ YÖNLENDİRMELER - Middleware olmadan
   async redirects() {
     return [
       // Geçersiz $ route'larını ana sayfaya yönlendir
       {
-        source: '/$',
+        source: '/\\$',
         destination: '/',
         permanent: true,
+      },
+      // Search sayfası için güvenli yönlendirme
+      {
+        source: '/search',
+        destination: '/',
+        permanent: false,
+      },
+      // Çift slash ve hatalı URL'leri düzelt
+      {
+        source: '//:path*',
+        destination: '/:path*',
+        permanent: true,
+      },
+    ];
+  },
+
+  // ✅ REWRITES - Dinamik URL'leri düzeltmek için
+  async rewrites() {
+    return [
+      // Search terimleri için güvenli rewrite
+      {
+        source: '/search/:query*',
+        destination: '/?q=:query*',
+      },
+      // Statik asset yollarını düzelt
+      {
+        source: '/_next/static/media/:file*',
+        destination: '/_next/static/media/:file*',
       },
     ];
   },
@@ -83,7 +111,7 @@ const nextConfig = {
       "https://region1.google-analytics.com",  
       "https://stats.g.doubleclick.net",  
       "https://www.sahneva.com",  
-      "ws://localhost:3000", // ✅ Geliştirme için WebSocket
+      "ws://localhost:3000",
     ].join(" ");  
 
     const scriptSrcCommon = [  
@@ -136,9 +164,22 @@ const nextConfig = {
         ],  
       },  
       {  
-        source: "/(.*)\\.(ico|png|jpg|jpeg|webp|avif|svg|gif|woff2)", // ✅ woff2 eklendi
+        source: "/(.*)\\.(ico|png|jpg|jpeg|webp|avif|svg|gif|woff2|woff|ttf|eot)",
         headers: [  
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },  
+        ],  
+      },  
+      // ✅ Hata sayfaları için özel header'lar
+      {  
+        source: "/404",
+        headers: [  
+          { key: "Cache-Control", value: "public, max-age=300" },  
+        ],  
+      },  
+      {  
+        source: "/500",
+        headers: [  
+          { key: "Cache-Control", value: "public, max-age=300" },  
         ],  
       },  
     ];
