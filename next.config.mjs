@@ -59,13 +59,6 @@ const nextConfig = {
       { source: "/%24", destination: "/", permanent: true },
       { source: "/%26", destination: "/", permanent: true },
 
-      // Eksik statik font dosyası → ana sayfa
-      {
-        source: "/_next/static/media/83afe278b6a6bb3c.p.3a6ba036.woff2",
-        destination: "/",
-        permanent: false,
-      },
-
     ];
   },
 
