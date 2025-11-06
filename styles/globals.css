@@ -116,25 +116,3 @@ html.hc a{ color:#00eaff; text-decoration:underline; text-decoration-thickness:2
   .animate-overlay{ animation:utility-overlay-fade .2s ease-out; }
   .animate-modal{ animation:utility-modal-slide .2s ease-out; }
 }
-/* globals.css */
-
-/* Burst particle */
-.burst-particle{
-  position:fixed;
-  pointer-events:none;
-  z-index:9999;
-  background:linear-gradient(135deg,var(--burst-c1),var(--burst-c2));
-  border-radius:50%;
-  animation:burst-animation var(--life) ease-out forwards;
-}
-@keyframes burst-animation{
-  0%{ transform:translate(0,0) rotate(0deg); opacity:1; }
-  100%{ transform:translate(var(--dx),var(--dy)) rotate(var(--dr)); opacity:0; }
-}
-
-/* FadeIn */
-@keyframes fadeIn{
-  from{ opacity:0; transform:translateY(-8px); }
-  to{ opacity:1; transform:translateY(0); }
-}
-.animate-fadeIn{ animation: fadeIn .3s ease-out; }
