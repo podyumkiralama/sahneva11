@@ -8,6 +8,7 @@ import heroImg from "@/public/img/hero-bg.webp";
 import CorporateEvents from "@/components/CorporateEvents";
 import Faq from "@/components/Faq";
 import ReviewBanner from "@/components/ReviewBanner";
+import A11yExternalLink from "@/app/../A11yExternalLink.jsx";
 
 // Dinamik bileşenler (erişilebilir skeleton ile)
 const ServicesTabsLazy = dynamic(() => import("@/components/ServicesTabs"), {
@@ -118,23 +119,23 @@ export default function HomePage() {
           <div className="max-w-6xl mx-auto text-center mb-10">
             <div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md rounded-full px-6 py-3 border border-white/20 mb-6">
               <span className="w-2 h-2 bg-green-400 rounded-full" aria-hidden="true" />
-              <span className="text-white text-sm font-medium">Türkiye Geneli Profesyonel Hizmet</span>
+              <span className="text-white/90 text-sm font-medium">Türkiye Geneli Profesyonel Hizmet</span>
             </div>
 
             <h1 id="hero-title" className="text-white text-3xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight tracking-tight">
               <span className="block">Profesyonel</span>
-              <span className="text-white">
+              <span className="text-white md:text-transparent bg-clip-text bg-gradient-to-r drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)] from-blue-300 via-purple-300 to-cyan-300 bg-[length:300%_100%] animate-[gradient_8s_ease_infinite] motion-reduce:animate-none">
                 Sahne Sistemleri
               </span>
             </h1>
 
-            <p className="text-white text-lg md:text-xl lg:text-2xl mb-6 leading-relaxed font-medium max-w-4xl mx-auto">
-              <span className="text-white font-bold">Sahne Kiralama</span>,{" "}
-              <span className="text-white font-bold">LED Ekran</span>,{" "}
-              <span className="text-white font-bold">Ses-Işık Sistemleri</span>
+            <p role="heading" aria-level="2" className="text-white/90 text-lg md:text-xl lg:text-2xl mb-6 leading-relaxed font-medium max-w-4xl mx-auto">
+              <span className="bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text font-bold">Sahne Kiralama</span>,{" "}
+              <span className="bg-gradient-to-r from-purple-400 to-cyan-400 text-transparent bg-clip-text font-bold">LED Ekran</span>,{" "}
+              <span className="bg-gradient-to-r from-cyan-400 to-blue-400 text-transparent bg-clip-text font-bold">Ses-Işık Sistemleri</span>
             </p>
 
-            <p className="text-white text-base md:text-lg mb-8 max-w-3xl mx-auto">
+            <p className="text-white/90 text-base md:text-lg mb-8 max-w-3xl mx-auto">
               500+ başarılı proje, %98 müşteri memnuniyeti ve Türkiye geneli hızlı kurulum ile yanınızdayız
             </p>
 
@@ -142,7 +143,7 @@ export default function HomePage() {
             <div className="flex flex-col sm:flex-row justify-center items-center gap-3 md:gap-4 mb-12">
               <a
                 href="tel:+905453048671"
-                className="group relative bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold text-base px-6 py-3 rounded-xl shadow-xl hover:shadow-2xl transition-transform duration-300 hover:scale-105 min-w-[180px] text-center border border-white/20 backdrop-blur-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                className="group relative bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold text-base px-6 py-3 rounded-xl shadow-xl hover:shadow-2xl transition-transform duration-300 hover:scale-105 min-w-[180px] text-center border border-white/20 backdrop-blur-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 text-white/95"
               >
                 <span className="relative z-10 flex items-center justify-center gap-2">
                   <span className="text-lg" aria-hidden="true">📞</span> Hemen Ara
@@ -150,17 +151,12 @@ export default function HomePage() {
                 <div className="absolute inset-0 rounded-xl bg-white/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
               </a>
 
-              <a
-                href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ula%C5%9F%C4%B1yorum.+Sahne+kiralama+ve+LED+ekran+fiyatlar%C4%B1+hakk%C4%B1nda+detayl%C4%B1+teklif+almak+istiyorum.&utm_source=homepage&utm_medium=hero_cta&utm_campaign=whatsapp"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold text-base px-6 py-3 rounded-xl shadow-xl hover:shadow-2xl transition-transform duration-300 hover:scale-105 min-w-[180px] text-center border border-white/20 backdrop-blur-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
-              >
+              <A11yExternalLink href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ula%C5%9F%C4%B1yorum.+Sahne+kiralama+ve+LED+ekran+fiyatlar%C4%B1+hakk%C4%B1nda+detayl%C4%B1+teklif+almak+istiyorum.&utm_source=homepage&utm_medium=hero_cta&utm_campaign=whatsapp" className="group relative bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold text-base px-6 py-3 rounded-xl shadow-xl hover:shadow-2xl transition-transform duration-300 hover:scale-105 min-w-[180px] text-center border border-white/20 backdrop-blur-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80">
                 <span className="relative z-10 flex items-center justify-center gap-2">
                   <span className="text-lg" aria-hidden="true">💬</span> WhatsApp Teklif
                 </span>
                 <div className="absolute inset-0 rounded-xl bg-white/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
-              <span className="sr-only"> — yeni sekmede açılır</span></a>
+              </A11yExternalLink>
             </div>
           </div>
         </div>
@@ -197,7 +193,7 @@ export default function HomePage() {
             <div className="text-center mb-12">
               <h2 id="hizmetler-title" className="text-3xl md:text-4xl font-black text-neutral-900 mb-4">
                 Profesyonel{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                <span className="text-white md:text-transparent bg-clip-text bg-gradient-to-r drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)] from-blue-600 to-purple-600 text-white/95">
                   Hizmetlerimiz
                 </span>
               </h2>
@@ -217,11 +213,11 @@ export default function HomePage() {
             <div className="text-center mb-12">
               <h2 id="projeler-title" className="text-3xl md:text-4xl font-black text-white mb-4">
                 Başarılı{" "}
-                <span className="text-blue-200">
+                <span className="text-white md:text-transparent bg-clip-text bg-gradient-to-r drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)] from-blue-400 to-purple-400">
                   Projelerimiz
                 </span>
               </h2>
-              <p className="text-lg text-white max-w-3xl mx-auto">
+              <p className="text-lg text-white/90 max-w-3xl mx-auto">
                 500'den fazla kurumsal etkinlik, konser, fuar ve özel organizasyonda güvenilir çözüm ortağı
               </p>
             </div>
@@ -246,7 +242,7 @@ export default function HomePage() {
             <div className="text-center mb-12">
               <h2 id="kurumsal-title" className="text-3xl md:text-4xl font-black text-neutral-900 mb-4">
                 Kurumsal{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                <span className="text-white md:text-transparent bg-clip-text bg-gradient-to-r drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)] from-blue-600 to-purple-600 text-white/95">
                   Organizasyon Çözümlerimiz
                 </span>
               </h2>
@@ -264,7 +260,7 @@ export default function HomePage() {
             <div className="text-center mb-12">
               <h2 id="neden-tercih-heading" className="text-3xl md:text-4xl font-black text-neutral-900 mb-6">
                 Neden{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                <span className="text-white md:text-transparent bg-clip-text bg-gradient-to-r drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)] from-blue-600 to-purple-600 text-white/95">
                   Sahneva
                 </span>
                 'yı Tercih Etmelisiniz?
@@ -301,7 +297,7 @@ export default function HomePage() {
           <div className="container">
             <h2 id="seo-title" className="text-3xl md:text-4xl font-black text-center mb-12 text-neutral-900">
               Türkiye'nin{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+              <span className="text-white md:text-transparent bg-clip-text bg-gradient-to-r drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)] from-blue-600 to-purple-600 text-white/95">
                 1 Numaralı
               </span>{" "}
               Etkinlik Teknoloji Partneri
@@ -350,15 +346,10 @@ export default function HomePage() {
                   </p>
                   <div className="mt-4 p-4 bg-white rounded-lg border border-purple-200 shadow-md">
                     <p className="font-bold text-purple-900 text-base mb-2">Hızlı Teklif İsteği:</p>
-                    <a
-                      href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ula%C5%9F%C4%B1yorum.+Sahne+kiralama+ve+LED+ekran+fiyatlar%C4%B1+hakk%C4%B1nda+detayl%C4%B1+teklif+almak+istiyorum.&utm_source=homepage&utm_medium=seo_section&utm_campaign=whatsapp"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-3 bg-green-700 hover:bg-green-800 text-white font-bold px-5 py-4 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl min-h-[60px] focus:outline-none focus-visible:ring-2 focus-visible:ring-green-200"
-                    >
+                    <A11yExternalLink href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ula%C5%9F%C4%B1yorum.+Sahne+kiralama+ve+LED+ekran+fiyatlar%C4%B1+hakk%C4%B1nda+detayl%C4%B1+teklif+almak+istiyorum.&utm_source=homepage&utm_medium=seo_section&utm_campaign=whatsapp" className="inline-flex items-center justify-center gap-3 bg-green-700 hover:bg-green-800 text-white font-bold px-5 py-4 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl min-h-[60px] focus:outline-none focus-visible:ring-2 focus-visible:ring-green-200 text-white/95 underline-offset-4">
                       <span className="text-xl" aria-hidden="true">💬</span>
                       <span className="text-sm font-bold">WhatsApp'tan Yaz</span>
-                    <span className="sr-only"> — yeni sekmede açılır</span></a>
+                    </A11yExternalLink>
                     <p className="text-xs text-neutral-600 mt-2">
                       <strong>2 saat içinde</strong> detaylı teklif ve profesyonel danışmanlık
                     </p>
@@ -375,7 +366,7 @@ export default function HomePage() {
             <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 border border-neutral-200">
               <h2 id="buyuk-etkinlik-baslik" className="text-3xl md:text-4xl font-black text-center mb-10 text-neutral-900">
                 Büyük Ölçekli Etkinliklerde{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Neden Sahneva?</span>
+                <span className="text-white md:text-transparent bg-clip-text bg-gradient-to-r drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)] from-blue-600 to-purple-600 text-white/95">Neden Sahneva?</span>
               </h2>
 
               <div className="prose max-w-none">
@@ -447,7 +438,7 @@ export default function HomePage() {
             <div className="text-center mb-12">
               <h2 id="faq-title" className="text-3xl md:text-4xl font-black text-neutral-900 mb-4">
                 Sıkça Sorulan{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                <span className="text-white md:text-transparent bg-clip-text bg-gradient-to-r drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)] from-blue-600 to-purple-600 text-white/95">
                   Sorular
                 </span>
               </h2>
