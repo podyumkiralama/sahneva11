@@ -134,28 +134,28 @@ export default function Navbar() {
   };
 
   const whatsappBtnClass =
-    "ml-2 inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-white text-sm font-semibold bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white min-h-[44px]";
+    "ml-2 inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-white text-sm font-bold bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white min-h-[44px] border border-green-600/20";
 
   const mobileWhatsappBtnClass =
-    "block text-center mt-4 rounded-xl px-6 py-4 text-white text-base font-semibold bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white min-h-[44px] flex items-center justify-center gap-3";
+    "block text-center mt-4 rounded-xl px-5 py-3 text-white text-sm font-bold bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white min-h-[44px] flex items-center justify-center gap-2 border border-green-600/20";
 
   return (
     <>
-      {/* Skip link – sayfadaki main id’siyle aynı */}
+      {/* Skip link – sayfadaki main id'siyle aynı */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-gradient-to-r focus:from-blue-600 focus:to-purple-600 focus:px-3 focus:py-2 focus:text-white focus:font-semibold"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-gradient-to-r focus:from-blue-600 focus:to-purple-600 focus:px-3 focus:py-2 focus:text-white focus:font-bold"
       >
         Ana içeriğe atla
       </a>
 
-      {/* Header (role="banner" kullanılmıyor) */}
+      {/* Header */}
       <header
         className={[
           "fixed top-0 inset-x-0 z-50 transition-all duration-500 border-b",
           scrolled || mobileOpen
-            ? "bg-white/95 backdrop-blur-xl border-neutral-200/60 shadow-lg"
-            : "bg-white/80 backdrop-blur-md border-transparent",
+            ? "bg-white/98 backdrop-blur-xl border-neutral-200/70 shadow-xl"
+            : "bg-white/90 backdrop-blur-lg border-transparent",
         ].join(" ")}
         itemScope
         itemType="https://schema.org/Organization"
@@ -183,12 +183,12 @@ export default function Navbar() {
             </Link>
 
             {/* Masaüstü menü */}
-            <nav className="hidden lg:flex items-center gap-8" aria-label="Ana menü">
+            <nav className="hidden lg:flex items-center gap-6" aria-label="Ana menü">
               <Link
                 href="/hakkimizda"
                 className={[
-                  "relative text-sm font-semibold transition-all duration-300 px-3 py-2 rounded-lg",
-                  active("/hakkimizda") ? "text-blue-600 bg-blue-50/80" : "text-neutral-700 hover:text-blue-600 hover:bg-neutral-50/80",
+                  "relative text-[15px] font-bold transition-all duration-300 px-4 py-2.5 rounded-xl",
+                  active("/hakkimizda") ? "text-blue-700 bg-blue-50/90 border border-blue-200/60" : "text-neutral-800 hover:text-blue-700 hover:bg-neutral-50/90 hover:border hover:border-neutral-200/60",
                 ].join(" ")}
                 aria-current={active("/hakkimizda") ? "page" : undefined}
                 title="Sahneva Hakkında - Şirket bilgileri ve referanslar"
@@ -209,8 +209,8 @@ export default function Navbar() {
                   id={servicesBtnId}
                   type="button"
                   className={[
-                    "relative text-sm font-semibold px-3 py-2 rounded-lg transition-all duration-300 group",
-                    active("/hizmetler") || servicesOpen ? "text-blue-600 bg-blue-50/80" : "text-neutral-700 hover:text-blue-600 hover:bg-neutral-50/80",
+                    "relative text-[15px] font-bold px-4 py-2.5 rounded-xl transition-all duration-300 group border",
+                    active("/hizmetler") || servicesOpen ? "text-blue-700 bg-blue-50/90 border-blue-200/60" : "text-neutral-800 hover:text-blue-700 hover:bg-neutral-50/90 border-transparent hover:border-neutral-200/60",
                     "focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50",
                   ].join(" ")}
                   aria-haspopup="true"
@@ -219,7 +219,7 @@ export default function Navbar() {
                   onClick={() => setServicesOpen((s) => !s)}
                   title="Sahneva Hizmetler - Tüm ekipman kiralama hizmetlerimiz"
                 >
-                  <span className="flex items-center gap-1">
+                  <span className="flex items-center gap-2">
                     Hizmetler
                     <svg
                       className={`w-4 h-4 transition-transform duration-300 ${servicesOpen ? "rotate-180" : ""}`}
@@ -228,7 +228,7 @@ export default function Navbar() {
                       viewBox="0 0 24 24"
                       aria-hidden="true"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
                     </svg>
                   </span>
                 </button>
@@ -241,7 +241,7 @@ export default function Navbar() {
                   role="menu"
                   aria-labelledby={servicesBtnId}
                   hidden={!servicesOpen}
-                  className={`absolute left-0 top-full mt-1 w-64 bg-white/95 backdrop-blur-xl border border-neutral-200/60 rounded-xl shadow-2xl z-[60] overflow-hidden ${
+                  className={`absolute left-0 top-full mt-2 w-72 bg-white/98 backdrop-blur-xl border border-neutral-200/70 rounded-2xl shadow-2xl z-[60] overflow-hidden ${
                     servicesOpen ? "animate-fadeIn" : "pointer-events-none"
                   }`}
                   onMouseEnter={openNow}
@@ -253,7 +253,7 @@ export default function Navbar() {
                         key={href}
                         role="menuitem"
                         href={href}
-                        className="group flex items-center gap-3 px-3 py-3 text-sm text-neutral-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 hover:text-blue-600 rounded-lg transition-all duration-300 border border-transparent hover:border-blue-200/60"
+                        className="group flex items-center gap-3 px-4 py-3 text-[14px] text-neutral-800 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 hover:text-blue-700 rounded-xl transition-all duration-300 border border-transparent hover:border-blue-200/60 font-medium"
                         onClick={() => setServicesOpen(false)}
                         aria-current={active(href) ? "page" : undefined}
                         title={title}
@@ -261,9 +261,9 @@ export default function Navbar() {
                         <span className="text-lg opacity-70 group-hover:opacity-100 transition-opacity" aria-hidden="true">
                           {icon}
                         </span>
-                        <span className="flex-1 font-medium">{label}</span>
+                        <span className="flex-1">{label}</span>
                         <svg className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                         </svg>
                       </Link>
                     ))}
@@ -274,8 +274,8 @@ export default function Navbar() {
               <Link
                 href="/iletisim"
                 className={[
-                  "relative text-sm font-semibold transition-all duration-300 px-3 py-2 rounded-lg",
-                  active("/iletisim") ? "text-blue-600 bg-blue-50/80" : "text-neutral-700 hover:text-blue-600 hover:bg-neutral-50/80",
+                  "relative text-[15px] font-bold transition-all duration-300 px-4 py-2.5 rounded-xl",
+                  active("/iletisim") ? "text-blue-700 bg-blue-50/90 border border-blue-200/60" : "text-neutral-800 hover:text-blue-700 hover:bg-neutral-50/90 hover:border hover:border-neutral-200/60",
                 ].join(" ")}
                 aria-current={active("/iletisim") ? "page" : undefined}
                 title="Sahneva İletişim - Bize ulaşın ve teklif alın"
@@ -283,29 +283,26 @@ export default function Navbar() {
                 İletişim
               </Link>
 
-             {/* Mobil WhatsApp CTA */}
-<a
-  href="https://wa.me/905453048671?text=Merhaba%2C+sahne+ve+etkinlik+ekipmanları+için+teklif+almak+istiyorum."
-  target="_blank"
-  rel="noopener noreferrer"
-  aria-label="WhatsApp Teklif — yeni sekmede açılır"
-  className={mobileWhatsappBtnClass}
-  onClick={(e) => {
-    burst(e, ["#10b981", "#059669"]);
-    setMobileOpen(false);
-  }}
-  title="WhatsApp'tan teklif alın"
->
-  <span aria-hidden="true" className="text-lg">💬</span>
-  <span>WhatsApp Teklif</span>
-  <span className="sr-only"> — yeni sekmede açılır</span>
-</a>
+              {/* Masaüstü WhatsApp CTA */}
+              <a
+                href="https://wa.me/905453048671?text=Merhaba%2C+sahne+ve+etkinlik+ekipmanları+için+teklif+almak+istiyorum."
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp Teklif — yeni sekmede açılır"
+                className={whatsappBtnClass}
+                onClick={(e) => burst(e, ["#10b981", "#059669"])}
+                title="WhatsApp'tan teklif alın"
+              >
+                <span aria-hidden="true" className="text-base">💬</span>
+                <span>WhatsApp Teklif</span>
+                <span className="sr-only"> — yeni sekmede açılır</span>
+              </a>
             </nav>
 
-            {/* Mobil menü butonu (button içinde yalnızca span kullanıyoruz) */}
+            {/* Mobil menü butonu */}
             <button
               onClick={() => setMobileOpen((s) => !s)}
-              className="lg:hidden inline-flex items-center justify-center p-3 rounded-xl bg-white/80 backdrop-blur-sm border border-neutral-200/60 hover:bg-white hover:border-neutral-300 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 min-h-[44px] min-w-[44px]"
+              className="lg:hidden inline-flex items-center justify-center p-3 rounded-xl bg-white/90 backdrop-blur-sm border border-neutral-200/60 hover:bg-white hover:border-neutral-300 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 min-h-[44px] min-w-[44px]"
               aria-label="Menüyü aç veya kapat"
               aria-expanded={mobileOpen}
               aria-controls="mobile-menu"
@@ -313,17 +310,17 @@ export default function Navbar() {
             >
               <span className="relative w-6 h-6" aria-hidden="true">
                 <span
-                  className={`absolute top-1/2 left-1/2 w-5 h-0.5 bg-neutral-700 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
+                  className={`absolute top-1/2 left-1/2 w-5 h-0.5 bg-neutral-800 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
                     mobileOpen ? "rotate-45" : "-translate-y-2"
                   }`}
                 />
                 <span
-                  className={`absolute top-1/2 left-1/2 w-5 h-0.5 bg-neutral-700 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
+                  className={`absolute top-1/2 left-1/2 w-5 h-0.5 bg-neutral-800 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
                     mobileOpen ? "opacity-0" : "opacity-100"
                   }`}
                 />
                 <span
-                  className={`absolute top-1/2 left-1/2 w-5 h-0.5 bg-neutral-700 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
+                  className={`absolute top-1/2 left-1/2 w-5 h-0.5 bg-neutral-800 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
                     mobileOpen ? "-rotate-45" : "translate-y-2"
                   }`}
                 />
@@ -339,7 +336,7 @@ export default function Navbar() {
           type="button"
           aria-label="Menüyü kapat"
           onClick={() => setMobileOpen(false)}
-          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
         />
       )}
 
@@ -354,16 +351,16 @@ export default function Navbar() {
         }}
         className={[
           "lg:hidden fixed z-50 left-0 right-0 top-16",
-          "bg-white/95 backdrop-blur-xl border-t border-neutral-200/60 rounded-b-2xl shadow-2xl",
+          "bg-white/98 backdrop-blur-xl border-t border-neutral-200/70 rounded-b-2xl shadow-2xl",
           "transition-all duration-500 will-change-transform overflow-hidden",
           mobileOpen ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0",
         ].join(" ")}
       >
-        <div className="px-6 py-6 space-y-4 max-h-[80vh] overflow-y-auto">
+        <div className="px-5 py-6 space-y-3 max-h-[80vh] overflow-y-auto">
           <Link
             href="/hakkimizda"
             onClick={() => setMobileOpen(false)}
-            className="flex items-center gap-3 py-4 px-4 text-neutral-800 font-semibold text-base rounded-xl hover:bg-blue-50/80 hover:text-blue-600 transition-all duration-300 border border-transparent hover:border-blue-200/60"
+            className="flex items-center gap-3 py-3.5 px-4 text-neutral-800 font-bold text-[15px] rounded-xl hover:bg-blue-50/90 hover:text-blue-700 transition-all duration-300 border border-transparent hover:border-blue-200/60"
             aria-current={active("/hakkimizda") ? "page" : undefined}
             title="Sahneva Hakkında"
           >
@@ -371,13 +368,13 @@ export default function Navbar() {
             Hakkımızda
           </Link>
 
-          <div className="py-2">
+          <div className="py-1">
             <button
               type="button"
               onClick={() => setMobileServicesOpen((s) => !s)}
               aria-expanded={mobileServicesOpen}
               aria-controls="mobile-services-list"
-              className="w-full flex items-center justify-between gap-3 py-4 px-4 text-base font-semibold text-neutral-900 rounded-xl hover:bg-blue-50/80 hover:text-blue-600 transition-all duration-300 border border-transparent hover:border-blue-200/60 min-h-[44px]"
+              className="w-full flex items-center justify-between gap-3 py-3.5 px-4 text-[15px] font-bold text-neutral-900 rounded-xl hover:bg-blue-50/90 hover:text-blue-700 transition-all duration-300 border border-transparent hover:border-blue-200/60 min-h-[44px]"
               title="Sahneva Hizmetler Menüsü"
             >
               <span className="flex items-center gap-3">
@@ -389,7 +386,7 @@ export default function Navbar() {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 aria-hidden="true"
@@ -408,12 +405,12 @@ export default function Navbar() {
                     key={href}
                     href={href}
                     onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-3 px-3 py-3 text-sm text-neutral-800 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 hover:text-blue-600 rounded-lg transition-all duration-300 border border-transparent hover:border-blue-200/60 min-h-[44px]"
+                    className="flex items-center gap-3 px-3 py-3 text-[14px] text-neutral-800 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 hover:text-blue-700 rounded-lg transition-all duration-300 border border-transparent hover:border-blue-200/60 min-h-[44px] font-medium"
                     aria-current={active(href) ? "page" : undefined}
                     title={title}
                   >
                     <span className="text-base opacity-70" aria-hidden="true">{icon}</span>
-                    <span className="flex-1 font-medium">{label}</span>
+                    <span className="flex-1">{label}</span>
                   </Link>
                 ))}
               </div>
@@ -423,7 +420,7 @@ export default function Navbar() {
           <Link
             href="/iletisim"
             onClick={() => setMobileOpen(false)}
-            className="flex items-center gap-3 py-4 px-4 text-neutral-800 font-semibold text-base rounded-xl hover:bg-blue-50/80 hover:text-blue-600 transition-all duration-300 border border-transparent hover:border-blue-200/60"
+            className="flex items-center gap-3 py-3.5 px-4 text-neutral-800 font-bold text-[15px] rounded-xl hover:bg-blue-50/90 hover:text-blue-700 transition-all duration-300 border border-transparent hover:border-blue-200/60"
             aria-current={active("/iletisim") ? "page" : undefined}
             title="Sahneva İletişim"
           >
@@ -431,23 +428,23 @@ export default function Navbar() {
             İletişim
           </Link>
 
-         {/* Mobil WhatsApp CTA */}
-<a
-  href="https://wa.me/905453048671?text=Merhaba%2C+sahne+ve+etkinlik+ekipmanları+için+teklif+almak+istiyorum."
-  target="_blank"
-  rel="noopener noreferrer"
-  aria-label="WhatsApp Teklif — yeni sekmede açılır"
-  className={mobileWhatsappBtnClass}
-  onClick={(e) => {
-    burst(e, ["#10b981", "#059669"]);
-    setMobileOpen(false);
-  }}
-  title="WhatsApp'tan teklif alın"
->
-  <span aria-hidden="true" className="text-lg">💬</span>
-  <span>WhatsApp Teklif</span>
-  <span className="sr-only"> — yeni sekmede açılır</span>
-</a>
+          {/* Mobil WhatsApp CTA */}
+          <a
+            href="https://wa.me/905453048671?text=Merhaba%2C+sahne+ve+etkinlik+ekipmanları+için+teklif+almak+istiyorum."
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="WhatsApp Teklif — yeni sekmede açılır"
+            className={mobileWhatsappBtnClass}
+            onClick={(e) => {
+              burst(e, ["#10b981", "#059669"]);
+              setMobileOpen(false);
+            }}
+            title="WhatsApp'tan teklif alın"
+          >
+            <span aria-hidden="true" className="text-base">💬</span>
+            <span>WhatsApp Teklif</span>
+            <span className="sr-only"> — yeni sekmede açılır</span>
+          </a>
         </div>
       </div>
 
