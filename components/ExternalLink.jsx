@@ -1,48 +1,53 @@
-// components/ExternalLink.jsx
 "use client";
 
-import clsx from "clsx";
-
+/**
+ * Erişilebilir dış bağlantı bileşeni
+ * - target="_blank" ise: rel güvenliği + “(yeni sekmede açılır)” sr-only uyarısı ekler
+ * - aria-label yoksa, görünür metni baz alarak erişilebilir adı otomatik üretir
+ * - clsx/extra bağımlılık YOK
+ */
 export default function ExternalLink({
   href,
   children,
   className = "",
   title,
+  target = "_blank",
   rel,
-  nofollow = false,
-  me = false,
-  ugc = false,
-  newTab = true,          // target="_blank" default açık
-  subtle = false,         // yazı rengini yumuşatmak için opsiyon
-  withIcon = false,       // küçük ↗ ikon
-  srNewTab = true,        // ekran okuyucuya “yeni sekmede” bildirimi
+  ariaLabel,
   ...rest
 }) {
-  const relSet = new Set(["noopener", "noreferrer"]);
-  if (nofollow) relSet.add("nofollow");
-  if (me) relSet.add("me");
-  if (ugc) relSet.add("ugc");
-  if (rel) rel.split(" ").forEach(r => r && relSet.add(r.trim()));
-  const relAttr = Array.from(relSet).join(" ");
+  const isNewTab = target === "_blank";
 
-  const hasAria = typeof rest["aria-label"] === "string" && rest["aria-label"].trim().length > 0;
+  // Görünür metni string’e çevir (çocuklar metinse)
+  const visibleText =
+    typeof children === "string" ? children.trim() : "";
+
+  const computedAriaLabel =
+    ariaLabel ||
+    (visibleText
+      ? `${visibleText}${isNewTab ? " (yeni sekmede açılır)" : ""}`
+      : undefined);
+
+  // rel güvenliği
+  const computedRel =
+    isNewTab ? (rel ? `${rel} noopener noreferrer` : "noopener noreferrer") : rel;
 
   return (
     <a
       href={href}
-      target={newTab ? "_blank" : undefined}
-      rel={relAttr}
-      title={title || (hasAria ? undefined : "Dış bağlantı")}
+      target={target}
+      rel={computedRel}
+      title={title}
+      aria-label={computedAriaLabel}
+      className={className}
       {...rest}
-      className={clsx(
-        "inline-flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600 rounded",
-        subtle ? "text-inherit" : "text-blue-600 hover:text-blue-700",
-        className
-      )}
     >
+      {/* Görünür metin */}
       {children}
-      {withIcon && <span aria-hidden="true" className="text-xs leading-none">↗</span>}
-      {newTab && srNewTab && <span className="sr-only"> (yeni sekmede açılır)</span>}
+      {/* Erişilebilirlik: yeni sekme uyarısı (ekranda görünmez) */}
+      {isNewTab && (
+        <span className="sr-only"> (yeni sekmede açılır)</span>
+      )}
     </a>
   );
 }
