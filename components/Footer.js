@@ -3,6 +3,7 @@
 
 import Link from "next/link";
 import { useCallback } from "react";
+import A11yExternalLink from "@/app/../A11yExternalLink.jsx";
 
 export default function Footer() {
   const burst = useCallback((e) => {
@@ -60,7 +61,7 @@ export default function Footer() {
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg blur-sm opacity-75" />
               <span className="relative bg-gradient-to-r from-blue-500 to-purple-500 text-white p-2 rounded-lg">⭐</span>
             </div>
-            <span itemProp="name" className="bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+            <span itemProp="name" className="bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text md:text-transparent text-white">
               SAHNEVA
             </span>
           </div>
@@ -72,37 +73,21 @@ export default function Footer() {
 
           {/* sosyal linkler */}
           <div className="flex gap-3">
-            <a
-              href="https://www.instagram.com/sahnevaorganizasyon"
-              target="_blank"
-              rel="noopener noreferrer me"
-              aria-label="Sahneva Instagram"
-              className="group relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 min-h-[40px] min-w-[40px]"
-              onClick={burst}
-              itemProp="sameAs"
-            >
+            <A11yExternalLink href="https://www.instagram.com/sahnevaorganizasyon" className="group relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 min-h-[40px] min-w-[40px]">
               <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
               <span aria-hidden="true" className="text-lg relative z-10">📷</span>
-            <span className="sr-only"> — yeni sekmede açılır</span></a>
+            </A11yExternalLink>
 
-            <a
-              href="https://www.youtube.com/@sahneva"
-              target="_blank"
-              rel="noopener noreferrer me"
-              aria-label="Sahneva YouTube"
-              className="group relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 min-h-[40px] min-w-[40px]"
-              onClick={burst}
-              itemProp="sameAs"
-            >
+            <A11yExternalLink href="https://www.youtube.com/@sahneva" className="group relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 min-h-[40px] min-w-[40px]">
               <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
               <span aria-hidden="true" className="text-lg relative z-10">▶</span>
-            <span className="sr-only"> — yeni sekmede açılır</span></a>
+            </A11yExternalLink>
           </div>
         </section>
 
         {/* hizmetler */}
         <nav aria-labelledby="ft-services">
-          <h2 id="ft-services" className="text-white font-bold mb-6 text-lg bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+          <h2 id="ft-services" className="text-white font-bold mb-6 text-lg bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text md:text-transparent text-white">
             Hizmetlerimiz
           </h2>
           <ul className="space-y-3 text-sm">
@@ -124,7 +109,7 @@ export default function Footer() {
 
         {/* hızlı erişim */}
         <nav aria-labelledby="ft-quick">
-          <h2 id="ft-quick" className="text-white font-bold mb-6 text-lg bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
+          <h2 id="ft-quick" className="text-white font-bold mb-6 text-lg bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text md:text-transparent text-white">
             Hızlı Erişim
           </h2>
         <ul className="space-y-3 text-sm">
@@ -145,7 +130,7 @@ export default function Footer() {
 
         {/* iletişim */}
         <section aria-labelledby="ft-contact">
-          <h2 id="ft-contact" className="text-white font-bold mb-6 text-lg bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+          <h2 id="ft-contact" className="text-white font-bold mb-6 text-lg bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text md:text-transparent text-white">
             İletişim Bilgileri
           </h2>
 
@@ -194,29 +179,17 @@ export default function Footer() {
 
             {/* Google Business bağlantıları — aria-label kaldırıldı, ikonlar aria-hidden */}
             <div className="flex items-center gap-3">
-              <a
-                href="https://g.page/r/CZhkMzkNOdgnEBI"
-                target="_blank"
-                rel="noopener noreferrer nofollow"
-                className="group inline-flex items-center gap-2 text-xs text-gray-300 hover:text-white transition-all duration-300 hover:gap-3"
-                title="Google Haritalar"
-              >
+              <A11yExternalLink href="https://g.page/r/CZhkMzkNOdgnEBI" className="group inline-flex items-center gap-2 text-xs text-gray-300 hover:text-white transition-all duration-300 hover:gap-3" title="Google Haritalar">
                 <span className="group-hover:scale-110 transition-transform duration-300" aria-hidden="true">📍</span>
                 Google Haritalar'da bizi bulun
-              <span className="sr-only"> — yeni sekmede açılır</span></a>
+              </A11yExternalLink>
             </div>
 
             <div className="flex items-center gap-3">
-              <a
-                href="https://g.page/r/CZhkMzkNOdgnEBI/review"
-                target="_blank"
-                rel="noopener noreferrer nofollow"
-                className="group inline-flex items-center gap-2 text-xs text-gray-300 hover:text-white transition-all duration-300 hover:gap-3"
-                title="Google Yorum"
-              >
+              <A11yExternalLink href="https://g.page/r/CZhkMzkNOdgnEBI/review" className="group inline-flex items-center gap-2 text-xs text-gray-300 hover:text-white transition-all duration-300 hover:gap-3" title="Google Yorum">
                 <span className="group-hover:scale-110 transition-transform duration-300" aria-hidden="true">⭐</span>
                 Google'da yorum yazın
-              <span className="sr-only"> — yeni sekmede açılır</span></a>
+              </A11yExternalLink>
             </div>
           </address>
         </section>
