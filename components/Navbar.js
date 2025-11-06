@@ -1,6 +1,6 @@
 // components/Navbar.js
 "use client";
-
+D
 import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
