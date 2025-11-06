@@ -1,4 +1,3 @@
-// components/ProjectsGallery.js
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
@@ -41,6 +40,7 @@ export default function ProjectsGallery() {
   const [anim, setAnim] = useState(false);
   const [title, setTitle] = useState("");
   const [items, setItems] = useState([]);
+  the index
   const [index, setIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
   const [imageErrors, setImageErrors] = useState({});
@@ -162,17 +162,20 @@ export default function ProjectsGallery() {
           {Object.entries(GALLERIES).map(([groupTitle, galleryData], i) => {
             const images = galleryData.images;
             const cover = images[0];
+            const btnLabelId = `cover-cta-${i}`;
+            const btnDescId = `cover-desc-${i}`;
 
             return (
               <li key={groupTitle}>
                 <article className="group relative bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-200/60 hover:border-blue-200/80 overflow-hidden">
                   <div className="relative h-80 overflow-hidden">
-                    {/* ÖNEMLİ: visible text ile name uyumlu; ekstra yazılar aria-hidden */}
+                    {/* ÖNEMLİ: aria-labelledby görünür metne bağlanır */}
                     <button
                       type="button"
                       onClick={() => open(groupTitle, images, 0)}
                       className="absolute inset-0 w-full h-full focus:outline-none focus:ring-4 focus:ring-blue-500/50 rounded-t-2xl"
-                      aria-label={`Galeriyi İncele — ${groupTitle} (${images.length} proje)`}
+                      aria-labelledby={btnLabelId}
+                      aria-describedby={btnDescId}
                     >
                       <Image
                         src={getImageSrc(cover)}
@@ -192,13 +195,13 @@ export default function ProjectsGallery() {
                         onError={() => handleImageError(cover)}
                       />
 
-                      {/* Dekoratif overlay -> gizli */}
+                      {/* Dekoratif overlay */}
                       <div
                         className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                         aria-hidden="true"
                       />
 
-                      {/* ALTBANT: tamamiyle dekoratif -> gizli */}
+                      {/* ALTBANT (dekoratif) */}
                       <div
                         className="absolute bottom-0 left-0 right-0 p-5 text-white transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500"
                         aria-hidden="true"
@@ -211,16 +214,20 @@ export default function ProjectsGallery() {
                         </div>
                       </div>
 
-                      {/* ORTA ETİKET: görünür metin = Galeriyi İncele */}
+                      {/* ORTA ETİKET: görünür metin */}
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                         <div className="bg-white/90 backdrop-blur-sm rounded-full px-5 py-2.5 transform -translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
-                          <span className="font-semibold text-gray-900 text-sm flex items-center gap-2">
+                          <span id={btnLabelId} className="font-semibold text-gray-900 text-sm flex items-center gap-2">
                             <span aria-hidden="true">🔍</span>
-                            {/* Bu metin görünür; aria-label de bu metni içeriyor → PASS */}
                             Galeriyi İncele
                           </span>
                         </div>
                       </div>
+
+                      {/* Erişilebilir ek açıklama (ekstra bilgi) */}
+                      <span id={btnDescId} className="sr-only">
+                        — {groupTitle} ({images.length} proje)
+                      </span>
                     </button>
                   </div>
 
@@ -241,16 +248,12 @@ export default function ProjectsGallery() {
                         {galleryData.stats}
                       </span>
 
-                      {/* İkincil eylem: görünür metin + sr-only ek açıklama */}
                       <button
                         onClick={() => open(groupTitle, images, 0)}
                         className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200 flex items-center gap-1 group/btn focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/70"
                       >
                         Tümünü Gör
-                        <span
-                          className="transform group-hover/btn:translate-x-1 transition-transform duration-200"
-                          aria-hidden="true"
-                        >
+                        <span className="transform group-hover/btn:translate-x-1 transition-transform duration-200" aria-hidden="true">
                           →
                         </span>
                         <span className="sr-only"> — {groupTitle} ({images.length} proje)</span>
