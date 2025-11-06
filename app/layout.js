@@ -13,6 +13,7 @@ const inter = Inter({
   adjustFontFallback: true,
 });
 
+// Viewport
 export const viewport = {
   width: "device-width",
   initialScale: 1,
@@ -20,6 +21,7 @@ export const viewport = {
   themeColor: "#6d28d9",
 };
 
+// Metadata (genel)
 export const metadata = {
   metadataBase: new URL("https://www.sahneva.com"),
   title: {
@@ -43,7 +45,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="tr" dir="ltr" className={inter.className}>
       <body className="min-h-screen bg-white text-neutral-900 antialiased">
-        {/* Skip link – TEK YER (global) */}
+
+        {/* Skip link (sayfa içindeki #main-content <main>’e gider) */}
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:z-[9999] focus:top-3 focus:left-3 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-3 focus:rounded-lg focus:font-semibold focus:shadow-lg"
@@ -51,10 +54,11 @@ export default function RootLayout({ children }) {
           Ana içeriğe atla
         </a>
 
+        {/* Üst bileşenler */}
         <UtilityBar />
         <Navbar />
 
-        {/* Burada <main> YOK; children sayfa içinde kendi <main>’ini içerir */}
+        {/* DİKKAT: Layout içinde <main> yok; children sadece 1 kez render edilir */}
         {children}
 
         <Footer />
