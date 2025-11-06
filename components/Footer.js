@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { useCallback } from "react";
-import A11yExternalLink from "@/app/../A11yExternalLink.jsx";
+import ExternalLink from "@/app/../yExternalLink.jsx";
 
 export default function Footer() {
   const burst = useCallback((e) => {
@@ -73,15 +73,15 @@ export default function Footer() {
 
           {/* sosyal linkler */}
           <div className="flex gap-3">
-            <A11yExternalLink href="https://www.instagram.com/sahnevaorganizasyon" className="group relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 min-h-[40px] min-w-[40px]">
+            <yExternalLink href="https://www.instagram.com/sahnevaorganizasyon" className="group relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 min-h-[40px] min-w-[40px]">
               <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
               <span aria-hidden="true" className="text-lg relative z-10">📷</span>
-            </A11yExternalLink>
+            </yExternalLink>
 
-            <A11yExternalLink href="https://www.youtube.com/@sahneva" className="group relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 min-h-[40px] min-w-[40px]">
+            <yExternalLink href="https://www.youtube.com/@sahneva" className="group relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 min-h-[40px] min-w-[40px]">
               <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
               <span aria-hidden="true" className="text-lg relative z-10">▶</span>
-            </A11yExternalLink>
+            </yExternalLink>
           </div>
         </section>
 
@@ -179,17 +179,17 @@ export default function Footer() {
 
             {/* Google Business bağlantıları — aria-label kaldırıldı, ikonlar aria-hidden */}
             <div className="flex items-center gap-3">
-              <A11yExternalLink href="https://g.page/r/CZhkMzkNOdgnEBI" className="group inline-flex items-center gap-2 text-xs text-gray-300 hover:text-white transition-all duration-300 hover:gap-3" title="Google Haritalar">
+              <yExternalLink href="https://g.page/r/CZhkMzkNOdgnEBI" className="group inline-flex items-center gap-2 text-xs text-gray-300 hover:text-white transition-all duration-300 hover:gap-3" title="Google Haritalar">
                 <span className="group-hover:scale-110 transition-transform duration-300" aria-hidden="true">📍</span>
                 Google Haritalar'da bizi bulun
-              </A11yExternalLink>
+              </ExternalLink>
             </div>
 
             <div className="flex items-center gap-3">
-              <A11yExternalLink href="https://g.page/r/CZhkMzkNOdgnEBI/review" className="group inline-flex items-center gap-2 text-xs text-gray-300 hover:text-white transition-all duration-300 hover:gap-3" title="Google Yorum">
+              <ExternalLink href="https://g.page/r/CZhkMzkNOdgnEBI/review" className="group inline-flex items-center gap-2 text-xs text-gray-300 hover:text-white transition-all duration-300 hover:gap-3" title="Google Yorum">
                 <span className="group-hover:scale-110 transition-transform duration-300" aria-hidden="true">⭐</span>
                 Google'da yorum yazın
-              </A11yExternalLink>
+              </ExternalLink>
             </div>
           </address>
         </section>
