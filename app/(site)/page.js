@@ -118,23 +118,23 @@ export default function HomePage() {
           <div className="max-w-6xl mx-auto text-center mb-10">
             <div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md rounded-full px-6 py-3 border border-white/20 mb-6">
               <span className="w-2 h-2 bg-green-400 rounded-full" aria-hidden="true" />
-              <span className="text-white/90 text-sm font-medium">Türkiye Geneli Profesyonel Hizmet</span>
+              <span className="text-white text-sm font-medium">Türkiye Geneli Profesyonel Hizmet</span>
             </div>
 
             <h1 id="hero-title" className="text-white text-3xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight tracking-tight">
               <span className="block">Profesyonel</span>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-purple-300 to-cyan-300 bg-[length:300%_100%] animate-[gradient_8s_ease_infinite] motion-reduce:animate-none">
+              <span className="text-white">
                 Sahne Sistemleri
               </span>
             </h1>
 
-            <p className="text-white/90 text-lg md:text-xl lg:text-2xl mb-6 leading-relaxed font-medium max-w-4xl mx-auto">
-              <span className="bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text font-bold">Sahne Kiralama</span>,{" "}
-              <span className="bg-gradient-to-r from-purple-400 to-cyan-400 text-transparent bg-clip-text font-bold">LED Ekran</span>,{" "}
-              <span className="bg-gradient-to-r from-cyan-400 to-blue-400 text-transparent bg-clip-text font-bold">Ses-Işık Sistemleri</span>
+            <p className="text-white text-lg md:text-xl lg:text-2xl mb-6 leading-relaxed font-medium max-w-4xl mx-auto">
+              <span className="text-white font-bold">Sahne Kiralama</span>,{" "}
+              <span className="text-white font-bold">LED Ekran</span>,{" "}
+              <span className="text-white font-bold">Ses-Işık Sistemleri</span>
             </p>
 
-            <p className="text-white/80 text-base md:text-lg mb-8 max-w-3xl mx-auto">
+            <p className="text-white text-base md:text-lg mb-8 max-w-3xl mx-auto">
               500+ başarılı proje, %98 müşteri memnuniyeti ve Türkiye geneli hızlı kurulum ile yanınızdayız
             </p>
 
@@ -160,7 +160,7 @@ export default function HomePage() {
                   <span className="text-lg" aria-hidden="true">💬</span> WhatsApp Teklif
                 </span>
                 <div className="absolute inset-0 rounded-xl bg-white/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
-              </a>
+              <span className="sr-only"> — yeni sekmede açılır</span></a>
             </div>
           </div>
         </div>
@@ -217,11 +217,11 @@ export default function HomePage() {
             <div className="text-center mb-12">
               <h2 id="projeler-title" className="text-3xl md:text-4xl font-black text-white mb-4">
                 Başarılı{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                <span className="text-blue-200">
                   Projelerimiz
                 </span>
               </h2>
-              <p className="text-lg text-white/80 max-w-3xl mx-auto">
+              <p className="text-lg text-white max-w-3xl mx-auto">
                 500'den fazla kurumsal etkinlik, konser, fuar ve özel organizasyonda güvenilir çözüm ortağı
               </p>
             </div>
@@ -358,7 +358,7 @@ export default function HomePage() {
                     >
                       <span className="text-xl" aria-hidden="true">💬</span>
                       <span className="text-sm font-bold">WhatsApp'tan Yaz</span>
-                    </a>
+                    <span className="sr-only"> — yeni sekmede açılır</span></a>
                     <p className="text-xs text-neutral-600 mt-2">
                       <strong>2 saat içinde</strong> detaylı teklif ve profesyonel danışmanlık
                     </p>
