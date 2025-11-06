@@ -1,3 +1,4 @@
+// components/ProjectsGallery.jsx
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
@@ -40,8 +41,7 @@ export default function ProjectsGallery() {
   const [anim, setAnim] = useState(false);
   const [title, setTitle] = useState("");
   const [items, setItems] = useState([]);
-  the index
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(0);           // ✅ Hata yapan satır burasıydı
   const [mounted, setMounted] = useState(false);
   const [imageErrors, setImageErrors] = useState({});
 
@@ -169,7 +169,6 @@ export default function ProjectsGallery() {
               <li key={groupTitle}>
                 <article className="group relative bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-200/60 hover:border-blue-200/80 overflow-hidden">
                   <div className="relative h-80 overflow-hidden">
-                    {/* ÖNEMLİ: aria-labelledby görünür metne bağlanır */}
                     <button
                       type="button"
                       onClick={() => open(groupTitle, images, 0)}
@@ -195,13 +194,11 @@ export default function ProjectsGallery() {
                         onError={() => handleImageError(cover)}
                       />
 
-                      {/* Dekoratif overlay */}
                       <div
                         className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                         aria-hidden="true"
                       />
 
-                      {/* ALTBANT (dekoratif) */}
                       <div
                         className="absolute bottom-0 left-0 right-0 p-5 text-white transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500"
                         aria-hidden="true"
@@ -214,7 +211,6 @@ export default function ProjectsGallery() {
                         </div>
                       </div>
 
-                      {/* ORTA ETİKET: görünür metin */}
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                         <div className="bg-white/90 backdrop-blur-sm rounded-full px-5 py-2.5 transform -translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
                           <span id={btnLabelId} className="font-semibold text-gray-900 text-sm flex items-center gap-2">
@@ -224,7 +220,6 @@ export default function ProjectsGallery() {
                         </div>
                       </div>
 
-                      {/* Erişilebilir ek açıklama (ekstra bilgi) */}
                       <span id={btnDescId} className="sr-only">
                         — {groupTitle} ({images.length} proje)
                       </span>
