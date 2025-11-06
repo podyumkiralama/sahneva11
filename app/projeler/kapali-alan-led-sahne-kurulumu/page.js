@@ -1,7 +1,9 @@
 // app/projeler/kapali-alan-led-sahne-kurulumu/page.js
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
 import CaseGallery from "../../../components/CaseGallery";
+import { getCspNonce } from "@/lib/csp";
 
 export const metadata = {
   title:
@@ -43,6 +45,7 @@ const IMAGES = [
 
 
 export default function CasePage() {
+  const nonce = getCspNonce();
   return (
     <div className="overflow-x-hidden">
       {/* HERO */}
@@ -194,29 +197,34 @@ export default function CasePage() {
       </section>
 
       {/* JSON-LD: Project */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Project",
-            name: "Kapalı Alan LED ve Sahne Kurulumu (Protokol Seviyesi)",
-            description:
-              "40’lık çadır içinde 24×8 m sahne/podyum ve 24×6 m P2 LED ekranla scaff ve truss altyapısı kullanılan, 2 günde 60 kişilik ekiple tamamlanan büyük ölçekli kurulum.",
-            image: IMAGES.map((i) => `https://www.sahneva.com${i.src}`),
-            creator: { "@type": "Organization", name: "Sahneva" },
-            additionalProperty: [
-              { "@type": "PropertyValue", name: "Sahne/Podyum", value: "24×8 m" },
-              { "@type": "PropertyValue", name: "LED Ekran", value: "24×6 m (P2)" },
-              { "@type": "PropertyValue", name: "Altyapı", value: "Scaff + Truss" },
-              { "@type": "PropertyValue", name: "Alan", value: "40’lık çadır (kapalı alan)" },
-              { "@type": "PropertyValue", name: "Kurulum Süresi", value: "2 iş günü" },
-              { "@type": "PropertyValue", name: "Ekip", value: "60 kişi" },
-              { "@type": "PropertyValue", name: "Ses & Işık", value: "Line-array, robot ışık, sahne ışıkları" },
-            ],
-          }),
-        }}
-      />
+      {nonce && (
+        <Script
+          id="ld-project"
+          type="application/ld+json"
+          nonce={nonce}
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Project",
+              name: "Kapalı Alan LED ve Sahne Kurulumu (Protokol Seviyesi)",
+              description:
+                "40’lık çadır içinde 24×8 m sahne/podyum ve 24×6 m P2 LED ekranla scaff ve truss altyapısı kullanılan, 2 günde 60 kişilik ekiple tamamlanan büyük ölçekli kurulum.",
+              image: IMAGES.map((i) => `https://www.sahneva.com${i.src}`),
+              creator: { "@type": "Organization", name: "Sahneva" },
+              additionalProperty: [
+                { "@type": "PropertyValue", name: "Sahne/Podyum", value: "24×8 m" },
+                { "@type": "PropertyValue", name: "LED Ekran", value: "24×6 m (P2)" },
+                { "@type": "PropertyValue", name: "Altyapı", value: "Scaff + Truss" },
+                { "@type": "PropertyValue", name: "Alan", value: "40’lık çadır (kapalı alan)" },
+                { "@type": "PropertyValue", name: "Kurulum Süresi", value: "2 iş günü" },
+                { "@type": "PropertyValue", name: "Ekip", value: "60 kişi" },
+                { "@type": "PropertyValue", name: "Ses & Işık", value: "Line-array, robot ışık, sahne ışıkları" },
+              ],
+            }),
+          }}
+        />
+      )}
     </div>
   );
 }

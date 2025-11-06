@@ -1,6 +1,8 @@
 // app/hizmetler/page.js
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
+import { getCspNonce } from "@/lib/csp";
 
 /* ───── META & ISR ───── */
 export const metadata = {
@@ -30,6 +32,7 @@ export const revalidate = 3600;
 
 /* ───── STRUCTURED DATA ───── */
 function ServicesStructuredData() {
+  const nonce = getCspNonce();
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Service',
@@ -72,9 +75,14 @@ function ServicesStructuredData() {
     }
   };
 
+  if (!nonce) return null;
+
   return (
-    <script
+    <Script
+      id="ld-services"
       type="application/ld+json"
+      nonce={nonce}
+      strategy="beforeInteractive"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />
   );

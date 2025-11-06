@@ -2,6 +2,7 @@
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import Script from "next/script";
+import { getCspNonce } from "@/lib/csp";
 import heroImg from "@/public/img/hero-bg.webp";
 
 // ──────────────────────────────────────────────────────────────
@@ -60,6 +61,7 @@ export const revalidate = 3600;
 
 // JSON-LD (Service)
 function StructuredData() {
+  const nonce = getCspNonce();
   const service = {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -79,10 +81,13 @@ function StructuredData() {
     ],
   };
 
+  if (!nonce) return null;
+
   return (
     <Script
       id="ld-home-service"
       type="application/ld+json"
+      nonce={nonce}
       strategy="afterInteractive"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(service) }}
     />

@@ -4,6 +4,7 @@ import Link from "next/link";
 import Script from "next/script";
 import dynamic from "next/dynamic";
 import { getService } from "@/lib/data";
+import { getCspNonce } from "@/lib/csp";
 
 // 🎛️ Lazy gallery (LED sayfasıyla aynı)
 const CaseGallery = dynamic(() => import("@/components/CaseGallery"), {
@@ -776,6 +777,7 @@ function SeoArticle() {
 
 // 🧱 Structured Data
 function StructuredData({ packages }) {
+  const nonce = getCspNonce();
   const siteUrl = "https://www.sahneva.com";
   const pageUrl = `${siteUrl}/masa-sandalye-kiralama`;
 
@@ -851,23 +853,28 @@ function StructuredData({ packages }) {
     ],
   };
 
+  if (!nonce) return null;
+
   return (
     <>
       <Script
         id="service-schema-masa"
         type="application/ld+json"
+        nonce={nonce}
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
       />
       <Script
         id="faq-schema-masa"
         type="application/ld+json"
+        nonce={nonce}
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <Script
         id="breadcrumb-schema-masa"
         type="application/ld+json"
+        nonce={nonce}
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />

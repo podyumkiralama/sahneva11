@@ -1,6 +1,8 @@
 // app/(site)/hakkimizda/page.js
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
+import { getCspNonce } from "@/lib/csp";
 
 /* ───── META & ISR ───── */
 export const metadata = {
@@ -63,6 +65,7 @@ function StaticStats() {
 
 /* ───── STRUCTURED DATA ───── */
 function AboutStructuredData() {
+  const nonce = getCspNonce();
   const schema = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -88,9 +91,14 @@ function AboutStructuredData() {
     aggregateRating: { "@type": "AggregateRating", ratingValue: "4.9", ratingCount: "500" },
   };
 
+  if (!nonce) return null;
+
   return (
-    <script
+    <Script
+      id="ld-about-organization"
       type="application/ld+json"
+      nonce={nonce}
+      strategy="beforeInteractive"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />
   );
