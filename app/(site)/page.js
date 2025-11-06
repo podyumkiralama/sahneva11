@@ -151,12 +151,12 @@ export default function HomePage() {
                 <div className="absolute inset-0 rounded-xl bg-white/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
               </a>
 
-              <A11yExternalLink href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ula%C5%9F%C4%B1yorum.+Sahne+kiralama+ve+LED+ekran+fiyatlar%C4%B1+hakk%C4%B1nda+detayl%C4%B1+teklif+almak+istiyorum.&utm_source=homepage&utm_medium=hero_cta&utm_campaign=whatsapp" className="group relative bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold text-base px-6 py-3 rounded-xl shadow-xl hover:shadow-2xl transition-transform duration-300 hover:scale-105 min-w-[180px] text-center border border-white/20 backdrop-blur-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80">
+              <ExternalLink href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ula%C5%9F%C4%B1yorum.+Sahne+kiralama+ve+LED+ekran+fiyatlar%C4%B1+hakk%C4%B1nda+detayl%C4%B1+teklif+almak+istiyorum.&utm_source=homepage&utm_medium=hero_cta&utm_campaign=whatsapp" className="group relative bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold text-base px-6 py-3 rounded-xl shadow-xl hover:shadow-2xl transition-transform duration-300 hover:scale-105 min-w-[180px] text-center border border-white/20 backdrop-blur-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80">
                 <span className="relative z-10 flex items-center justify-center gap-2">
                   <span className="text-lg" aria-hidden="true">💬</span> WhatsApp Teklif
                 </span>
                 <div className="absolute inset-0 rounded-xl bg-white/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
-              </A11yExternalLink>
+              </ExternalLink>
             </div>
           </div>
         </div>
@@ -346,10 +346,10 @@ export default function HomePage() {
                   </p>
                   <div className="mt-4 p-4 bg-white rounded-lg border border-purple-200 shadow-md">
                     <p className="font-bold text-purple-900 text-base mb-2">Hızlı Teklif İsteği:</p>
-                    <A11yExternalLink href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ula%C5%9F%C4%B1yorum.+Sahne+kiralama+ve+LED+ekran+fiyatlar%C4%B1+hakk%C4%B1nda+detayl%C4%B1+teklif+almak+istiyorum.&utm_source=homepage&utm_medium=seo_section&utm_campaign=whatsapp" className="inline-flex items-center justify-center gap-3 bg-green-700 hover:bg-green-800 text-white font-bold px-5 py-4 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl min-h-[60px] focus:outline-none focus-visible:ring-2 focus-visible:ring-green-200 text-white/95 underline-offset-4">
+                    <ExternalLink href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ula%C5%9F%C4%B1yorum.+Sahne+kiralama+ve+LED+ekran+fiyatlar%C4%B1+hakk%C4%B1nda+detayl%C4%B1+teklif+almak+istiyorum.&utm_source=homepage&utm_medium=seo_section&utm_campaign=whatsapp" className="inline-flex items-center justify-center gap-3 bg-green-700 hover:bg-green-800 text-white font-bold px-5 py-4 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl min-h-[60px] focus:outline-none focus-visible:ring-2 focus-visible:ring-green-200 text-white/95 underline-offset-4">
                       <span className="text-xl" aria-hidden="true">💬</span>
                       <span className="text-sm font-bold">WhatsApp'tan Yaz</span>
-                    </A11yExternalLink>
+                    </ExternalLink>
                     <p className="text-xs text-neutral-600 mt-2">
                       <strong>2 saat içinde</strong> detaylı teklif ve profesyonel danışmanlık
                     </p>
