@@ -2,9 +2,8 @@
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import UtilityBar from "../components/UtilityBar";
 import { Inter } from "next/font/google";
-import { headers } from "next/headers";
+import UtilityBar from "../components/UtilityBar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -41,15 +40,8 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  // ✅ Middleware'in koyduğu nonce
-  const nonce = headers().get("x-nonce") || undefined;
-
   return (
     <html lang="tr" dir="ltr" className={inter.className}>
-      <head>
-        {/* Nonce'ı inline scriptlerde kullanmak için */}
-        {nonce && <meta name="csp-nonce" content={nonce} />}
-      </head>
       <body className="min-h-screen bg-white text-neutral-900 antialiased">
         {/* Skip link – TEK YER (global) */}
         <a
@@ -62,11 +54,8 @@ export default function RootLayout({ children }) {
         <UtilityBar />
         <Navbar />
 
-        {/* Global main: skip-link hedefi hep mevcut. 
-            Sayfa içinde ayrıca <main> olsa bile sorun değil. */}
-        <main id="main-content" role="main">
-          {children}
-        </main>
+        {/* Burada <main> YOK; children sayfa içinde kendi <main>’ini içerir */}
+        {children}
 
         <Footer />
       </body>
