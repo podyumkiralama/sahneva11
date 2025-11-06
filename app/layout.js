@@ -39,8 +39,9 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
-  const nonce = headers().get("x-nonce") || ""; // ← middleware’den geldi
+export default async function RootLayout({ children }) {
+  const headerList = await headers();
+  const nonce = headerList.get("x-nonce") || ""; // ← middleware’den geldi
 
   return (
     <html lang="tr" dir="ltr" className={inter.className}>
