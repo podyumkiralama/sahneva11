@@ -46,13 +46,28 @@ export default function RootLayout({ children }) {
     <html lang="tr" dir="ltr" className={inter.className}>
       <body className="min-h-screen bg-white text-neutral-900 antialiased">
 
-        {/* Skip link (sayfa içindeki #main-content <main>’e gider) */}
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:z-[9999] focus:top-3 focus:left-3 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-3 focus:rounded-lg focus:font-semibold focus:shadow-lg"
-        >
-          Ana içeriğe atla
-        </a>
+<a
+  href="#main-content"
+  className="
+    sr-only
+    focus:not-sr-only
+    focus:fixed
+    focus:z-[9999]
+    focus:top-3
+    focus:left-3
+    focus:bg-blue-600
+    focus:text-white
+    focus:px-4
+    focus:py-3
+    focus:rounded-lg
+    focus:font-semibold
+    focus:shadow-lg
+    transition
+  "
+>
+  Ana içeriğe atla
+</a>
+
 
         {/* Üst bileşenler */}
         <UtilityBar />
