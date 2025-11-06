@@ -382,7 +382,7 @@ export default function Navbar() {
         />
       )}
 
-      {/* Mobil menü */}
+      {/* Mobil menü - ŞEFFAFLIK DÜZELTİLDİ */}
       <div
         id="mobile-menu"
         role="dialog"
@@ -393,15 +393,15 @@ export default function Navbar() {
         }}
         className={
           mobileOpen
-            ? "lg:hidden fixed z-50 left-0 right-0 top-16 bg-white/98 backdrop-blur-xl border-t border-neutral-200/70 rounded-b-2xl shadow-2xl transition-all duration-500 will-change-transform overflow-hidden max-h-[80vh] opacity-100"
-            : "lg:hidden fixed z-50 left-0 right-0 top-16 bg-white/98 backdrop-blur-xl border-t border-neutral-200/70 rounded-b-2xl shadow-2xl transition-all duration-500 will-change-transform overflow-hidden max-h-0 opacity-0"
+            ? "lg:hidden fixed z-50 left-0 right-0 top-16 bg-white border-t border-neutral-200/70 rounded-b-2xl shadow-2xl transition-all duration-500 will-change-transform overflow-hidden max-h-[80vh] opacity-100"
+            : "lg:hidden fixed z-50 left-0 right-0 top-16 bg-white border-t border-neutral-200/70 rounded-b-2xl shadow-2xl transition-all duration-500 will-change-transform overflow-hidden max-h-0 opacity-0"
         }
       >
         <div className="px-5 py-6 space-y-3 max-h-[80vh] overflow-y-auto">
           <Link
             href="/hakkimizda"
             onClick={() => setMobileOpen(false)}
-            className="flex items-center gap-3 py-3.5 px-4 text-neutral-800 font-bold text-[15px] rounded-xl hover:bg-blue-50/90 hover:text-blue-700 transition-all duration-300 border border-transparent hover:border-blue-200/60"
+            className="flex items-center gap-3 py-3.5 px-4 text-neutral-800 font-bold text-[15px] rounded-xl hover:bg-blue-50 hover:text-blue-700 transition-all duration-300 border border-transparent hover:border-blue-200/60"
             aria-current={active("/hakkimizda") ? "page" : undefined}
             title="Sahneva Hakkında"
           >
@@ -415,7 +415,7 @@ export default function Navbar() {
               onClick={() => setMobileServicesOpen((s) => !s)}
               aria-expanded={mobileServicesOpen}
               aria-controls="mobile-services-list"
-              className="w-full flex items-center justify-between gap-3 py-3.5 px-4 text-[15px] font-bold text-neutral-900 rounded-xl hover:bg-blue-50/90 hover:text-blue-700 transition-all duration-300 border border-transparent hover:border-blue-200/60 min-h-[44px]"
+              className="w-full flex items-center justify-between gap-3 py-3.5 px-4 text-[15px] font-bold text-neutral-900 rounded-xl hover:bg-blue-50 hover:text-blue-700 transition-all duration-300 border border-transparent hover:border-blue-200/60 min-h-[44px]"
               title="Sahneva Hizmetler Menüsü"
             >
               <span className="flex items-center gap-3">
@@ -440,7 +440,7 @@ export default function Navbar() {
               id="mobile-services-list"
               className={mobileServicesListClass}
             >
-              <div className="ml-4 rounded-lg border border-neutral-200/60 bg-white/80 p-2">
+              <div className="ml-4 rounded-lg border border-neutral-200/60 bg-white p-2">
                 {serviceLinks.map(({ href, label, title, icon, description }) => (
                   <Link
                     key={href}
@@ -464,7 +464,7 @@ export default function Navbar() {
           <Link
             href="/iletisim"
             onClick={() => setMobileOpen(false)}
-            className="flex items-center gap-3 py-3.5 px-4 text-neutral-800 font-bold text-[15px] rounded-xl hover:bg-blue-50/90 hover:text-blue-700 transition-all duration-300 border border-transparent hover:border-blue-200/60"
+            className="flex items-center gap-3 py-3.5 px-4 text-neutral-800 font-bold text-[15px] rounded-xl hover:bg-blue-50 hover:text-blue-700 transition-all duration-300 border border-transparent hover:border-blue-200/60"
             aria-current={active("/iletisim") ? "page" : undefined}
             title="Sahneva İletişim"
           >
