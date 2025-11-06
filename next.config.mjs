@@ -7,8 +7,7 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
   trailingSlash: false,
 
-  // swcMinify: true, // ❌ Next 16'da artık yok
-
+  swcMinify: true,
   transpilePackages: [],
 
   images: {
@@ -16,7 +15,13 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 30,
-    remotePatterns: [],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'www.sahneva.com',
+        pathname: '/**',
+      }
+    ],
     dangerouslyAllowSVG: false,
   },
 
@@ -43,33 +48,71 @@ const nextConfig = {
 
   async redirects() {
     return [
-      // /search?q=...  → /?q=...  (sorguyu korur)
+      // 1. BASİT YÖNLENDİRMELER - Önce en spesifik olanlar
       {
-        source: "/search",
-        has: [{ type: "query", key: "q", value: "(?<term>.*)" }],
-        destination: "/?q=:term",
+        source: '/sahne-kurulumu',
+        destination: '/sahne-kiralama',
         permanent: true,
       },
-      // q yoksa ana sayfaya
-      { source: "/search", destination: "/", permanent: true },
+      
+      // 2. SEARCH YÖNLENDİRMELERİ - Basit versiyon
+      {
+        source: '/search',
+        destination: '/',
+        permanent: true,
+      },
+      
+      // 3. FONT YÖNLENDİRMESİ - Doğru format
+      {
+        source: '/_next/static/media/83afe278b6a6bb3c\\.:extension',
+        destination: '/',
+        permanent: false,
+      },
+      
+      // 4. ÖZEL KARAKTER YÖNLENDİRMELERİ - Düz regex
+      {
+        source: '/\\$',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/&',
+        destination: '/',
+        permanent: true,
+      },
+      
+      // 5. URL ENCODED KARAKTERLER
+      {
+        source: '/%24',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/%26',
+        destination: '/',
+        permanent: true,
+      },
+    ];
+  },
 
-      // Eski slug → yeni slug
-      { source: "/sahne-kurulumu", destination: "/sahne-kiralama", permanent: true },
-
-      // Tüm .woff2 static media → tek bir fallback font
-      { source: "/_next/static/media/:file*\\.woff2", destination: "/fonts/fallback.woff2", permanent: true },
-
-      // Kötü encode edilmiş kök URL'ler
-      { source: "/%24", destination: "/", permanent: true },
-      { source: "/%26", destination: "/", permanent: true },
-
-      // Herhangi bir patika sonu %24 / %26 ise → temizle
-      { source: "/:path*%24", destination: "/:path*", permanent: true },
-      { source: "/:path*%26", destination: "/:path*", permanent: true },
-
-      // (NOT) Aşağıdaki gibi "açık" $ / & kurallarını eklemiyoruz; Next bunları sağlıklı parse etmeyebilir
-      // { source: "/$", ... }  { source: "/&", ... }
-      // Ayrıca sabit kaynağı "/:path*" hedefine yönlendiren kuralı da KALDIRDIK (build hatasına sebep oluyordu).
+  // ✅ REWRITES EKLEYİN - Redirects çalışmazsa bu kesin çalışır
+  async rewrites() {
+    return [
+      // Search query'leri ana sayfaya yönlendir
+      {
+        source: '/search',
+        destination: '/',
+      },
+      {
+        source: '/search/:query*',
+        destination: '/',
+      },
+      
+      // Hatalı font path'lerini düzelt
+      {
+        source: '/_next/static/media/:font*',
+        destination: '/_next/static/media/:font*',
+      },
     ];
   },
 
@@ -85,7 +128,7 @@ const nextConfig = {
     ].join(" ");
     const scriptSrcCommon = [
       "'self'",
-      "'unsafe-inline'", // middleware/nonce yokken bazı inline'lar için gerekli
+      "'unsafe-inline'",
       "https://www.googletagmanager.com",
       "https://www.google-analytics.com",
       "https://va.vercel-scripts.com",
@@ -126,14 +169,12 @@ const nextConfig = {
         source: "/_next/static/(.*)",
         headers: [
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-          { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
         ],
       },
       {
         source: "/(.*)\\.(ico|png|jpg|jpeg|webp|avif|svg|gif|woff2)",
         headers: [
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-          { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
         ],
       },
     ];
