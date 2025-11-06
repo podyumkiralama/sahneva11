@@ -205,7 +205,7 @@ export default function Faq({ compact = false }) {
                         Hızlı Mesaj
                       </div>
                     </div>
-                  </a>
+                  <span class="sr-only"> (yeni sekmede açılır)</span></a>
                 </li>
 
                 <li>
