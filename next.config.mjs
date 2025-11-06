@@ -48,17 +48,27 @@ const nextConfig = {
 
   async redirects() {
     return [
+      // ✅ ÖZEL FONT DOSYASI YÖNLENDİRMESİ - Tam path
+      {
+        source: '/_next/static/media/83afe278b6a6bb3c.p.3a6ba036.woff2',
+        destination: '/',
+        permanent: true,
+      },
+      
+      // ✅ GENEL STATIC MEDIA YÖNLENDİRMELERİ
+      {
+        source: '/_next/static/media/:file*',
+        destination: '/',
+        permanent: false,
+      },
+
       // 1. BASİT YÖNLENDİRMELER - Önce en spesifik olanlar
       {
         source: '/sahne-kurulumu',
         destination: '/sahne-kiralama',
         permanent: true,
       },
-      {
-  source: '/_next/static/media/83afe278b6a6bb3c.p.3a6ba036.woff2',
-  destination: '/',
-  permanent: true,
-}
+      
       // 2. SEARCH YÖNLENDİRMELERİ - Basit versiyon
       {
         source: '/search',
@@ -66,14 +76,7 @@ const nextConfig = {
         permanent: true,
       },
       
-      // 3. FONT YÖNLENDİRMESİ - Doğru format
-      {
-        source: '/_next/static/media/83afe278b6a6bb3c\\.:extension',
-        destination: '/',
-        permanent: false,
-      },
-      
-      // 4. ÖZEL KARAKTER YÖNLENDİRMELERİ - Düz regex
+      // 3. ÖZEL KARAKTER YÖNLENDİRMELERİ - Düz regex
       {
         source: '/\\$',
         destination: '/',
@@ -85,7 +88,7 @@ const nextConfig = {
         permanent: true,
       },
       
-      // 5. URL ENCODED KARAKTERLER
+      // 4. URL ENCODED KARAKTERLER
       {
         source: '/%24',
         destination: '/',
@@ -96,12 +99,34 @@ const nextConfig = {
         destination: '/',
         permanent: true,
       },
+
+      // 5. PATH SONUNDA ÖZEL KARAKTERLER
+      {
+        source: '/:path*\\$',
+        destination: '/:path*',
+        permanent: true,
+      },
+      {
+        source: '/:path*&',
+        destination: '/:path*',
+        permanent: true,
+      },
     ];
   },
 
-  // ✅ REWRITES EKLEYİN - Redirects çalışmazsa bu kesin çalışır
+  // ✅ REWRITES - Redirects çalışmazsa bu devreye girer
   async rewrites() {
     return [
+      // Font dosyaları için rewrite
+      {
+        source: '/_next/static/media/83afe278b6a6bb3c.p.3a6ba036.woff2',
+        destination: '/',
+      },
+      {
+        source: '/_next/static/media/:path*',
+        destination: '/',
+      },
+      
       // Search query'leri ana sayfaya yönlendir
       {
         source: '/search',
@@ -109,13 +134,7 @@ const nextConfig = {
       },
       {
         source: '/search/:query*',
-        destination: '/',
-      },
-      
-      // Hatalı font path'lerini düzelt
-      {
-        source: '/_next/static/media/:font*',
-        destination: '/_next/static/media/:font*',
+        destination: '/?q=:query*',
       },
     ];
   },
