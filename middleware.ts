@@ -7,13 +7,22 @@ function makeNonce() {
   const randomValues = new Uint8Array(16);
   crypto.getRandomValues(randomValues);
 
-  // base64url dönüştürme
-  let binary = "";
-  randomValues.forEach((value) => {
-    binary += String.fromCharCode(value);
-  });
+  if (typeof Buffer !== "undefined") {
+    // Node.js ortamı (ör. local dev server) → Buffer kullanmak güvenli
+    return Buffer.from(randomValues).toString("base64url");
+  }
 
-  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+  if (typeof btoa === "function") {
+    // Edge/runtime gibi ortamlarda btoa mevcut
+    let binary = "";
+    randomValues.forEach((value) => {
+      binary += String.fromCharCode(value);
+    });
+
+    return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+  }
+
+  throw new Error("No base64 encoder available for nonce generation");
 }
 
 export function middleware(req: NextRequest) {
