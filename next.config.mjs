@@ -7,7 +7,7 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
   trailingSlash: false,
 
-  // ✅ MODERN JAVASCRIPT OPTIMIZATIONS
+  // ✅ Modern JS
   swcMinify: true,
   transpilePackages: [],
 
@@ -41,24 +41,7 @@ const nextConfig = {
   output: process.env.NODE_ENV === "production" ? "standalone" : undefined,
   staticPageGenerationTimeout: 300,
 
-  // ✅ 404 alan URL'leri doğru sayfalara yönlendir
-  async redirects() {
-    return [
-      // Arama/bozuk query denemeleri
-      { source: "/search", destination: "/", permanent: true },
-      { source: "/$", destination: "/", permanent: true },
-      { source: "/&", destination: "/", permanent: true },
-
-      // Yanlış slug → doğru sayfa
-      { source: "/sahne-kurulumu", destination: "/sahne-kiralama", permanent: true },
-
-      // (Opsiyonel) trailing slash varyasyonları
-      { source: "/sahne-kurulumu/", destination: "/sahne-kiralama", permanent: true },
-    ];
-  },
-
   async headers() {
-    // Frame izinleri (Vercel Live + Google)
     const frameSrc = [
       "'self'",
       "https://www.google.com",
@@ -75,28 +58,20 @@ const nextConfig = {
       "https://www.sahneva.com",
     ].join(" ");
 
-    // Inline'a ihtiyaç var (Next/Script JSON-LD ve bazı runtime snippet’leri)
     const scriptSrcCommon = [
       "'self'",
-      "'unsafe-inline'",
+      "'unsafe-inline'", // nonce/middleware yokken Next'in inline scriptleri için
       "https://www.googletagmanager.com",
       "https://www.google-analytics.com",
       "https://va.vercel-scripts.com",
       "https://vercel.live",
     ].join(" ");
 
-    // Vercel Live embed için frame-ancestors whitelist; X-Frame-Options kullanmıyoruz
-    const frameAncestors = [
-      "'self'",
-      "https://vercel.live",
-      "https://*.vercel.live",
-      "https://www.google.com",
-    ].join(" ");
-
     const csp = `
       default-src 'self';
       base-uri 'self';
       object-src 'none';
+      frame-ancestors 'none';
       upgrade-insecure-requests;
 
       img-src 'self' data: blob: https:;
@@ -110,22 +85,20 @@ const nextConfig = {
       connect-src ${connectSrc};
       worker-src 'self' blob:;
       frame-src ${frameSrc};
-      frame-ancestors ${frameAncestors};
       form-action 'self' https://formspree.io https://wa.me;
-    `
-      .replace(/\s{2,}/g, " ")
-      .trim();
+    `.replace(/\s{2,}/g, " ").trim();
 
     const securityHeaders = [
       { key: "Content-Security-Policy", value: csp },
       { key: "X-Content-Type-Options", value: "nosniff" },
       { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-      // ❌ X-Frame-Options kaldırıldı (CSP frame-ancestors ile çakışıyordu)
+      { key: "X-Frame-Options", value: "DENY" },
       { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
       { key: "Cross-Origin-Resource-Policy", value: "same-site" },
       {
         key: "Permissions-Policy",
-        value: "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=()",
+        value:
+          "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=()",
       },
       {
         key: "Strict-Transport-Security",
@@ -134,7 +107,10 @@ const nextConfig = {
     ];
 
     return [
+      // Genelde tüm sayfalar
       { source: "/(.*)", headers: securityHeaders },
+
+      // _next/static ve fontlar → noindex + uzun cache
       {
         source: "/_next/static/(.*)",
         headers: [
@@ -143,8 +119,22 @@ const nextConfig = {
             key: "Strict-Transport-Security",
             value: "max-age=63072000; includeSubDomains; preload",
           },
+          { key: "X-Robots-Tag", value: "noindex, nofollow" },
         ],
       },
+      {
+        source: "/:any*\\.(woff|woff2|ttf|eot)",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
+          },
+          { key: "X-Robots-Tag", value: "noindex, nofollow" },
+        ],
+      },
+
+      // Statik görseller (uzun cache)
       {
         source: "/(.*)\\.(ico|png|jpg|jpeg|webp|avif|svg|gif)",
         headers: [
@@ -155,6 +145,35 @@ const nextConfig = {
           },
         ],
       },
+    ];
+  },
+
+  async redirects() {
+    return [
+      // 1) /search?q=... → /
+      {
+        source: "/search",
+        has: [{ type: "query", key: "q" }],
+        destination: "/",
+        permanent: true,
+      },
+
+      // 2) Herhangi bir path’te ?q=... varsa → aynı path (query'siz)
+      //   Örn: /?q={search_term_string} → /
+      //        /foo?q=bar → /foo
+      {
+        source: "/:path*",
+        has: [{ type: "query", key: "q" }],
+        destination: "/:path*",
+        permanent: true,
+      },
+
+      // 3) Saçma/yanlış URL’ler → /
+      { source: "/$", destination: "/", permanent: true },
+      { source: "/&", destination: "/", permanent: true },
+
+      // 4) Yazım hatası olan eski yol → doğru sayfa
+      { source: "/sahne-kurulumu", destination: "/sahne-kiralama", permanent: true },
     ];
   },
 };
