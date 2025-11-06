@@ -7,7 +7,7 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
   trailingSlash: false,
 
-  // 🔧 Modern JS
+  // ✅ MODERN JAVASCRIPT OPTIMIZATIONS
   swcMinify: true,
   transpilePackages: [],
 
@@ -41,10 +41,12 @@ const nextConfig = {
   output: process.env.NODE_ENV === "production" ? "standalone" : undefined,
   staticPageGenerationTimeout: 300,
 
-  // -------------------- REDIRECTS / REWRITES --------------------
+  // ─────────────────────────────────────────────────────────────────────────────
+  // REDIRECTS – Sorunlu URL’leri güvenli şekilde köke yönlendir
+  // ─────────────────────────────────────────────────────────────────────────────
   async redirects() {
     return [
-      // 🔁 Yanlış arama placeholder’ı – ANA SAYFA’ya 301 (loop yok: sadece belirli eşleşmeler)
+      // GSC / reklam kaynaklı placeholder query ⇒ köke temiz 301
       {
         source: "/search",
         has: [{ type: "query", key: "q", value: "%7Bsearch_term_string%7D" }],
@@ -57,7 +59,7 @@ const nextConfig = {
         destination: "/",
         permanent: true,
       },
-      // Kök URL'e yanlış placeholder query gelirse:
+      // Aynı placeholder kökte görünürse (/?q=...) ⇒ köke temiz 301 (loop olmaz; query kalkar)
       {
         source: "/",
         has: [{ type: "query", key: "q", value: "%7Bsearch_term_string%7D" }],
@@ -71,12 +73,11 @@ const nextConfig = {
         permanent: true,
       },
 
-      // 🔁 Eski/yanlış yollar (GSC 404 listenden)
-      { source: "/sahne-kurulumu", destination: "/sahne-kiralama", permanent: true },
+      // GSC’de görülen tek-karakter hatalı yollar → kök
       { source: "/$", destination: "/", permanent: true },
       { source: "/&", destination: "/", permanent: true },
 
-      // 🔁 Eski hash’li font isteği -> fallback font (tam eşleşme)
+      // Belirli eski font hash’i için 301 (kalıcı)
       {
         source: "/_next/static/media/83afe278b6a6bb3c.p.3a6ba036.woff2",
         destination: "/fonts/fallback.woff2",
@@ -85,9 +86,11 @@ const nextConfig = {
     ];
   },
 
+  // ─────────────────────────────────────────────────────────────────────────────
+  // REWRITES – Tüm eksik .woff2 hash isteklerini fallback’e geçir (404 ve GSC gürültüsünü keser)
+  // ─────────────────────────────────────────────────────────────────────────────
   async rewrites() {
     return [
-      // Herhangi bir başka eski .woff2 hash’i 404 verirse, en azından okunur bir fallback göster:
       {
         source: "/_next/static/media/:any*.woff2",
         destination: "/fonts/fallback.woff2",
@@ -95,8 +98,11 @@ const nextConfig = {
     ];
   },
 
-  // -------------------- HEADERS --------------------
+  // ─────────────────────────────────────────────────────────────────────────────
+  // HEADERS – CSP + cache + dizinden çıkarma (X-Robots-Tag)
+  // ─────────────────────────────────────────────────────────────────────────────
   async headers() {
+    // Vercel Live iFrame izni
     const frameSrc = ["'self'", "https://www.google.com", "https://vercel.live", "https://*.vercel.live"].join(" ");
 
     const connectSrc = [
@@ -108,9 +114,10 @@ const nextConfig = {
       "https://www.sahneva.com",
     ].join(" ");
 
+    // Not: middleware/nonce kullanmadığımız için Next’in küçük inline script’leri için 'unsafe-inline' bırakıldı.
     const scriptSrcCommon = [
       "'self'",
-      "'unsafe-inline'", // middleware/nonce yokken gerekli inline scriptler için
+      "'unsafe-inline'",
       "https://www.googletagmanager.com",
       "https://www.google-analytics.com",
       "https://va.vercel-scripts.com",
@@ -152,16 +159,10 @@ const nextConfig = {
     ];
 
     return [
-      // Genel güvenlik başlıkları
+      // Global security headers
       { source: "/(.*)", headers: securityHeaders },
 
-      // 🔒 /search sayfasını dizine ekletme (yineleme ve placeholder sorunlarını keser)
-      {
-        source: "/search",
-        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
-      },
-
-      // Next static dosyaları
+      // Statik dosyalar (Next build çıktısı)
       {
         source: "/_next/static/(.*)",
         headers: [
@@ -179,14 +180,28 @@ const nextConfig = {
         ],
       },
 
-      // 🅰️ Fontlar (woff2/woff/ttf/otf/eot)
+      // Fontlar (fallback dâhil)
       {
         source: "/(.*)\\.(woff2|woff|ttf|otf|eot)",
         headers: [
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-          { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
           { key: "Access-Control-Allow-Origin", value: "*" },
         ],
+      },
+
+      // Placeholder arama sayfalarını dizinden çıkar
+      {
+        source: "/search",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
+      },
+      // Çöplük yolları da dizinden çıksın
+      {
+        source: "/$",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
+      },
+      {
+        source: "/&",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
       },
     ];
   },
