@@ -3,43 +3,81 @@
 
 import Script from "next/script";
 
-export default function JsonLdService({ site = "https://www.sahneva.com", service, images = [] }) {
+const absUrl = (site, path = "") => {
+  if (!path) return site.replace(/\/+$/,"");
+  // absolute geldiyse dokunma
+  if (/^https?:\/\//i.test(path)) return path;
+  const s = site.replace(/\/+$/,"");
+  const p = String(path).replace(/^\/+/,"");
+  return `${s}/${p}`;
+};
+
+const compact = (obj) =>
+  Object.fromEntries(
+    Object.entries(obj).filter(([_, v]) =>
+      Array.isArray(v) ? v.length > 0 : v != null && v !== ""
+    )
+  );
+
+export default function JsonLdService({
+  site = "https://www.sahneva.com",
+  service,
+  images = [],
+}) {
   if (!service) return null;
 
-  const imgs = images.length
-    ? images.slice(0, 5).map((p) => site + p)
-    : [site + (service.ogImage || service.img)];
+  const slug = encodeURIComponent(String(service.slug || "").replace(/^\/+/, ""));
+  const pageUrl = absUrl(site, slug);
 
-  const data = {
+  const imgListRaw = images.length
+    ? images.slice(0, 8)
+    : [service?.ogImage, service?.img].filter(Boolean);
+
+  const image = Array.from(
+    new Set(imgListRaw.map((p) => absUrl(site, p)))
+  );
+
+  const data = compact({
     "@context": "https://schema.org",
     "@type": "Service",
+    "@id": `${pageUrl}#service`,
     name: service.title,
     description: service.desc,
-    image: imgs,
-    areaServed: "TR",
+    image,
+    url: pageUrl,
+    areaServed: { "@type": "Country", name: "TR" },
+    serviceType: service.serviceType, // varsa string/array
+    keywords: Array.isArray(service.keywords)
+      ? service.keywords.join(", ")
+      : service.keywords,
     provider: {
       "@type": "Organization",
       name: "Sahneva",
       url: site,
       telephone: "+90 545 304 8671",
-      logo: site + "/img/logo.png",
+      logo: absUrl(site, "/img/logo.png"),
     },
-    keywords: service.keywords?.join(", "),
-    url: `${site}/${service.slug}`,
-    hasOfferCatalog: {
-      "@type": "OfferCatalog",
-      name: service.title,
-      itemListElement: service.faqs?.map(({ q, a }) => ({
-        "@type": "Offer",
-        itemOffered: { "@type": "Service", name: q, description: a },
-      })),
-    },
-    mainEntityOfPage: `${site}/${service.slug}`,
-  };
+    hasOfferCatalog:
+      Array.isArray(service.faqs) && service.faqs.length
+        ? {
+            "@type": "OfferCatalog",
+            name: service.title,
+            itemListElement: service.faqs.map(({ q, a }) => ({
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: q,
+                description: a,
+              },
+            })),
+          }
+        : undefined,
+    mainEntityOfPage: { "@type": "WebPage", "@id": pageUrl },
+  });
 
   return (
     <Script
-      id={`ld-service-${service.slug}`}
+      id={`ld-service-${slug || "service"}`}
       type="application/ld+json"
       strategy="afterInteractive"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
