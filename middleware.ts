@@ -1,72 +1,82 @@
 // middleware.ts
-import { NextResponse, NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
-// Edge uyumlu nonce üretimi (Buffer yok)
-function genNonce() {
-  const arr = new Uint8Array(16);
-  crypto.getRandomValues(arr);
-  return Array.from(arr).map(b => b.toString(16).padStart(2,"0")).join("");
+function makeNonce() {
+  // kısa, URL-safe bir nonce
+  return Buffer.from(crypto.randomUUID()).toString("base64url");
 }
 
 export function middleware(req: NextRequest) {
-  const res = NextResponse.next();
+  const nonce = makeNonce();
 
-  const allowIframe =
-    process.env.NEXT_ALLOW_IFRAMING === "1" || process.env.VERCEL_ENV === "preview";
+  // 1) Nonce’ı AŞAĞI KATA GEÇECEK ŞEKİLDE İSTEK BAŞLIĞINA EKLE
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set("x-nonce", nonce);
 
-  const nonce = genNonce();
-  res.headers.set("x-nonce", nonce); // sayfalar okuyacak
-
-  const frameSrc = ["'self'", "https://www.google.com", "https://vercel.live", "https://*.vercel.live"];
-  const connectSrc = [
-    "'self'",
-    "https://vitals.vercel-insights.com",
-    "https://www.google-analytics.com",
-    "https://region1.google-analytics.com",
-    "https://stats.g.doubleclick.net",
-    "https://www.sahneva.com",
-  ];
+  // 2) Standart CSP — nonce entegre
   const scriptSrc = [
-    "'self'",
-    `'nonce-${nonce}'`, // ✅ inline scriptler için
+    `'self'`,
+    `'nonce-${nonce}'`, // ← inline scriptler ve next/script için
     "https://www.googletagmanager.com",
     "https://www.google-analytics.com",
     "https://va.vercel-scripts.com",
     "https://vercel.live",
-  ];
+  ].join(" ");
 
-  const csp =
-    [
-      "default-src 'self'",
-      "base-uri 'self'",
-      "object-src 'none'",
-      "upgrade-insecure-requests",
-      "img-src 'self' data: blob: https:",
-      "font-src 'self' data: https://fonts.gstatic.com",
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-      `script-src ${scriptSrc.join(" ")}`,
-      `script-src-elem ${scriptSrc.join(" ")}`,
-      "script-src-attr 'none'",
-      `connect-src ${connectSrc.join(" ")}`,
-      "worker-src 'self' blob:",
-      `frame-src ${frameSrc.join(" ")}`,
-      "form-action 'self' https://formspree.io https://wa.me",
-      `frame-ancestors ${allowIframe ? "'self' https://vercel.live https://*.vercel.live" : "'none'"}`,
-    ].join("; ");
+  const connectSrc = [
+    `'self'`,
+    "https://vitals.vercel-insights.com",
+    "https://www.google-analytics.com",
+    "https://region1.google-analytics.com",
+    "https://stats.g.doubleclick.net",
+  ].join(" ");
 
+  const csp = [
+    "default-src 'self'",
+    "base-uri 'self'",
+    "object-src 'none'",
+    "frame-ancestors 'none'",
+    "upgrade-insecure-requests",
+    "img-src 'self' data: blob: https:",
+    "font-src 'self' data: https://fonts.gstatic.com",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    `script-src ${scriptSrc}`,
+    `script-src-elem ${scriptSrc}`,
+    "script-src-attr 'none'",
+    `connect-src ${connectSrc}`,
+    "worker-src 'self' blob:",
+    "frame-src 'self' https://www.google.com https://vercel.live https://*.vercel.live",
+    "form-action 'self' https://formspree.io https://wa.me",
+  ].join("; ");
+
+  const res = NextResponse.next({
+    request: { headers: requestHeaders }, // ← önemli
+  });
+
+  // 3) Güvenlik başlıkları (CSP dahil)
   res.headers.set("Content-Security-Policy", csp);
-  res.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
   res.headers.set("X-Content-Type-Options", "nosniff");
-  if (!allowIframe) res.headers.set("X-Frame-Options", "DENY");
-  res.headers.set("Cross-Origin-Opener-Policy", allowIframe ? "same-origin-allow-popups" : "same-origin");
+  res.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.headers.set("X-Frame-Options", "DENY");
+  res.headers.set("Cross-Origin-Opener-Policy", "same-origin");
   res.headers.set("Cross-Origin-Resource-Policy", "same-site");
-  res.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=()");
+  res.headers.set(
+    "Permissions-Policy",
+    "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=()"
+  );
   res.headers.set("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload");
+
+  // (İsteğe bağlı) nonce’ı cevaba da koyuyoruz; debug için faydalı
+  res.headers.set("x-nonce", nonce);
 
   return res;
 }
 
-// Statikleri hariç tut
+// Statik dosyaları/methodları hariç tut
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    // _next/static, _next/image, favicon gibi statik yollar hariç
+    "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml).*)",
+  ],
 };
