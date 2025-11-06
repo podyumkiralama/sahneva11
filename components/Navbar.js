@@ -283,19 +283,23 @@ export default function Navbar() {
                 İletişim
               </Link>
 
-              {/* WhatsApp CTA */}
-              <a
-                href="https://wa.me/905453048671?text=Merhaba%2C+sahne+ve+etkinlik+ekipmanları+için+teklif+almak+istiyorum."
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="WhatsApp Teklif - Sahneva WhatsApp iletişim (yeni sekmede açılır)"
-                className={whatsappBtnClass}
-                onClick={(e) => burst(e, ["#10b981", "#059669"])}
-                title="WhatsApp'tan anında teklif alın - Sahneva"
-              >
-                <span aria-hidden="true" className="text-lg">💬</span>
-                <span>WhatsApp Teklif</span>
-              <span className="sr-only"> — yeni sekmede açılır</span></a>
+             {/* Mobil WhatsApp CTA */}
+<a
+  href="https://wa.me/905453048671?text=Merhaba%2C+sahne+ve+etkinlik+ekipmanları+için+teklif+almak+istiyorum."
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="WhatsApp Teklif — yeni sekmede açılır"
+  className={mobileWhatsappBtnClass}
+  onClick={(e) => {
+    burst(e, ["#10b981", "#059669"]);
+    setMobileOpen(false);
+  }}
+  title="WhatsApp'tan teklif alın"
+>
+  <span aria-hidden="true" className="text-lg">💬</span>
+  <span>WhatsApp Teklif</span>
+  <span className="sr-only"> — yeni sekmede açılır</span>
+</a>
             </nav>
 
             {/* Mobil menü butonu (button içinde yalnızca span kullanıyoruz) */}
@@ -427,22 +431,23 @@ export default function Navbar() {
             İletişim
           </Link>
 
-          {/* Mobil WhatsApp CTA */}
-          <a
-            href="https://wa.me/905453048671?text=Merhaba%2C+sahne+ve+etkinlik+ekipmanları+için+teklif+almak+istiyorum."
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="WhatsApp Teklif - Sahneva WhatsApp iletişim (yeni sekmede açılır)"
-            className={mobileWhatsappBtnClass}
-            onClick={(e) => {
-              burst(e, ["#10b981", "#059669"]);
-              setMobileOpen(false);
-            }}
-            title="WhatsApp'tan teklif alın"
-          >
-            <span aria-hidden="true" className="text-lg">💬</span>
-            <span>WhatsApp Teklif</span>
-          <span className="sr-only"> — yeni sekmede açılır</span></a>
+         {/* Mobil WhatsApp CTA */}
+<a
+  href="https://wa.me/905453048671?text=Merhaba%2C+sahne+ve+etkinlik+ekipmanları+için+teklif+almak+istiyorum."
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="WhatsApp Teklif — yeni sekmede açılır"
+  className={mobileWhatsappBtnClass}
+  onClick={(e) => {
+    burst(e, ["#10b981", "#059669"]);
+    setMobileOpen(false);
+  }}
+  title="WhatsApp'tan teklif alın"
+>
+  <span aria-hidden="true" className="text-lg">💬</span>
+  <span>WhatsApp Teklif</span>
+  <span className="sr-only"> — yeni sekmede açılır</span>
+</a>
         </div>
       </div>
 
