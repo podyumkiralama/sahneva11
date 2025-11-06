@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function MobileMenu({
   isOpen,
@@ -14,43 +14,54 @@ export default function MobileMenu({
 }) {
   const [servicesOpen, setServicesOpen] = useState(false);
 
-  // escape ile kapat
+  // ESC ile kapat
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && onClose?.();
     if (isOpen) window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [isOpen, onClose]);
 
-  // body scroll kilidi
+  // Gövde kaydırmasını kilitle, iOS rubber-banding engelle
   useEffect(() => {
-    const prev = document.body.style.overflow;
-    if (isOpen) document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = prev || ""; };
+    if (!isOpen) return;
+    const prevOverflow = document.body.style.overflow;
+    const prevOB = document.body.style.overscrollBehavior;
+    document.body.style.overflow = "hidden";
+    document.body.style.overscrollBehavior = "contain";
+    return () => {
+      document.body.style.overflow = prevOverflow || "";
+      document.body.style.overscrollBehavior = prevOB || "";
+    };
   }, [isOpen]);
 
-  // backdrop
   if (!isOpen) return null;
 
   return (
     <>
+      {/* Backdrop */}
       <button
         type="button"
         aria-label="Menüyü kapat"
         onClick={onClose}
-        className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
+        className="fixed inset-0 z-40 bg-black/50 lg:hidden"
       />
+
+      {/* Panel (header altından, güvenli alanlarla) */}
       <div
         role="dialog"
         aria-modal="true"
         aria-label="Mobil menü"
-        onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
-        className="lg:hidden fixed z-50 left-0 right-0 top-16 bg-white border-t border-neutral-200/70 rounded-b-2xl shadow-2xl transition-all duration-500 will-change-transform overflow-hidden max-h-[80vh] opacity-100"
+        onClick={(e) => e.target === e.currentTarget && onClose?.()}
+        className="lg:hidden fixed z-50 left-0 right-0 top-16 border-t border-neutral-200/70 rounded-b-2xl shadow-2xl
+                   will-change-transform transition-transform duration-300
+                   bg-white translate-y-0"
+        style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 8px)" }}
       >
         <div className="px-5 py-6 space-y-3 max-h-[80vh] overflow-y-auto">
           <Link
             href="/hakkimizda"
             onClick={onClose}
-            className="flex items-center gap-3 py-3.5 px-4 text-neutral-800 font-bold text-[15px] rounded-xl hover:bg-blue-50 hover:text-blue-700 transition-all duration-300 border border-transparent hover:border-blue-200/60"
+            className="flex items-center gap-3 py-3.5 px-4 text-neutral-800 font-bold text-[15px] rounded-xl hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 border border-transparent hover:border-blue-200/60"
             aria-current={activeFn("/hakkimizda") ? "page" : undefined}
             title="Sahneva Hakkında"
           >
@@ -58,13 +69,14 @@ export default function MobileMenu({
             Hakkımızda
           </Link>
 
+          {/* Hizmetler akordeon */}
           <div className="py-1">
             <button
               type="button"
               onClick={() => setServicesOpen((s) => !s)}
               aria-expanded={servicesOpen}
               aria-controls="mobile-services-list"
-              className="w-full flex items-center justify-between gap-3 py-3.5 px-4 text-[15px] font-bold text-neutral-900 rounded-xl hover:bg-blue-50 hover:text-blue-700 transition-all duration-300 border border-transparent hover:border-blue-200/60 min-h-[44px]"
+              className="w-full flex items-center justify-between gap-3 py-3.5 px-4 text-[15px] font-bold text-neutral-900 rounded-xl hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 border border-transparent hover:border-blue-200/60 min-h-[44px]"
               title="Sahneva Hizmetler Menüsü"
             >
               <span className="flex items-center gap-3">
@@ -73,14 +85,7 @@ export default function MobileMenu({
               </span>
               <svg
                 className={`w-5 h-5 shrink-0 text-neutral-700 transition-transform duration-300 ${servicesOpen ? "rotate-180" : ""}`}
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M6 9l6 6 6-6" />
               </svg>
             </button>
@@ -113,7 +118,7 @@ export default function MobileMenu({
           <Link
             href="/iletisim"
             onClick={onClose}
-            className="flex items-center gap-3 py-3.5 px-4 text-neutral-800 font-bold text-[15px] rounded-xl hover:bg-blue-50 hover:text-blue-700 transition-all duration-300 border border-transparent hover:border-blue-200/60"
+            className="flex items-center gap-3 py-3.5 px-4 text-neutral-800 font-bold text-[15px] rounded-xl hover:bg-blue-50 hover:text-blue-700 transition-all duration-200 border border-transparent hover:border-blue-200/60"
             aria-current={activeFn("/iletisim") ? "page" : undefined}
             title="Sahneva İletişim"
           >
@@ -121,16 +126,14 @@ export default function MobileMenu({
             İletişim
           </Link>
 
+          {/* CTA */}
           <a
             href="https://wa.me/905453048671?text=Merhaba%2C+sahne+ve+etkinlik+ekipmanları+için+teklif+almak+istiyorum."
             target="_blank"
             rel="noopener noreferrer"
             aria-label="WhatsApp Teklif — yeni sekmede açılır"
             className={whatsappBtnClass}
-            onClick={(e) => {
-              burst?.(e, ["#10b981", "#059669"]);
-              onClose?.();
-            }}
+            onClick={(e) => { burst?.(e, ["#10b981", "#059669"]); onClose?.(); }}
             title="WhatsApp'tan teklif alın"
           >
             <span aria-hidden="true" className="text-base">💬</span>
