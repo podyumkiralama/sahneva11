@@ -48,93 +48,11 @@ const nextConfig = {
 
   async redirects() {
     return [
-      // ✅ ÖZEL FONT DOSYASI YÖNLENDİRMESİ - Tam path
+      // ✅ SADECE BU SPESİFİK FONT DOSYASINI YÖNLENDİR
       {
         source: '/_next/static/media/83afe278b6a6bb3c.p.3a6ba036.woff2',
         destination: '/',
         permanent: true,
-      },
-      
-      // ✅ GENEL STATIC MEDIA YÖNLENDİRMELERİ
-      {
-        source: '/_next/static/media/:file*',
-        destination: '/',
-        permanent: false,
-      },
-
-      // 1. BASİT YÖNLENDİRMELER - Önce en spesifik olanlar
-      {
-        source: '/sahne-kurulumu',
-        destination: '/sahne-kiralama',
-        permanent: true,
-      },
-      
-      // 2. SEARCH YÖNLENDİRMELERİ - Basit versiyon
-      {
-        source: '/search',
-        destination: '/',
-        permanent: true,
-      },
-      
-      // 3. ÖZEL KARAKTER YÖNLENDİRMELERİ - Düz regex
-      {
-        source: '/\\$',
-        destination: '/',
-        permanent: true,
-      },
-      {
-        source: '/&',
-        destination: '/',
-        permanent: true,
-      },
-      
-      // 4. URL ENCODED KARAKTERLER
-      {
-        source: '/%24',
-        destination: '/',
-        permanent: true,
-      },
-      {
-        source: '/%26',
-        destination: '/',
-        permanent: true,
-      },
-
-      // 5. PATH SONUNDA ÖZEL KARAKTERLER
-      {
-        source: '/:path*\\$',
-        destination: '/:path*',
-        permanent: true,
-      },
-      {
-        source: '/:path*&',
-        destination: '/:path*',
-        permanent: true,
-      },
-    ];
-  },
-
-  // ✅ REWRITES - Redirects çalışmazsa bu devreye girer
-  async rewrites() {
-    return [
-      // Font dosyaları için rewrite
-      {
-        source: '/_next/static/media/83afe278b6a6bb3c.p.3a6ba036.woff2',
-        destination: '/',
-      },
-      {
-        source: '/_next/static/media/:path*',
-        destination: '/',
-      },
-      
-      // Search query'leri ana sayfaya yönlendir
-      {
-        source: '/search',
-        destination: '/',
-      },
-      {
-        source: '/search/:query*',
-        destination: '/?q=:query*',
       },
     ];
   },
