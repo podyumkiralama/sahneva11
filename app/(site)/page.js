@@ -8,7 +8,7 @@ import heroImg from "@/public/img/hero-bg.webp";
 import CorporateEvents from "@/components/CorporateEvents";
 import Faq from "@/components/Faq";
 import ReviewBanner from "@/components/ReviewBanner";
-import A11yExternalLink from "@/app/../A11yExternalLink.jsx";
+import ExternalLink from "@/components/ExternalLink";
 
 // Dinamik bileşenler (erişilebilir skeleton ile)
 const ServicesTabsLazy = dynamic(() => import("@/components/ServicesTabs"), {
