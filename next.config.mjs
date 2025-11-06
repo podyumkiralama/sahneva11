@@ -5,183 +5,138 @@ const nextConfig = {
   compress: true,
   generateEtags: true,
   productionBrowserSourceMaps: false,
-  trailingSlash: true, // ✅ 404 sorunlarını önlemek için true yapın
-  
-  // ✅ SWC Optimizasyonları
+  trailingSlash: false,
+
   swcMinify: true,
   transpilePackages: [],
-  
-  // ✅ Görsel Optimizasyonu
+
   images: {
-    domains: ['www.sahneva.com'],
     deviceSizes: [320, 420, 640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 30,
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'www.sahneva.com',
-        pathname: '/**',
-      }
-    ],
+    remotePatterns: [],
     dangerouslyAllowSVG: false,
   },
 
-  // ✅ Compiler Ayarları
   compiler: {
-    removeConsole: process.env.NODE_ENV === "production" ? { 
-      exclude: ["error", "warn"] 
-    } : false,
-    reactRemoveProperties: process.env.NODE_ENV === "production" ? { 
-      properties: ["^data-testid$"] 
-    } : false,
+    removeConsole:
+      process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
+    reactRemoveProperties:
+      process.env.NODE_ENV === "production" ? { properties: ["^data-testid$"] } : false,
   },
 
-  // ✅ Deneysel Özellikler
   experimental: {
     scrollRestoration: true,
     optimizePackageImports: ["lucide-react", "@headlessui/react", "framer-motion", "react-icons"],
     esmExternals: true,
   },
 
-  // ✅ Çevre Değişkenleri
   env: {
     SITE_URL: process.env.SITE_URL || "https://www.sahneva.com",
     NEXT_PUBLIC_APP_ENV: process.env.NODE_ENV || "development",
   },
 
-  // ✅ Output Ayarları
   output: process.env.NODE_ENV === "production" ? "standalone" : undefined,
   staticPageGenerationTimeout: 300,
 
-  // ✅ YÖNLENDİRMELER - Middleware olmadan
   async redirects() {
     return [
-      // Geçersiz $ route'larını ana sayfaya yönlendir
+      // /search?q=...  → /?q=...
       {
-        source: '/\\$',
-        destination: '/',
+        source: "/search",
+        has: [{ type: "query", key: "q", value: "(?<term>.*)" }],
+        destination: "/?q=:term",
         permanent: true,
       },
-      // Search sayfası için güvenli yönlendirme
-      {
-        source: '/search',
-        destination: '/',
-        permanent: false,
-      },
-      // Çift slash ve hatalı URL'leri düzelt
-      {
-        source: '//:path*',
-        destination: '/:path*',
-        permanent: true,
-      },
+      // /search (q yoksa) → /
+      { source: "/search", destination: "/", permanent: true },
+
+      // Eski slug → yeni slug
+      { source: "/sahne-kurulumu", destination: "/sahne-kiralama", permanent: true },
+
+      // Next static font kalıntıları → fallback
+      { source: "/_next/static/media/:file*\\.woff2", destination: "/fonts/fallback.woff2", permanent: true },
+
+      // KÖTÜ URL sonu işaretleri (tek başına kök)
+      { source: "/%24", destination: "/", permanent: true }, // /
+      { source: "/%26", destination: "/", permanent: true }, // /
+
+      // Herhangi bir patika sonu %24 / %26 (url-encoded $ / & ) → temizle
+      { source: "/:path*%24", destination: "/:path*", permanent: true },
+      { source: "/:path*%26", destination: "/:path*", permanent: true },
+
+      // (Bazı tarayıcılar encode etmeyebilir; açık hâllerini de dene)
+      { source: "/$", destination: "/", permanent: true },
+      { source: "/&", destination: "/", permanent: true },
+      { source: "/:path*$", destination: "/:path*", permanent: true }, // bazı ortamlarda çalışır
+      { source: "/:path*&", destination: "/:path*", permanent: true }, // bazı ortamlarda çalışır
     ];
   },
 
-  // ✅ REWRITES - Dinamik URL'leri düzeltmek için
-  async rewrites() {
-    return [
-      // Search terimleri için güvenli rewrite
-      {
-        source: '/search/:query*',
-        destination: '/?q=:query*',
-      },
-      // Statik asset yollarını düzelt
-      {
-        source: '/_next/static/media/:file*',
-        destination: '/_next/static/media/:file*',
-      },
-    ];
-  },
-
-  // ✅ Başlık Ayarları
   async headers() {
-    const frameSrc = [
+    const frameSrc = ["'self'", "https://www.google.com", "https://vercel.live", "https://*.vercel.live"].join(" ");
+    const connectSrc = [
       "'self'",
-      "https://www.google.com",
-      "https://vercel.live",
-      "https://*.vercel.live",
+      "https://vitals.vercel-insights.com",
+      "https://www.google-analytics.com",
+      "https://region1.google-analytics.com",
+      "https://stats.g.doubleclick.net",
+      "https://www.sahneva.com",
     ].join(" ");
-
-    const connectSrc = [  
-      "'self'",  
-      "https://vitals.vercel-insights.com",  
-      "https://www.google-analytics.com",  
-      "https://region1.google-analytics.com",  
-      "https://stats.g.doubleclick.net",  
-      "https://www.sahneva.com",  
-      "ws://localhost:3000",
-    ].join(" ");  
-
-    const scriptSrcCommon = [  
-      "'self'",  
+    const scriptSrcCommon = [
+      "'self'",
       "'unsafe-inline'",
-      "https://www.googletagmanager.com",  
-      "https://www.google-analytics.com",  
-      "https://va.vercel-scripts.com",  
-      "https://vercel.live",  
-    ].join(" ");  
+      "https://www.googletagmanager.com",
+      "https://www.google-analytics.com",
+      "https://va.vercel-scripts.com",
+      "https://vercel.live",
+    ].join(" ");
+    const csp = `
+      default-src 'self';
+      base-uri 'self';
+      object-src 'none';
+      frame-ancestors 'none';
+      upgrade-insecure-requests;
+      img-src 'self' data: blob: https:;
+      font-src 'self' data: https://fonts.gstatic.com;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      script-src ${scriptSrcCommon};
+      script-src-elem ${scriptSrcCommon};
+      script-src-attr 'none';
+      connect-src ${connectSrc};
+      worker-src 'self' blob:;
+      frame-src ${frameSrc};
+      form-action 'self' https://formspree.io https://wa.me;
+    `.replace(/\s{2,}/g, " ").trim();
 
-    const csp = `  
-      default-src 'self';  
-      base-uri 'self';  
-      object-src 'none';  
-      frame-ancestors 'none';  
-      upgrade-insecure-requests;  
-
-      img-src 'self' data: blob: https:;  
-      font-src 'self' data: https://fonts.gstatic.com https://www.sahneva.com;  
-      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;  
-
-      script-src ${scriptSrcCommon};  
-      script-src-elem ${scriptSrcCommon};  
-      script-src-attr 'none';  
-
-      connect-src ${connectSrc};  
-      worker-src 'self' blob:;  
-      frame-src ${frameSrc};  
-      form-action 'self' https://formspree.io https://wa.me;  
-    `.replace(/\s{2,}/g, " ").trim();  
-
-    const securityHeaders = [  
-      { key: "Content-Security-Policy", value: csp },  
-      { key: "X-Content-Type-Options", value: "nosniff" },  
-      { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },  
+    const securityHeaders = [
+      { key: "Content-Security-Policy", value: csp },
+      { key: "X-Content-Type-Options", value: "nosniff" },
+      { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
       { key: "X-Frame-Options", value: "DENY" },
-      { key: "Cross-Origin-Opener-Policy", value: "same-origin" },  
-      { key: "Cross-Origin-Resource-Policy", value: "same-site" },  
-      { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=()" },  
-      { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },  
-    ];  
+      { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+      { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+      { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=()" },
+      { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
+    ];
 
-    return [  
-      { source: "/(.*)", headers: securityHeaders },  
-      {  
-        source: "/_next/static/(.*)",  
-        headers: [  
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },  
-        ],  
-      },  
-      {  
-        source: "/(.*)\\.(ico|png|jpg|jpeg|webp|avif|svg|gif|woff2|woff|ttf|eot)",
-        headers: [  
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },  
-        ],  
-      },  
-      // ✅ Hata sayfaları için özel header'lar
-      {  
-        source: "/404",
-        headers: [  
-          { key: "Cache-Control", value: "public, max-age=300" },  
-        ],  
-      },  
-      {  
-        source: "/500",
-        headers: [  
-          { key: "Cache-Control", value: "public, max-age=300" },  
-        ],  
-      },  
+    return [
+      { source: "/(.*)", headers: securityHeaders },
+      {
+        source: "/_next/static/(.*)",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+          { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
+        ],
+      },
+      {
+        source: "/(.*)\\.(ico|png|jpg|jpeg|webp|avif|svg|gif|woff2)",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+          { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
+        ],
+      },
     ];
   },
 };
