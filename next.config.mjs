@@ -7,9 +7,8 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
   trailingSlash: false,
 
-  // swcMinify: true, // ❌ Next 16'da artık yok
-
-  transpilePackages: [],
+  // Next 16'da swcMinify zaten default; anahtar uyarı veriyor, kaldır.
+  // swcMinify: true,
 
   images: {
     deviceSizes: [320, 420, 640, 750, 828, 1080, 1200, 1920],
@@ -21,10 +20,8 @@ const nextConfig = {
   },
 
   compiler: {
-    removeConsole:
-      process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
-    reactRemoveProperties:
-      process.env.NODE_ENV === "production" ? { properties: ["^data-testid$"] } : false,
+    removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
+    reactRemoveProperties: process.env.NODE_ENV === "production" ? { properties: ["^data-testid$"] } : false,
   },
 
   experimental: {
@@ -43,33 +40,24 @@ const nextConfig = {
 
   async redirects() {
     return [
-      // /search?q=...  → /?q=...  (sorguyu korur)
+      // /search?q=... → /?q=...
       {
         source: "/search",
         has: [{ type: "query", key: "q", value: "(?<term>.*)" }],
         destination: "/?q=:term",
         permanent: true,
       },
-      // q yoksa ana sayfaya
+      // /search (q yoksa) → /
       { source: "/search", destination: "/", permanent: true },
 
       // Eski slug → yeni slug
       { source: "/sahne-kurulumu", destination: "/sahne-kiralama", permanent: true },
 
-      // Tüm .woff2 static media → tek bir fallback font
-      { source: "/_next/static/media/:file*\\.woff2", destination: "/fonts/fallback.woff2", permanent: true },
-
-      // Kötü encode edilmiş kök URL'ler
+      // Kötü URL’ler → / (yalnızca açıkça yazılmış varyantlar)
+      { source: "/$", destination: "/", permanent: true },
+      { source: "/&", destination: "/", permanent: true },
       { source: "/%24", destination: "/", permanent: true },
       { source: "/%26", destination: "/", permanent: true },
-
-      // Herhangi bir patika sonu %24 / %26 ise → temizle
-      { source: "/:path*%24", destination: "/:path*", permanent: true },
-      { source: "/:path*%26", destination: "/:path*", permanent: true },
-
-      // (NOT) Aşağıdaki gibi "açık" $ / & kurallarını eklemiyoruz; Next bunları sağlıklı parse etmeyebilir
-      // { source: "/$", ... }  { source: "/&", ... }
-      // Ayrıca sabit kaynağı "/:path*" hedefine yönlendiren kuralı da KALDIRDIK (build hatasına sebep oluyordu).
     ];
   },
 
@@ -85,7 +73,7 @@ const nextConfig = {
     ].join(" ");
     const scriptSrcCommon = [
       "'self'",
-      "'unsafe-inline'", // middleware/nonce yokken bazı inline'lar için gerekli
+      "'unsafe-inline'", // nonce/middleware yokken gerekli
       "https://www.googletagmanager.com",
       "https://www.google-analytics.com",
       "https://va.vercel-scripts.com",
@@ -109,7 +97,7 @@ const nextConfig = {
       form-action 'self' https://formspree.io https://wa.me;
     `.replace(/\s{2,}/g, " ").trim();
 
-    const securityHeaders = [
+    const security = [
       { key: "Content-Security-Policy", value: csp },
       { key: "X-Content-Type-Options", value: "nosniff" },
       { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
@@ -121,12 +109,17 @@ const nextConfig = {
     ];
 
     return [
-      { source: "/(.*)", headers: securityHeaders },
+      // Genel güvenlik
+      { source: "/(.*)", headers: security },
+
+      // Uzun cache
       {
         source: "/_next/static/(.*)",
         headers: [
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
           { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
+          // Arama motoruna indexletme
+          { key: "X-Robots-Tag", value: "noindex, nofollow" },
         ],
       },
       {
@@ -135,6 +128,11 @@ const nextConfig = {
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
           { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
         ],
+      },
+      // Tüm _next altını noindex yap (önlem amaçlı)
+      {
+        source: "/_next/(.*)",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
       },
     ];
   },
