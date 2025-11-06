@@ -4,13 +4,52 @@ import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import heroImg from "@/public/img/hero-bg.webp";
 
-// Statik server bileşenleri (server-safe)
-import CorporateEvents from "@/components/CorporateEvents";
+// Statik bileşenler
+import CorporateEvents from "../../components/CorporateEvents";
+import Faq from "../../components/Faq";
+import ReviewBanner from "../../components/ReviewBanner";
 
-// ⛑️ Erişilebilir skeleton
+// Dinamik bileşenler (erişilebilir skeleton ile)
+const ServicesTabsLazy = dynamic(
+  () => import("../../components/ServicesTabs"),
+  { loading: () => <SectionSkeleton label="Hizmetler yükleniyor" /> }
+);
+
+const ProjectsGalleryLazy = dynamic(
+  () => import("../../components/ProjectsGallery"),
+  {
+    loading: () => (
+      <div
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        role="status"
+        aria-live="polite"
+        aria-label="Projeler yükleniyor"
+      >
+        {[1, 2, 3].map((i) => (
+          <div
+            key={i}
+            className="bg-neutral-200 rounded-2xl h-80 animate-pulse motion-reduce:animate-none"
+            aria-hidden="true"
+          />
+        ))}
+        <span className="sr-only">Projeler yükleniyor</span>
+      </div>
+    ),
+  }
+);
+
+// ISR
+export const revalidate = 3600;
+
+// Erişilebilir skeleton
 function SectionSkeleton({ label = "İçerik yükleniyor" }) {
   return (
-    <div className="container py-10" role="status" aria-live="polite" aria-label={label}>
+    <div
+      className="container py-10"
+      role="status"
+      aria-live="polite"
+      aria-label={label}
+    >
       <div className="flex flex-col items-center space-y-4">
         <div className="h-10 w-40 rounded bg-gradient-to-r from-neutral-100 to-neutral-200 animate-pulse motion-reduce:animate-none" />
         <div className="h-40 w-full rounded-2xl bg-gradient-to-r from-neutral-100 to-neutral-200 animate-pulse motion-reduce:animate-none" />
@@ -20,44 +59,7 @@ function SectionSkeleton({ label = "İçerik yükleniyor" }) {
   );
 }
 
-// ❗ RSC içinde dynamic kullanılır; fakat ssr:false YASAK.
-// Bu yüzden yalnızca loading veriyoruz; ssr:false kaldırıldı.
-const ReviewBannerLazy = dynamic(() => import("@/components/ReviewBanner"), {
-  loading: () => <SectionSkeleton label="Bildirim yükleniyor" />,
-});
-
-const FaqLazy = dynamic(() => import("@/components/Faq"), {
-  loading: () => <SectionSkeleton label="SSS yükleniyor" />,
-});
-
-const ServicesTabsLazy = dynamic(() => import("@/components/ServicesTabs"), {
-  loading: () => <SectionSkeleton label="Hizmetler yükleniyor" />,
-});
-
-const ProjectsGalleryLazy = dynamic(() => import("@/components/ProjectsGallery"), {
-  loading: () => (
-    <div
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-      role="status"
-      aria-live="polite"
-      aria-label="Projeler yükleniyor"
-    >
-      {[1, 2, 3].map((i) => (
-        <div
-          key={i}
-          className="bg-neutral-200 rounded-2xl h-80 animate-pulse motion-reduce:animate-none"
-          aria-hidden="true"
-        />
-      ))}
-      <span className="sr-only">Projeler yükleniyor</span>
-    </div>
-  ),
-});
-
-// ISR
-export const revalidate = 3600;
-
-// JSON-LD (server-safe)
+// JSON-LD
 function StructuredData() {
   const service = {
     "@context": "https://schema.org",
@@ -100,12 +102,12 @@ export default function HomePage() {
         Ana içeriğe atla
       </a>
 
-      {/* HERO */}
+      {/* HERO SECTION */}
       <section
         className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 pt-16 lg:pt-20"
         aria-labelledby="hero-title"
       >
-        {/* BG */}
+        {/* Arka plan görseli */}
         <div className="absolute inset-0" aria-hidden="true">
           <Image
             src={heroImg}
@@ -122,7 +124,7 @@ export default function HomePage() {
           />
         </div>
 
-        {/* Overlays */}
+        {/* Overlay katmanları */}
         <div
           className="absolute inset-0 bg-gradient-to-br from-slate-900/85 via-blue-900/70 to-purple-900/75"
           aria-hidden="true"
@@ -146,6 +148,7 @@ export default function HomePage() {
               </span>
             </div>
 
+            {/* h1 – gradient metin görsel, erişilebilir ad düz metin */}
             <h1
               id="hero-title"
               className="text-white text-3xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight tracking-tight"
@@ -160,7 +163,10 @@ export default function HomePage() {
               </span>
             </h1>
 
-            <p className="text-white/90 text-lg md:text-xl lg:text-2xl mb-6 leading-relaxed font-medium max-w-4xl mx-auto">
+            {/* Paragraf – gradient kelimeler aria-hidden; SR için tek parça düz metin */}
+            <p
+              className="text-white/90 text-lg md:text-xl lg:text-2xl mb-6 leading-relaxed font-medium max-w-4xl mx-auto"
+            >
               <span
                 className="bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text font-bold"
                 aria-hidden="true"
@@ -191,7 +197,7 @@ export default function HomePage() {
               kurulum ile yanınızdayız
             </p>
 
-            {/* CTA’lar */}
+            {/* Birincil CTA'lar */}
             <div className="flex flex-col sm:flex-row justify-center items-center gap-3 md:gap-4 mb-12">
               <a
                 href="tel:+905453048671"
@@ -219,7 +225,7 @@ export default function HomePage() {
               </a>
             </div>
 
-            {/* Feature kutuları */}
+            {/* Üst bilgi kutuları */}
             <ul
               className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-12 list-none p-0 m-0"
               aria-label="Öne çıkan özellikler"
@@ -240,6 +246,27 @@ export default function HomePage() {
                 </li>
               ))}
             </ul>
+
+            {/* Danışmanlık kutusu */}
+            <div className="bg-gradient-to-r from-blue-600/90 to-purple-600/90 backdrop-blur-md rounded-2xl p-6 md:p-8 border border-white/20 shadow-xl max-w-4xl mx-auto">
+              <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
+                <div className="flex-shrink-0">
+                  <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-xl" aria-hidden="true">🎯</div>
+                </div>
+                <div className="flex-1 text-center md:text-left">
+                  <h2 className="text-white text-xl md:text-2xl font-bold mb-2">Ücretsiz Profesyonel Danışmanlık</h2>
+                  <p className="text-white/90 text-base leading-relaxed">
+                    Etkinliğiniz için <strong>en uygun sahne çözümleri</strong>, LED ekran seçenekleri ve ses-ışık sistemlerini ücretsiz teknik danışmanlık ile planlayalım.{" "}
+                    <strong className="text-yellow-300">2 saat içinde detaylı teklif</strong> sunuyoruz.
+                  </p>
+                </div>
+                <div className="flex-shrink-0">
+                  <a href="#teklif-al" className="bg-white text-blue-600 hover:bg-gray-100 font-bold px-5 py-2 rounded-lg transition-all duration-300 hover:scale-105 shadow-lg text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/60">
+                    Hemen Teklif Al
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -259,9 +286,7 @@ export default function HomePage() {
 
         {/* ReviewBanner */}
         <div className="sticky top-0 z-40">
-          <Suspense fallback={<SectionSkeleton label="Bildirim yükleniyor" />}>
-            <ReviewBannerLazy />
-          </Suspense>
+          <ReviewBanner />
         </div>
 
         {/* Hizmetler */}
@@ -401,7 +426,7 @@ export default function HomePage() {
                   <div className="mt-4 p-4 bg-white rounded-lg border border-purple-200 shadow-md">
                     <p className="font-bold text-purple-900 text-base mb-2">Hızlı Teklif İsteği:</p>
                     <a
-                      href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ula%C5%9F%C4%B1yorum.+Sahne+kiralama+ve+LED+ekran+fiyatlar%C4%B1+hakk%C4%81nda+detayl%C4%B1+teklif+almak+istiyorum.&utm_source=homepage&utm_medium=seo_section&utm_campaign=whatsapp"
+                      href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ula%C5%9F%C4%B1yorum.+Sahne+kiralama+ve+LED+ekran+fiyatlar%C4%B1+hakk%C4%B1nda+detayl%C4%B1+teklif+almak+istiyorum.&utm_source=homepage&utm_medium=seo_section&utm_campaign=whatsapp"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center gap-3 bg-green-700 hover:bg-green-800 text-white font-bold px-5 py-4 rounded-xl shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl min-h-[60px] focus:outline-none focus-visible:ring-2 focus-visible:ring-green-200"
@@ -508,9 +533,7 @@ export default function HomePage() {
                 Sahne, podyum, LED ekran kiralama ve kurulum hizmetlerimiz hakkında en çok merak edilen sorular ve cevapları
               </p>
             </div>
-            <Suspense fallback={<SectionSkeleton label="SSS yükleniyor" />}>
-              <FaqLazy />
-            </Suspense>
+            <Faq />
           </div>
         </section>
       </main>
