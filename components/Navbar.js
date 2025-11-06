@@ -295,7 +295,7 @@ export default function Navbar() {
               >
                 <span aria-hidden="true" className="text-lg">💬</span>
                 <span>WhatsApp Teklif</span>
-              </a>
+              <span className="sr-only"> — yeni sekmede açılır</span></a>
             </nav>
 
             {/* Mobil menü butonu (button içinde yalnızca span kullanıyoruz) */}
@@ -442,7 +442,7 @@ export default function Navbar() {
           >
             <span aria-hidden="true" className="text-lg">💬</span>
             <span>WhatsApp Teklif</span>
-          </a>
+          <span className="sr-only"> — yeni sekmede açılır</span></a>
         </div>
       </div>
 
