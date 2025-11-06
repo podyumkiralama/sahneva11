@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+/* === Lokal font fallback (404 fontları tolere eder) ======================= */
+/* /public/fonts/fallback.woff2 dosyasını ekleyin (Inter/Noto benzeri bir woff2) */
+@font-face{
+  font-family:"SahnevaFallback";
+  src:url("/fonts/fallback.woff2") format("woff2");
+  font-weight:100 900;
+  font-style:normal;
+  font-display:swap;
+  unicode-range:
+    U+0000-00FF, /* Latin */
+    U+0100-024F, /* Latin Extended */
+    U+1E00-1EFF, /* Latin Extended Additional */
+    U+2010-205E, U+20A0-20CF, U+2100-214F; /* punctuation, currency, letterlike */
+}
+
 :root{
   --brand:#6d28d9;
   --brand-700:#5b21b6;
@@ -12,7 +27,12 @@
 
 html{ scroll-behavior:smooth; font-size:var(--fs); }
 html,body{ height:100%; }
-body{ @apply bg-white text-slate-800 antialiased; }
+
+/* Sistem font + lokal fallback en başa; hashed Next font 404 olsa bile problem çıkmaz */
+body{
+  @apply bg-white text-slate-800 antialiased;
+  font-family: "SahnevaFallback", system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+}
 
 img, video, canvas, svg { max-width:100%; height:auto; }
 .container{ max-width:1280px; margin-inline:auto; padding-inline:1rem; }
