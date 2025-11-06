@@ -1,5 +1,6 @@
 // app/sss/page.js
 import Script from "next/script";
+import { getCspNonce } from "@/lib/csp";
 
 /* ——— META ——— */
 export const metadata = {
@@ -204,6 +205,7 @@ function FaqSection({ id, icon, title, items }) {
 
 /* ——— SAYFA ——— */
 export default function FaqPage() {
+  const nonce = getCspNonce();
   // Tekil ve stabil JSON-LD (id ile)
   const mainEntity = [];
   for (const category of FAQ_CATEGORIES) {
@@ -227,12 +229,15 @@ export default function FaqPage() {
   return (
     <>
       {/* JSON-LD sadece bir kez enjekte edilir */}
-      <Script
-        id="ld-faq"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      {nonce && (
+        <Script
+          id="ld-faq"
+          type="application/ld+json"
+          nonce={nonce}
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      )}
 
       <div className="container py-10 md:py-14">
         <h1 className="text-3xl md:text-[34px] font-extrabold tracking-tight text-center mb-6">

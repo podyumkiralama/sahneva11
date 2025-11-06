@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
+import { getCspNonce } from "@/lib/csp";
 
 /** ───── META & ISR ───── */
 export const metadata = {
@@ -64,6 +65,7 @@ function FocusableCard({ children, className = "", ...props }) {
 
 /** ───── STRUCTURED DATA ───── */
 function CadirStructuredData() {
+  const nonce = getCspNonce();
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Service',
@@ -103,8 +105,11 @@ function CadirStructuredData() {
     }
   };
 
+  if (!nonce) return null;
+
   return (
     <script
+      nonce={nonce}
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />

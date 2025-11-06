@@ -4,6 +4,7 @@ import Link from "next/link";
 import Script from "next/script";
 import { getService } from "@/lib/data";
 import PriceEstimator from "@/components/PriceEstimatorPodyum";
+import { getCspNonce } from "@/lib/csp";
 
 // ⏱️ Saatlik yeniden üretim (statik + ISR)
 export const revalidate = 3600;
@@ -973,6 +974,7 @@ function PriceMatrix({ unitPrices }) {
 
 /* ---------- SchemaBlocks ---------- */
 function SchemaBlocks({ packages: pkgs, unitPrices }) {
+  const nonce = getCspNonce();
   const SITE = "https://www.sahneva.com";
   const PAGE = `${SITE}/podyum-kiralama`;
   const LB_ID = `${SITE}/#localbusiness`;
@@ -1058,23 +1060,28 @@ function SchemaBlocks({ packages: pkgs, unitPrices }) {
     ],
   };
 
+  if (!nonce) return null;
+
   return (
     <>
       <Script
         id="ld-service"
         type="application/ld+json"
+        nonce={nonce}
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(ldService) }}
       />
       <Script
         id="ld-faq"
         type="application/ld+json"
+        nonce={nonce}
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(ldFAQ) }}
       />
       <Script
         id="ld-breadcrumb"
         type="application/ld+json"
+        nonce={nonce}
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(ldBreadcrumb) }}
       />

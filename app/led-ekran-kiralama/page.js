@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
 import dynamic from "next/dynamic";
+import { getCspNonce } from "@/lib/csp";
 
 // ⚡ Lazy loading components
 const CaseGallery = dynamic(() => import("@/components/CaseGallery"), {
@@ -592,6 +593,7 @@ function EnhancedLedSeoArticle() {
 
 // 🏷️ Structured Data Bileşeni
 function StructuredData({ packages }) {
+  const nonce = getCspNonce();
   const siteUrl = "https://www.sahneva.com";
   const pageUrl = `${siteUrl}/led-ekran-kiralama`;
 
@@ -645,11 +647,31 @@ function StructuredData({ packages }) {
     ],
   };
 
+  if (!nonce) return null;
+
   return (
     <>
-      <Script id="service-schema" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
-      <Script id="faq-schema" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <Script id="breadcrumb-schema" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <Script
+        id="service-schema"
+        type="application/ld+json"
+        nonce={nonce}
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <Script
+        id="faq-schema"
+        type="application/ld+json"
+        nonce={nonce}
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <Script
+        id="breadcrumb-schema"
+        type="application/ld+json"
+        nonce={nonce}
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
     </>
   );
 }

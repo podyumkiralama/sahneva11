@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import CaseGallery from "../../../components/CaseGallery";
+import { getCspNonce } from "@/lib/csp";
 
 export const metadata = {
   title:
@@ -43,6 +44,7 @@ const IMAGES = [
 
 
 export default function CasePage() {
+  const nonce = getCspNonce();
   return (
     <div className="overflow-x-hidden">
       {/* HERO */}
@@ -194,13 +196,15 @@ export default function CasePage() {
       </section>
 
       {/* JSON-LD: Project */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Project",
-            name: "Kapalı Alan LED ve Sahne Kurulumu (Protokol Seviyesi)",
+      {nonce && (
+        <script
+          nonce={nonce}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Project",
+              name: "Kapalı Alan LED ve Sahne Kurulumu (Protokol Seviyesi)",
             description:
               "40’lık çadır içinde 24×8 m sahne/podyum ve 24×6 m P2 LED ekranla scaff ve truss altyapısı kullanılan, 2 günde 60 kişilik ekiple tamamlanan büyük ölçekli kurulum.",
             image: IMAGES.map((i) => `https://www.sahneva.com${i.src}`),
@@ -214,9 +218,10 @@ export default function CasePage() {
               { "@type": "PropertyValue", name: "Ekip", value: "60 kişi" },
               { "@type": "PropertyValue", name: "Ses & Işık", value: "Line-array, robot ışık, sahne ışıkları" },
             ],
-          }),
-        }}
-      />
+            }),
+          }}
+        />
+      )}
     </div>
   );
 }

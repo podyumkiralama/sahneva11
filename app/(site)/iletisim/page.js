@@ -1,6 +1,7 @@
 // app/(site)/iletisim/page.jsx
 import React from "react";
 import Link from "next/link";
+import { getCspNonce } from "@/lib/csp";
 
 export const metadata = {
   title: "İletişim | Sahneva - Profesyonel Etkinlik Çözümleri",
@@ -35,6 +36,7 @@ const GMB_REVIEW_URL  = "https://g.page/r/CZhkMzkNOdgnEBI/review";
 
 /* ───── STRUCTURED DATA ───── */
 function ContactStructuredData() {
+  const nonce = getCspNonce();
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'ContactPage',
@@ -57,8 +59,11 @@ function ContactStructuredData() {
     }
   };
 
+  if (!nonce) return null;
+
   return (
     <script
+      nonce={nonce}
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />

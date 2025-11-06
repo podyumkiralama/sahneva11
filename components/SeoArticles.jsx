@@ -4,6 +4,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
+import { useEffect, useState } from "react";
 import { SEO_ARTICLES } from "@/lib/articlesData";
 
 const SITE = "https://www.sahneva.com";
@@ -20,6 +21,16 @@ const BLUR =
 
 /* JSON-LD (ilk 6 madde, absolute URL ve image’lar normalleştirilmiş) */
 function ArticlesJsonLd({ items = [] }) {
+  const [nonce, setNonce] = useState();
+
+  useEffect(() => {
+    setNonce(
+      document.querySelector('meta[name="csp-nonce"]')?.getAttribute("content") || undefined
+    );
+  }, []);
+
+  if (!nonce) return null;
+
   const list = items.slice(0, 6).map((a, i) => {
     const url = abs(a.href || a.slug || "");
     const image = a.image ? [abs(a.image)] : undefined;
@@ -51,6 +62,7 @@ function ArticlesJsonLd({ items = [] }) {
     <Script
       id="home-articles-jsonld"
       type="application/ld+json"
+      nonce={nonce}
       strategy="afterInteractive"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />

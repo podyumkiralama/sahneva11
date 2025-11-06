@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
+import { getCspNonce } from "@/lib/csp";
 
 // ---------- META ----------
 export const metadata = {
@@ -214,6 +215,7 @@ function LongArticleAudioLight() {
 
 // ---------- SAYFA ----------
 export default function Page() {
+  const nonce = getCspNonce();
   const title = "Ses ve Işık Sistemleri Kiralama";
   const desc =
     "Line array, dijital mikser ve robot ışıklarla profesyonel ses & ışık çözümleri. Keşif, kurulum, canlı operasyon ve söküm dahil.";
@@ -328,14 +330,16 @@ export default function Page() {
       </section>
 
       {/* JSON-LD: Service + Breadcrumb */}
-      <Script
-        id="ld-service-audio-light"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Service",
+      {nonce && (
+        <Script
+          id="ld-service-audio-light"
+          type="application/ld+json"
+          nonce={nonce}
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Service",
             serviceType: "Ses ve Işık Sistemleri Kiralama",
             name: "Ses ve Işık Sistemleri Kiralama",
             description:
@@ -352,24 +356,28 @@ export default function Page() {
                 addressCountry: "TR",
               },
             },
-          }),
-        }}
-      />
-      <Script
-        id="ld-breadcrumb-audio-light"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
+            }),
+          }}
+        />
+      )}
+      {nonce && (
+        <Script
+          id="ld-breadcrumb-audio-light"
+          type="application/ld+json"
+          nonce={nonce}
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
             itemListElement: [
               { "@type": "ListItem", position: 1, name: "Anasayfa", item: "https://www.sahneva.com" },
               { "@type": "ListItem", position: 2, name: "Ses ve Işık Sistemleri", item: "https://www.sahneva.com/ses-isik-sistemleri" },
             ],
-          }),
-        }}
-      />
+            }),
+          }}
+        />
+      )}
     </>
   );
 }
