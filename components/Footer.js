@@ -83,7 +83,7 @@ export default function Footer() {
             >
               <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
               <span aria-hidden="true" className="text-lg relative z-10">📷</span>
-            </a>
+            <span className="sr-only"> — yeni sekmede açılır</span></a>
 
             <a
               href="https://www.youtube.com/@sahneva"
@@ -96,7 +96,7 @@ export default function Footer() {
             >
               <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
               <span aria-hidden="true" className="text-lg relative z-10">▶</span>
-            </a>
+            <span className="sr-only"> — yeni sekmede açılır</span></a>
           </div>
         </section>
 
@@ -203,7 +203,7 @@ export default function Footer() {
               >
                 <span className="group-hover:scale-110 transition-transform duration-300" aria-hidden="true">📍</span>
                 Google Haritalar'da bizi bulun
-              </a>
+              <span className="sr-only"> — yeni sekmede açılır</span></a>
             </div>
 
             <div className="flex items-center gap-3">
@@ -216,7 +216,7 @@ export default function Footer() {
               >
                 <span className="group-hover:scale-110 transition-transform duration-300" aria-hidden="true">⭐</span>
                 Google'da yorum yazın
-              </a>
+              <span className="sr-only"> — yeni sekmede açılır</span></a>
             </div>
           </address>
         </section>
