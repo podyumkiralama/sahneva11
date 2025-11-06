@@ -1,61 +1,4 @@
-// components/Navbar.js (sadece değişen kısımlar)
-
-// Hizmetler dropdown menüsü - ESKİ HALİNE GETİRİLDİ
-<div
-  id={servicesMenuId}
-  role="menu"
-  aria-labelledby={servicesBtnId}
-  hidden={!servicesOpen}
-  className={`absolute left-0 top-full mt-1 w-64 bg-white/95 backdrop-blur-xl border border-neutral-200/60 rounded-xl shadow-lg z-[60] overflow-hidden ${
-    servicesOpen ? "animate-fadeIn" : "pointer-events-none"
-  }`}
-  onMouseEnter={openNow}
-  onMouseLeave={closeWithDelay}
->
-  <div className="p-2">
-    {serviceLinks.map(({ href, label, title, icon }) => (
-      <Link
-        key={href}
-        role="menuitem"
-        href={href}
-        className="group flex items-center gap-3 px-3 py-3 text-sm text-neutral-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200"
-        onClick={() => setServicesOpen(false)}
-        aria-current={active(href) ? "page" : undefined}
-        title={title}
-      >
-        <span className="text-lg opacity-70 group-hover:opacity-100 transition-opacity" aria-hidden="true">
-          {icon}
-        </span>
-        <span className="flex-1 font-medium">{label}</span>
-        <svg className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
-      </Link>
-    ))}
-  </div>
-</div>
-
-// Mobil hizmetler menüsü - ESKİ HALİNE GETİRİLDİ
-<div
-  id="mobile-services-list"
-  className={`overflow-hidden transition-all duration-300 ${mobileServicesOpen ? "max-h-96 opacity-100 mt-2" : "max-h-0 opacity-0"}`}
->
-  <div className="ml-4 space-y-1 rounded-lg border border-neutral-200/60 bg-white/80 p-2">
-    {serviceLinks.map(({ href, label, title, icon }) => (
-      <Link
-        key={href}
-        href={href}
-        onClick={() => setMobileOpen(false)}
-        className="flex items-center gap-3 px-3 py-2 text-sm text-neutral-700 hover:bg-blue-50 hover:text-blue-600 rounded-md transition-all duration-200"
-        aria-current={active(href) ? "page" : undefined}
-        title={title}
-      >
-        <span className="text-base opacity-70" aria-hidden="true">{icon}</span>
-        <span className="flex-1 font-medium">{label}</span>
-      </Link>
-    ))}
-  </div>
-</div>// components/Navbar.js
+// components/Navbar.js
 "use client";
 
 import Link from "next/link";
@@ -105,34 +48,6 @@ const serviceLinks = [
     title: "Profesyonel sahne kiralama ve kurulum - Sahneva", 
     icon: "🎪",
     description: "Portatif ve modüler sahne sistemleri"
-  },
-  { 
-    href: "/projeksiyon-kiralama", 
-    label: "Projeksiyon Kiralama", 
-    title: "Projeksiyon cihazı ve perde kiralama - Sahneva", 
-    icon: "📽️",
-    description: "Yüksek lümen projeksiyon sistemleri"
-  },
-  { 
-    href: "/seslendirme-sistemleri", 
-    label: "Seslendirme Sistemleri", 
-    title: "Toplantı ve konferans ses sistemleri - Sahneva", 
-    icon: "🎤",
-    description: "Mikrofon ve seslendirme ekipmanları"
-  },
-  { 
-    href: "/jeneratör-kiralama", 
-    label: "Jeneratör Kiralama", 
-    title: "Dış mekan etkinlikleri için jeneratör - Sahneva", 
-    icon: "⚡",
-    description: "Taşınabilir jeneratör kiralama"
-  },
-  { 
-    href: "/ısıtma-soğutma", 
-    label: "Isıtma & Soğutma", 
-    title: "Mekan ısıtma ve soğutma sistemleri - Sahneva", 
-    icon: "❄️",
-    description: "İklimlendirme ekipmanları kiralama"
   }
 ];
 
@@ -260,6 +175,11 @@ export default function Navbar() {
   const mobileWhatsappBtnClass =
     "block text-center mt-4 rounded-xl px-5 py-3 text-white text-sm font-bold bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white min-h-[44px] flex items-center justify-center gap-2 border border-green-600/20";
 
+  // Mobil servis listesi class'ını düzeltilmiş şekilde tanımla
+  const mobileServicesListClass = `overflow-hidden transition-all duration-300 ${
+    mobileServicesOpen ? "max-h-96 opacity-100 mt-2" : "max-h-0 opacity-0"
+  }`;
+
   return (
     <>
       {/* Skip link – sayfadaki main id'siyle aynı */}
@@ -272,12 +192,11 @@ export default function Navbar() {
 
       {/* Header */}
       <header
-        className={[
-          "fixed top-0 inset-x-0 z-50 transition-all duration-500 border-b",
+        className={
           scrolled || mobileOpen
-            ? "bg-white/98 backdrop-blur-xl border-neutral-200/70 shadow-xl"
-            : "bg-white/90 backdrop-blur-lg border-transparent",
-        ].join(" ")}
+            ? "fixed top-0 inset-x-0 z-50 transition-all duration-500 border-b bg-white/98 backdrop-blur-xl border-neutral-200/70 shadow-xl"
+            : "fixed top-0 inset-x-0 z-50 transition-all duration-500 border-b bg-white/90 backdrop-blur-lg border-transparent"
+        }
         itemScope
         itemType="https://schema.org/Organization"
       >
@@ -307,10 +226,11 @@ export default function Navbar() {
             <nav className="hidden lg:flex items-center gap-6" aria-label="Ana menü">
               <Link
                 href="/hakkimizda"
-                className={[
-                  "relative text-[15px] font-bold transition-all duration-300 px-4 py-2.5 rounded-xl",
-                  active("/hakkimizda") ? "text-blue-700 bg-blue-50/90 border border-blue-200/60" : "text-neutral-800 hover:text-blue-700 hover:bg-neutral-50/90 hover:border hover:border-neutral-200/60",
-                ].join(" ")}
+                className={
+                  active("/hakkimizda")
+                    ? "relative text-[15px] font-bold transition-all duration-300 px-4 py-2.5 rounded-xl text-blue-700 bg-blue-50/90 border border-blue-200/60"
+                    : "relative text-[15px] font-bold transition-all duration-300 px-4 py-2.5 rounded-xl text-neutral-800 hover:text-blue-700 hover:bg-neutral-50/90 hover:border hover:border-neutral-200/60"
+                }
                 aria-current={active("/hakkimizda") ? "page" : undefined}
                 title="Sahneva Hakkında - Şirket bilgileri ve referanslar"
               >
@@ -329,11 +249,11 @@ export default function Navbar() {
                 <button
                   id={servicesBtnId}
                   type="button"
-                  className={[
-                    "relative text-[15px] font-bold px-4 py-2.5 rounded-xl transition-all duration-300 group border",
-                    active("/hizmetler") || servicesOpen ? "text-blue-700 bg-blue-50/90 border-blue-200/60" : "text-neutral-800 hover:text-blue-700 hover:bg-neutral-50/90 border-transparent hover:border-neutral-200/60",
-                    "focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50",
-                  ].join(" ")}
+                  className={
+                    active("/hizmetler") || servicesOpen
+                      ? "relative text-[15px] font-bold px-4 py-2.5 rounded-xl transition-all duration-300 group border text-blue-700 bg-blue-50/90 border-blue-200/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50"
+                      : "relative text-[15px] font-bold px-4 py-2.5 rounded-xl transition-all duration-300 group border text-neutral-800 hover:text-blue-700 hover:bg-neutral-50/90 border-transparent hover:border-neutral-200/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50"
+                  }
                   aria-haspopup="true"
                   aria-expanded={servicesOpen}
                   aria-controls={servicesMenuId}
@@ -394,10 +314,11 @@ export default function Navbar() {
 
               <Link
                 href="/iletisim"
-                className={[
-                  "relative text-[15px] font-bold transition-all duration-300 px-4 py-2.5 rounded-xl",
-                  active("/iletisim") ? "text-blue-700 bg-blue-50/90 border border-blue-200/60" : "text-neutral-800 hover:text-blue-700 hover:bg-neutral-50/90 hover:border hover:border-neutral-200/60",
-                ].join(" ")}
+                className={
+                  active("/iletisim")
+                    ? "relative text-[15px] font-bold transition-all duration-300 px-4 py-2.5 rounded-xl text-blue-700 bg-blue-50/90 border border-blue-200/60"
+                    : "relative text-[15px] font-bold transition-all duration-300 px-4 py-2.5 rounded-xl text-neutral-800 hover:text-blue-700 hover:bg-neutral-50/90 hover:border hover:border-neutral-200/60"
+                }
                 aria-current={active("/iletisim") ? "page" : undefined}
                 title="Sahneva İletişim - Bize ulaşın ve teklif alın"
               >
@@ -470,12 +391,11 @@ export default function Navbar() {
         onClick={(e) => {
           if (e.target === e.currentTarget) setMobileOpen(false);
         }}
-        className={[
-          "lg:hidden fixed z-50 left-0 right-0 top-16",
-          "bg-white/98 backdrop-blur-xl border-t border-neutral-200/70 rounded-b-2xl shadow-2xl",
-          "transition-all duration-500 will-change-transform overflow-hidden",
-          mobileOpen ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0",
-        ].join(" ")}
+        className={
+          mobileOpen
+            ? "lg:hidden fixed z-50 left-0 right-0 top-16 bg-white/98 backdrop-blur-xl border-t border-neutral-200/70 rounded-b-2xl shadow-2xl transition-all duration-500 will-change-transform overflow-hidden max-h-[80vh] opacity-100"
+            : "lg:hidden fixed z-50 left-0 right-0 top-16 bg-white/98 backdrop-blur-xl border-t border-neutral-200/70 rounded-b-2xl shadow-2xl transition-all duration-500 will-change-transform overflow-hidden max-h-0 opacity-0"
+        }
       >
         <div className="px-5 py-6 space-y-3 max-h-[80vh] overflow-y-auto">
           <Link
@@ -518,7 +438,7 @@ export default function Navbar() {
 
             <div
               id="mobile-services-list"
-              className={`overflow-hidden transition-all duration-300 ${mobileServicesOpen ? "max-h-96 opacity-100 mt-2" : "max-h-0 opacity-0"}`}
+              className={mobileServicesListClass}
             >
               <div className="ml-4 space-y-1 rounded-lg border border-neutral-200/60 bg-white/80 p-2">
                 {serviceLinks.map(({ href, label, title, icon, description }) => (
