@@ -2,16 +2,7 @@
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Inter } from "next/font/google";
 import UtilityBar from "../components/UtilityBar";
-
-const inter = Inter({
-  subsets: ["latin"],
-  preload: false,
-  display: "optional",
-  fallback: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "Arial", "sans-serif"],
-  adjustFontFallback: true,
-});
 
 export const viewport = {
   width: "device-width",
@@ -41,7 +32,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="tr" dir="ltr" className={inter.className}>
+    <html lang="tr" dir="ltr">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        />
+      </head>
       <body className="min-h-screen bg-white text-neutral-900 antialiased">
         {/* Skip link – TEK YER (global) */}
         <a

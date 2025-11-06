@@ -28,10 +28,10 @@
 html{ scroll-behavior:smooth; font-size:var(--fs); }
 html,body{ height:100%; }
 
-/* Sistem font + lokal fallback en başa; hashed Next font 404 olsa bile problem çıkmaz */
+/* Sistem font + lokal fallback en başa; Google Fonts bağlantısı yüklendiğinde Inter devreye girer */
 body{
   @apply bg-white text-slate-800 antialiased;
-  font-family: "SahnevaFallback", system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+  font-family: "Inter", "SahnevaFallback", system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
 }
 
 img, video, canvas, svg { max-width:100%; height:auto; }
