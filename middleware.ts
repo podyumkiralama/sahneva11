@@ -1,12 +1,16 @@
-// middleware.ts
-import { NextResponse, NextRequest } from "next/server";
+// middleware.js
+import { NextResponse } from "next/server";
 
+// Edge Runtime'da çalışıyoruz, Node Buffer YOK.
+// Nonce üretimi: base64 olmadan da olur; rastgele hex string güvenlidir.
 function genNonce() {
-  // 16 byte rastgele nonce → base64
-  return Buffer.from(crypto.getRandomValues(new Uint8Array(16))).toString("base64");
+  const arr = new Uint8Array(16);
+  crypto.getRandomValues(arr);
+  // hex nonce
+  return Array.from(arr).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-export function middleware(req: NextRequest) {
+export function middleware(req) {
   const res = NextResponse.next();
 
   const isProd = process.env.NODE_ENV === "production";
@@ -14,10 +18,8 @@ export function middleware(req: NextRequest) {
     process.env.NEXT_ALLOW_IFRAMING === "1" || process.env.VERCEL_ENV === "preview";
 
   const nonce = genNonce();
-  // Nonce'ı downstream bileşenlere iletmek için özel header
-  res.headers.set("x-nonce", nonce);
+  res.headers.set("x-nonce", nonce); // layout ve sayfalar okuyacak
 
-  // Alan listeleri
   const frameSrc = ["'self'", "https://www.google.com", "https://vercel.live", "https://*.vercel.live"];
   const connectSrc = [
     "'self'",
@@ -29,7 +31,7 @@ export function middleware(req: NextRequest) {
   ];
   const scriptSrc = [
     "'self'",
-    `'nonce-${nonce}'`,          // ✅ inline scriptler için
+    `'nonce-${nonce}'`, // ✅ inline scriptler için nonce
     "https://www.googletagmanager.com",
     "https://www.google-analytics.com",
     "https://va.vercel-scripts.com",
@@ -41,16 +43,16 @@ export function middleware(req: NextRequest) {
     "base-uri 'self'",
     "object-src 'none'",
     "upgrade-insecure-requests",
-    `img-src 'self' data: blob: https:`,
-    `font-src 'self' data: https://fonts.gstatic.com`,
-    `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`, // (style nonce istersen burayı da nonce'a çevirebiliriz)
+    "img-src 'self' data: blob: https:",
+    "font-src 'self' data: https://fonts.gstatic.com",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     `script-src ${scriptSrc.join(" ")}`,
     `script-src-elem ${scriptSrc.join(" ")}`,
     "script-src-attr 'none'",
     `connect-src ${connectSrc.join(" ")}`,
-    `worker-src 'self' blob:`,
+    "worker-src 'self' blob:",
     `frame-src ${frameSrc.join(" ")}`,
-    `form-action 'self' https://formspree.io https://wa.me`,
+    "form-action 'self' https://formspree.io https://wa.me",
     `frame-ancestors ${allowIframe ? "'self' https://vercel.live https://*.vercel.live" : "'none'"}`,
   ].join("; ");
 
@@ -69,6 +71,7 @@ export function middleware(req: NextRequest) {
   return res;
 }
 
+// Statik dosyaları hariç tut
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"], // statik dosyaları hariç tut
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };
