@@ -1,4 +1,61 @@
-// components/Navbar.js
+// components/Navbar.js (sadece değişen kısımlar)
+
+// Hizmetler dropdown menüsü - ESKİ HALİNE GETİRİLDİ
+<div
+  id={servicesMenuId}
+  role="menu"
+  aria-labelledby={servicesBtnId}
+  hidden={!servicesOpen}
+  className={`absolute left-0 top-full mt-1 w-64 bg-white/95 backdrop-blur-xl border border-neutral-200/60 rounded-xl shadow-lg z-[60] overflow-hidden ${
+    servicesOpen ? "animate-fadeIn" : "pointer-events-none"
+  }`}
+  onMouseEnter={openNow}
+  onMouseLeave={closeWithDelay}
+>
+  <div className="p-2">
+    {serviceLinks.map(({ href, label, title, icon }) => (
+      <Link
+        key={href}
+        role="menuitem"
+        href={href}
+        className="group flex items-center gap-3 px-3 py-3 text-sm text-neutral-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200"
+        onClick={() => setServicesOpen(false)}
+        aria-current={active(href) ? "page" : undefined}
+        title={title}
+      >
+        <span className="text-lg opacity-70 group-hover:opacity-100 transition-opacity" aria-hidden="true">
+          {icon}
+        </span>
+        <span className="flex-1 font-medium">{label}</span>
+        <svg className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </Link>
+    ))}
+  </div>
+</div>
+
+// Mobil hizmetler menüsü - ESKİ HALİNE GETİRİLDİ
+<div
+  id="mobile-services-list"
+  className={`overflow-hidden transition-all duration-300 ${mobileServicesOpen ? "max-h-96 opacity-100 mt-2" : "max-h-0 opacity-0"}`}
+>
+  <div className="ml-4 space-y-1 rounded-lg border border-neutral-200/60 bg-white/80 p-2">
+    {serviceLinks.map(({ href, label, title, icon }) => (
+      <Link
+        key={href}
+        href={href}
+        onClick={() => setMobileOpen(false)}
+        className="flex items-center gap-3 px-3 py-2 text-sm text-neutral-700 hover:bg-blue-50 hover:text-blue-600 rounded-md transition-all duration-200"
+        aria-current={active(href) ? "page" : undefined}
+        title={title}
+      >
+        <span className="text-base opacity-70" aria-hidden="true">{icon}</span>
+        <span className="flex-1 font-medium">{label}</span>
+      </Link>
+    ))}
+  </div>
+</div>// components/Navbar.js
 "use client";
 
 import Link from "next/link";
@@ -7,12 +64,76 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef, useCallback } from "react";
 
 const serviceLinks = [
-  { href: "/podyum-kiralama", label: "Podyum Kiralama", title: "Modüler podyum kiralama ve kurulum hizmeti - Sahneva", icon: "👑" },
-  { href: "/led-ekran-kiralama", label: "LED Ekran Kiralama", title: "Yüksek çözünürlüklü LED ekran kiralama - Sahneva", icon: "🖥️" },
-  { href: "/ses-isik-sistemleri", label: "Ses & Işık Sistemleri", title: "Profesyonel ses ve ışık sistemi kiralama - Sahneva", icon: "🎭" },
-  { href: "/cadir-kiralama", label: "Çadır Kiralama", title: "Etkinlik çadırı kiralama ve kurulum - Sahneva", icon: "⛺" },
-  { href: "/masa-sandalye-kiralama", label: "Masa Sandalye Kiralama", title: "Masa sandalye kiralama hizmeti - Sahneva", icon: "🪑" },
-  { href: "/sahne-kiralama", label: "Sahne Kiralama", title: "Profesyonel sahne kiralama ve kurulum - Sahneva", icon: "🎪" },
+  { 
+    href: "/podyum-kiralama", 
+    label: "Podyum Kiralama", 
+    title: "Modüler podyum kiralama ve kurulum hizmeti - Sahneva", 
+    icon: "👑",
+    description: "Profesyonel modüler podyum sistemleri"
+  },
+  { 
+    href: "/led-ekran-kiralama", 
+    label: "LED Ekran Kiralama", 
+    title: "Yüksek çözünürlüklü LED ekran kiralama - Sahneva", 
+    icon: "🖥️",
+    description: "HD LED ekran ve video wall çözümleri"
+  },
+  { 
+    href: "/ses-isik-sistemleri", 
+    label: "Ses & Işık Sistemleri", 
+    title: "Profesyonel ses ve ışık sistemi kiralama - Sahneva", 
+    icon: "🎭",
+    description: "Konser kalitesinde ses ve ışık ekipmanları"
+  },
+  { 
+    href: "/cadir-kiralama", 
+    label: "Çadır Kiralama", 
+    title: "Etkinlik çadırı kiralama ve kurulum - Sahneva", 
+    icon: "⛺",
+    description: "Her türlü etkinlik için çadır çözümleri"
+  },
+  { 
+    href: "/masa-sandalye-kiralama", 
+    label: "Masa Sandalye Kiralama", 
+    title: "Masa sandalye kiralama hizmeti - Sahneva", 
+    icon: "🪑",
+    description: "Toplantı ve davetler için masa sandalye"
+  },
+  { 
+    href: "/sahne-kiralama", 
+    label: "Sahne Kiralama", 
+    title: "Profesyonel sahne kiralama ve kurulum - Sahneva", 
+    icon: "🎪",
+    description: "Portatif ve modüler sahne sistemleri"
+  },
+  { 
+    href: "/projeksiyon-kiralama", 
+    label: "Projeksiyon Kiralama", 
+    title: "Projeksiyon cihazı ve perde kiralama - Sahneva", 
+    icon: "📽️",
+    description: "Yüksek lümen projeksiyon sistemleri"
+  },
+  { 
+    href: "/seslendirme-sistemleri", 
+    label: "Seslendirme Sistemleri", 
+    title: "Toplantı ve konferans ses sistemleri - Sahneva", 
+    icon: "🎤",
+    description: "Mikrofon ve seslendirme ekipmanları"
+  },
+  { 
+    href: "/jeneratör-kiralama", 
+    label: "Jeneratör Kiralama", 
+    title: "Dış mekan etkinlikleri için jeneratör - Sahneva", 
+    icon: "⚡",
+    description: "Taşınabilir jeneratör kiralama"
+  },
+  { 
+    href: "/ısıtma-soğutma", 
+    label: "Isıtma & Soğutma", 
+    title: "Mekan ısıtma ve soğutma sistemleri - Sahneva", 
+    icon: "❄️",
+    description: "İklimlendirme ekipmanları kiralama"
+  }
 ];
 
 export default function Navbar() {
@@ -241,30 +362,30 @@ export default function Navbar() {
                   role="menu"
                   aria-labelledby={servicesBtnId}
                   hidden={!servicesOpen}
-                  className={`absolute left-0 top-full mt-2 w-72 bg-white/98 backdrop-blur-xl border border-neutral-200/70 rounded-2xl shadow-2xl z-[60] overflow-hidden ${
+                  className={`absolute left-0 top-full mt-2 w-80 bg-white/95 backdrop-blur-xl border border-neutral-200/60 rounded-xl shadow-lg z-[60] overflow-hidden ${
                     servicesOpen ? "animate-fadeIn" : "pointer-events-none"
                   }`}
                   onMouseEnter={openNow}
                   onMouseLeave={closeWithDelay}
                 >
-                  <div className="p-2">
-                    {serviceLinks.map(({ href, label, title, icon }) => (
+                  <div className="p-2 max-h-96 overflow-y-auto">
+                    {serviceLinks.map(({ href, label, title, icon, description }) => (
                       <Link
                         key={href}
                         role="menuitem"
                         href={href}
-                        className="group flex items-center gap-3 px-4 py-3 text-[14px] text-neutral-800 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 hover:text-blue-700 rounded-xl transition-all duration-300 border border-transparent hover:border-blue-200/60 font-medium"
+                        className="group flex items-start gap-3 px-3 py-3 text-sm text-neutral-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200"
                         onClick={() => setServicesOpen(false)}
                         aria-current={active(href) ? "page" : undefined}
                         title={title}
                       >
-                        <span className="text-lg opacity-70 group-hover:opacity-100 transition-opacity" aria-hidden="true">
+                        <span className="text-lg opacity-70 group-hover:opacity-100 transition-opacity mt-0.5" aria-hidden="true">
                           {icon}
                         </span>
-                        <span className="flex-1">{label}</span>
-                        <svg className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-                        </svg>
+                        <div className="flex-1 min-w-0">
+                          <div className="font-medium text-neutral-800 group-hover:text-blue-600">{label}</div>
+                          <div className="text-xs text-neutral-500 mt-1">{description}</div>
+                        </div>
                       </Link>
                     ))}
                   </div>
@@ -397,20 +518,23 @@ export default function Navbar() {
 
             <div
               id="mobile-services-list"
-              className={`overflow-hidden transition-all duration-500 ${mobileServicesOpen ? "max-h-96 opacity-100 mt-2" : "max-h-0 opacity-0"}`}
+              className={`overflow-hidden transition-all duration-300 ${mobileServicesOpen ? "max-h-96 opacity-100 mt-2" : "max-h-0 opacity-0"}`}
             >
-              <div className="ml-4 space-y-1 rounded-xl border border-neutral-200/60 bg-white/80 p-2">
-                {serviceLinks.map(({ href, label, title, icon }) => (
+              <div className="ml-4 space-y-1 rounded-lg border border-neutral-200/60 bg-white/80 p-2">
+                {serviceLinks.map(({ href, label, title, icon, description }) => (
                   <Link
                     key={href}
                     href={href}
                     onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-3 px-3 py-3 text-[14px] text-neutral-800 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 hover:text-blue-700 rounded-lg transition-all duration-300 border border-transparent hover:border-blue-200/60 min-h-[44px] font-medium"
+                    className="flex items-start gap-3 px-3 py-2 text-sm text-neutral-700 hover:bg-blue-50 hover:text-blue-600 rounded-md transition-all duration-200"
                     aria-current={active(href) ? "page" : undefined}
                     title={title}
                   >
-                    <span className="text-base opacity-70" aria-hidden="true">{icon}</span>
-                    <span className="flex-1">{label}</span>
+                    <span className="text-base opacity-70 mt-0.5" aria-hidden="true">{icon}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium text-neutral-800">{label}</div>
+                      <div className="text-xs text-neutral-500 mt-1">{description}</div>
+                    </div>
                   </Link>
                 ))}
               </div>
