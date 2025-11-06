@@ -58,6 +58,7 @@ const nextConfig = {
       { source: "/&", destination: "/", permanent: true },
       { source: "/%24", destination: "/", permanent: true },
       { source: "/%26", destination: "/", permanent: true },
+
     ];
   },
 

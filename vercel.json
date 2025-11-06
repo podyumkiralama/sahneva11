@@ -2,13 +2,8 @@
   "redirects": [
     {
       "source": "/_next/static/media/83afe278b6a6bb3c.p.3a6ba036.woff2",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/_next/static/media/:path*",
-      "destination": "/",
-      "permanent": false
+      "destination": "https://www.sahneva.com/",
+      "statusCode": 302
     },
     {
       "source": "/search",
