@@ -2,9 +2,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
-import CaseGallery from "@/components/CaseGallery";
+import dynamic from "next/dynamic";
 
-export const revalidate = 1800;
+// ⚡ CaseGallery: ilk boya etkisini azaltmak için dinamik yükle
+const CaseGalleryLazy = dynamic(() => import("@/components/CaseGallery"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-48 flex items-center justify-center text-sm text-gray-600" role="status" aria-label="Galeri yükleniyor">
+      Galeri yükleniyor…
+    </div>
+  ),
+});
+
+// ✅ ISR – günde bir kez yeniden üret
+export const revalidate = 86400;
 
 export const metadata = {
   title: "Kurumsal Organizasyon & Etkinlik Yönetimi | Profesyonel Çözümler - Sahneva",
@@ -25,39 +36,24 @@ export const metadata = {
     type: "website",
     siteName: "Sahneva",
     locale: "tr_TR",
-    images: [
-      {
-        url: "/img/kurumsal/hero.webp",
-        width: 1200,
-        height: 630,
-        alt: "Sahneva Kurumsal Organizasyon Hizmetleri",
-      },
-    ],
+    images: [{ url: "/img/kurumsal/hero.webp", width: 1200, height: 630, alt: "Sahneva Kurumsal Organizasyon Hizmetleri" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Kurumsal Organizasyon & Etkinlik Yönetimi | Sahneva",
-    description:
-      "Konferans, lansman, gala ve roadshow'larda profesyonel planlama ve operasyon.",
+    description: "Konferans, lansman, gala ve roadshow'larda profesyonel planlama ve operasyon.",
     images: ["/img/kurumsal/hero.webp"],
   },
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      maxImagePreview: "large",
-      maxSnippet: -1,
-      maxVideoPreview: -1,
-    },
+    googleBot: { index: true, follow: true, maxImagePreview: "large", maxSnippet: -1, maxVideoPreview: -1 },
   },
 };
 
 const HERO = {
   src: "/img/kurumsal/hero.webp",
-  alt:
-    "Kurumsal organizasyon: sahne, LED ekran ve ışık kurulumu ile profesyonel etkinlik salonu",
+  alt: "Kurumsal organizasyon: sahne, LED ekran ve ışık kurulumu ile profesyonel etkinlik salonu",
   sizes: "(max-width: 768px) 100vw, 100vw",
 };
 
@@ -69,72 +65,12 @@ const GALLERY = [
 ];
 
 const SERVICES = [
-  {
-    icon: "🎤",
-    title: "Konferans & Seminer",
-    description: "Profesyonel ses sistemi, LED ekran ve aydınlatma çözümleri",
-    features: [
-      "Simultane çeviri sistemleri",
-      "Kablosuz mikrofon sistemleri",
-      "Kayıt ve canlı yayın",
-      "Akustik optimizasyon",
-    ],
-  },
-  {
-    icon: "🚀",
-    title: "Ürün Lansmanı",
-    description: "Etkileyici görsel şovlar ve interaktif deneyimler",
-    features: [
-      "3D mapping ve projeksiyon",
-      "Özel sahne tasarımı",
-      "Medya duvarları",
-      "Interaktif ekranlar",
-    ],
-  },
-  {
-    icon: "🎭",
-    title: "Gala & Ödül Töreni",
-    description: "Şık ve profesyonel organizasyon çözümleri",
-    features: [
-      "Kırmızı halı kurulumu",
-      "Özel aydınlatma tasarımı",
-      "Sahne dekorasyonu",
-      "VIP alanları",
-    ],
-  },
-  {
-    icon: "🏟️",
-    title: "Miting & Açık Hava",
-    description: "Büyük kitlelere yönelik profesyonel çözümler",
-    features: [
-      "Yüksek parlaklıklı LED ekranlar",
-      "Güçlü ses sistemleri",
-      "Jeneratör ve altyapı",
-      "Güvenlik önlemleri",
-    ],
-  },
-  {
-    icon: "🛣️",
-    title: "Roadshow & Fuar",
-    description: "Mobil ve esnek organizasyon çözümleri",
-    features: [
-      "Taşınabilir sahne sistemleri",
-      "Hızlı kurulum çözümleri",
-      "Marka entegrasyonu",
-      "Interaktif standlar",
-    ],
-  },
-  {
-    icon: "💍",
-    title: "Özel Etkinlikler",
-    description: "Kurumsal düğün, yılbaşı partileri ve özel kutlamalar",
-    features: [
-      "Özel dekorasyon",
-      "Tema tasarımı",
-      "Eğlence ve şovlar",
-      "Fotoğraf/video çekim",
-    ],
-  },
+  { icon: "🎤", title: "Konferans & Seminer", description: "Profesyonel ses sistemi, LED ekran ve aydınlatma çözümleri", features: ["Simultane çeviri sistemleri","Kablosuz mikrofon sistemleri","Kayıt ve canlı yayın","Akustik optimizasyon"] },
+  { icon: "🚀", title: "Ürün Lansmanı", description: "Etkileyici görsel şovlar ve interaktif deneyimler", features: ["3D mapping ve projeksiyon","Özel sahne tasarımı","Medya duvarları","Interaktif ekranlar"] },
+  { icon: "🎭", title: "Gala & Ödül Töreni", description: "Şık ve profesyonel organizasyon çözümleri", features: ["Kırmızı halı kurulumu","Özel aydınlatma tasarımı","Sahne dekorasyonu","VIP alanları"] },
+  { icon: "🏟️", title: "Miting & Açık Hava", description: "Büyük kitlelere yönelik profesyonel çözümler", features: ["Yüksek parlaklıklı LED ekranlar","Güçlü ses sistemleri","Jeneratör ve altyapı","Güvenlik önlemleri"] },
+  { icon: "🛣️", title: "Roadshow & Fuar", description: "Mobil ve esnek organizasyon çözümleri", features: ["Taşınabilir sahne sistemleri","Hızlı kurulum çözümleri","Marka entegrasyonu","Interaktif standlar"] },
+  { icon: "💍", title: "Özel Etkinlikler", description: "Kurumsal düğün, yılbaşı partileri ve özel kutlamalar", features: ["Özel dekorasyon","Tema tasarımı","Eğlence ve şovlar","Fotoğraf/video çekim"] },
 ];
 
 const TECHNICAL_SPECS = {
@@ -147,51 +83,25 @@ const TECHNICAL_SPECS = {
 };
 
 const PROCESS = [
-  {
-    step: "01",
-    title: "Keşif & Planlama",
-    description: "Mekan analizi, ihtiyaç değerlendirmesi ve kapsamlı planlama",
-    details: ["Mekan ölçümü", "Teknik gereksinimler", "Zaman planı", "Bütçe optimizasyonu"],
-  },
-  {
-    step: "02",
-    title: "Tasarım & Teklif",
-    description: "Özel tasarım ve şeffaf fiyatlandırma",
-    details: ["Sahne tasarımı", "Teknik çizimler", "Ekipman seçimi", "Detaylı teklif"],
-  },
-  {
-    step: "03",
-    title: "Kurulum & Test",
-    description: "Profesyonel kurulum ve kapsamlı test süreci",
-    details: ["Ekipman kurulumu", "Sistem entegrasyonu", "Test ve kalibrasyon", "Prova"],
-  },
-  {
-    step: "04",
-    title: "Operasyon & Destek",
-    description: "Etkinlik süresince kesintisiz destek",
-    details: ["Teknik operatörler", "Canlı destek", "Acil müdahale", "Güvenlik"],
-  },
+  { step: "01", title: "Keşif & Planlama", description: "Mekan analizi, ihtiyaç değerlendirmesi ve kapsamlı planlama", details: ["Mekan ölçümü","Teknik gereksinimler","Zaman planı","Bütçe optimizasyonu"] },
+  { step: "02", title: "Tasarım & Teklif", description: "Özel tasarım ve şeffaf fiyatlandırma", details: ["Sahne tasarımı","Teknik çizimler","Ekipman seçimi","Detaylı teklif"] },
+  { step: "03", title: "Kurulum & Test", description: "Profesyonel kurulum ve kapsamlı test süreci", details: ["Ekipman kurulumu","Sistem entegrasyonu","Test ve kalibrasyon","Prova"] },
+  { step: "04", title: "Operasyon & Destek", description: "Etkinlik süresince kesintisiz destek", details: ["Teknik operatörler","Canlı destek","Acil müdahale","Güvenlik"] },
 ];
 
 const FAQ = [
-  { q: "Kurulum süresi ne kadar?", a: "Mekan erişimi ve kurguya bağlı olarak 4–12 saat; açık alan ve çok kameralı yayınlarda 1 güne çıkabilir. Acil kurulum hizmetimizle aynı gün teslimat sağlanabilir." },
-  { q: "Yedek planınız var mı?", a: "İşlemci, sinyal hattı ve kritik mikrofonlarda yedekleme; jeneratör–şebeke transfer senaryoları hazırdır. Tüm kritik ekipmanlarda %100 yedek sistem bulunur." },
-  { q: "Elektrik ihtiyacı nedir?", a: "LED ekranlar m² başına yaklaşık 300–800 W tüketir. Güç dağıtımı ve topraklama projeye göre planlanır. 1000 kişilik bir etkinlik için ortalama 60–100A elektrik ihtiyacı olur." },
-  { q: "Canlı yayın ve kayıt desteği veriyor musunuz?", a: "Evet. Çok kamerayla miks, kayıt ve streaming; scaler ve senkron ölçümleri dahil uçtan uca operasyon sağlarız. 4K çözünürlükte canlı yayın ve profesyonel kayıt hizmeti sunuyoruz." },
-  { q: "Hangi şehirlerde hizmet veriyorsunuz?", a: "Tüm Türkiye'de hizmet veriyoruz. İstanbul, Ankara, İzmir başta olmak üzere 81 ilde profesyonel ekiplerimizle hizmetinizdeyiz." },
-  { q: "Kaç kişiye kadar etkinlik organize ediyorsunuz?", a: "50 kişilik toplantılardan 50.000 kişilik açık hava konserlerine kadar her ölçekte etkinlik için profesyonel çözümler sunuyoruz." },
+  { id: "faq-1", q: "Kurulum süresi ne kadar?", a: "Mekan erişimi ve kurguya bağlı olarak 4–12 saat; açık alan ve çok kameralı yayınlarda 1 güne çıkabilir. Acil kurulum hizmetimizle aynı gün teslimat sağlanabilir." },
+  { id: "faq-2", q: "Yedek planınız var mı?", a: "İşlemci, sinyal hattı ve kritik mikrofonlarda yedekleme; jeneratör–şebeke transfer senaryoları hazırdır. Tüm kritik ekipmanlarda %100 yedek sistem bulunur." },
+  { id: "faq-3", q: "Elektrik ihtiyacı nedir?", a: "LED ekranlar m² başına yaklaşık 300–800 W tüketir. Güç dağıtımı ve topraklama projeye göre planlanır. 1000 kişilik bir etkinlik için ortalama 60–100A elektrik ihtiyacı olur." },
+  { id: "faq-4", q: "Canlı yayın ve kayıt desteği veriyor musunuz?", a: "Evet. Çok kamerayla miks, kayıt ve streaming; scaler ve senkron ölçümleri dahil uçtan uca operasyon sağlarız. 4K çözünürlükte canlı yayın ve profesyonel kayıt hizmeti sunuyoruz." },
+  { id: "faq-5", q: "Hangi şehirlerde hizmet veriyorsunuz?", a: "Tüm Türkiye'de hizmet veriyoruz. İstanbul, Ankara, İzmir başta olmak üzere 81 ilde profesyonel ekiplerimizle hizmetinizdeyiz." },
+  { id: "faq-6", q: "Kaç kişiye kadar etkinlik organize ediyorsunuz?", a: "50 kişilik toplantılardan 50.000 kişilik açık hava konserlerine kadar her ölçekte etkinlik için profesyonel çözümler sunuyoruz." },
 ];
 
-// JS (page.js) için doğru sürüm
 const slugify = (s) =>
-  s
-    .toLowerCase()
-    .replace(/&/g, " ve ")
-    .replace(/[^a-z0-9çğıöşü\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-");
+  s.toLowerCase().replace(/&/g, " ve ").replace(/[^a-z0-9çğıöşü\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-");
 
-
+// Skip link
 function SkipToMain() {
   return (
     <a
@@ -204,26 +114,10 @@ function SkipToMain() {
 }
 
 export default function Page() {
-  // JSON-LD
-  const imageLd = {
-    "@context": "https://schema.org",
-    "@type": "ImageObject",
-    contentUrl: "https://www.sahneva.com/img/kurumsal/hero.webp",
-    url: "https://www.sahneva.com/img/kurumsal/hero.webp",
-    width: 1920,
-    height: 1080,
-    caption: "Kurumsal organizasyon: sahne, LED ekran ve ışık kurulumu",
-  };
-  const servicesItemListLd = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    itemListElement: SERVICES.map((s, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      name: s.title,
-      url: "https://www.sahneva.com/kurumsal-organizasyon#hizmetler",
-    })),
-  };
+  // 🔗 UTM takip
+  const utm = "utm_source=site&utm_medium=cta&utm_campaign=kurumsal";
+
+  // ✅ JSON-LD (FAQ anchor URL’leri dahil)
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -239,7 +133,8 @@ export default function Page() {
         name: "Kurumsal Organizasyon & Etkinlik Yönetimi",
         description:
           "Toplantı, konferans, lansman, gala, miting ve roadshow'larda planlama, sahne–ses–ışık–LED–yayın altyapısı.",
-        areaServed: "TR",
+        areaServed: ["TR", "Türkiye", "81 İl"],
+        availableLanguage: ["tr"],
         provider: {
           "@type": "Organization",
           name: "Sahneva",
@@ -251,10 +146,29 @@ export default function Page() {
       },
       {
         "@type": "FAQPage",
-        mainEntity: FAQ.map((f) => ({
+        mainEntity: FAQ.map((f, i) => ({
           "@type": "Question",
           name: f.q,
+          url: `https://www.sahneva.com/kurumsal-organizasyon#${f.id}`,
           acceptedAnswer: { "@type": "Answer", text: f.a },
+          position: i + 1,
+        })),
+      },
+      {
+        "@type": "ImageObject",
+        contentUrl: "https://www.sahneva.com/img/kurumsal/hero.webp",
+        url: "https://www.sahneva.com/img/kurumsal/hero.webp",
+        width: 1920,
+        height: 1080,
+        caption: "Kurumsal organizasyon: sahne, LED ekran ve ışık kurulumu",
+      },
+      {
+        "@type": "ItemList",
+        itemListElement: SERVICES.map((s, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          name: s.title,
+          url: "https://www.sahneva.com/kurumsal-organizasyon#hizmetler",
         })),
       },
     ],
@@ -267,19 +181,21 @@ export default function Page() {
     <>
       {/* JSON-LD */}
       <Script id="ld-kurumsal" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <Script id="ld-image" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(imageLd) }} />
-      <Script id="ld-itemlist" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesItemListLd) }} />
 
       <SkipToMain />
 
       {/* HERO */}
-      <section
-        className="relative flex items-center justify-center overflow-hidden bg-slate-900 pt-20 min-h-[72vh]"
-        role="banner"
-        aria-labelledby="hero-title"
-      >
+      <section className="relative flex items-center justify-center overflow-hidden bg-slate-900 pt-20 min-h-[72vh]" role="banner" aria-labelledby="hero-title">
         <div className="absolute inset-0">
-          <Image src={HERO.src} alt={HERO.alt} fill priority className="object-cover" sizes={HERO.sizes} />
+          <Image
+            src={HERO.src}
+            alt={HERO.alt}
+            fill
+            priority
+            fetchPriority="high"
+            className="object-cover"
+            sizes={HERO.sizes}
+          />
           <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-800 to-blue-950 mix-blend-multiply" aria-hidden="true" />
           <div className="absolute inset-0 bg-gradient-to-t from-blue-950/60 via-transparent to-purple-900/50" aria-hidden="true" />
         </div>
@@ -304,7 +220,7 @@ export default function Page() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <Link
-              href={`https://wa.me/905453048671?text=${waText}`}
+              href={`https://wa.me/905453048671?text=${waText}&${utm}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:scale-105 transform transition-all duration-300 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-green-600"
@@ -348,10 +264,7 @@ export default function Page() {
                 const id = `svc-${slugify(service.title)}`;
                 return (
                   <li key={id}>
-                    <article
-                      className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 group hover:shadow-xl hover:scale-105 transition-all duration-300"
-                      aria-labelledby={id}
-                    >
+                    <article className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 group hover:shadow-xl hover:scale-105 transition-all duration-300" aria-labelledby={id}>
                       <div className="text-3xl mb-3 transform group-hover:scale-110 transition-transform duration-300" role="img" aria-label={service.title}>
                         {service.icon}
                       </div>
@@ -386,39 +299,27 @@ export default function Page() {
               <div className="space-y-6">
                 <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-lg">
                   <h3 className="text-xl font-black mb-3 text-blue-600">🎯 Planlama Disiplini</h3>
-                  <p className="text-gray-700 mb-4">
-                    Brief → keşif → teknik çizim → zaman planı → check-list → prova akışı. Her detayı önceden planlayarak risksiz etkinlikler
-                    organize ediyoruz.
-                  </p>
+                  <p className="text-gray-700 mb-4">Brief → keşif → teknik çizim → zaman planı → check-list → prova akışı. Her detayı önceden planlayarak risksiz etkinlikler organize ediyoruz.</p>
                   <div className="bg-blue-50 rounded-xl p-4">
-                    <p className="text-sm text-blue-800 font-semibold">
-                      💡 Vaka Notu: 700 kişilik lansmanda, ana LED işlemci arızasında yedek hat devreye alma süresi <strong>8 saniye</strong>.
-                    </p>
+                    <p className="text-sm text-blue-800 font-semibold">💡 Vaka Notu: 700 kişilik lansmanda, ana LED işlemci arızasında yedek hat devreye alma süresi <strong>8 saniye</strong>.</p>
                   </div>
                 </div>
 
                 <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-lg">
                   <h3 className="text-xl font-black mb-3 text-purple-600">🔧 Tam Entegrasyon</h3>
-                  <p className="text-gray-700">
-                    Sahne, LED, ses-ışık, truss, jeneratör ve yayın tek ekipten uyumlu çalışır. Bütünleşik kurgu kusursuz deneyim sağlar.
-                  </p>
+                  <p className="text-gray-700">Sahne, LED, ses-ışık, truss, jeneratör ve yayın tek ekipten uyumlu çalışır. Bütünleşik kurgu kusursuz deneyim sağlar.</p>
                 </div>
               </div>
 
               <div className="space-y-6">
                 <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-lg">
                   <h3 className="text-xl font-black mb-3 text-green-600">🛡️ Yedekli Tasarım</h3>
-                  <p className="text-gray-700 mb-4">
-                    Kritik bileşenlerde yedek işlemci, hat ve güç dağıtımı; riskleri düşürür. Teknik aksaklıkların etkinliğinizi etkilemesine izin
-                    vermiyoruz.
-                  </p>
+                  <p className="text-gray-700 mb-4">Kritik bileşenlerde yedek işlemci, hat ve güç dağıtımı; riskleri düşürür. Teknik aksaklıkların etkinliğinizi etkilemesine izin vermiyoruz.</p>
                 </div>
 
                 <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-lg">
                   <h3 className="text-xl font-black mb-3 text-orange-600">📊 Deneyim ve Uzmanlık</h3>
-                  <p className="text-gray-700">
-                    10+ yıllık deneyim, 500+ başarılı proje. Güncel teknolojiler ve en iyi uygulamalarla değer katıyoruz.
-                  </p>
+                  <p className="text-gray-700">10+ yıllık deneyim, 500+ başarılı proje. Güncel teknolojiler ve en iyi uygulamalarla değer katıyoruz.</p>
                 </div>
               </div>
             </div>
@@ -432,9 +333,7 @@ export default function Page() {
               <h2 id="surec-baslik" className="text-3xl md:text-5xl font-black mb-4">
                 Çalışma <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">Sürecimiz</span>
               </h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Profesyonel ve sistematik yaklaşımımızla etkinliklerinizi güvenle planlıyoruz
-              </p>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">Profesyonel ve sistematik yaklaşımımızla etkinliklerinizi güvenle planlıyoruz</p>
             </div>
 
             <ul className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
@@ -501,7 +400,7 @@ export default function Page() {
             </div>
 
             <div className="max-w-6xl mx-auto">
-              <CaseGallery images={GALLERY} />
+              <CaseGalleryLazy images={GALLERY} />
             </div>
           </div>
         </section>
@@ -519,7 +418,7 @@ export default function Page() {
           </div>
         </section>
 
-        {/* SEO MAKALESİ — TAM SÜRÜM */}
+        {/* SEO MAKALESİ */}
         <section className="py-16 bg-gradient-to-b from-white to-gray-50" aria-labelledby="seo-article-heading">
           <div className="container mx-auto px-4 max-w-4xl">
             <article className="overflow-hidden rounded-3xl shadow-xl border border-gray-200 bg-white">
@@ -527,28 +426,25 @@ export default function Page() {
                 <h2 id="seo-article-heading" className="text-2xl md:text-3xl font-black tracking-tight drop-shadow">
                   Kurumsal Organizasyon ve Etkinlik Yönetiminde Profesyonel Çözümler
                 </h2>
-                <p className="mt-3 text-blue-100 max-w-2xl mx-auto text-sm md:text-base">
-                  Konferans • Seminer • Lansman • Gala • Miting • Roadshow
-                </p>
+                <p className="mt-3 text-blue-100 max-w-2xl mx-auto text-sm md:text-base">Konferans • Seminer • Lansman • Gala • Miting • Roadshow</p>
               </header>
 
               <div className="p-6 md:p-10">
                 <div className="prose prose-lg max-w-none">
                   <p>
-                    Kurumsal etkinlikler, şirketlerin marka değerini artırmak, hedef kitleleriyle etkileşim kurmak ve kurumsal kimliklerini
-                    pekiştirmek için düzenlediği önemli faaliyetlerdir. Konferans, seminer, lansman, gala, miting ve roadshow gibi etkinlikler;
-                    doğru planlama ve profesyonel yönetim gerektirir. <strong>Sahneva</strong>, 10 yılı aşkın deneyimi ve 500&apos;den fazla başarılı
-                    projesiyle kurumsal organizasyonlarda anahtar teslim çözümler sunmaktadır.
+                    Kurumsal etkinlikler, şirketlerin marka değerini artırmak, hedef kitleleriyle etkileşim kurmak ve kurumsal kimliklerini pekiştirmek için
+                    düzenlediği önemli faaliyetlerdir. Konferans, seminer, lansman, gala, miting ve roadshow gibi etkinlikler; doğru planlama ve profesyonel
+                    yönetim gerektirir. <strong>Sahneva</strong>, 10 yılı aşkın deneyimi ve 500&apos;den fazla başarılı projesiyle kurumsal organizasyonlarda
+                    anahtar teslim çözümler sunmaktadır.
                   </p>
 
                   <h3 className="!mt-10 !mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 font-extrabold">
                     Kapsamlı Hizmet Anlayışı
                   </h3>
                   <p>
-                    Sahneva, etkinlik öncesi keşif ve planlama aşamasından etkinlik sonrası toparlanma sürecine kadar tüm süreçleri yönetir.
-                    Mekân keşfi, teknik ihtiyaçların belirlenmesi, sahne tasarımı, LED ekran kurulumu, ses ve ışık sistemlerinin entegrasyonu,
-                    canlı yayın ve kayıt hizmetleri uzman ekip tarafından planlanır. Yedekli altyapı ve son teknoloji ekipmanlarla
-                    etkinliklerinizin kesintisiz ve başarılı olması garanti edilir.
+                    Sahneva, etkinlik öncesi keşif ve planlama aşamasından etkinlik sonrası toparlanma sürecine kadar tüm süreçleri yönetir. Mekân keşfi,
+                    teknik ihtiyaçların belirlenmesi, sahne tasarımı, LED ekran kurulumu, ses ve ışık sistemlerinin entegrasyonu, canlı yayın ve kayıt hizmetleri
+                    uzman ekip tarafından planlanır. Yedekli altyapı ve son teknoloji ekipmanlarla etkinliklerinizin kesintisiz ve başarılı olması garanti edilir.
                   </p>
 
                   <h3 className="!mt-10 !mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 font-extrabold">
@@ -556,8 +452,8 @@ export default function Page() {
                   </h3>
                   <p>
                     Kurumsal etkinliklerde görsellik ve ses kalitesi kritiktir. P2.5&apos;ten P6&apos;ya piksel aralığına sahip yüksek çözünürlüklü LED ekranlar,
-                    line-array ses sistemleri, profesyonel aydınlatma ve modüler sahne kurulumları ile etkinliklerinize değer katarız. Canlı yayın ve
-                    kayıt tarafında 4K çözünürlük ve çok kameralı miksaj imkânı sunar, tüm ekipmanları yedekli kurarak olası aksaklıkları anında çözeriz.
+                    line-array ses sistemleri, profesyonel aydınlatma ve modüler sahne kurulumları ile etkinliklerinize değer katarız. Canlı yayın ve kayıt
+                    tarafında 4K çözünürlük ve çok kameralı miksaj imkânı sunar, tüm ekipmanları yedekli kurarak olası aksaklıkları anında çözeriz.
                   </p>
 
                   <div className="mt-8 p-6 rounded-2xl border bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
@@ -574,9 +470,9 @@ export default function Page() {
                     Müşteri Memnuniyeti ve Başarı Hikâyeleri
                   </h3>
                   <p>
-                    500&apos;ün üzerinde kurumsal etkinlikte elde edilen sonuçlarla sektörde güçlü bir referans havuzuna sahibiz. Müşteri memnuniyeti
-                    odaklı yaklaşım, esnek çözümler ve rekabetçi fiyatlarla güven kazanıyoruz. Acil kurulumlarda aynı gün hizmet kapasitesi ve Türkiye&apos;nin
-                    81 ilinde teknik ekip/ekipman desteği ile her an yanınızdayız.
+                    500&apos;ün üzerinde kurumsal etkinlikte elde edilen sonuçlarla sektörde güçlü bir referans havuzuna sahibiz. Müşteri memnuniyeti odaklı yaklaşım,
+                    esnek çözümler ve rekabetçi fiyatlarla güven kazanıyoruz. Acil kurulumlarda aynı gün hizmet kapasitesi ve Türkiye&apos;nin 81 ilinde teknik
+                    ekip/ekipman desteği ile her an yanınızdayız.
                   </p>
 
                   <div className="mt-10 rounded-xl border border-gray-200 p-5 bg-white flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -585,7 +481,7 @@ export default function Page() {
                     </p>
                     <div className="flex gap-3">
                       <Link
-                        href={`https://wa.me/905453048671?text=${waText}`}
+                        href={`https://wa.me/905453048671?text=${waText}&${utm}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center justify-center font-semibold px-5 py-3 rounded-lg bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:opacity-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600/60"
@@ -610,7 +506,7 @@ export default function Page() {
           </div>
         </section>
 
-        {/* SON CTA — TAM SÜRÜM */}
+        {/* SON CTA */}
         <section className="py-28 bg-gradient-to-b from-white to-gray-50" aria-labelledby="cta-heading">
           <div className="container mx-auto px-4 max-w-7xl">
             <div className="w-full min-h-[520px] md:min-h-[600px] rounded-3xl bg-gradient-to-r from-blue-600 to-purple-600 text-white p-12 md:p-20 text-center shadow-2xl flex flex-col justify-center items-center">
@@ -625,7 +521,7 @@ export default function Page() {
 
               <div className="mt-10 flex flex-col sm:flex-row gap-6 justify-center items-center">
                 <Link
-                  href={`https://wa.me/905453048671?text=${waText}`}
+                  href={`https://wa.me/905453048671?text=${waText}&${utm}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center font-bold px-10 py-5 rounded-xl bg-white text-blue-700 hover:bg-gray-100 hover:scale-105 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 text-lg"
@@ -653,8 +549,14 @@ export default function Page() {
             </div>
           </div>
         </section>
+
+        {/* SSS – Anchor’lar (FAQ JSON-LD ile tutarlı) */}
+        <section className="sr-only" aria-hidden="true">
+          {FAQ.map((f) => (
+            <h3 id={f.id} key={f.id}>{f.q}</h3>
+          ))}
+        </section>
       </main>
     </>
   );
 }
-
