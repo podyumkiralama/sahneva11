@@ -34,15 +34,48 @@ const frameSrcHosts = [
 
 // ---- Güvenlik Başlıkları (CSP dahil) ----
 const securityHeaders = (() => {
-  // ❌ 'unsafe-inline' YOK — inline script kullanma
-  const scriptSrc = ["'self'", ...scriptSrcHosts].join(" ");
-  const connectSrc = ["'self'", ...connectSrcHosts].join(" ");
-  const frameSrc = ["'self'", ...frameSrcHosts].join(" ");
+  const isProd = process.env.NODE_ENV === "production";
 
-  // Prod’da tamamen kapalı, preview’da vercel.live’dan gömme serbest:
+  const scriptSrc = [
+    "'self'",
+    "https://www.googletagmanager.com",
+    "https://www.google-analytics.com",
+    "https://va.vercel-scripts.com",
+    "https://vercel.live", // sadece preview için anlamlı
+  ].join(" ");
+
+  // ⬇️  Buraya sadece 'unsafe-inline' ekledik (elem’e), script-src sıkı kaldı
+  const scriptSrcElem = [
+    "'self'",
+    "'unsafe-inline'",
+    "https://www.googletagmanager.com",
+    "https://www.google-analytics.com",
+    "https://va.vercel-scripts.com",
+    "https://vercel.live",
+  ].join(" ");
+
+  const connectSrc = [
+    "'self'",
+    "https://vitals.vercel-analytics.com",
+    "https://www.google-analytics.com",
+    "https://region1.google-analytics.com",
+    "https://stats.g.doubleclick.net",
+    process.env.SITE_URL ?? "https://www.sahneva.com",
+  ].join(" ");
+
+  // Preview’da vercel.live’a izin ver, prod’da kapat
+  const frameSrc = [
+    "'self'",
+    "https://www.google.com",
+    "https://www.youtube.com",
+    "https://www.youtube-nocookie.com",
+    "https://player.vimeo.com",
+    ...(isProd ? [] : ["https://vercel.live", "https://*.vercel.live"]),
+  ].join(" ");
+
   const frameAncestors = isProd
     ? "frame-ancestors 'none';"
-    : "frame-ancestors 'self' https://vercel.live;";
+    : "frame-ancestors 'self' https://vercel.live https://*.vercel.live;";
 
   const csp = `
     default-src 'self';
@@ -54,7 +87,7 @@ const securityHeaders = (() => {
     font-src 'self' data: https://fonts.gstatic.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     script-src ${scriptSrc};
-    script-src-elem ${scriptSrc};
+    script-src-elem ${scriptSrcElem};
     script-src-attr 'none';
     connect-src ${connectSrc};
     worker-src 'self' blob:;
@@ -66,10 +99,8 @@ const securityHeaders = (() => {
     { key: "Content-Security-Policy", value: csp },
     { key: "X-Content-Type-Options", value: "nosniff" },
     { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-    // CSP ile uyumlu:
     { key: "X-Frame-Options", value: isProd ? "DENY" : "SAMEORIGIN" },
     { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
-    // İzole çalışma alanı: 3P iframe gereksinimin yoksa güvenli. (Gerekirse kaldır)
     { key: "Cross-Origin-Embedder-Policy", value: "credentialless" },
     { key: "Cross-Origin-Resource-Policy", value: "same-site" },
     { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=(), fullscreen=()" },
@@ -77,6 +108,7 @@ const securityHeaders = (() => {
     { key: "Origin-Agent-Cluster", value: "?1" },
   ];
 })();
+
 
 const longTermCacheHeaders = [
   { key: "Cache-Control", value: `public, max-age=${ONE_YEAR_IN_SECONDS}, immutable` },
