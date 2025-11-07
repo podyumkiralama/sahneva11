@@ -2,17 +2,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
-import dynamic from "next/dynamic";
-
-// ⚡ CaseGallery: ilk boya etkisini azaltmak için dinamik yükle
-const CaseGalleryLazy = dynamic(() => import("@/components/CaseGallery"), {
-  ssr: false,
-  loading: () => (
-    <div className="h-48 flex items-center justify-center text-sm text-gray-600" role="status" aria-label="Galeri yükleniyor">
-      Galeri yükleniyor…
-    </div>
-  ),
-});
+// ❗ ssr:false burada kullanılmıyor. Client sarmalayıcıyı import ediyoruz:
+import CaseGalleryClient from "@/components/CaseGalleryClient";
 
 // ✅ ISR – günde bir kez yeniden üret
 export const revalidate = 86400;
@@ -400,7 +391,7 @@ export default function Page() {
             </div>
 
             <div className="max-w-6xl mx-auto">
-              <CaseGalleryLazy images={GALLERY} />
+              <CaseGalleryClient images={GALLERY} />
             </div>
           </div>
         </section>
@@ -560,4 +551,3 @@ export default function Page() {
     </>
   );
 }
-
