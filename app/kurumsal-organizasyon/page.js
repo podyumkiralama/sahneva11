@@ -182,8 +182,15 @@ const FAQ = [
   { q: "Kaç kişiye kadar etkinlik organize ediyorsunuz?", a: "50 kişilik toplantılardan 50.000 kişilik açık hava konserlerine kadar her ölçekte etkinlik için profesyonel çözümler sunuyoruz." },
 ];
 
-const slugify = (s: string) =>
-  s.toLowerCase().replace(/&/g, " ve ").replace(/[^a-z0-9çğıöşü\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-");
+// JS (page.js) için doğru sürüm
+const slugify = (s) =>
+  s
+    .toLowerCase()
+    .replace(/&/g, " ve ")
+    .replace(/[^a-z0-9çğıöşü\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+
 
 function SkipToMain() {
   return (
@@ -650,3 +657,4 @@ export default function Page() {
     </>
   );
 }
+
