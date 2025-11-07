@@ -4,10 +4,8 @@ import Link from "next/link";
 import Script from "next/script";
 import CaseGallery from "@/components/CaseGallery";
 
-// ⚡ ISR – 30 dk
 export const revalidate = 1800;
 
-// -------------------- Metadata --------------------
 export const metadata = {
   title: "Kurumsal Organizasyon & Etkinlik Yönetimi | Profesyonel Çözümler - Sahneva",
   description:
@@ -32,7 +30,7 @@ export const metadata = {
   },
 };
 
-// -------------------- İçerik --------------------
+// İçerik
 const HERO = {
   src: "/img/kurumsal/hero.webp",
   alt:
@@ -81,7 +79,7 @@ const FAQ = [
   { q: "Kaç kişiye kadar etkinlik organize ediyorsunuz?", a: "50 kişilik toplantılardan 50.000 kişilik açık hava konserlerine kadar her ölçekte etkinlik için profesyonel çözümler sunuyoruz." },
 ];
 
-// -------------------- Yardımcılar --------------------
+// Yardımcılar
 const slugify = (s) =>
   s
     .toLowerCase()
@@ -90,7 +88,7 @@ const slugify = (s) =>
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-");
 
-// -------------------- Skip Link --------------------
+// Skip Link
 function SkipToMain() {
   return (
     <a
@@ -102,7 +100,6 @@ function SkipToMain() {
   );
 }
 
-// -------------------- Sayfa --------------------
 export default function Page() {
   const jsonLd = {
     "@context": "https://schema.org",
@@ -153,9 +150,16 @@ export default function Page() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
+      {/* prefers-reduced-motion — sayfa içi global kural */}
+      <style jsx global>{`
+        @media (prefers-reduced-motion: reduce) {
+          *, *::before, *::after { animation: none !important; transition: none !important; }
+        }
+      `}</style>
+
       <SkipToMain />
 
-      {/* -------------------- HERO -------------------- */}
+      {/* HERO */}
       <section
         className="relative flex items-center justify-center overflow-hidden bg-slate-900 pt-20 min-h-[72vh]"
         role="banner"
@@ -196,10 +200,7 @@ export default function Page() {
             >
               💬 Hemen Teklif Al
             </Link>
-            {/* erişilebilir açıklama (visible text parçası değil, describedby) */}
-            <span id="wa-note" className="sr-only">
-              WhatsApp üzerinden teklif al — bağlantı yeni sekmede açılır
-            </span>
+            <span id="wa-note" className="sr-only">WhatsApp — bağlantı yeni sekmede açılır</span>
 
             <Link
               href="#hizmetler"
@@ -219,7 +220,7 @@ export default function Page() {
       </section>
 
       <main id="main-content" className="bg-white" tabIndex={-1}>
-        {/* -------------------- HİZMETLER -------------------- */}
+        {/* HİZMETLER */}
         <section id="hizmetler" className="py-16 bg-gradient-to-b from-white to-blue-50/30" aria-labelledby="hizmetler-baslik">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
@@ -259,7 +260,7 @@ export default function Page() {
           </div>
         </section>
 
-        {/* -------------------- NEDEN BİZ -------------------- */}
+        {/* NEDEN BİZ */}
         <section className="py-16 bg-gradient-to-b from-gray-50 to-white" aria-labelledby="neden-baslik">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
@@ -299,7 +300,7 @@ export default function Page() {
           </div>
         </section>
 
-        {/* -------------------- SÜREÇ -------------------- */}
+        {/* SÜREÇ */}
         <section className="py-16 bg-gradient-to-b from-white to-purple-50/30" aria-labelledby="surec-baslik">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
@@ -333,7 +334,7 @@ export default function Page() {
           </div>
         </section>
 
-        {/* -------------------- TEKNİK ALTYAPI -------------------- */}
+        {/* TEKNİK ALTYAPI */}
         <section className="py-16 bg-gradient-to-b from-gray-50 to-white" aria-labelledby="altyapi-baslik">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
@@ -362,7 +363,7 @@ export default function Page() {
           </div>
         </section>
 
-        {/* -------------------- GALERİ -------------------- */}
+        {/* GALERİ */}
         <section className="py-16 bg-gradient-to-b from-white to-blue-50/30" aria-labelledby="galeri-baslik">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
@@ -378,7 +379,7 @@ export default function Page() {
           </div>
         </section>
 
-        {/* -------------------- İSTATİSTİKLER -------------------- */}
+        {/* İSTATİSTİKLER */}
         <section className="py-16 bg-gradient-to-r from-blue-600 to-purple-600 text-white" aria-labelledby="istatistik-baslik">
           <div className="container mx-auto px-4">
             <h2 id="istatistik-baslik" className="sr-only">İstatistikler</h2>
@@ -391,7 +392,7 @@ export default function Page() {
           </div>
         </section>
 
-        {/* -------------------- SEO MAKALESİ -------------------- */}
+        {/* SEO MAKALESİ */}
         <section className="py-16 bg-gradient-to-b from-white to-gray-50" aria-labelledby="seo-article-heading">
           <div className="container mx-auto px-4 max-w-4xl">
             <article className="overflow-hidden rounded-3xl shadow-xl border border-gray-200 bg-white">
@@ -435,10 +436,10 @@ export default function Page() {
                   <div className="mt-8 p-6 rounded-2xl border bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
                     <h4 className="m-0 font-black text-blue-700 mb-3">📊 Kritik Başarı Faktörleri</h4>
                     <ul className="grid md:grid-cols-2 gap-2 !mt-3 !mb-0">
-                      <li className="flex items-start gap-2"><span className="text-green-600 mt-1">✓</span>Detaylı ön planlama ve risk analizi</li>
-                      <li className="flex items-start gap-2"><span className="text-green-600 mt-1">✓</span>Yedekli teknik altyapı ve ekipman</li>
-                      <li className="flex items-start gap-2"><span className="text-green-600 mt-1">✓</span>Deneyimli operasyon ekibi</li>
-                      <li className="flex items-start gap-2"><span className="text-green-600 mt-1">✓</span>Zaman yönetimi ve prosedür disiplini</li>
+                      <li className="flex items-start gap-2"><span className="text-green-600 mt-1" aria-hidden="true">✓</span>Detaylı ön planlama ve risk analizi</li>
+                      <li className="flex items-start gap-2"><span className="text-green-600 mt-1" aria-hidden="true">✓</span>Yedekli teknik altyapı ve ekipman</li>
+                      <li className="flex items-start gap-2"><span className="text-green-600 mt-1" aria-hidden="true">✓</span>Deneyimli operasyon ekibi</li>
+                      <li className="flex items-start gap-2"><span className="text-green-600 mt-1" aria-hidden="true">✓</span>Zaman yönetimi ve prosedür disiplini</li>
                     </ul>
                   </div>
 
@@ -482,7 +483,7 @@ export default function Page() {
           </div>
         </section>
 
-        {/* -------------------- SON CTA -------------------- */}
+        {/* SON CTA */}
         <section className="py-28 bg-gradient-to-b from-white to-gray-50" aria-labelledby="cta-heading">
           <div className="container mx-auto px-4 max-w-7xl">
             <div className="w-full min-h-[520px] md:min-h-[600px] rounded-3xl bg-gradient-to-r from-blue-600 to-purple-600 text-white p-12 md:p-20 text-center shadow-2xl flex flex-col justify-center items-center">
