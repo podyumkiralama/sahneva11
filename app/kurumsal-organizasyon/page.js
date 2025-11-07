@@ -36,17 +36,10 @@ export const metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      maxImagePreview: "large",
-      maxSnippet: -1,
-      maxVideoPreview: -1,
-    },
+    googleBot: { index: true, follow: true, maxImagePreview: "large", maxSnippet: -1, maxVideoPreview: -1 },
   },
 };
 
-// İçerik sabitleri
 const HERO = {
   src: "/img/kurumsal/hero.webp",
   alt: "Kurumsal organizasyon: sahne, LED ekran ve ışık kurulumu ile profesyonel etkinlik salonu",
@@ -94,16 +87,9 @@ const FAQ = [
   { q: "Kaç kişiye kadar etkinlik organize ediyorsunuz?", a: "50 kişilik toplantılardan 50.000 kişilik açık hava konserlerine kadar her ölçekte etkinlik için profesyonel çözümler sunuyoruz." },
 ];
 
-// Yardımcılar
 const slugify = (s) =>
-  s
-    .toLowerCase()
-    .replace(/&/g, " ve ")
-    .replace(/[^a-z0-9çğıöşü\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-");
+  s.toLowerCase().replace(/&/g, " ve ").replace(/[^a-z0-9çğıöşü\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-");
 
-// Skip Link
 function SkipToMain() {
   return (
     <a
@@ -116,7 +102,7 @@ function SkipToMain() {
 }
 
 export default function Page() {
-  // --- SEO JSON-LD’ler ---
+  // JSON-LD
   const imageLd = {
     "@context": "https://schema.org",
     "@type": "ImageObject",
@@ -126,7 +112,6 @@ export default function Page() {
     height: 1080,
     caption: "Kurumsal organizasyon: sahne, LED ekran ve ışık kurulumu",
   };
-
   const servicesItemListLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -134,11 +119,9 @@ export default function Page() {
       "@type": "ListItem",
       position: i + 1,
       name: s.title,
-      // İlgili alt sayfalar varsa buraya URL ver:
       url: "https://www.sahneva.com/kurumsal-organizasyon#hizmetler",
     })),
   };
-
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -163,7 +146,6 @@ export default function Page() {
         },
         serviceType: "EventProduction",
         url: "https://www.sahneva.com/kurumsal-organizasyon",
-        // Gerçek verin varsa AggregateRating ekleyebilirsin (burada sahte eklemiyoruz)
       },
       {
         "@type": "FAQPage",
@@ -181,29 +163,14 @@ export default function Page() {
 
   return (
     <>
-      {/* JSON-LD */}
-      <Script id="ld-kurumsal" type="application/ld+json" strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <Script id="ld-image" type="application/ld+json" strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(imageLd) }} />
-      <Script id="ld-itemlist" type="application/ld+json" strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesItemListLd) }} />
-
-      {/* prefers-reduced-motion — sayfa içi global kural */}
-      <style jsx global>{`
-        @media (prefers-reduced-motion: reduce) {
-          *, *::before, *::after { animation: none !important; transition: none !important; }
-        }
-      `}</style>
+      <Script id="ld-kurumsal" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <Script id="ld-image" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(imageLd) }} />
+      <Script id="ld-itemlist" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesItemListLd) }} />
 
       <SkipToMain />
 
       {/* HERO */}
-      <section
-        className="relative flex items-center justify-center overflow-hidden bg-slate-900 pt-20 min-h-[72vh]"
-        role="banner"
-        aria-labelledby="hero-title"
-      >
+      <section className="relative flex items-center justify-center overflow-hidden bg-slate-900 pt-20 min-h-[72vh]" role="banner" aria-labelledby="hero-title">
         <div className="absolute inset-0">
           <Image src={HERO.src} alt={HERO.alt} fill priority className="object-cover" sizes={HERO.sizes} />
           <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-800 to-blue-950 mix-blend-multiply" aria-hidden="true" />
@@ -213,7 +180,8 @@ export default function Page() {
         <div className="relative z-10 container mx-auto px-4 text-center text-white py-16">
           <div className="inline-flex items-center gap-3 bg-white/15 backdrop-blur-md rounded-2xl px-6 py-3 border border-white/25 mb-8">
             <span className="relative flex w-3 h-3" aria-hidden="true">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+              {/* motion-reduce ile animasyonu kapat */}
+              <span className="animate-ping motion-reduce:animate-none absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
               <span className="relative inline-flex rounded-full w-3 h-3 bg-green-500" />
             </span>
             <span className="text-sm font-semibold">Türkiye Geneli Profesyonel Hizmet</span>
@@ -274,10 +242,7 @@ export default function Page() {
                 const id = `svc-${slugify(service.title)}`;
                 return (
                   <li key={id}>
-                    <article
-                      className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 group hover:shadow-xl hover:scale-105 transition-all duration-300"
-                      aria-labelledby={id}
-                    >
+                    <article className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 group hover:shadow-xl hover:scale-105 transition-all duration-300" aria-labelledby={id}>
                       <div className="text-3xl mb-3 transform group-hover:scale-110 transition-transform duration-300" role="img" aria-label={service.title}>
                         {service.icon}
                       </div>
@@ -340,7 +305,7 @@ export default function Page() {
         </section>
 
         {/* SÜREÇ */}
-        <section className="py-16 bg-gradient-to-b from-white to purple-50/30" aria-labelledby="surec-baslik">
+        <section className="py-16 bg-gradient-to-b from-white to-purple-50/30" aria-labelledby="surec-baslik">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 id="surec-baslik" className="text-3xl md:text-5xl font-black mb-4">
@@ -431,8 +396,7 @@ export default function Page() {
           </div>
         </section>
 
-        {/* SEO MAKALESİ ve SON CTA (değişmedi) */}
-        {/* ... (önceki sürümle aynı içerik) */}
+        {/* SEO makalesi ve Son CTA — (önceki içerikle aynı, burada kısaltıldı) */}
       </main>
     </>
   );
