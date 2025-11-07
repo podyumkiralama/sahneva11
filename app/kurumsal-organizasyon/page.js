@@ -12,7 +12,7 @@ export const revalidate = 1800;
 // -------------------- Metadata --------------------
 export const metadata = {
   title:
-    "Kurumsal Organizasyon & Etkinlik Yönetimi | Profesyonel Çözümler",
+    "Kurumsal Organizasyon & Etkinlik Yönetimi | Profesyonel Çözümler- Sahneva",
   description:
     "Toplantı, konferans, lansman, gala, miting ve roadshow'larda uçtan uca planlama. Sahne, podyum, LED ekran, ses-ışık ve yayın operasyonu tek ekipten.",
   alternates: {
@@ -665,4 +665,5 @@ export default function Page() {
     </>
   );
 }
+
 
