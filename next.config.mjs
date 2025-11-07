@@ -1,3 +1,67 @@
+const ONE_DAY_IN_SECONDS = 60 * 60 * 24;
+const ONE_MONTH_IN_SECONDS = ONE_DAY_IN_SECONDS * 30;
+const ONE_YEAR_IN_SECONDS = ONE_DAY_IN_SECONDS * 365;
+
+const isProd = process.env.NODE_ENV === "production";
+const siteUrl = process.env.SITE_URL ?? "https://www.sahneva.com";
+
+const scriptSrcHosts = [
+  "https://www.googletagmanager.com",
+  "https://www.google-analytics.com",
+  "https://va.vercel-scripts.com",
+  "https://vercel.live",
+];
+
+const connectSrcHosts = [
+  "https://vitals.vercel-insights.com",
+  "https://www.google-analytics.com",
+  "https://region1.google-analytics.com",
+  "https://stats.g.doubleclick.net",
+  siteUrl,
+];
+
+const frameSrcHosts = ["https://www.google.com", "https://vercel.live", "https://*.vercel.live"];
+
+const securityHeaders = (() => {
+  const scriptSrc = ["'self'", "'unsafe-inline'", ...scriptSrcHosts].join(" ");
+  const connectSrc = ["'self'", ...connectSrcHosts].join(" ");
+  const frameSrc = ["'self'", ...frameSrcHosts].join(" ");
+
+  const csp = `
+      default-src 'self';
+      base-uri 'self';
+      object-src 'none';
+      frame-ancestors 'none';
+      upgrade-insecure-requests;
+      img-src 'self' data: blob: https:;
+      font-src 'self' data: https://fonts.gstatic.com;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      script-src ${scriptSrc};
+      script-src-elem ${scriptSrc};
+      script-src-attr 'none';
+      connect-src ${connectSrc};
+      worker-src 'self' blob:;
+      frame-src ${frameSrc};
+      form-action 'self' https://formspree.io https://wa.me;
+    `.replace(/\s{2,}/g, " ").trim();
+
+  return [
+    { key: "Content-Security-Policy", value: csp },
+    { key: "X-Content-Type-Options", value: "nosniff" },
+    { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+    { key: "X-Frame-Options", value: "DENY" },
+    { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+    { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=()" },
+    { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
+  ];
+})();
+
+const longTermCacheHeaders = [
+  { key: "Cache-Control", value: `public, max-age=${ONE_YEAR_IN_SECONDS}, immutable` },
+  { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
+];
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -7,21 +71,18 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
   trailingSlash: false,
 
-  // Next 16'da swcMinify zaten default; anahtar uyarı veriyor, kaldır.
-  // swcMinify: true,
-
   images: {
     deviceSizes: [320, 420, 640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ["image/avif", "image/webp"],
-    minimumCacheTTL: 60 * 60 * 24 * 30,
+    minimumCacheTTL: ONE_MONTH_IN_SECONDS,
     remotePatterns: [],
     dangerouslyAllowSVG: false,
   },
 
   compiler: {
-    removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
-    reactRemoveProperties: process.env.NODE_ENV === "production" ? { properties: ["^data-testid$"] } : false,
+    removeConsole: isProd ? { exclude: ["error", "warn"] } : false,
+    reactRemoveProperties: isProd ? { properties: ["^data-testid$"] } : false,
   },
 
   experimental: {
@@ -30,30 +91,41 @@ const nextConfig = {
     esmExternals: true,
   },
 
-  env: {
-    SITE_URL: process.env.SITE_URL || "https://www.sahneva.com",
-    NEXT_PUBLIC_APP_ENV: process.env.NODE_ENV || "development",
+  modularizeImports: {
+    "lucide-react": {
+      transform: "lucide-react/lib/esm/icons/{{member}}",
+    },
+    "react-icons/?(((\\w*)?/?)*)": {
+      transform: "react-icons/{{ matches.[1] }}/{{member}}",
+    },
   },
 
-  output: process.env.NODE_ENV === "production" ? "standalone" : undefined,
+  env: {
+    SITE_URL: siteUrl,
+    NEXT_PUBLIC_APP_ENV: process.env.NODE_ENV ?? "development",
+  },
+
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+
+  output: isProd ? "standalone" : undefined,
   staticPageGenerationTimeout: 300,
 
   async redirects() {
     return [
-      // /search?q=... → /?q=...
       {
         source: "/search",
         has: [{ type: "query", key: "q", value: "(?<term>.*)" }],
         destination: "/?q=:term",
         permanent: true,
       },
-      // /search (q yoksa) → /
       { source: "/search", destination: "/", permanent: true },
-
-      // Eski slug → yeni slug
       { source: "/sahne-kurulumu", destination: "/sahne-kiralama", permanent: true },
-
-      // Kötü URL’ler → / (yalnızca açıkça yazılmış varyantlar)
       { source: "/$", destination: "/", permanent: true },
       { source: "/&", destination: "/", permanent: true },
       { source: "/%24", destination: "/", permanent: true },
@@ -62,74 +134,19 @@ const nextConfig = {
   },
 
   async headers() {
-    const frameSrc = ["'self'", "https://www.google.com", "https://vercel.live", "https://*.vercel.live"].join(" ");
-    const connectSrc = [
-      "'self'",
-      "https://vitals.vercel-insights.com",
-      "https://www.google-analytics.com",
-      "https://region1.google-analytics.com",
-      "https://stats.g.doubleclick.net",
-      "https://www.sahneva.com",
-    ].join(" ");
-    const scriptSrcCommon = [
-      "'self'",
-      "'unsafe-inline'", // nonce/middleware yokken gerekli
-      "https://www.googletagmanager.com",
-      "https://www.google-analytics.com",
-      "https://va.vercel-scripts.com",
-      "https://vercel.live",
-    ].join(" ");
-    const csp = `
-      default-src 'self';
-      base-uri 'self';
-      object-src 'none';
-      frame-ancestors 'none';
-      upgrade-insecure-requests;
-      img-src 'self' data: blob: https:;
-      font-src 'self' data: https://fonts.gstatic.com;
-      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-      script-src ${scriptSrcCommon};
-      script-src-elem ${scriptSrcCommon};
-      script-src-attr 'none';
-      connect-src ${connectSrc};
-      worker-src 'self' blob:;
-      frame-src ${frameSrc};
-      form-action 'self' https://formspree.io https://wa.me;
-    `.replace(/\s{2,}/g, " ").trim();
-
-    const security = [
-      { key: "Content-Security-Policy", value: csp },
-      { key: "X-Content-Type-Options", value: "nosniff" },
-      { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-      { key: "X-Frame-Options", value: "DENY" },
-      { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
-      { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-      { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=()" },
-      { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
-    ];
-
     return [
-      // Genel güvenlik
-      { source: "/(.*)", headers: security },
-
-      // Uzun cache
+      { source: "/(.*)", headers: securityHeaders },
       {
         source: "/_next/static/(.*)",
         headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-          { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
-          // Arama motoruna indexletme
+          ...longTermCacheHeaders,
           { key: "X-Robots-Tag", value: "noindex, nofollow" },
         ],
       },
       {
         source: "/(.*)\\.(ico|png|jpg|jpeg|webp|avif|svg|gif|woff2)",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-          { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
-        ],
+        headers: longTermCacheHeaders,
       },
-      // Tüm _next altını noindex yap (önlem amaçlı)
       {
         source: "/_next/(.*)",
         headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
