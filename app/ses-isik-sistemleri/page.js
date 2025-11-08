@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
 
-// ---------- META ----------
+/* ---------- META ---------- */
 export const metadata = {
   title: "Ses ve Işık Sistemleri Kiralama | Profesyonel Sahne Çözümleri",
   description:
@@ -19,10 +19,10 @@ export const metadata = {
   },
 };
 
-// (Opsiyonel) ISR
+// ISR
 export const revalidate = 60;
 
-// ---------- İÇERİK ----------
+/* ---------- İÇERİK ---------- */
 const CONTENT = {
   heroOverlay: true,
   gallery: ["/img/ses-isik/ses-sistemi.webp", "/img/ses-isik/isik-sistemi.webp"],
@@ -69,16 +69,23 @@ const CONTENT = {
   ],
 };
 
-// ---------- UZUN MAKALE ----------
+/* ---------- UZUN MAKALE (premium stil) ---------- */
 function LongArticleAudioLight() {
   return (
-    <section className="container max-w-4xl mx-auto py-10 md:py-14 space-y-10">
+    <section
+      className="container mx-auto max-w-5xl px-4 py-12 md:py-16 space-y-10"
+      aria-labelledby="bolum-icerik"
+    >
+      <h2 id="bolum-icerik" className="sr-only">
+        Ses & Işık Sistemleri — İçerik Bölümleri
+      </h2>
+
       {/* Nedir? */}
-      <article className="space-y-4 text-neutral-800 leading-relaxed">
-        <h2 className="text-2xl md:text-3xl font-extrabold">
+      <article className="rounded-2xl border border-neutral-200 bg-white/70 backdrop-blur-sm p-6 md:p-8 shadow-sm">
+        <h3 className="text-2xl md:text-3xl font-extrabold tracking-tight">
           Ses & Işık Sistemleri Nedir?
-        </h2>
-        <p>
+        </h3>
+        <p className="mt-4 text-neutral-800 leading-relaxed">
           Profesyonel ses &amp; ışık; her noktada anlaşılır ses ve sahneye uygun
           ışık atmosferi üretmeyi hedefler. <strong>Sahneva</strong> ekipleri;
           keşif, projelendirme, kurulum ve canlı operasyonu uçtan uca yönetir.
@@ -88,46 +95,42 @@ function LongArticleAudioLight() {
       </article>
 
       {/* Fiyatlar */}
-      <article className="rounded-2xl border bg-white p-6">
-        <h2 className="text-2xl md:text-3xl font-extrabold">
+      <article className="rounded-2xl border border-neutral-200 bg-white/70 backdrop-blur-sm p-6 md:p-8 shadow-sm">
+        <h3 className="text-2xl md:text-3xl font-extrabold tracking-tight">
           Kiralama Fiyatları Nasıl Belirlenir?
-        </h2>
+        </h3>
         <p className="mt-3 text-neutral-700">
           Bütçe, alan ve ihtiyaçlara göre şekillenir. Temel parametreler:
         </p>
-        <ul className="mt-4 grid gap-2 md:grid-cols-2 text-neutral-800">
-          <li className="flex gap-2">
-            <span className="mt-2 h-2 w-2 rounded-full bg-primary" />
-            Alan büyüklüğü (iç/dış), seyirci kapasitesi
-          </li>
-          <li className="flex gap-2">
-            <span className="mt-2 h-2 w-2 rounded-full bg-primary" />
-            Sistem gücü (line array/top+sub) & kanal ihtiyacı
-          </li>
-          <li className="flex gap-2">
-            <span className="mt-2 h-2 w-2 rounded-full bg-primary" />
-            Işık armatür sayısı ve truss/rigging metreleri
-          </li>
-          <li className="flex gap-2">
-            <span className="mt-2 h-2 w-2 rounded-full bg-primary" />
-            Teknik ekip, çalışma saatleri ve lojistik
-          </li>
+        <ul className="mt-5 grid gap-3 md:grid-cols-2 text-neutral-900">
+          {[
+            "Alan büyüklüğü (iç/dış), seyirci kapasitesi",
+            "Sistem gücü (line array/top+sub) & kanal ihtiyacı",
+            "Işık armatür sayısı ve truss/rigging metreleri",
+            "Teknik ekip, çalışma saatleri ve lojistik",
+          ].map((item) => (
+            <li key={item} className="flex gap-3">
+              <span
+                aria-hidden
+                className="mt-2 inline-block h-2 w-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600"
+              />
+              <span>{item}</span>
+            </li>
+          ))}
         </ul>
-        <div className="mt-5 rounded-xl bg-neutral-50 p-4 text-neutral-700">
-          <p>
-            Hızlı teklif için <strong>tarih/konum</strong>,{" "}
-            <strong>katılımcı sayısı</strong>, <strong>etkinlik türü</strong>{" "}
-            ve <strong>program akışını</strong> paylaşmanız yeterli.
-          </p>
+        <div className="mt-6 rounded-xl bg-neutral-50 p-4 text-neutral-700 border border-neutral-200">
+          Hızlı teklif için <strong>tarih/konum</strong>,{" "}
+          <strong>katılımcı sayısı</strong>, <strong>etkinlik türü</strong> ve{" "}
+          <strong>program akışını</strong> paylaşmanız yeterli.
         </div>
       </article>
 
       {/* Kullanım alanları */}
-      <article className="rounded-2xl border bg-white p-6">
-        <h2 className="text-2xl md:text-3xl font-extrabold">
+      <article className="rounded-2xl border border-neutral-200 bg-white/70 backdrop-blur-sm p-6 md:p-8 shadow-sm">
+        <h3 className="text-2xl md:text-3xl font-extrabold tracking-tight">
           Nerelerde Kullanılır?
-        </h2>
-        <div className="grid md:grid-cols-2 gap-2 mt-3 text-neutral-800">
+        </h3>
+        <div className="mt-4 grid gap-2 md:grid-cols-2 text-neutral-900">
           <ul className="space-y-1">
             <li>• Konser ve festival sahneleri</li>
             <li>• Lansman, panel ve konferanslar</li>
@@ -144,22 +147,22 @@ function LongArticleAudioLight() {
       </article>
 
       {/* Teknik/İpucu bloğu */}
-      <article className="rounded-2xl border bg-white p-6">
-        <h2 className="text-2xl md:text-3xl font-extrabold">
+      <article className="rounded-2xl border border-neutral-200 bg-white/70 backdrop-blur-sm p-6 md:p-8 shadow-sm">
+        <h3 className="text-2xl md:text-3xl font-extrabold tracking-tight">
           Doğru Sistem Seçimi İçin İpuçları
-        </h2>
-        <div className="mt-4 grid gap-6 md:grid-cols-2">
+        </h3>
+        <div className="mt-6 grid gap-8 md:grid-cols-2">
           <div>
-            <h3 className="text-xl font-bold">Ses</h3>
-            <ul className="mt-2 space-y-1 text-neutral-800">
-              <li>• Line array uzak mesafe, top+sub orta/ küçük alanlar için.</li>
+            <h4 className="text-xl font-bold">Ses</h4>
+            <ul className="mt-3 space-y-1 text-neutral-800">
+              <li>• Line array uzak mesafe, top+sub orta/küçük alanlar için.</li>
               <li>• Dijital mikser + stagebox kablo ve routing’i sadeleştirir.</li>
               <li>• Monitörleme (wedges/iem) sahne hakimiyetini artırır.</li>
             </ul>
           </div>
           <div>
-            <h3 className="text-xl font-bold">Işık</h3>
-            <ul className="mt-2 space-y-1 text-neutral-800">
+            <h4 className="text-xl font-bold">Işık</h4>
+            <ul className="mt-3 space-y-1 text-neutral-800">
               <li>• RGBW spot + wash temel aydınlatma; beam/spot efekt içindir.</li>
               <li>• DMX sahne programları akışa göre sahnelenmelidir.</li>
               <li>• Truss yük/askı ve güvenlik (safety) standart olmalıdır.</li>
@@ -169,17 +172,17 @@ function LongArticleAudioLight() {
       </article>
 
       {/* Teknik Tablo */}
-      <article className="rounded-2xl border bg-white p-6">
-        <h3 className="text-xl font-bold mb-3">Teknik Özellikler (Özet)</h3>
-        <div className="overflow-x-auto">
+      <article className="rounded-2xl border border-neutral-200 bg-white/70 backdrop-blur-sm p-6 md:p-8 shadow-sm">
+        <h4 className="text-xl font-bold mb-4">Teknik Özellikler (Özet)</h4>
+        <div className="overflow-x-auto rounded-xl border border-neutral-200">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-neutral-500">
-                <th className="p-2">Bileşen</th>
-                <th className="p-2">Detay</th>
+              <tr className="text-left text-neutral-600 bg-neutral-50">
+                <th className="p-3">Bileşen</th>
+                <th className="p-3">Detay</th>
               </tr>
             </thead>
-            <tbody className="[&>tr>*]:p-2 [&>tr]:border-b">
+            <tbody className="[&>tr>*]:p-3 [&>tr]:border-t">
               <tr>
                 <td>PA</td>
                 <td>Line array / top+sub konfigürasyonları</td>
@@ -212,7 +215,7 @@ function LongArticleAudioLight() {
   );
 }
 
-// ---------- SAYFA ----------
+/* ---------- SAYFA ---------- */
 export default function Page() {
   const title = "Ses ve Işık Sistemleri Kiralama";
   const desc =
@@ -220,50 +223,92 @@ export default function Page() {
 
   return (
     <>
-      {/* HERO (LED sayfasıyla aynı yükseklik/stil) */}
-      <section className="relative h-[300px] md:h-[400px] w-full overflow-hidden rounded-b-3xl">
+      {/* Skip link */}
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:z-[9999] focus:top-3 focus:left-3 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-3 focus:rounded-lg focus:font-semibold focus:shadow-lg"
+      >
+        Ana içeriğe atla
+      </a>
+
+      {/* HERO (premium) */}
+      <section
+        className="relative h-[340px] md:h-[460px] w-full overflow-hidden rounded-b-[2rem] bg-slate-950"
+        aria-labelledby="hero-title"
+      >
         <Image
           src="/img/ses-isik/hero.webp"
           alt="Profesyonel sahne ses ve ışık sistemleri kurulumu"
           fill
           sizes="100vw"
-          className="object-cover object-center"
           priority
+          className="object-cover object-center opacity-90"
         />
         {CONTENT.heroOverlay && (
-          <div className="absolute inset-0 bg-black/45" aria-hidden="true" />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/35 to-black/65"
+          />
         )}
-        <div className="absolute inset-0 flex items-center justify-center text-center text-white px-4">
-          <h1 className="relative z-10 text-3xl md:text-5xl font-extrabold drop-shadow-lg">
+
+        {/* Yumuşak renk kümeleri */}
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute -top-24 -right-16 h-64 w-64 rounded-full bg-purple-500/30 blur-3xl" />
+          <div className="absolute -bottom-24 -left-10 h-64 w-64 rounded-full bg-blue-500/25 blur-3xl" />
+        </div>
+
+        <div className="absolute inset-0 flex items-center justify-center text-center text-white px-6">
+          <h1
+            id="hero-title"
+            className="relative z-10 text-3xl md:text-5xl font-black tracking-tight drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
+          >
             {title}
           </h1>
+        </div>
+
+        {/* Scroll cue */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2">
+          <div className="animate-bounce">
+            <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
+              <div className="w-1 h-3 bg-white/80 rounded-full mt-2" />
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Kısa açıklama */}
-      <section className="container max-w-4xl mx-auto py-8">
+      <section className="container mx-auto max-w-5xl px-4 py-8">
         <p className="text-neutral-700 leading-relaxed text-lg">{desc}</p>
       </section>
 
-      {/* Uzun makale */}
-      <LongArticleAudioLight />
+      {/* Ana içerik */}
+      <main id="main">
+        <LongArticleAudioLight />
+      </main>
 
-      {/* Paketler (LED ile aynı grid/kart yapısı) */}
+      {/* Paketler */}
       {!!CONTENT.packages.length && (
-        <section className="container py-8">
-          <h2 className="text-2xl font-bold mb-6">Paket Örnekleri</h2>
+        <section className="container mx-auto max-w-6xl px-4 pb-4">
+          <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight mb-6">
+            Paket Örnekleri
+          </h2>
           <div className="grid gap-6 md:grid-cols-3">
             {CONTENT.packages.map((p, i) => (
-              <article key={`pkg-${i}`} className="rounded-2xl border bg-white p-5">
-                <h3 className="text-lg font-semibold">{p.name}</h3>
-                <ul className="mt-3 space-y-1 text-neutral-700">
+              <article
+                key={`pkg-${i}`}
+                className="group rounded-2xl border border-neutral-200 bg-white/80 backdrop-blur-sm p-6 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-0.5"
+              >
+                <h3 className="text-lg font-bold">{p.name}</h3>
+                <ul className="mt-3 space-y-1 text-neutral-800">
                   {p.includes.map((inc, ii) => (
                     <li key={`pkgi-${i}-${ii}`} className="flex gap-2">
                       <span aria-hidden>•</span> <span>{inc}</span>
                     </li>
                   ))}
                 </ul>
-                {p.note && <p className="mt-3 text-sm text-neutral-500">{p.note}</p>}
+                {p.note && (
+                  <p className="mt-4 text-sm text-neutral-500">{p.note}</p>
+                )}
               </article>
             ))}
           </div>
@@ -272,18 +317,23 @@ export default function Page() {
 
       {/* Galeri */}
       {!!CONTENT.gallery.length && (
-        <section className="container py-8">
-          <h2 className="text-2xl font-bold mb-6">Kurulumdan Görseller</h2>
+        <section className="container mx-auto max-w-6xl px-4 py-10">
+          <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight mb-6">
+            Kurulumdan Görseller
+          </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {CONTENT.gallery.map((src, i) => (
-              <div key={src} className="relative aspect-[4/3] overflow-hidden rounded-xl group">
+              <div
+                key={src}
+                className="relative aspect-[4/3] overflow-hidden rounded-xl group border border-neutral-200"
+              >
                 <Image
                   src={src}
                   alt={`${title} görsel ${i + 1}`}
                   fill
                   loading="lazy"
-                  sizes="(max-width: 1024px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                 />
               </div>
             ))}
@@ -291,27 +341,57 @@ export default function Page() {
         </section>
       )}
 
-      {/* İlgili Hizmetler (LED sayfasıyla aynı konum/stil) */}
-      <section className="container py-8">
-        <h2 className="text-2xl font-bold mb-4">İlgili Hizmetler</h2>
+      {/* İlgili Hizmetler */}
+      <section className="container mx-auto max-w-6xl px-4 pb-10">
+        <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight mb-4">
+          İlgili Hizmetler
+        </h2>
         <ul className="flex flex-wrap gap-3 text-sm">
-          <li><Link href="/sahne-kiralama" className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50">Sahne Kiralama</Link></li>
-          <li><Link href="/podyum-kiralama" className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50">Podyum Kiralama</Link></li>
-          <li><Link href="/led-ekran-kiralama" className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50">LED Ekran Kiralama</Link></li>
-          <li><Link href="/cadir-kiralama" className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50">Çadır Kiralama</Link></li>
+          <li>
+            <Link
+              href="/sahne-kiralama"
+              className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50"
+            >
+              Sahne Kiralama
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/podyum-kiralama"
+              className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50"
+            >
+              Podyum Kiralama
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/led-ekran-kiralama"
+              className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50"
+            >
+              LED Ekran Kiralama
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/cadir-kiralama"
+              className="inline-block rounded-lg border px-3 py-2 hover:bg-neutral-50"
+            >
+              Çadır Kiralama
+            </Link>
+          </li>
         </ul>
       </section>
 
       {/* CTA */}
-      <section className="container pb-14">
-        <div className="flex flex-col items-center justify-between gap-4 rounded-2xl bg-gradient-to-r from-primary to-primary/80 p-6 text-center text-white md:flex-row md:p-8 md:text-left">
+      <section className="container mx-auto max-w-6xl px-4 pb-14">
+        <div className="flex flex-col items-center justify-between gap-4 rounded-2xl bg-gradient-to-r from-blue-700 to-purple-700 p-6 text-center text-white md:flex-row md:p-8 md:text-left shadow-md">
           <h2 className="text-xl font-bold md:text-2xl">
             {title} hakkında teklif almak ister misiniz?
           </h2>
           <div className="flex justify-center gap-3 md:justify-end">
             <Link
               href="/iletisim"
-              className="rounded-lg bg-white px-4 py-2 font-semibold text-primary hover:opacity-90"
+              className="rounded-lg bg-white px-4 py-2 font-semibold text-blue-700 hover:opacity-95"
             >
               İletişime Geç
             </Link>
@@ -319,7 +399,7 @@ export default function Page() {
               href="https://wa.me/905453048671?text=Merhaba%2C%20Ses%20ve%20I%C5%9F%C4%B1k%20Sistemleri%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum."
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-lg border border-white px-4 py-2 font-semibold hover:bg-white/20"
+              className="rounded-lg border border-white px-4 py-2 font-semibold hover:bg-white/15"
             >
               WhatsApp
             </a>
@@ -327,7 +407,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* JSON-LD: Service + Breadcrumb */}
+      {/* JSON-LD: Service + Breadcrumb (CSP'niz 'unsafe-inline' içeriyor; çalışır) */}
       <Script
         id="ld-service-audio-light"
         type="application/ld+json"
@@ -364,8 +444,18 @@ export default function Page() {
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Anasayfa", item: "https://www.sahneva.com" },
-              { "@type": "ListItem", position: 2, name: "Ses ve Işık Sistemleri", item: "https://www.sahneva.com/ses-isik-sistemleri" },
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Anasayfa",
+                item: "https://www.sahneva.com",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Ses ve Işık Sistemleri",
+                item: "https://www.sahneva.com/ses-isik-sistemleri",
+              },
             ],
           }),
         }}
