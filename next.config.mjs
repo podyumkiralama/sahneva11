@@ -12,9 +12,6 @@ const isVercelPreview =
 const isProd = process.env.NODE_ENV === "production" && !isVercelPreview;
 const isPreview = isVercelPreview;
 
-// 🔥 MİNİFİKASYON İÇİN KRİTİK AYAR
-const shouldMinify = isProd && !isPreview;
-
 const siteUrl = process.env.SITE_URL ?? "https://www.sahneva.com";
 
 /* -------------------- Güvenlik Başlıkları (CSP dahil) -------------------- */
@@ -150,9 +147,9 @@ const nextConfig = {
   compress: true,
   generateEtags: true,
   
-  // 🔥 MİNİFİKASYON AYARLARI - BU KISIM ÇOK ÖNEMLİ
-  swcMinify: true,
-  optimizeFonts: true,
+  // ❌ ESKİ AYARLAR KALDIRILDI (Next.js 16'da geçersiz)
+  // swcMinify: true, // Next.js 16'da artık varsayılan
+  // optimizeFonts: true, // Next.js 16'da artık varsayılan
   
   // Production'da source map'leri devre dışı bırak
   productionBrowserSourceMaps: false,
@@ -182,29 +179,15 @@ const nextConfig = {
     reactRemoveProperties: isProd ? { properties: ["^data-testid$"] } : false,
   },
 
-  // 🔥 WEBPACK OPTİMİZASYONLARI
-  webpack: (config, { dev, isServer }) => {
-    if (!dev && !isServer) {
-      // Optimize chunk ids for better minification
-      config.optimization.chunkIds = 'deterministic';
-      config.optimization.moduleIds = 'deterministic';
-      config.optimization.mangleExports = 'deterministic';
-      
-      // Daha agresif minifikasyon
-      config.optimization.minimize = true;
-      config.optimization.usedExports = true;
-      
-      // Tree shaking için yardımcı
-      config.optimization.sideEffects = false;
-    }
-    return config;
+  // 🔥 TURBOPACK AYARI EKLENDİ
+  turbopack: {
+    // Turbopack için ek ayarlar (şimdilik boş bırakabilirsiniz)
   },
 
   experimental: {
     scrollRestoration: true,
     optimizePackageImports: ["lucide-react", "@headlessui/react"],
     esmExternals: true,
-    // 🔥 EK OPTİMİZASYONLAR
     optimizeCss: true,
     nextScriptWorkers: true,
   },
@@ -213,7 +196,7 @@ const nextConfig = {
   modularizeImports: {
     "lucide-react": {
       transform: "lucide-react/icons/{{member}}",
-      preventFullImport: true, // Tam import'u engelle
+      preventFullImport: true,
     },
     "react-icons/?(((\\w*)?/?)*)": {
       transform: "react-icons/{{ matches.[1] }}/{{member}}",
@@ -290,6 +273,5 @@ console.log('- VERCEL_ENV:', process.env.VERCEL_ENV);
 console.log('- NEXT_PUBLIC_VERCEL_ENV:', process.env.NEXT_PUBLIC_VERCEL_ENV);
 console.log('- isProd:', isProd);
 console.log('- isPreview:', isPreview);
-console.log('- shouldMinify:', shouldMinify);
 
 export default nextConfig;
