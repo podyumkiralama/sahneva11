@@ -209,6 +209,7 @@ function Services() {
     </section>
   );
 }
+
 /* ================== Galeri (4 görünür + gizli ekler) ================== */
 const GALLERY_VISIBLE = [
   { src: "/img/ses-isik/1.webp", alt: "Line array ve FOH kurulum" },
@@ -355,108 +356,200 @@ function UseCases() {
     </section>
   );
 }
-/* ================== Makaleler (2 sütun, gradient başlıklılar) ================== */
+
+/* ================== Makaleler (İYİLEŞTİRİLMİŞ) ================== */
 function Articles() {
   return (
     <section className="py-16 bg-gradient-to-b from-white to-gray-50" aria-labelledby="makale-baslik">
-      <div className="container mx-auto px-4 max-w-6xl">
-        <div className="text-center mb-12">
-          <h2 id="makale-baslik" className="text-3xl md:text-5xl font-black">
-            Bilgi{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Makalesi</span>
+      <div className="container mx-auto px-4 max-w-7xl">
+        <div className="text-center mb-16">
+          <h2 id="makale-baslik" className="text-3xl md:text-5xl font-black mb-4">
+            Bilgi &{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Rehber</span>
           </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Profesyonel ses ve ışık sistemleri hakkında detaylı bilgiler ve uzman görüşleri
+          </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Sol Makale */}
-          <article className="overflow-hidden rounded-3xl shadow-xl border border-gray-200 bg-white">
-            <header className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 md:p-8">
-              <h3 className="text-xl md:text-2xl font-black tracking-tight">
-                Ses ve Işık Sistemlerinde Profesyonel Çözümler
-              </h3>
-              <p className="text-blue-100 mt-2">Kurumsal standart, hızlı kurulum ve ölçülebilir kalite</p>
+        <div className="grid lg:grid-cols-2 gap-8">
+          {/* Ana Makale - Daha Geniş ve Detaylı */}
+          <article className="lg:col-span-2 bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
+            <header className="bg-gradient-to-r from-blue-700 via-purple-700 to-blue-800 text-white p-8 md:p-10 relative overflow-hidden">
+              <div className="absolute inset-0 bg-black/10" aria-hidden="true"></div>
+              <div className="relative z-10">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="bg-white/20 backdrop-blur-sm rounded-full px-4 py-1 text-sm font-semibold">📚 Kapsamlı Rehber</span>
+                  <span className="bg-green-500/20 backdrop-blur-sm rounded-full px-4 py-1 text-sm font-semibold">⭐ Uzman Görüşü</span>
+                </div>
+                <h3 className="text-2xl md:text-3xl font-black tracking-tight leading-tight">
+                  Ses ve Işık Sistemlerinde Profesyonel Çözümler
+                </h3>
+                <p className="text-blue-100 mt-4 text-lg leading-relaxed">
+                  Kurumsal standart, hızlı kurulum ve ölçülebilir kalite ile etkinliklerinizde mükemmel performans
+                </p>
+              </div>
             </header>
 
-            <div className="p-6 md:p-8 prose prose-lg max-w-none">
-              <p>
-                <strong>Sahneva</strong>, Türkiye genelinde{" "}
-                <Link href="/ses-isik-sistemleri" className="underline underline-offset-4 decoration-purple-400">
-                  ses sistemi kiralama
-                </Link>{" "}
-                ve{" "}
-                <Link href="/ses-isik-sistemleri" className="underline underline-offset-4 decoration-purple-400">
-                  ışık sistemi kiralama
-                </Link>{" "}
-                alanlarında kurumsal standartta çözümler sunar. Etkinliğiniz ister açık hava konseri ister kapalı salon
-                konferansı olsun; akustik keşif, teknik projelendirme, güvenli <em>truss &amp; rigging</em> ve canlı
-                operasyon dahil <strong>uçtan uca hizmet</strong> modelimizle tek ekipten yönetim sağlarız. Doğru
-                konfigüre edilmiş <em>line array</em> sistemleriyle homojen SPL dağılımı elde edilirken, dijital mikser
-                ve <em>stagebox</em> mimarisi patch, routing ve kayıt süreçlerini hızlandırır. RGBW spot, wash ve
-                beam/spot armatürleri; DMX tabanlı sahne programlarıyla senkronize edilerek konuşma anlaşılabilirliği
-                yüksek, müzikal performansı dinamik ve temiz bir deneyime dönüştürür.
-              </p>
-              <p>
-                Uygulama stratejimiz mekânın mimari ve akustik yapısına göre şekillenir. Açık alan etkinliklerinde
-                rüzgâr ve zaman gecikmesini dengelemek için <em>delay tower</em> ve <em>side fill</em> çözümleri
-                kullanır; kapalı salonlarda yankıyı azaltan top+sub ya da kompakt line array dizilimlerine gideriz. FOH
-                miksaj, monitör miks ve RF planlama; sahne disiplini korunarak hızlıca devreye alınır. Haze/duman,
-                blinder ve strobe gibi unsurlar kritik anlarda vurguyu artırır; önceden planlanmış cue’lar ile ışık show
-                akıcı ve kontrollü şekilde ilerler. Böylece hem kurumsal etkinliklerde net ve anlaşılır konuşma, hem
-                konser/festival gibi yüksek enerjili etkinliklerde güçlü bir atmosfer sağlanır.
-              </p>
-              <p>
-                <em>Ses sistemi kiralama İstanbul</em>, <em>ışık sistemi kiralama İstanbul</em>,{" "}
-                <em>konser ses ışık</em>, <em>line array kiralama</em>, <em>led ışık kiralama</em> gibi anahtar
-                ihtiyaçlarınızda; düşük arıza oranı, hızlı kurulum, yedekli altyapı ve güvenli rigging ile ölçülebilir
-                kalite sunuyoruz. 81 ilde belediye etkinlikleri, AVM lansmanları, fuar stantları, kurumsal toplantılar
-                ve mezuniyet törenlerinde standartlarımızı aynı seviyede koruruz. Projenize uygun paketler, şeffaf
-                fiyatlama ve teknik çizimlerle riskleri en aza indirir, etkinlik gününde yalnızca içerik ve performansa
-                odaklanmanızı sağlarız. Teklif için hemen iletişime geçin; ses ve ışık kalitesini{" "}
-                <strong>Sahneva</strong> güvencesiyle garanti altına alın.
-              </p>
+            <div className="p-8 md:p-10">
+              <div className="prose prose-lg max-w-none prose-headings:font-black prose-headings:text-gray-900 prose-p:text-gray-700 prose-p:leading-relaxed prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-em:text-gray-600 prose-ul:mt-6 prose-ul:mb-6 prose-li:marker:text-blue-500">
+                
+                <div className="grid md:grid-cols-2 gap-8 mb-8">
+                  <div className="space-y-6">
+                    <h4 className="text-xl font-black text-gray-900 flex items-center gap-3">
+                      <span className="bg-blue-100 text-blue-600 rounded-full p-2">🔊</span>
+                      Ses Sistemleri
+                    </h4>
+                    <p>
+                      <strong>Sahneva</strong>, Türkiye genelinde{" "}
+                      <Link href="/ses-isik-sistemleri" className="font-semibold text-blue-600 hover:text-blue-700">
+                        ses sistemi kiralama
+                      </Link>{" "}
+                      ve{" "}
+                      <Link href="/ses-isik-sistemleri" className="font-semibold text-blue-600 hover:text-blue-700">
+                        ışık sistemi kiralama
+                      </Link>{" "}
+                      alanlarında kurumsal standartta çözümler sunar.
+                    </p>
+                    <p>
+                      Etkinliğiniz ister açık hava konseri ister kapalı salon konferansı olsun; akustik keşif, teknik projelendirme, 
+                      güvenli <em>truss & rigging</em> ve canlı operasyon dahil <strong>uçtan uca hizmet</strong> modelimizle 
+                      tek ekipten yönetim sağlarız.
+                    </p>
+                  </div>
+                  
+                  <div className="space-y-6">
+                    <h4 className="text-xl font-black text-gray-900 flex items-center gap-3">
+                      <span className="bg-purple-100 text-purple-600 rounded-full p-2">💡</span>
+                      Işık Sistemleri
+                    </h4>
+                    <p>
+                      Doğru konfigüre edilmiş <em>line array</em> sistemleriyle homojen SPL dağılımı elde edilirken, 
+                      dijital mikser ve <em>stagebox</em> mimarisi patch, routing ve kayıt süreçlerini hızlandırır.
+                    </p>
+                    <p>
+                      RGBW spot, wash ve beam/spot armatürleri; DMX tabanlı sahne programlarıyla senkronize edilerek 
+                      konuşma anlaşılabilirliği yüksek, müzikal performansı dinamik ve temiz bir deneyime dönüştürür.
+                    </p>
+                  </div>
+                </div>
 
-              <div className="mt-8 p-6 rounded-2xl border bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
-                <h4 className="m-0 font-black text-blue-700 mb-3">📊 Kritik Başarı Faktörleri</h4>
-                <ul className="grid md:grid-cols-2 gap-2 !mt-3 !mb-0">
-                  {[
-                    "Detaylı keşif ve akustik planlama",
-                    "Line array simülasyonu ile doğru kapsama",
-                    "Güvenli rigging ve sertifikalı ekipman",
-                    "Soundcheck ve cue planlı ışık programlama",
-                  ].map((item) => (
-                    <li key={item} className="flex items-start gap-2">
-                      <span className="text-green-600 mt-1" aria-hidden="true">✓</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+                {/* Önemli Bilgi Kutusu */}
+                <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-blue-500 rounded-r-xl p-6 mb-8">
+                  <h5 className="font-black text-blue-700 text-lg mb-3 flex items-center gap-2">
+                    <span className="text-xl">💡</span> Uygulama Stratejisi
+                  </h5>
+                  <p className="text-gray-700 mb-0">
+                    Uygulama stratejimiz mekânın mimari ve akustik yapısına göre şekillenir. Açık alan etkinliklerinde 
+                    rüzgâr ve zaman gecikmesini dengelemek için <em>delay tower</em> ve <em>side fill</em> çözümleri kullanır; 
+                    kapalı salonlarda yankıyı azaltan top+sub ya da kompakt line array dizilimlerine gideriz.
+                  </p>
+                </div>
+
+                {/* Başarı Faktörleri Grid */}
+                <div className="mb-8">
+                  <h4 className="text-xl font-black text-gray-900 mb-6 flex items-center gap-3">
+                    <span className="bg-green-100 text-green-600 rounded-full p-2">🚀</span>
+                    Kritik Başarı Faktörleri
+                  </h4>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {[
+                      { icon: "🎯", title: "Detaylı Keşif", desc: "Akustik analiz ve mekan değerlendirmesi" },
+                      { icon: "📊", title: "Line Array Simülasyon", desc: "Doğru kapsama için profesyonel planlama" },
+                      { icon: "🔒", title: "Güvenli Rigging", desc: "Sertifikalı ekipman ve uzman ekip" },
+                      { icon: "🎭", title: "Programlama", desc: "Soundcheck ve cue planlı ışık programlama" },
+                    ].map((item, index) => (
+                      <div key={index} className="bg-white border border-gray-200 rounded-xl p-4 hover:shadow-md transition-shadow">
+                        <div className="flex items-start gap-3">
+                          <span className="text-2xl flex-shrink-0">{item.icon}</span>
+                          <div>
+                            <h5 className="font-bold text-gray-900 mb-1">{item.title}</h5>
+                            <p className="text-sm text-gray-600 mb-0">{item.desc}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <p>
+                  FOH miksaj, monitör miks ve RF planlama; sahne disiplini korunarak hızlıca devreye alınır. 
+                  Haze/duman, blinder ve strobe gibi unsurlar kritik anlarda vurguyu artırır; önceden planlanmış 
+                  cue'lar ile ışık show akıcı ve kontrollü şekilde ilerler.
+                </p>
               </div>
             </div>
           </article>
 
-          {/* Sağ Makale */}
-          <article className="overflow-hidden rounded-3xl shadow-xl border border-gray-200 bg-white">
-            <header className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-6 md:p-8">
-              <h3 className="text-xl md:text-2xl font-black tracking-tight">Uygulama Stratejisi ve Entegre Çözümler</h3>
-              <p className="text-blue-100 mt-2">Akışa göre programlanmış ışık show ve FOH miksaj</p>
+          {/* Yan Makaleler - Daha Kompakt */}
+          <article className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden hover:shadow-2xl transition-all duration-300">
+            <header className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-6">
+              <h3 className="text-xl font-black tracking-tight leading-tight">
+                Teknik Entegrasyon ve Uygulama
+              </h3>
+              <p className="text-blue-100 mt-2 text-sm">Akışa göre programlanmış ışık show ve FOH miksaj</p>
             </header>
 
-            <div className="p-6 md:p-8 prose prose-lg max-w-none">
-              <p>
-                Akustik ve izleyici dağılımını temel alarak kapsama, gecikme ve yankı parametreleri üzerinden optimum
-                <Link href="/ses-isik-sistemleri#hizmetler" className="underline underline-offset-4 decoration-blue-400 ml-1">
-                  ses & ışık yerleşimi
-                </Link>{" "}
-                planlarız. Açık alanlarda <em>delay tower</em> ile zaman dengelemesi sağlanırken, iç mekânda yankıyı
-                azaltacak dizilimler ve hedeflenmiş ışık açıları tercih edilir. DMX topolojisi ve kablolama, güvenlik
-                ve erişilebilirlik prensiplerine uygun biçimde kurulur.
-              </p>
-              <p>
-                FOH ve monitör miks ekipleri aynı protokol üzerinde senkronize çalışır; RF planlama ile kablosuz
-                verimliliği maksimuma çıkarılır. Haze/duman, strobe ve blinder gibi efektler, etkinliğin zirve anlarını
-                vurgulayacak şekilde <em>cue</em>’lara bağlanır. Böylece hem konuşma etkinliklerinde anlaşılır ses,
-                hem de konser/festival akışlarında yüksek enerji ve görsel şov elde edilir.
-              </p>
+            <div className="p-6">
+              <div className="prose prose-sm max-w-none prose-p:text-gray-600 prose-p:leading-relaxed">
+                <p>
+                  Akustik ve izleyici dağılımını temel alarak kapsama, gecikme ve yankı parametreleri üzerinden 
+                  optimum ses & ışık yerleşimi planlarız.
+                </p>
+                <p>
+                  Açık alanlarda <em>delay tower</em> ile zaman dengelemesi sağlanırken, iç mekânda yankıyı 
+                  azaltacak dizilimler ve hedeflenmiş ışık açıları tercih edilir.
+                </p>
+                
+                <div className="bg-gray-50 rounded-lg p-4 mt-4">
+                  <h4 className="font-bold text-gray-900 text-sm mb-2">📋 Teknik Özellikler</h4>
+                  <ul className="text-sm space-y-1">
+                    <li>• DMX topolojisi ve güvenli kablolama</li>
+                    <li>• FOH ve monitör miks senkronizasyonu</li>
+                    <li>• RF planlama ile maksimum verimlilik</li>
+                    <li>• Haze/duman ve efekt cue planlaması</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden hover:shadow-2xl transition-all duration-300">
+            <header className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6">
+              <h3 className="text-xl font-black tracking-tight leading-tight">
+                Etkinlik Türlerine Özel Çözümler
+              </h3>
+              <p className="text-blue-100 mt-2 text-sm">Her etkinlik türüne özel ses ve ışık stratejileri</p>
+            </header>
+
+            <div className="p-6">
+              <div className="prose prose-sm max-w-none prose-p:text-gray-600 prose-p:leading-relaxed">
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-bold text-gray-900 flex items-center gap-2 text-sm">
+                      <span className="bg-blue-100 text-blue-600 rounded p-1">🏢</span>
+                      Kurumsal Etkinlikler
+                    </h4>
+                    <p className="text-xs">Net ve anlaşılır konuşma, profesyonel görünüm</p>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-bold text-gray-900 flex items-center gap-2 text-sm">
+                      <span className="bg-purple-100 text-purple-600 rounded p-1">🎤</span>
+                      Konser & Festival
+                    </h4>
+                    <p className="text-xs">Yüksek enerji, güçlü atmosfer, dinamik performans</p>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-bold text-gray-900 flex items-center gap-2 text-sm">
+                      <span className="bg-green-100 text-green-600 rounded p-1">💍</span>
+                      Özel Davetler
+                    </h4>
+                    <p className="text-xs">Samimi atmosfer, yumuşak aydınlatma, kaliteli ses</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </article>
         </div>
@@ -465,37 +558,68 @@ function Articles() {
   );
 }
 
-/* ================== SSS + “Tüm Soruları Gör” ================== */
+/* ================== SSS + "Tüm Soruları Gör" ================== */
 function FAQ() {
   const faqs = [
-    { q: "Hangi sistem benim etkinliğime uygun?", a: "Alan, seyirci sayısı ve sahne boyutuna göre line array veya top+sub öneriyoruz. Kısa keşif sonrası en verimli yapılandırmayı sunarız." },
-    { q: "Kurulum süresi ne kadar?", a: "Salon kurulumları aynı gün; dış mekân/rigging gereken projeler 1 gün önce kurulum + etkinlik günü soundcheck şeklinde planlanır." },
-    { q: "Canlı operasyon ve mühendislik dahil mi?", a: "Evet. FOH miksaj, monitör miks ve ışık show ekiplerimiz tarafından canlı yönetilir." },
-    { q: "Güç altyapısı kimde?", a: "Nakliye ve kurulum bizde. Güç altyapısı (jeneratör/tesisat) bilgileri sizden; yönlendirme ve koordinasyonu biz yapıyoruz." },
+    { 
+      q: "Hangi sistem benim etkinliğime uygun?", 
+      a: "Alan, seyirci sayısı ve sahne boyutuna göre line array veya top+sub öneriyoruz. Kısa keşif sonrası en verimli yapılandırmayı sunarız." 
+    },
+    { 
+      q: "Kurulum süresi ne kadar?", 
+      a: "Salon kurulumları aynı gün; dış mekân/rigging gereken projeler 1 gün önce kurulum + etkinlik günü soundcheck şeklinde planlanır." 
+    },
+    { 
+      q: "Canlı operasyon ve mühendislik dahil mi?", 
+      a: "Evet. FOH miksaj, monitör miks ve ışık show ekiplerimiz tarafından canlı yönetilir." 
+    },
+    { 
+      q: "Güç altyapısı kimde?", 
+      a: "Nakliye ve kurulum bizde. Güç altyapısı (jeneratör/tesisat) bilgileri sizden; yönlendirme ve koordinasyonu biz yapıyoruz." 
+    },
   ];
+  
   return (
-    <section className="container pb-20">
-      <h2 className="text-2xl md:text-3xl font-black mb-6">Sık Sorulan Sorular</h2>
-      <div className="grid gap-4 md:grid-cols-2">
-        {faqs.map((f) => (
-          <details key={f.q} className="group rounded-2xl border bg-white p-5">
-            <summary className="cursor-pointer list-none text-lg font-semibold flex items-center justify-between">
-              <span>{f.q}</span>
-              <span aria-hidden className="ml-3 transition group-open:rotate-180">⌄</span>
-            </summary>
-            <p className="mt-3 text-neutral-700">{f.a}</p>
-          </details>
-        ))}
-      </div>
+    <section className="py-16 bg-white" aria-labelledby="sss-baslik">
+      <div className="container mx-auto px-4 max-w-4xl">
+        <div className="text-center mb-12">
+          <h2 id="sss-baslik" className="text-3xl md:text-4xl font-black mb-4">
+            Sık Sorulan{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Sorular</span>
+          </h2>
+          <p className="text-lg text-gray-600">Merak ettiğiniz soruların cevapları</p>
+        </div>
 
-      <div className="text-center mt-8">
-        <Link
-          href="/sss"
-          className="inline-flex items-center gap-2 rounded-xl px-6 py-3 font-semibold border bg-white hover:bg-neutral-50 shadow-sm"
-          title="Sık Sorulan Sorular sayfasındaki tüm sorular"
-        >
-          <span aria-hidden>📚</span> Tüm soruları gör
-        </Link>
+        <div className="space-y-4">
+          {faqs.map((f, index) => (
+            <details 
+              key={index} 
+              className="group bg-gray-50 rounded-2xl p-6 hover:bg-gray-100 transition-colors duration-200 open:bg-blue-50 open:border-blue-200 border border-transparent open:border"
+            >
+              <summary className="cursor-pointer list-none flex items-center justify-between text-lg font-semibold text-gray-900">
+                <span>{f.q}</span>
+                <span 
+                  aria-hidden="true" 
+                  className="ml-4 transition-transform duration-300 group-open:rotate-180 text-blue-600 bg-blue-100 rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0"
+                >
+                  ⌄
+                </span>
+              </summary>
+              <p className="mt-4 text-gray-700 leading-relaxed pl-2 border-l-2 border-blue-500 ml-1">{f.a}</p>
+            </details>
+          ))}
+        </div>
+
+        <div className="text-center mt-12">
+          <Link
+            href="/sss"
+            className="inline-flex items-center gap-3 rounded-xl px-8 py-4 font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-xl transform hover:scale-105 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+            title="Sık Sorulan Sorular sayfasındaki tüm sorular"
+          >
+            <span aria-hidden="true" className="text-xl">📚</span> 
+            <span>Tüm SSS'yi Görüntüle</span>
+          </Link>
+        </div>
       </div>
     </section>
   );
@@ -504,11 +628,12 @@ function FAQ() {
 /* ================== Tamamlayıcı Hizmetler ================== */
 function RelatedServices() {
   const links = [
-    { href: "/podyum-kiralama", title: "Podyum Kiralama", icon: "📐" },
-    { href: "/led-ekran-kiralama", title: "LED Ekran", icon: "🖥️" },
-    { href: "/ses-isik-sistemleri", title: "Ses & Işık", icon: "🎵" },
-    { href: "/sahne-kiralama", title: "Sahne Kiralama", icon: "🎪" },
+    { href: "/podyum-kiralama", title: "Podyum Kiralama", icon: "📐", desc: "Profesyonel sahne platformları" },
+    { href: "/led-ekran-kiralama", title: "LED Ekran", icon: "🖥️", desc: "Yüksek çözünürlüklü ekranlar" },
+    { href: "/ses-isik-sistemleri", title: "Ses & Işık", icon: "🎵", desc: "Profesyonel ses ve ışık sistemleri" },
+    { href: "/sahne-kiralama", title: "Sahne Kiralama", icon: "🎪", desc: "Hazır sahne çözümleri" },
   ];
+  
   return (
     <section className="py-20 bg-gradient-to-br from-neutral-50 to-blue-100/30" aria-labelledby="related-services-title">
       <div className="container max-w-6xl mx-auto px-4">
@@ -517,20 +642,29 @@ function RelatedServices() {
             Tamamlayıcı{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Hizmetlerimiz</span>
           </h2>
-          <p className="text-xl text-neutral-600 max-w-3xl mx-auto">Kurulumunuzu tamamlayacak diğer profesyonel hizmetlerimiz</p>
-          <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8" aria-hidden />
+          <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
+            Kurulumunuzu tamamlayacak diğer profesyonel hizmetlerimiz
+          </p>
+          <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8" aria-hidden="true" />
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto" role="navigation" aria-label="Tamamlayıcı hizmetler">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto" role="navigation" aria-label="Tamamlayıcı hizmetler">
           {links.map((s) => (
             <Link
               key={s.href}
               href={s.href}
-              className="group bg-white rounded-xl p-6 shadow-lg hover:shadow-xl border border-neutral-100 hover:border-blue-200 transition-all duration-300 hover:scale-105 text-center focus:outline-none focus:ring-4 focus:ring-blue-300/50"
+              className="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl border border-neutral-100 hover:border-blue-200 transition-all duration-300 hover:scale-105 text-center focus:outline-none focus:ring-4 focus:ring-blue-300/50"
               aria-label={`${s.title} hizmeti sayfasına git`}
             >
-              <div className="text-3xl mb-3" aria-hidden>{s.icon}</div>
-              <h3 className="font-semibold text-neutral-900 group-hover:text-blue-600 transition-colors">{s.title}</h3>
+              <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300" aria-hidden="true">
+                {s.icon}
+              </div>
+              <h3 className="font-bold text-lg text-neutral-900 group-hover:text-blue-600 transition-colors mb-2">
+                {s.title}
+              </h3>
+              <p className="text-sm text-neutral-600 group-hover:text-neutral-700 transition-colors">
+                {s.desc}
+              </p>
             </Link>
           ))}
         </div>
@@ -542,17 +676,42 @@ function RelatedServices() {
 /* ================== CTA ================== */
 function CTA() {
   return (
-    <section className="container pb-16">
-      <div className="flex flex-col items-center justify-between gap-4 rounded-2xl bg-gradient-to-r from-blue-700 to-purple-700 p-6 text-center text-white md:flex-row md:p-8 md:text-left">
-        <h2 className="text-xl md:text-2xl font-bold">Ses & Işık çözümleri hakkında teklif almak ister misiniz?</h2>
-        <div className="flex gap-3">
-          <Link href="/iletisim" className="rounded-lg bg-white px-4 py-2 font-semibold text-blue-700 hover:opacity-90">İletişime Geç</Link>
-          <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="rounded-lg border border-white px-4 py-2 font-semibold hover:bg-white/20">WhatsApp</a>
+    <section className="py-16 bg-white">
+      <div className="container mx-auto px-4 max-w-6xl">
+        <div className="bg-gradient-to-r from-blue-700 to-purple-700 rounded-3xl p-8 md:p-12 text-center text-white relative overflow-hidden">
+          <div className="absolute inset-0 bg-black/10" aria-hidden="true"></div>
+          <div className="relative z-10">
+            <h2 className="text-2xl md:text-3xl font-black mb-4">
+              Profesyonel Ses & Işık Çözümleri İster Misiniz?
+            </h2>
+            <p className="text-blue-100 text-lg mb-8 max-w-2xl mx-auto">
+              Etkinliğiniz için en uygun ses ve ışık sistemlerini sunalım. Ücretsiz keşif ve teklif için hemen iletişime geçin.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Link 
+                href="/iletisim" 
+                className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-white text-blue-700 hover:scale-105 transform transition-all duration-300 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              >
+                <span aria-hidden="true">📞</span> 
+                <span className="ml-2">İletişime Geç</span>
+              </Link>
+              <a 
+                href={WHATSAPP} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl border-2 border-white text-white bg-transparent hover:bg-white/20 hover:scale-105 transform transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              >
+                <span aria-hidden="true">💬</span> 
+                <span className="ml-2">WhatsApp'tan Yaz</span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
   );
 }
+
 /* ================== JSON-LD ================== */
 function JsonLd() {
   const jsonLd = {
@@ -596,19 +755,7 @@ function JsonLd() {
   );
 }
 
-/* ================== Sayfa Bileşeni (İSTENEN SIRALAMA) ================== */
-/*
-  1) Hero
-  2) Hizmetler
-  3) Galeri (4 görünür)
-  4) Teknik Altyapımız
-  5) İstatistik Gradient Bant
-  6) Kullanım Alanları
-  7) Makaleler (yan yana 2 kutu, gradient başlık, iç linkler)
-  8) SSS + “Tüm soruları gör”
-  9) Tamamlayıcı Hizmetler
-  10) CTA (Teklif)
-*/
+/* ================== Sayfa Bileşeni ================== */
 export default function Page() {
   return (
     <>
