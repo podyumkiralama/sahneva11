@@ -212,7 +212,7 @@ export default function Page() {
 
       {/* 1) HERO */}
       <section
-        className="relative flex items-center justify-center overflow-hidden bg-slate-900 pt-20 min-h-[72vh]"
+        className="relative flex items-center justify-center overflow-hidden bg-slate-900 pt-20 min-h=[72vh] min-h-[72vh]"
         aria-labelledby="hero-title"
       >
         <div className="absolute inset-0">
@@ -488,7 +488,7 @@ export default function Page() {
                   </Link>{" "}
                   ve <Link href="/sahne-kiralama" className="underline decoration-2 underline-offset-4 decoration-amber-600">sahne kiralama</Link>{" "}
                   gibi tamamlayıcı hizmetlerle tam entegre çalışırız. 81 ilde belediye etkinlikleri, AVM lansmanları, fuar stantları ve
-                  mezuniyet törenlerinde ölçülebilir kalite, hızlı kurulum ve yedekli altyapı standarttır. Şeffaf fiyatlama ve teknik çizimlerle
+                  mezuniyet törenelerinde ölçülebilir kalite, hızlı kurulum ve yedekli altyapı standarttır. Şeffaf fiyatlama ve teknik çizimlerle
                   riskleri en aza indirir, etkinlik gününde yalnızca içerik ve performansa odaklanmanızı sağlarız.
                 </p>
               </div>
