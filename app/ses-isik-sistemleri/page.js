@@ -302,11 +302,11 @@ function Services() {
 /* ================== Galeri ================== */
 const GALLERY_IMAGES = [
   { 
-    src: "/img/ses-isik/1.webp", 
+    src: "/img/ses-isik/isik-sistemi.webp", 
     alt: "Profesyonel line array ses sistemi kurulumu - Konser etkinliği için FOH ve sahne düzeni" 
   },
   { 
-    src: "/img/ses-isik/2.webp", 
+    src: "/img/ses-isik/ses-sistemi.webp", 
     alt: "Hareketli ışık başlıkları ve LED wash ışıklar - Sahne aydınlatma kurulumu" 
   },
   { 
