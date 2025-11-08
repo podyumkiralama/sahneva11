@@ -204,6 +204,16 @@ const nextConfig = {
         ],
       },
 
+      // Vercel Live statik feedback HTML'ini de koru (route parametre olmadan)
+      {
+        source: "/_next-live/feedback.html",
+        headers: [
+          { key: "Cross-Origin-Embedder-Policy", value: "unsafe-none" },
+          { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
+          { key: "Cross-Origin-Opener-Policy", value: "unsafe-none" },
+        ],
+      },
+
       // Next statik runtime dosyaları: uzun cache + index dışı
       {
         source: "/_next/static/(.*)",
