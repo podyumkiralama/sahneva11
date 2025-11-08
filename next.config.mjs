@@ -5,10 +5,9 @@ const ONE_MONTH_IN_SECONDS = ONE_DAY_IN_SECONDS * 30;
 const ONE_YEAR_IN_SECONDS = ONE_DAY_IN_SECONDS * 365;
 
 const isProd = process.env.NODE_ENV === "production";
-const isPreview =
-  process.env.VERCEL_ENV === "preview" ||
-  process.env.NEXT_PUBLIC_VERCEL_ENV === "preview" ||
-  (process.env.VERCEL === "1" && process.env.VERCEL_ENV !== "production");
+const vercelEnv = process.env.VERCEL_ENV ?? process.env.NEXT_PUBLIC_VERCEL_ENV;
+const isVercelDeployment = process.env.VERCEL === "1" || Boolean(vercelEnv);
+const isPreview = isVercelDeployment && vercelEnv !== "production";
 
 const siteUrl = process.env.SITE_URL ?? "https://www.sahneva.com";
 
@@ -25,6 +24,7 @@ const {
     "https://www.google-analytics.com",
     "https://va.vercel-scripts.com",
     "https://vercel.live",
+    "https://*.vercel.live",
   ].join(" ");
 
   // script-src-elem (JSON-LD vb. için elem seviyesinde inline serbest)
@@ -35,6 +35,7 @@ const {
     "https://www.google-analytics.com",
     "https://va.vercel-scripts.com",
     "https://vercel.live",
+    "https://*.vercel.live",
   ].join(" ");
 
   const CONNECT_SRC = [
@@ -44,12 +45,21 @@ const {
     "https://region1.google-analytics.com",
     "https://stats.g.doubleclick.net",
     siteUrl,
+    ...(isPreview
+      ? [
+          "https://vercel.live",
+          "https://*.vercel.live",
+          "wss://vercel.live",
+          "wss://*.vercel.live",
+        ]
+      : []),
   ].join(" ");
 
   // Preview’da vercel.live izinli; prod’da kapalı
   const FRAME_SRC = [
     "'self'",
     "https://www.google.com",
+    "https://*.google.com",
     "https://www.youtube.com",
     "https://www.youtube-nocookie.com",
     "https://player.vimeo.com",
