@@ -319,6 +319,7 @@ export default function Page() {
             <Link
   href="#hizmetler"
   aria-labelledby="btn-hizmetler"
+  className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl border-2 border-white text-white/95 bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:scale-105 transform transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
 >
   <span id="btn-hizmetler">🎯 Hizmetlerimiz</span>
 </Link>
