@@ -1,25 +1,35 @@
 import Link from "next/link";
 
-export default function CtaRibbon({ phone = "+905453048671", whatsappUrl = "#" }) {
+export default function CtaRibbon({
+  title = "Etkinliğinizi üst seviyeye taşıyalım",
+  subtitle = "2 saat içinde detaylı teklif gönderiyoruz.",
+  primary = { href: "https://wa.me/905453048671", label: "WhatsApp Teklif" },
+  secondary = { href: "/iletisim", label: "İletişim" },
+}) {
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-white p-6 md:p-8 shadow-md flex flex-col md:flex-row items-center justify-between gap-4">
-      <div>
-        <h3 className="text-xl md:text-2xl font-black text-neutral-900">
-          Etkinliğiniz için <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">anahtar teslim</span> kurumsal çözüm.
-        </h3>
-        <p className="text-neutral-600">Teklif almak 1 dakikanızı alır.</p>
+    <section className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-blue-700 to-purple-700 text-white p-10">
+      <div className="absolute inset-0 opacity-20 pointer-events-none"
+           style={{backgroundImage:"radial-gradient(600px 200px at 10% 10%, #fff, transparent), radial-gradient(600px 200px at 90% 90%, #fff, transparent)"}}/>
+      <div className="relative">
+        <h3 className="text-2xl md:text-3xl font-black">{title}</h3>
+        <p className="mt-2 text-white/90">{subtitle}</p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <a
+            href={primary.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-6 py-3 rounded-xl bg-white text-neutral-900 font-semibold hover:scale-105 transition"
+          >
+            {primary.label}
+          </a>
+          <Link
+            className="px-6 py-3 rounded-xl ring-1 ring-white/60 hover:bg-white/10 transition"
+            href={secondary.href}
+          >
+            {secondary.label}
+          </Link>
+        </div>
       </div>
-      <div className="flex flex-wrap gap-3">
-        <a href={`tel:${phone}`} className="px-5 py-3 rounded-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:opacity-90">
-          📞 Hemen Ara
-        </a>
-        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="px-5 py-3 rounded-xl font-bold bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:opacity-90">
-          💬 WhatsApp Teklif
-        </a>
-        <Link href="/iletisim#teklif-formu" className="px-5 py-3 rounded-xl font-bold border-2 border-neutral-200 hover:border-blue-300">
-          📝 Form ile Başvur
-        </Link>
-      </div>
-    </div>
+    </section>
   );
 }
