@@ -94,14 +94,6 @@ export default function HomePage() {
     <div className="overflow-x-hidden">
       <StructuredData />
 
-      {/* Skip link */}
-      <a
-        href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:z-[9999] focus:top-3 focus:left-3 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-3 focus:rounded-lg focus:font-semibold focus:shadow-lg transition-all duration-200"
-      >
-        Ana içeriğe atla
-      </a>
-
       {/* HERO SECTION */}
       <section
         className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 pt-16 lg:pt-20"
@@ -280,7 +272,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <main id="main" className="relative">
+      <main id="main-content" tabIndex={-1} className="relative">
         {/* CLS guard */}
         <div aria-hidden="true" className="h-12 lg:h-16" />
 

@@ -61,18 +61,6 @@ const CONTENT = {
   ],
 };
 
-// 🔎 Erişilebilirlik yardımcıları
-function SkipToMain() {
-  return (
-    <a
-      href="#main-content"
-      className="sr-only focus:not-sr-only focus:fixed focus:z-[9999] focus:top-4 focus:left-4 focus:bg-blue-600 focus:text-white focus:px-6 focus:py-4 focus:rounded-lg focus:font-bold focus:shadow-2xl focus:border-2 focus:border-white transition-all duration-200"
-    >
-      Ana içeriğe atla
-    </a>
-  );
-}
-
 // ⚠️ NOT: Görünür metin varsa aria-label vermiyoruz.
 // Sadece SR-only metin olursa aria-label kullan.
 function AccessibleCTA({
@@ -262,8 +250,6 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-white overflow-hidden">
-      <SkipToMain />
-
       {/* HERO */}
       <section
         className="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 pt-16 lg:pt-20"

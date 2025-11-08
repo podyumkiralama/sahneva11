@@ -191,18 +191,6 @@ const slugify = (s) =>
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-");
 
-
-function SkipToMain() {
-  return (
-    <a
-      href="#main-content"
-      className="sr-only focus:not-sr-only focus:fixed focus:z-[9999] focus:top-4 focus:left-4 focus:bg-blue-600 focus:text-white focus:px-6 focus:py-4 focus:rounded-lg focus:font-bold focus:shadow-2xl focus:border-2 focus:border-white transition-all duration-200"
-    >
-      Ana içeriğe atla
-    </a>
-  );
-}
-
 export default function Page() {
   // JSON-LD
   const imageLd = {
@@ -269,8 +257,6 @@ export default function Page() {
       <Script id="ld-kurumsal" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Script id="ld-image" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(imageLd) }} />
       <Script id="ld-itemlist" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesItemListLd) }} />
-
-      <SkipToMain />
 
       {/* HERO */}
       <section

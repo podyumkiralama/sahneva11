@@ -39,17 +39,6 @@ export const metadata = {
 export const revalidate = 3600;
 
 /** ───── ACCESSIBILITY COMPONENTS ───── */
-function SkipToMain() {
-  return (
-    <a
-      href="#main-content"
-      className="sr-only focus:not-sr-only focus:fixed focus:z-[9999] focus:top-4 focus:left-4 focus:bg-blue-600 focus:text-white focus:px-6 focus:py-4 focus:rounded-lg focus:font-bold focus:shadow-2xl focus:border-2 focus:border-white transition-all duration-200"
-    >
-      Ana içeriğe atla
-    </a>
-  );
-}
-
 function FocusableCard({ children, className = "", ...props }) {
   return (
     <div 
@@ -246,7 +235,6 @@ export default function CadirKiralamaPage() {
   return (
     <div className="min-h-screen bg-white overflow-hidden">
       <CadirStructuredData />
-      <SkipToMain />
 
       {/* ✅ HERO SECTION - Premium Design with Accessibility */}
       <section 
