@@ -157,7 +157,8 @@ const nextConfig = {
   generateEtags: true,
   productionBrowserSourceMaps: false,
   trailingSlash: false,
-  swcMinify: true,
+  turbopackMinify: true,
+  turbopack: {},
 
   images: {
     deviceSizes: [320, 420, 640, 750, 828, 1080, 1200, 1920],
