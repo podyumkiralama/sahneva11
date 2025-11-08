@@ -5,7 +5,7 @@ import Script from "next/script";
 import CaseGallery from "@/components/CaseGallery";
 
 export const revalidate = 1800;
-const ORIGIN = "https://www.sahneva.com";
+const ORIGIN = process.env.SITE_URL ?? "https://www.sahneva.com";
 
 export const metadata = {
   title: "Kurumsal Organizasyon & Etkinlik Yönetimi | Profesyonel Çözümler - Sahneva",
@@ -57,7 +57,8 @@ export const metadata = {
 
 const HERO = {
   src: "/img/kurumsal/hero.webp",
-  alt: "Kurumsal organizasyon: sahne, LED ekran ve ışık kurulumu ile profesyonel etkinlik salonu",
+  alt:
+    "Kurumsal organizasyon: sahne, LED ekran ve ışık kurulumu ile profesyonel etkinlik salonu",
   sizes: "(max-width: 768px) 100vw, 100vw",
 };
 
@@ -71,6 +72,7 @@ const slugify = (s) =>
     .replace(/[^a-z0-9çğıöşü\s-]/g, "")
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-");
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -78,7 +80,12 @@ const jsonLd = {
       "@type": "BreadcrumbList",
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Anasayfa", item: `${ORIGIN}/` },
-        { "@type": "ListItem", position: 2, name: "Kurumsal Organizasyon", item: `${ORIGIN}/kurumsal-organizasyon` },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Kurumsal Organizasyon",
+          item: `${ORIGIN}/kurumsal-organizasyon`,
+        },
       ],
     },
     {
@@ -91,7 +98,11 @@ const jsonLd = {
         "@type": "Organization",
         name: "Sahneva",
         telephone: "+905453048671",
-        address: { "@type": "PostalAddress", addressLocality: "İstanbul", addressCountry: "TR" },
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "İstanbul",
+          addressCountry: "TR",
+        },
         url: ORIGIN,
         logo: `${ORIGIN}/logo.png`,
       },
@@ -117,13 +128,11 @@ const jsonLd = {
           addressCountry: "TR",
         },
       },
-      performer: {
-        "@type": "Organization",
-        name: "Sahneva",
-      },
+      performer: { "@type": "Organization", name: "Sahneva" },
     },
   ],
 };
+
 export default function Page() {
   return (
     <>
@@ -136,7 +145,7 @@ export default function Page() {
 
       {/* HERO */}
       <section
-        className="relative flex items-center justify-center overflow-hidden bg-slate-900 pt-20 min-h-[72vh]"
+        className="relative flex items-center justify-center overflow-hidden pt-20 min-h-[72vh] bg-[color:var(--brand)]"
         aria-labelledby="hero-title"
       >
         <div className="absolute inset-0">
@@ -148,20 +157,38 @@ export default function Page() {
             className="object-cover"
             sizes={HERO.sizes}
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-800 to-blue-950 mix-blend-multiply" aria-hidden="true" />
-          <div className="absolute inset-0 bg-gradient-to-t from-blue-950/60 via-transparent to-purple-900/50" aria-hidden="true" />
+          {/* Brand gradient katmanları */}
+          <div
+            className="absolute inset-0 mix-blend-multiply"
+            aria-hidden="true"
+            style={{
+              background:
+                "linear-gradient(135deg, var(--brand) 0%, rgba(11,15,26,0.8) 60%, #0b0f1a 100%)",
+            }}
+          />
+          <div
+            className="absolute inset-0"
+            aria-hidden="true"
+            style={{
+              background:
+                "linear-gradient(to top, rgba(11,15,26,0.55), transparent 50%, rgba(109,40,217,0.35))",
+            }}
+          />
         </div>
 
-        <div className="relative z-10 container mx-auto px-4 text-center text-white py-16">
+        <div className="relative z-10 container text-center text-white py-16">
           <div className="inline-flex items-center gap-3 bg-white/15 backdrop-blur-md rounded-2xl px-6 py-3 border border-white/25 mb-8">
             <span className="relative flex w-3 h-3" aria-hidden="true">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-              <span className="relative inline-flex rounded-full w-3 h-3 bg-green-500" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
+              <span className="relative inline-flex rounded-full w-3 h-3 bg-accent" />
             </span>
             <span className="text-sm font-semibold">Türkiye Geneli Profesyonel Hizmet</span>
           </div>
 
-          <h1 id="hero-title" className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight mb-6 drop-shadow-2xl">
+          <h1
+            id="hero-title"
+            className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight mb-6 drop-shadow-2xl"
+          >
             Kurumsal Organizasyon
           </h1>
 
@@ -178,21 +205,26 @@ export default function Page() {
               target="_blank"
               rel="noopener noreferrer"
               title="WhatsApp üzerinden teklif al"
-              className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:scale-105 transform transition-all duration-300 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-green-600"
+              className="btn btn-primary hover:scale-105 hover:shadow-xl transition-all duration-300"
             >
-              <span aria-hidden="true">💬</span> <span>Hemen Teklif Al</span>
+              <span aria-hidden="true" className="mr-2">💬</span>
+              Hemen Teklif Al
             </Link>
 
             <Link
               href="#hizmetler"
               title="Hizmetler bölümüne git"
-              className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl border-2 border-white text-white/95 bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:scale-105 transform transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+              className="btn rounded-2xl border-2 border-white/70 bg-white/10 text-white/95 backdrop-blur-sm hover:bg-white/20 hover:scale-105 transition-all duration-300"
             >
-              <span aria-hidden="true">🎯</span> <span>Hizmetlerimiz</span>
+              <span aria-hidden="true" className="mr-2">🎯</span>
+              Hizmetlerimiz
             </Link>
           </div>
 
-          <ul className="flex flex-wrap justify-center items-center gap-6 text-white/90 text-sm drop-shadow" aria-label="Güven göstergeleri">
+          <ul
+            className="flex flex-wrap justify-center items-center gap-6 text-white/90 text-sm drop-shadow"
+            aria-label="Güven göstergeleri"
+          >
             <li className="flex items-center gap-2">
               <span className="text-2xl" aria-hidden="true">⭐</span>
               <span>4.9/5 (250+ Değerlendirme)</span>
@@ -208,24 +240,22 @@ export default function Page() {
           </ul>
         </div>
       </section>
+
       {/* HİZMETLER */}
       <section
         id="hizmetler"
-        className="py-16 bg-gradient-to-b from-white to-blue-50/30"
+        className="py-16 bg-gradient-to-b from-white to-[color:rgb(99_102_241_/0.06)]"
         aria-labelledby="hizmetler-baslik"
       >
-        <div className="container mx-auto px-4">
+        <div className="container">
           <div className="text-center mb-12">
-            <h2
-              id="hizmetler-baslik"
-              className="text-3xl md:text-5xl font-black mb-4"
-            >
+            <h2 id="hizmetler-baslik" className="text-3xl md:text-5xl font-black mb-4">
               Kurumsal{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--brand)] to-[var(--accent)]">
                 Hizmetlerimiz
               </span>
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
               Her türlü kurumsal etkinlik için profesyonel ve anahtar teslim çözümler
             </p>
           </div>
@@ -235,7 +265,8 @@ export default function Page() {
               {
                 icon: "🎤",
                 title: "Konferans & Seminer",
-                description: "Profesyonel ses sistemi, LED ekran ve aydınlatma çözümleri",
+                description:
+                  "Profesyonel ses sistemi, LED ekran ve aydınlatma çözümleri",
                 features: [
                   "Simultane çeviri sistemleri",
                   "Kablosuz mikrofon sistemleri",
@@ -291,41 +322,28 @@ export default function Page() {
                 icon: "💍",
                 title: "Özel Etkinlikler",
                 description: "Kurumsal düğün, yılbaşı partileri ve özel kutlamalar",
-                features: [
-                  "Özel dekorasyon",
-                  "Tema tasarımı",
-                  "Eğlence ve şovlar",
-                  "Fotoğraf/video çekim",
-                ],
+                features: ["Özel dekorasyon", "Tema tasarımı", "Eğlence ve şovlar", "Fotoğraf/video çekim"],
               },
             ].map((service) => {
               const id = `svc-${slugify(service.title)}`;
               return (
                 <li key={id}>
                   <article
-                    className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 group hover:shadow-xl hover:scale-105 transition-all duration-300"
+                    className="bg-white rounded-2xl border border-slate-200 shadow-lg p-6 group hover:shadow-xl hover:scale-105 transition-all duration-300"
                     aria-labelledby={id}
                   >
                     <div className="text-3xl mb-3" aria-hidden="true">
                       {service.icon}
                     </div>
-                    <h3
-                      id={id}
-                      className="text-xl font-black mb-2 text-gray-900"
-                    >
+                    <h3 id={id} className="text-xl font-black mb-2 text-slate-900">
                       {service.title}
                     </h3>
-                    <p className="text-gray-600 mb-4 text-sm">
-                      {service.description}
-                    </p>
+                    <p className="text-slate-600 mb-4 text-sm">{service.description}</p>
                     <ul className="space-y-1">
                       {service.features.map((feature, i) => (
-                        <li
-                          key={i}
-                          className="flex items-center gap-2 text-sm text-gray-700"
-                        >
+                        <li key={i} className="flex items-center gap-2 text-sm text-slate-700">
                           <span
-                            className="w-1.5 h-1.5 bg-blue-500 rounded-full flex-shrink-0"
+                            className="w-1.5 h-1.5 rounded-full flex-shrink-0 bg-[color:var(--brand)]"
                             aria-hidden="true"
                           />
                           {feature}
@@ -339,16 +357,17 @@ export default function Page() {
           </ul>
         </div>
       </section>
+
       {/* TEKNİK ALTYAPI */}
       <section
-        className="py-16 bg-gradient-to-b from-gray-50 to-white"
+        className="py-16 bg-gradient-to-b from-slate-50 to-white"
         aria-labelledby="altyapi-baslik"
       >
-        <div className="container mx-auto px-4">
+        <div className="container">
           <div className="text-center mb-12">
             <h2 id="altyapi-baslik" className="text-3xl md:text-5xl font-black mb-4">
               Teknik{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--brand)] to-[var(--accent)]">
                 Altyapımız
               </span>
             </h2>
@@ -364,8 +383,8 @@ export default function Page() {
               broadcast: "4K kamera sistemleri • Canlı yayın ve kayıt",
             }).map(([key, value]) => (
               <li key={key}>
-                <div className="bg-white rounded-2xl border border-gray-200 p-6 group hover:shadow-lg hover:border-blue-200 transition-all duration-300">
-                  <h3 className="font-bold text-gray-900 mb-3 capitalize text-lg">
+                <div className="bg-white rounded-2xl border border-slate-200 p-6 group hover:shadow-lg hover:border-[color:var(--brand)]/30 transition-all duration-300">
+                  <h3 className="font-bold text-slate-900 mb-3 capitalize text-lg">
                     {key === "led" && "🖥️ LED Sistemleri"}
                     {key === "sound" && "🔊 Ses Sistemleri"}
                     {key === "lighting" && "💡 Aydınlatma"}
@@ -373,7 +392,7 @@ export default function Page() {
                     {key === "power" && "⚡ Güç Altyapısı"}
                     {key === "broadcast" && "📹 Yayın Sistemleri"}
                   </h3>
-                  <p className="text-gray-600 text-sm">{value}</p>
+                  <p className="text-slate-600 text-sm">{value}</p>
                 </div>
               </li>
             ))}
@@ -383,18 +402,18 @@ export default function Page() {
 
       {/* SÜREÇ */}
       <section
-        className="py-16 bg-gradient-to-b from-white to-purple-50/30"
+        className="py-16 bg-gradient-to-b from-white to-[color:var(--brand)]/5"
         aria-labelledby="surec-baslik"
       >
-        <div className="container mx-auto px-4">
+        <div className="container">
           <div className="text-center mb-12">
             <h2 id="surec-baslik" className="text-3xl md:text-5xl font-black mb-4">
               Çalışma{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--brand)] to-[var(--accent)]">
                 Sürecimiz
               </span>
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
               Profesyonel ve sistematik yaklaşımımızla etkinliklerinizi güvenle planlıyoruz
             </p>
           </div>
@@ -404,7 +423,8 @@ export default function Page() {
               {
                 step: "01",
                 title: "Keşif & Planlama",
-                description: "Mekan analizi, ihtiyaç değerlendirmesi ve kapsamlı planlama",
+                description:
+                  "Mekan analizi, ihtiyaç değerlendirmesi ve kapsamlı planlama",
                 details: ["Mekan ölçümü", "Teknik gereksinimler", "Zaman planı", "Bütçe optimizasyonu"],
               },
               {
@@ -427,20 +447,19 @@ export default function Page() {
               },
             ].map((step) => (
               <li key={step.step}>
-                <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 text-center group hover:shadow-xl hover:scale-105 transition-all duration-300">
-                  <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-black text-lg mb-4 mx-auto">
+                <div className="bg-white rounded-2xl border border-slate-200 shadow-lg p-6 text-center group hover:shadow-xl hover:scale-105 transition-all duration-300">
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-black text-lg mb-4 mx-auto bg-gradient-to-r from-[var(--brand)] to-[var(--accent)]">
                     {step.step}
                   </div>
-                  <h3 className="text-lg font-black mb-3 text-gray-900">
-                    {step.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm mb-4">
-                    {step.description}
-                  </p>
+                  <h3 className="text-lg font-black mb-3 text-slate-900">{step.title}</h3>
+                  <p className="text-slate-600 text-sm mb-4">{step.description}</p>
                   <ul className="space-y-1 text-left">
                     {step.details.map((detail, i) => (
-                      <li key={i} className="flex items-center gap-2 text-xs text-gray-600">
-                        <span className="w-1 h-1 bg-gray-400 rounded-full flex-shrink-0" aria-hidden="true" />
+                      <li key={i} className="flex items-center gap-2 text-xs text-slate-600">
+                        <span
+                          className="w-1 h-1 rounded-full flex-shrink-0 bg-[color:var(--accent)]/70"
+                          aria-hidden="true"
+                        />
                         {detail}
                       </li>
                     ))}
@@ -451,20 +470,21 @@ export default function Page() {
           </ul>
         </div>
       </section>
+
       {/* GALERİ */}
       <section
-        className="py-16 bg-gradient-to-b from-white to-blue-50/30"
+        className="py-16 bg-gradient-to-b from-white to-[color:rgb(236_72_153_/0.06)]"
         aria-labelledby="galeri-baslik"
       >
-        <div className="container mx-auto px-4">
+        <div className="container">
           <div className="text-center mb-12">
             <h2 id="galeri-baslik" className="text-3xl md:text-5xl font-black mb-4">
               Proje{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--brand)] to-[var(--accent)]">
                 Galerimiz
               </span>
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
               500+ başarılı kurumsal etkinlikten öne çıkan projelerimiz
             </p>
           </div>
@@ -484,10 +504,14 @@ export default function Page() {
 
       {/* İSTATİSTİKLER */}
       <section
-        className="py-16 bg-gradient-to-r from-blue-600 to-purple-600 text-white"
+        className="py-16 text-white"
         aria-labelledby="istatistik-baslik"
+        style={{
+          background:
+            "linear-gradient(90deg, var(--brand), var(--accent))",
+        }}
       >
-        <div className="container mx-auto px-4">
+        <div className="container">
           <h2 id="istatistik-baslik" className="sr-only">
             İstatistikler
           </h2>
@@ -500,7 +524,7 @@ export default function Page() {
             ].map((stat, i) => (
               <div key={i}>
                 <div className="text-3xl md:text-5xl font-black mb-2">{stat.value}</div>
-                <div className="text-blue-100 text-sm">{stat.label}</div>
+                <div className="text-white/85 text-sm">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -509,16 +533,17 @@ export default function Page() {
 
       {/* SEO MAKALESİ */}
       <section
-        className="py-16 bg-gradient-to-b from-white to-gray-50"
+        className="py-16 bg-gradient-to-b from-white to-slate-50"
         aria-labelledby="seo-article-heading"
       >
-        <div className="container mx-auto px-4 max-w-4xl">
-          <article className="overflow-hidden rounded-3xl shadow-xl border border-gray-200 bg-white">
-            <header className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-8 md:p-10 text-center">
+        <div className="container max-w-4xl">
+          <article className="overflow-hidden rounded-3xl shadow-xl border border-slate-200 bg-white">
+            <header className="text-white p-8 md:p-10 text-center"
+              style={{ background: "linear-gradient(90deg, var(--brand), var(--accent))" }}>
               <h2 id="seo-article-heading" className="text-2xl md:text-3xl font-black tracking-tight drop-shadow">
                 Kurumsal Organizasyon ve Etkinlik Yönetiminde Profesyonel Çözümler
               </h2>
-              <p className="mt-3 text-blue-100 max-w-2xl mx-auto text-sm md:text-base">
+              <p className="mt-3 text-white/85 max-w-2xl mx-auto text-sm md:text-base">
                 Konferans • Seminer • Lansman • Gala • Miting • Roadshow
               </p>
             </header>
@@ -533,7 +558,7 @@ export default function Page() {
                 organizasyonlarda anahtar teslim çözümler sunmaktadır.
               </p>
 
-              <h3 className="!mt-10 !mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 font-extrabold">
+              <h3 className="!mt-10 !mb-3 text-transparent bg-clip-text bg-gradient-to-r from-[var(--brand)] to-[var(--accent)] font-extrabold">
                 Kapsamlı Hizmet Anlayışı
               </h3>
               <p>
@@ -545,20 +570,20 @@ export default function Page() {
                 başarılı olması hedeflenir.
               </p>
 
-              <h3 className="!mt-10 !mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 font-extrabold">
+              <h3 className="!mt-10 !mb-3 text-transparent bg-clip-text bg-gradient-to-r from-[var(--brand)] to-[var(--accent)] font-extrabold">
                 Teknoloji ve Kalite
               </h3>
               <p>
-                Kurumsal etkinliklerde görsellik ve ses kalitesi kritiktir. P2.5'ten
-                P6'ya piksel aralığına sahip yüksek çözünürlüklü LED ekranlar, line-array
-                ses sistemleri, profesyonel aydınlatma ve modüler sahne kurulumları ile
+                Kurumsal etkinliklerde görsellik ve ses kalitesi kritiktir. P2.5'ten P6'ya
+                piksel aralığına sahip yüksek çözünürlüklü LED ekranlar, line-array ses
+                sistemleri, profesyonel aydınlatma ve modüler sahne kurulumları ile
                 etkinliklerinize değer katarız. Canlı yayın ve kayıt tarafında 4K çözünürlük ve
                 çok kameralı miksaj imkânı sunar, kritik bileşenlerde yedekli kurulum
                 senaryoları uygularız.
               </p>
 
-              <div className="mt-8 p-6 rounded-2xl border bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
-                <h4 className="m-0 font-black text-blue-700 mb-3">📊 Kritik Başarı Faktörleri</h4>
+              <div className="mt-8 p-6 rounded-2xl border bg-gradient-to-r from-[color:rgb(239_246_255)] to-[color:rgb(245_243_255)] border-[color:var(--brand)]/20">
+                <h4 className="m-0 font-black text-[color:var(--brand)] mb-3">📊 Kritik Başarı Faktörleri</h4>
                 <ul className="grid md:grid-cols-2 gap-2 !mt-3 !mb-0">
                   {[
                     "Detaylı ön planlama ve risk analizi",
@@ -567,7 +592,7 @@ export default function Page() {
                     "Zaman yönetimi ve prosedür disiplini",
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-2">
-                      <span className="text-green-600 mt-1" aria-hidden="true">✓</span>
+                      <span className="text-accent mt-1" aria-hidden="true">✓</span>
                       {item}
                     </li>
                   ))}
