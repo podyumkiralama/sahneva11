@@ -182,14 +182,6 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Skip link – sayfadaki main id'siyle aynı */}
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-gradient-to-r focus:from-blue-600 focus:to-purple-600 focus:px-3 focus:py-2 focus:text-white focus:font-bold"
-      >
-        Ana içeriğe atla
-      </a>
-
       {/* Header */}
       <header
         className={

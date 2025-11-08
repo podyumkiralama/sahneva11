@@ -178,14 +178,6 @@ export default function HakkimizdaPage() {
     <div className="min-h-screen bg-white overflow-hidden">
       <AboutStructuredData />
 
-      {/* Skip to Main Content */}
-      <a
-        href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:z-[9999] focus:top-3 focus:left-3 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-3 focus:rounded-lg focus:font-semibold focus:shadow-lg transition-all duration-200"
-      >
-        Ana içeriğe atla
-      </a>
-
       {/* HERO */}
       <section
         className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 pt-16 lg:pt-20"
@@ -264,7 +256,7 @@ export default function HakkimizdaPage() {
       {/* STATS */}
       <StaticStats />
 
-      <main id="main" className="relative">
+      <main id="main-content" tabIndex={-1} className="relative">
         {/* BİZ KİMİZ */}
         <section className="py-20 bg-gradient-to-br from-white to-blue-50/50" aria-labelledby="biz-kimiz-title">
           <div className="container max-w-6xl mx-auto px-4">
