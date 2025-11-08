@@ -868,14 +868,14 @@ function FAQ() {
             Daha fazla sorunuz mu var? Uzman ekibimiz sizi arayıp bilgilendirsin.
           </p>
           <Link
-            href="/sss"
-            className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:scale-105 transform transition-all duration-300 hover:shadow-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500"
-            title="Sık Sorulan Sorular sayfasındaki tüm soruları görüntüle"
-            role="button"
-          >
-            <span aria-hidden="true" className="text-xl mr-3">📚</span> 
-            <span className="text-lg">Tüm SSS'yi Görüntüle</span>
-          </Link>
+  href="/sss"
+  className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:scale-105 transform transition-all duration-300 hover:shadow-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500"
+  title="Sık Sorulan Sorular sayfasındaki tüm soruları görüntüle"
+>
+  <span aria-hidden="true" className="text-xl mr-3">📚</span> 
+  <span className="text-lg">Tüm SSS'yi Görüntüle</span>
+</Link>
+
         </div>
       </div>
     </section>
