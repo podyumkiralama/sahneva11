@@ -4,17 +4,22 @@ const ONE_DAY_IN_SECONDS = 60 * 60 * 24;
 const ONE_MONTH_IN_SECONDS = ONE_DAY_IN_SECONDS * 30;
 const ONE_YEAR_IN_SECONDS = ONE_DAY_IN_SECONDS * 365;
 
-const isProd = process.env.NODE_ENV === "production";
-const isPreview =
-  process.env.VERCEL_ENV === "preview" ||
+// 🔥 GELİŞMİŞ ORTAM TESPİTİ
+const isVercelPreview = 
+  process.env.VERCEL_ENV === "preview" || 
   process.env.NEXT_PUBLIC_VERCEL_ENV === "preview";
+  
+const isProd = process.env.NODE_ENV === "production" && !isVercelPreview;
+const isPreview = isVercelPreview;
+
+// 🔥 MİNİFİKASYON İÇİN KRİTİK AYAR
+const shouldMinify = isProd && !isPreview;
 
 const siteUrl = process.env.SITE_URL ?? "https://www.sahneva.com";
 
-/* -------------------- Security Headers (CSP dahil) -------------------- */
+/* -------------------- Güvenlik Başlıkları (CSP dahil) -------------------- */
 
 const securityHeaders = (() => {
-  // script-src (inline YOK)
   const SCRIPT_SRC = [
     "'self'",
     "https://www.googletagmanager.com",
@@ -24,7 +29,6 @@ const securityHeaders = (() => {
     "https://*.vercel.live",
   ].join(" ");
 
-  // script-src-elem (JSON-LD vb. için elem seviyesinde inline serbest)
   const SCRIPT_SRC_ELEM = [
     "'self'",
     "'unsafe-inline'",
@@ -35,7 +39,6 @@ const securityHeaders = (() => {
     "https://*.vercel.live",
   ].join(" ");
 
-  // ✅ Connect-src'ye WebSocket (wss) ve Vercel Live eklendi
   const CONNECT_SRC = [
     "'self'",
     "https://vitals.vercel-insights.com",
@@ -43,32 +46,29 @@ const securityHeaders = (() => {
     "https://region1.google-analytics.com",
     "https://stats.g.doubleclick.net",
     siteUrl,
-    "wss:", // 👈 WebSocket için
-    "wss://ws-us3.pusher.com", // 👈 Pusher WebSocket
-    "wss://*.pusher.com", // 👈 Tüm Pusher WebSocket'leri
-    "https://vercel.live", // 👈 Vercel Live
-    "https://*.vercel.live", // 👈 Tüm Vercel Live subdomain'leri
+    "wss:",
+    "wss://ws-us3.pusher.com",
+    "wss://*.pusher.com",
+    "https://vercel.live",
+    "https://*.vercel.live",
   ].join(" ");
 
-  // ✅ Font-src'ye Vercel Live eklendi
   const FONT_SRC = [
     "'self'",
     "data:",
     "https://fonts.gstatic.com",
-    "https://vercel.live", // 👈 Vercel Live fontları için
-    "https://*.vercel.live", // 👈 Tüm Vercel Live subdomain'leri
+    "https://vercel.live",
+    "https://*.vercel.live",
   ].join(" ");
 
-  // ✅ Style-src'ye Vercel Live eklendi
   const STYLE_SRC = [
     "'self'",
-    "'unsafe-inline'", // Vercel Live inline style kullanıyor olabilir
+    "'unsafe-inline'",
     "https://fonts.googleapis.com",
     "https://vercel.live",
     "https://*.vercel.live",
   ].join(" ");
 
-  // ✅ Tüm gerekli frame kaynakları
   const FRAME_SRC = [
     "'self'",
     "https://www.google.com",
@@ -83,7 +83,6 @@ const securityHeaders = (() => {
     "https://*.google.com",
   ].join(" ");
 
-  // ✅ Image-src'ye Vercel Live eklendi
   const IMG_SRC = [
     "'self'",
     "data:",
@@ -115,21 +114,16 @@ const securityHeaders = (() => {
     form-action 'self' https://formspree.io https://wa.me;
     media-src 'self' https:;
     child-src 'self' blob:;
-  `
-    .replace(/\s{2,}/g, " ")
-    .trim();
+  `.replace(/\s{2,}/g, " ").trim();
 
-  // COEP ve CORP'u kaldırdığımız için sadece diğer başlıkları koyuyoruz
   const base = [
     { key: "Content-Security-Policy", value: csp },
     { key: "X-Content-Type-Options", value: "nosniff" },
     { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
     { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
-    // COEP ve CORP artık yok
     {
       key: "Permissions-Policy",
-      value:
-        "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=(), fullscreen=()",
+      value: "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=(), fullscreen=()",
     },
     {
       key: "Strict-Transport-Security",
@@ -155,6 +149,12 @@ const nextConfig = {
   poweredByHeader: false,
   compress: true,
   generateEtags: true,
+  
+  // 🔥 MİNİFİKASYON AYARLARI - BU KISIM ÇOK ÖNEMLİ
+  swcMinify: true,
+  optimizeFonts: true,
+  
+  // Production'da source map'leri devre dışı bırak
   productionBrowserSourceMaps: false,
   trailingSlash: false,
 
@@ -177,22 +177,51 @@ const nextConfig = {
   },
 
   compiler: {
+    // 🔥 GELİŞMİŞ MİNİFİKASYON
     removeConsole: isProd ? { exclude: ["error", "warn"] } : false,
     reactRemoveProperties: isProd ? { properties: ["^data-testid$"] } : false,
+  },
+
+  // 🔥 WEBPACK OPTİMİZASYONLARI
+  webpack: (config, { dev, isServer }) => {
+    if (!dev && !isServer) {
+      // Optimize chunk ids for better minification
+      config.optimization.chunkIds = 'deterministic';
+      config.optimization.moduleIds = 'deterministic';
+      config.optimization.mangleExports = 'deterministic';
+      
+      // Daha agresif minifikasyon
+      config.optimization.minimize = true;
+      config.optimization.usedExports = true;
+      
+      // Tree shaking için yardımcı
+      config.optimization.sideEffects = false;
+    }
+    return config;
   },
 
   experimental: {
     scrollRestoration: true,
     optimizePackageImports: ["lucide-react", "@headlessui/react"],
     esmExternals: true,
+    // 🔥 EK OPTİMİZASYONLAR
+    optimizeCss: true,
+    nextScriptWorkers: true,
   },
 
+  // 🔥 GELİŞMİŞ MODÜLER İTHALAT
   modularizeImports: {
     "lucide-react": {
       transform: "lucide-react/icons/{{member}}",
+      preventFullImport: true, // Tam import'u engelle
     },
     "react-icons/?(((\\w*)?/?)*)": {
       transform: "react-icons/{{ matches.[1] }}/{{member}}",
+      preventFullImport: true,
+    },
+    "@headlessui/react": {
+      transform: "@headlessui/react/{{member}}",
+      preventFullImport: true,
     },
   },
 
@@ -253,5 +282,14 @@ const nextConfig = {
     ];
   },
 };
+
+// 🔥 ORTAM BİLGİSİ (Build sırasında görüntüle)
+console.log('🔧 Build Environment Debug:');
+console.log('- NODE_ENV:', process.env.NODE_ENV);
+console.log('- VERCEL_ENV:', process.env.VERCEL_ENV);
+console.log('- NEXT_PUBLIC_VERCEL_ENV:', process.env.NEXT_PUBLIC_VERCEL_ENV);
+console.log('- isProd:', isProd);
+console.log('- isPreview:', isPreview);
+console.log('- shouldMinify:', shouldMinify);
 
 export default nextConfig;
