@@ -81,7 +81,6 @@ export default function Navbar() {
               itemProp="logo"
             />
           </Link>
-
           <nav className="hidden md:flex items-center gap-6" aria-label="Ana menü">
             <Link
               href="/hakkimizda"
@@ -170,7 +169,6 @@ export default function Navbar() {
           </button>
         </div>
       </header>
-
       <div
         id="mobile-menu"
         role="dialog"
@@ -180,21 +178,4 @@ export default function Navbar() {
           mobileOpen ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="px-5 py-6 space-y-4">
-          <Link href="/hakkimizda" onClick={() => setMobileOpen(false)} className="block text-[15px] font-medium text-neutral-800 px-4 py-3 rounded-lg hover:bg-neutral-100 transition">
-            Hakkımızda
-          </Link>
-
-          <button
-            type="button"
-            onClick={() => setMobileServicesOpen((s) => !s)}
-            className="w-full text-left text-[15px] font-medium text-neutral-800 px-4 py-3 rounded-lg hover:bg-neutral-100 transition"
-            aria-expanded={mobileServicesOpen}
-            aria-controls="mobile-services"
-          >
-            Hizmetler
-          </button>
-
-          {mobileServicesOpen && (
-            <div id="mobile-services" className="ml-2 border-l border-neutral-200 pl-4 space-y-2">
-              {serviceLinks.map(({ href, label })
+        <div className="px-5 py
