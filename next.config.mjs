@@ -23,7 +23,7 @@ const securityHeaders = (() => {
     "https://vercel.live",
   ].join(" ");
 
-  // script-src-elem (inline JSON-LD vb. için sadece elem seviyesinde izin)
+  // script-src-elem (JSON-LD vb. için elem seviyesinde inline serbest)
   const SCRIPT_SRC_ELEM = [
     "'self'",
     "'unsafe-inline'",
@@ -52,7 +52,6 @@ const securityHeaders = (() => {
     ...(isPreview ? ["https://vercel.live", "https://*.vercel.live"] : []),
   ].join(" ");
 
-  // Bizi kimler frame’leyebilir?
   const FRAME_ANCESTORS = isPreview
     ? "frame-ancestors 'self' https://vercel.live https://*.vercel.live;"
     : "frame-ancestors 'none';";
@@ -82,7 +81,27 @@ const securityHeaders = (() => {
     { key: "X-Content-Type-Options", value: "nosniff" },
     { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
     { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+    // COEP: globalde credentialless (daha güvenli); /iletisim'te override edeceğiz
     { key: "Cross-Origin-Embedder-Policy", value: "credentialless" },
+    // CORP: globalde same-site; /iletisim'te override edeceğiz
+    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+    // (tek satır yeterli; editörde tekrar etmeyecekse yukarıdaki tekrarları silebilirsin)
     { key: "Cross-Origin-Resource-Policy", value: "same-site" },
     {
       key: "Permissions-Policy",
@@ -134,7 +153,6 @@ const nextConfig = {
 
   experimental: {
     scrollRestoration: true,
-    // Güvenli import optimizasyonları
     optimizePackageImports: ["lucide-react", "@headlessui/react"],
     esmExternals: true,
   },
@@ -179,8 +197,21 @@ const nextConfig = {
 
   async headers() {
     return [
-      // Global güvenlik başlıkları
+      // 🌐 Global güvenlik başlıkları
       { source: "/(.*)", headers: securityHeaders },
+
+      // 🗺️ Sadece /iletisim: Google Maps iframe için COEP kapat, CORP cross-origin
+      {
+        source: "/iletisim",
+        headers: [
+          // COEP'i kapat (globalde credentialless; bu route'ta devre dışı)
+          { key: "Cross-Origin-Embedder-Policy", value: "unsafe-none" },
+          // Bu sayfadan çağrılan cross-origin resource’lara izin
+          { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
+          // Preview'da Live View için frame'lenmeye izin (prod'da zaten DENY)
+          ...(isPreview ? [] : []),
+        ],
+      },
 
       // Next statik runtime dosyaları: uzun cache + index dışı
       {
