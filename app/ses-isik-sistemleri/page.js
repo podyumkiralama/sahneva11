@@ -134,21 +134,18 @@ function Hero() {
       className="relative min-h-[60vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 pt-16 lg:pt-20"
       aria-labelledby="hero-title"
     >
-      {/* arka plan ışık lekeleri */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply blur-3xl opacity-30" />
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply blur-3xl opacity-30" />
         <div className="absolute top-40 left-1/2 w-80 h-80 bg-cyan-500 rounded-full mix-blend-multiply blur-3xl opacity-30" />
       </div>
 
-      {/* büyük arka plan yazısı */}
       <div className="absolute inset-0 flex items-center justify-center opacity-5 select-none">
         <h1 className="text-[90px] md:text-[160px] font-black text-white tracking-wider">
           {CONTENT.hero.bgWord}
         </h1>
       </div>
 
-      {/* içerik */}
       <div className="relative z-10 container text-center text-white">
         <div className="max-w-4xl mx-auto">
           <div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md rounded-full px-6 py-3 border border-white/20 mb-6">
@@ -222,130 +219,7 @@ function TrustRibbon() {
   );
 }
 
-function Process() {
-  return (
-    <section className="container py-16">
-      <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-black">Süreç Nasıl İşliyor?</h2>
-        <p className="mt-3 text-neutral-600">Keşiften canlı operasyon ve söküme kadar kurumsal akış</p>
-      </div>
-      <ol className="grid gap-6 md:grid-cols-4">
-        {CONTENT.process.map((p) => (
-          <li key={p.step} className="rounded-2xl border bg-white p-6">
-            <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">
-              {p.step}
-            </div>
-            <h3 className="mt-4 text-lg font-bold">{p.title}</h3>
-            <p className="mt-2 text-neutral-700">{p.text}</p>
-          </li>
-        ))}
-      </ol>
-    </section>
-  );
-}
-
-function Packages() {
-  return (
-    <section className="container py-16">
-      <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-black">Paket Örnekleri</h2>
-        <p className="mt-3 text-neutral-600">Etkinlik ölçeğine göre önerdiğimiz hazır setler</p>
-      </div>
-      <div className="grid gap-6 md:grid-cols-3">
-        {CONTENT.packages.map((pkg) => (
-          <article key={pkg.name} className="rounded-2xl border bg-white p-6">
-            <h3 className="text-xl font-extrabold">{pkg.name}</h3>
-            <ul className="mt-4 space-y-2 text-neutral-800">
-              {pkg.points.map((pt) => (
-                <li key={pt} className="flex gap-2">
-                  <span aria-hidden>•</span>
-                  <span>{pt}</span>
-                </li>
-              ))}
-            </ul>
-            {pkg.note && <p className="mt-3 text-sm text-neutral-500">{pkg.note}</p>}
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function KnowledgeBlocks() {
-  return (
-    <section className="container max-w-5xl mx-auto py-10 md:py-14 space-y-10">
-      {/* Nedir? */}
-      <article className="space-y-3 text-neutral-800 leading-relaxed">
-        <h2 className="text-2xl md:text-3xl font-extrabold">Ses & Işık Sistemi Nedir?</h2>
-        <p>
-          Amaç; her noktada anlaşılır ses ve sahneye uygun ışık atmosferi kurmaktır. Line array,
-          dijital mikser, kablosuz mikrofon; RGBW spot, hareketli başlık ve truss sistemleri ile
-          <strong> uçtan uca kurumsal hizmet</strong> sunuyoruz.
-        </p>
-      </article>
-
-      {/* İpuçları */}
-      <article className="rounded-2xl border bg-white p-6">
-        <h3 className="text-xl font-bold">Doğru Sistem Seçimi İçin İpuçları</h3>
-        <div className="mt-4 grid gap-6 md:grid-cols-2">
-          <div>
-            <h4 className="font-semibold">Ses</h4>
-            <ul className="mt-2 space-y-1 text-neutral-800">
-              <li>• Line array uzak mesafe; top+sub orta/küçük alanlar için.</li>
-              <li>• Dijital mikser + stagebox kablo ve routing’i sadeleştirir.</li>
-              <li>• Monitörleme (wedges/IEM) sahne hakimiyetini artırır.</li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold">Işık</h4>
-            <ul className="mt-2 space-y-1 text-neutral-800">
-              <li>• RGBW spot + wash temel aydınlatma; beam/spot efekt içindir.</li>
-              <li>• DMX sahne programları akışa göre sahnelenmelidir.</li>
-              <li>• Truss yük/askı ve güvenlik (safety) standart olmalıdır.</li>
-            </ul>
-          </div>
-        </div>
-      </article>
-
-      {/* Teknik özet tablo */}
-      <article className="rounded-2xl border bg-white p-6">
-        <h3 className="text-xl font-bold mb-3">Teknik Özellikler (Özet)</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="text-left text-neutral-500">
-                <th className="p-2">Bileşen</th>
-                <th className="p-2">Detay</th>
-              </tr>
-            </thead>
-            <tbody className="[&>tr>*]:p-2 [&>tr]:border-b">
-              <tr><td>PA</td><td>Line array / top+sub konfigürasyonları</td></tr>
-              <tr><td>Mikser</td><td>Dijital (32–48ch), sahne stagebox</td></tr>
-              <tr><td>Mikrofon</td><td>Kablosuz el/yaka, enstrüman mikrofonları</td></tr>
-              <tr><td>Işık</td><td>RGBW spot, wash, beam/spot, blinder, strobe</td></tr>
-              <tr><td>Truss</td><td>Ön kiriş, yan kule, back truss / ground support</td></tr>
-              <tr><td>Kontrol</td><td>DMX controller, show playback</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </article>
-    </section>
-  );
-}
-
-function GalleryBlock() {
-  return (
-    <section className="container py-16">
-      <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-black">Kurulumdan Görseller</h2>
-        <p className="mt-3 text-neutral-600">Gerçek proje fotoğraflarıyla kalite ve düzen</p>
-      </div>
-      <CaseGallery images={CONTENT.gallery} />
-    </section>
-  );
-}
-
-/* ---- YENİ: Kullanım Alanları (kurumsal sayfadaki stil) ---- */
+/* ---- YENİ: Kullanım Alanları ---- */
 function UsageAreas() {
   return (
     <section
@@ -379,7 +253,127 @@ function UsageAreas() {
   );
 }
 
-/* ---- YENİ: Tamamlayıcı Hizmetlerimiz (açık zemin, 4 kart) ---- */
+function Process() {
+  return (
+    <section className="container py-16">
+      <div className="text-center mb-10">
+        <h2 className="text-3xl md:text-4xl font-black">Süreç Nasıl İşliyor?</h2>
+        <p className="mt-3 text-neutral-600">Keşiften canlı operasyon ve söküme kadar kurumsal akış</p>
+      </div>
+      <ol className="grid gap-6 md:grid-cols-4">
+        {CONTENT.process.map((p) => (
+          <li key={p.step} className="rounded-2xl border bg-white p-6">
+            <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">
+              {p.step}
+            </div>
+            <h3 className="mt-4 text-lg font-bold">{p.title}</h3>
+            <p className="mt-2 text-neutral-700">{p.text}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
+function GalleryBlock() {
+  return (
+    <section className="container py-16">
+      <div className="text-center mb-10">
+        <h2 className="text-3xl md:text-4xl font-black">Kurulumdan Görseller</h2>
+        <p className="mt-3 text-neutral-600">Gerçek proje fotoğraflarıyla kalite ve düzen</p>
+      </div>
+      <CaseGallery images={CONTENT.gallery} />
+    </section>
+  );
+}
+
+function KnowledgeBlocks() {
+  return (
+    <section className="container max-w-5xl mx-auto py-10 md:py-14 space-y-10">
+      <article className="space-y-3 text-neutral-800 leading-relaxed">
+        <h2 className="text-2xl md:text-3xl font-extrabold">Ses & Işık Sistemi Nedir?</h2>
+        <p>
+          Amaç; her noktada anlaşılır ses ve sahneye uygun ışık atmosferi kurmaktır. Line array,
+          dijital mikser, kablosuz mikrofon; RGBW spot, hareketli başlık ve truss sistemleri ile
+          <strong> uçtan uca kurumsal hizmet</strong> sunuyoruz.
+        </p>
+      </article>
+
+      <article className="rounded-2xl border bg-white p-6">
+        <h3 className="text-xl font-bold">Doğru Sistem Seçimi İçin İpuçları</h3>
+        <div className="mt-4 grid gap-6 md:grid-cols-2">
+          <div>
+            <h4 className="font-semibold">Ses</h4>
+            <ul className="mt-2 space-y-1 text-neutral-800">
+              <li>• Line array uzak mesafe; top+sub orta/küçük alanlar için.</li>
+              <li>• Dijital mikser + stagebox kablo ve routing’i sadeleştirir.</li>
+              <li>• Monitörleme (wedges/IEM) sahne hakimiyetini artırır.</li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-semibold">Işık</h4>
+            <ul className="mt-2 space-y-1 text-neutral-800">
+              <li>• RGBW spot + wash temel aydınlatma; beam/spot efekt içindir.</li>
+              <li>• DMX sahne programları akışa göre sahnelenmelidir.</li>
+              <li>• Truss yük/askı ve güvenlik (safety) standart olmalıdır.</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article className="rounded-2xl border bg-white p-6">
+        <h3 className="text-xl font-bold mb-3">Teknik Özellikler (Özet)</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-left text-neutral-500">
+                <th className="p-2">Bileşen</th>
+                <th className="p-2">Detay</th>
+              </tr>
+            </thead>
+            <tbody className="[&>tr>*]:p-2 [&>tr]:border-b">
+              <tr><td>PA</td><td>Line array / top+sub konfigürasyonları</td></tr>
+              <tr><td>Mikser</td><td>Dijital (32–48ch), sahne stagebox</td></tr>
+              <tr><td>Mikrofon</td><td>Kablosuz el/yaka, enstrüman mikrofonları</td></tr>
+              <tr><td>Işık</td><td>RGBW spot, wash, beam/spot, blinder, strobe</td></tr>
+              <tr><td>Truss</td><td>Ön kiriş, yan kule, back truss / ground support</td></tr>
+              <tr><td>Kontrol</td><td>DMX controller, show playback</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+  );
+}
+
+function Packages() {
+  return (
+    <section className="container py-16">
+      <div className="text-center mb-10">
+        <h2 className="text-3xl md:text-4xl font-black">Paket Örnekleri</h2>
+        <p className="mt-3 text-neutral-600">Etkinlik ölçeğine göre önerdiğimiz hazır setler</p>
+      </div>
+      <div className="grid gap-6 md:grid-cols-3">
+        {CONTENT.packages.map((pkg) => (
+          <article key={pkg.name} className="rounded-2xl border bg-white p-6">
+            <h3 className="text-xl font-extrabold">{pkg.name}</h3>
+            <ul className="mt-4 space-y-2 text-neutral-800">
+              {pkg.points.map((pt) => (
+                <li key={pt} className="flex gap-2">
+                  <span aria-hidden>•</span>
+                  <span>{pt}</span>
+                </li>
+              ))}
+            </ul>
+            {pkg.note && <p className="mt-3 text-sm text-neutral-500">{pkg.note}</p>}
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ---- YENİ: Tamamlayıcı Hizmetlerimiz ---- */
 function ComplementaryServices() {
   return (
     <section className="bg-gradient-to-b from-white to-slate-50/60 py-20" aria-labelledby="comp-heading">
@@ -412,7 +406,53 @@ function ComplementaryServices() {
   );
 }
 
-/* ---- YENİ: En altta hızlı bağlantılar (örnekteki gibi) ---- */
+/* ---- CTA ---- */
+function CTA() {
+  return (
+    <section className="container pb-16">
+      <div className="flex flex-col items-center justify-between gap-4 rounded-2xl bg-gradient-to-r from-blue-700 to-purple-700 p-6 text-center text-white md:flex-row md:p-8 md:text-left">
+        <h2 className="text-xl md:text-2xl font-bold">
+          Ses & Işık çözümleri hakkında teklif almak ister misiniz?
+        </h2>
+        <div className="flex gap-3">
+          <Link href="/iletisim" className="rounded-lg bg-white px-4 py-2 font-semibold text-blue-700 hover:opacity-90">
+            İletişime Geç
+          </Link>
+          <a
+            href={WHATSAPP}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-lg border border-white px-4 py-2 font-semibold hover:bg-white/20"
+          >
+            WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---- FAQ ---- */
+function FAQ() {
+  return (
+    <section className="container pb-20">
+      <h2 className="text-2xl md:text-3xl font-black mb-6">Sık Sorulan Sorular</h2>
+      <div className="grid gap-4 md:grid-cols-2">
+        {CONTENT.faq.map((f) => (
+          <details key={f.q} className="group rounded-2xl border bg-white p-5">
+            <summary className="cursor-pointer list-none text-lg font-semibold flex items-center justify-between">
+              <span>{f.q}</span>
+              <span aria-hidden className="ml-3 transition group-open:rotate-180">⌄</span>
+            </summary>
+            <p className="mt-3 text-neutral-700">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ---- En altta hızlı bağlantılar ---- */
 function BottomLinks() {
   return (
     <nav className="container pb-20 pt-6" aria-label="Sayfa bağlantıları">
@@ -441,16 +481,17 @@ export default function Page() {
       <Hero />
       <StatsStrip />
       <TrustRibbon />
-      <UsageAreas />          {/* ← yeni */}
+      <UsageAreas />          {/* yeni */}
       <Process />
       <GalleryBlock />
       <KnowledgeBlocks />
       <Packages />
-      <ComplementaryServices /> {/* ← yeni */}
+      <ComplementaryServices /> {/* yeni */}
+      <FAQ />
       <CTA />
-      <BottomLinks />           {/* ← yeni alt bağlantılar */}
+      <BottomLinks />           {/* yeni */}
 
-      {/* JSON-LD: Service + Breadcrumb */}
+      {/* JSON-LD */}
       <Script
         id="ld-service-audio-light"
         type="application/ld+json"
@@ -490,30 +531,5 @@ export default function Page() {
         }}
       />
     </>
-  );
-}
-
-function CTA() {
-  return (
-    <section className="container pb-16">
-      <div className="flex flex-col items-center justify-between gap-4 rounded-2xl bg-gradient-to-r from-blue-700 to-purple-700 p-6 text-center text-white md:flex-row md:p-8 md:text-left">
-        <h2 className="text-xl md:text-2xl font-bold">
-          Ses & Işık çözümleri hakkında teklif almak ister misiniz?
-        </h2>
-        <div className="flex gap-3">
-          <Link href="/iletisim" className="rounded-lg bg-white px-4 py-2 font-semibold text-blue-700 hover:opacity-90">
-            İletişime Geç
-          </Link>
-          <a
-            href={WHATSAPP}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-lg border border-white px-4 py-2 font-semibold hover:bg-white/20"
-          >
-            WhatsApp
-          </a>
-        </div>
-      </div>
-    </section>
   );
 }
