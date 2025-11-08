@@ -150,7 +150,7 @@ const USE_CASES = [
 /* ================== HERO ================== */
 function Hero() {
   return (
-    <section className="relative flex items-center justify-center overflow-hidden bg-slate-900 pt-16 min-h-[65vh]" aria-labelledby="hero-title">
+    <section className="relative flex items-center justify-center overflow-hidden bg-slate-900 pt-18 min-h-[75vh]" aria-labelledby="hero-title">
       <div className="absolute inset-0">
         <Image 
           src={HERO.src} 
@@ -165,65 +165,72 @@ function Hero() {
         <div className="absolute inset-0 bg-gradient-to-t from-blue-950/80 via-transparent to-purple-900/60" aria-hidden="true" />
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 text-center text-white py-8">
-        <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-lg rounded-xl px-4 py-2 border border-white/30 mb-6">
+      <div className="relative z-10 container mx-auto px-4 text-center text-white py-12">
+        <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-lg rounded-xl px-4 py-2 border border-white/30 mb-8">
           <span className="relative flex w-2 h-2" aria-hidden="true">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
             <span className="relative inline-flex rounded-full w-2 h-2 bg-green-500" />
           </span>
-          <span className="text-xs font-bold text-white">Türkiye Geneli Profesyonel Hizmet</span>
+          <span className="text-sm font-bold text-white">Türkiye Geneli Profesyonel Hizmet</span>
         </div>
 
-        <h1 id="hero-title" className="text-3xl md:text-5xl lg:text-6xl font-black leading-tight mb-4 drop-shadow-2xl">
+        <h1 id="hero-title" className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight mb-6 drop-shadow-2xl">
           Profesyonel <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">Ses & Işık</span>
         </h1>
 
-        <p className="text-lg md:text-xl text-white/95 max-w-2xl mx-auto leading-relaxed font-light mb-4">
+        <p className="text-xl md:text-2xl text-white/95 max-w-3xl mx-auto leading-relaxed font-light mb-6">
           Konser • Festival • Lansman • Konferans
         </p>
-        <p className="text-base md:text-lg text-white/80 max-w-xl mx-auto leading-relaxed font-normal mb-6">
+        <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed font-normal mb-8">
           Line array ses sistemleri, dijital mikserler ve hareketli ışık başlıkları ile 
           <span className="font-semibold text-white"> anahtar teslim çözümler</span>
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-3 justify-center items-center mb-8">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
           <Link
             href={WHATSAPP}
             target="_blank"
             rel="noopener noreferrer"
             title="WhatsApp üzerinden hemen teklif alın"
-            className="inline-flex items-center justify-center font-bold px-6 py-3 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:scale-105 transform transition-all duration-300 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-green-600 shadow-lg text-sm"
+            className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:scale-105 transform transition-all duration-300 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-green-600 shadow-lg"
           >
-            <span aria-hidden="true" className="text-lg mr-2">💬</span> 
-            <span>Hemen Teklif Al</span>
+            <span aria-hidden="true" className="text-xl mr-3">💬</span> 
+            <span className="text-base">Hemen Teklif Al</span>
           </Link>
 
           <Link
             href="#hizmetler"
             title="Hizmetlerimiz hakkında daha fazla bilgi edinin"
-            className="inline-flex items-center justify-center font-bold px-6 py-3 rounded-xl border border-white text-white/95 bg-white/10 backdrop-blur-lg hover:bg-white/20 hover:scale-105 transform transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 shadow-lg text-sm"
+            className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl border-2 border-white text-white/95 bg-white/10 backdrop-blur-lg hover:bg-white/20 hover:scale-105 transform transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 shadow-lg"
           >
-            <span aria-hidden="true" className="text-lg mr-2">🎯</span> 
-            <span>Hizmetlerimiz</span>
+            <span aria-hidden="true" className="text-xl mr-3">🎯</span> 
+            <span className="text-base">Hizmetlerimiz</span>
           </Link>
         </div>
 
-        <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
-          <div className="flex flex-col items-center text-center p-3 bg-white/10 backdrop-blur-md rounded-xl border border-white/20">
-            <span className="text-xl mb-2" aria-hidden="true">⭐</span>
-            <div className="text-lg font-black text-white">4.9/5</div>
-            <div className="text-white/80 text-xs">250+ Değerlendirme</div>
+        <div className="grid grid-cols-3 gap-6 max-w-xl mx-auto">
+          <div className="flex flex-col items-center text-center p-4 bg-white/10 backdrop-blur-md rounded-xl border border-white/20">
+            <span className="text-2xl mb-2" aria-hidden="true">⭐</span>
+            <div className="text-xl font-black text-white">4.9/5</div>
+            <div className="text-white/80 text-sm">250+ Değerlendirme</div>
           </div>
-          <div className="flex flex-col items-center text-center p-3 bg-white/10 backdrop-blur-md rounded-xl border border-white/20">
-            <span className="text-xl mb-2" aria-hidden="true">🏆</span>
-            <div className="text-lg font-black text-white">1200+</div>
-            <div className="text-white/80 text-xs">Etkinlik</div>
+          <div className="flex flex-col items-center text-center p-4 bg-white/10 backdrop-blur-md rounded-xl border border-white/20">
+            <span className="text-2xl mb-2" aria-hidden="true">🏆</span>
+            <div className="text-xl font-black text-white">1200+</div>
+            <div className="text-white/80 text-sm">Etkinlik</div>
           </div>
-          <div className="flex flex-col items-center text-center p-3 bg-white/10 backdrop-blur-md rounded-xl border border-white/20">
-            <span className="text-xl mb-2" aria-hidden="true">🚀</span>
-            <div className="text-lg font-black text-white">81 İl</div>
-            <div className="text-white/80 text-xs">Hizmet</div>
+          <div className="flex flex-col items-center text-center p-4 bg-white/10 backdrop-blur-md rounded-xl border border-white/20">
+            <span className="text-2xl mb-2" aria-hidden="true">🚀</span>
+            <div className="text-xl font-black text-white">81 İl</div>
+            <div className="text-white/80 text-sm">Hizmet</div>
           </div>
+        </div>
+      </div>
+
+      {/* Aşağı kaydırma indikatörü */}
+      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
+          <div className="w-1 h-3 bg-white rounded-full mt-2" />
         </div>
       </div>
     </section>
