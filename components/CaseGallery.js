@@ -1,179 +1,124 @@
-// components/CaseGallery.js
 "use client";
 
+import { useEffect, useMemo, useState, useCallback } from "react";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+
+const COVER_SIZES =
+  "(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw";
 
 export default function CaseGallery({ images = [] }) {
-  const [open, setOpen] = useState(false);
-  const [idx, setIdx] = useState(0);
-  const lastFocus = useRef(null);
-  const yRef = useRef(0);
-  const dialogRef = useRef(null);
-  const closeBtnRef = useRef(null);
+  // images: [{ src, alt, category }]
+  const [filter, setFilter] = useState("Tümü");
+  const [lightSrc, setLightSrc] = useState(null);
 
-  const show = (i) => {
-    lastFocus.current = document.activeElement;
-    setIdx(i);
-    setOpen(true);
-  };
+  const categories = useMemo(() => {
+    const set = new Set(["Tümü"]);
+    for (const it of images) if (it?.category) set.add(it.category);
+    return Array.from(set);
+  }, [images]);
 
-  const close = () => setOpen(false);
+  const list = useMemo(() => {
+    if (filter === "Tümü") return images;
+    return images.filter((i) => i.category === filter);
+  }, [images, filter]);
 
-  // Lightbox açıkken body scroll kilidi + ESC/ok kontrolleri + ilk odak
+  // ESC ile kapanış
   useEffect(() => {
-    if (!open) return;
-    const body = document.body;
-    yRef.current = window.scrollY;
-    const prev = {
-      pos: body.style.position,
-      top: body.style.top,
-      overflow: body.style.overflow,
-    };
-    body.style.position = "fixed";
-    body.style.top = `-${yRef.current}px`;
-    body.style.overflow = "hidden";
-
-    // İlk odak: kapat düğmesi, yoksa dialog
-    const toFocus = closeBtnRef.current || dialogRef.current;
-    toFocus?.focus?.();
-
-    const onKey = (e) => {
-      if (e.key === "Escape") close();
-      if (e.key === "ArrowLeft") setIdx((x) => (x - 1 + images.length) % images.length);
-      if (e.key === "ArrowRight") setIdx((x) => (x + 1) % images.length);
-    };
+    if (!lightSrc) return;
+    const onKey = (e) => e.key === "Escape" && setLightSrc(null);
     window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [lightSrc]);
 
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      body.style.position = prev.pos || "";
-      body.style.top = prev.top || "";
-      body.style.overflow = prev.overflow || "";
-      window.scrollTo(0, yRef.current);
-      if (lastFocus.current?.focus) lastFocus.current.focus();
-    };
-  }, [open, images.length]);
+  const open = useCallback((src) => setLightSrc(src), []);
+  const close = useCallback(() => setLightSrc(null), []);
 
   return (
-    <div>
-      {/* Thumbnail grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        {images.map((img, i) => (
-          <button
-            key={img.src}
-            type="button"
-            className="relative aspect-[16/9] overflow-hidden rounded-xl border bg-white"
-            onClick={() => show(i)}
-            aria-label="Görseli büyüt"
-          >
-            <Image
-              src={img.src}
-              alt={img.alt}
-              fill
-              sizes="(max-width:768px) 50vw, (max-width:1024px) 25vw, 280px"
-              className="object-cover"
-              loading={i < 2 ? "eager" : "lazy"}
-              quality={70}
-            />
-          </button>
-        ))}
-      </div>
-
-      {/* Lightbox */}
-      {open && (
+    <div className="space-y-6">
+      {/* Filtreler */}
+      {categories.length > 1 && (
         <div
-          ref={dialogRef}
+          className="flex flex-wrap gap-2 justify-center"
+          role="tablist"
+          aria-label="Galeri kategorileri"
+        >
+          {categories.map((c) => {
+            const active = c === filter;
+            return (
+              <button
+                key={c}
+                role="tab"
+                aria-selected={active}
+                onClick={() => setFilter(c)}
+                className={`px-4 py-2 rounded-full text-sm font-semibold transition
+                ${active
+                  ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow"
+                  : "bg-white border border-neutral-200 text-neutral-700 hover:bg-neutral-50"
+                }`}
+              >
+                {c}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Grid */}
+      <ul
+        className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"
+        role="list"
+        aria-label="Proje görselleri"
+      >
+        {list.map((img, i) => (
+          <li key={img.src || i} role="listitem">
+            <button
+              onClick={() => open(img.src)}
+              className="group relative w-full overflow-hidden rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+              aria-label={`${img.alt || "Görsel"} — büyüt`}
+            >
+              <Image
+                src={img.src}
+                alt={img.alt || ""}
+                width={1000}
+                height={750}
+                sizes={COVER_SIZES}
+                className="aspect-[4/3] object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                loading="lazy"
+              />
+              {img.category && (
+                <span className="absolute left-2 top-2 rounded-full bg-black/60 text-white text-xs font-semibold px-2 py-1">
+                  {img.category}
+                </span>
+              )}
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      {/* Lightbox (inline, CSP dostu) */}
+      {lightSrc && (
+        <div
           role="dialog"
           aria-modal="true"
-          aria-labelledby="lightbox-title"
-          aria-describedby="lightbox-desc"
-          tabIndex={-1}
-          className="fixed inset-0 z-[9999] bg-black/85 backdrop-blur-sm flex items-center justify-center p-3"
-          onClick={(e) => e.target === e.currentTarget && close()}
-          style={{ overscrollBehavior: "contain" }}
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={close}
         >
-          {/* Erişilebilir başlık + açıklama (görünmez) */}
-          <h2 id="lightbox-title" className="sr-only">
-            LED ekran görseli — büyük önizleme
-          </h2>
-          <p id="lightbox-desc" className="sr-only">
-            Esc ile kapanır. Sol/sağ ok tuşları ile görseller arasında gezinebilirsiniz.
-          </p>
-
-          {/* Kapat */}
-          <button
-            ref={closeBtnRef}
-            type="button"
-            className="absolute top-4 right-4 text-white bg-white/10 hover:bg-white/20 rounded-full px-3 py-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
-            onClick={close}
-            aria-label="Kapat"
-          >
-            ✕
-          </button>
-
-          {/* Sol/Yan oklar (desktop) */}
-          <button
-            type="button"
-            className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 rounded-full w-12 h-12 items-center justify-center text-3xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
-            onClick={() => setIdx((x) => (x - 1 + images.length) % images.length)}
-            aria-label="Önceki"
-          >
-            ‹
-          </button>
-
-          {/* Görsel */}
-          <div className="relative w-full max-w-5xl aspect-[16/9]">
+          <div className="relative max-w-6xl w-full" onClick={(e) => e.stopPropagation()}>
+            <button
+              onClick={close}
+              aria-label="Kapat"
+              className="absolute right-2 top-2 z-10 rounded-full bg-white/90 px-3 py-1.5 text-sm font-semibold shadow hover:bg-white"
+            >
+              Kapat ✕
+            </button>
             <Image
-              key={images[idx].src}
-              src={images[idx].src}
-              alt={images[idx].alt}
-              fill
-              sizes="100vw"
-              className="object-contain"
-              quality={80}
+              src={lightSrc}
+              alt=""
+              width={1920}
+              height={1280}
+              className="w-full h-auto rounded-xl"
               priority
             />
-          </div>
-
-          {/* Sağ ok */}
-          <button
-            type="button"
-            className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 rounded-full w-12 h-12 items-center justify-center text-3xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
-            onClick={() => setIdx((x) => (x + 1) % images.length)}
-            aria-label="Sonraki"
-          >
-            ›
-          </button>
-
-          {/* Mobil bar */}
-          <div
-            className="md:hidden fixed inset-x-0 bottom-0 bg-black/70 backdrop-blur"
-            style={{ paddingBottom: "max(12px, env(safe-area-inset-bottom))" }}
-          >
-            <div className="max-w-xl mx-auto flex gap-2 px-4 py-3">
-              <button
-                type="button"
-                className="flex-1 rounded-lg bg-white/15 text-white py-2"
-                onClick={close}
-              >
-                Kapat
-              </button>
-              <button
-                type="button"
-                className="flex-1 rounded-lg bg-white/15 text-white py-2"
-                onClick={() => setIdx((x) => (x - 1 + images.length) % images.length)}
-              >
-                Önceki
-              </button>
-              <button
-                type="button"
-                className="flex-1 rounded-lg bg-white/15 text-white py-2"
-                onClick={() => setIdx((x) => (x + 1) % images.length)}
-              >
-                Sonraki
-              </button>
-            </div>
           </div>
         </div>
       )}
