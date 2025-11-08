@@ -1,18 +1,23 @@
-export function FeatureCard({ icon, title, desc }) {
-  return (
-    <div className="group rounded-2xl border border-neutral-200/70 bg-white p-6 shadow-sm hover:shadow-md hover:border-blue-200 transition-all">
-      <div className="text-3xl mb-4">{icon}</div>
-      <h3 className="text-lg font-bold text-neutral-900 mb-2 group-hover:text-blue-700">{title}</h3>
-      <p className="text-neutral-600 leading-relaxed">{desc}</p>
-    </div>
-  );
-}
-
 export default function FeatureGrid({ items = [] }) {
   return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {items.map((it) => (
-        <FeatureCard key={it.title} {...it} />
+    <div
+      className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+      role="list"
+      aria-label="Öne çıkan özellikler"
+    >
+      {items.map((it, i) => (
+        <article
+          key={i}
+          role="listitem"
+          className="group rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5"
+        >
+          <div className="text-3xl mb-3">{it.icon}</div>
+          <h3 className="font-bold text-lg text-neutral-900">{it.title}</h3>
+          <p className="mt-2 text-neutral-600">{it.desc}</p>
+          {it.meta && (
+            <p className="mt-3 text-sm text-neutral-500">{it.meta}</p>
+          )}
+        </article>
       ))}
     </div>
   );
