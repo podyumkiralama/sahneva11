@@ -875,6 +875,8 @@ function FAQ() {
 }
 
 /* ================== Tamamlayıcı Hizmetler ================== */
+import Link from "next/link";
+
 function RelatedServices() {
   const services = [
     { 
@@ -902,16 +904,16 @@ function RelatedServices() {
       desc: "Profesyonel etkinlik çadırları ve tenteli alan çözümleri"
     },
   ];
-  
+
   return (
-    <section 
-      className="py-20 bg-gradient-to-br from-gray-50 to-blue-100/30" 
+    <section
+      className="py-20 bg-gradient-to-br from-gray-50 to-blue-100/30"
       aria-labelledby="tamamlayici-hizmetler-baslik"
     >
       <div className="container max-w-7xl mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 
-            id="tamamlayici-hizmetler-baslik" 
+          <h2
+            id="tamamlayici-hizmetler-baslik"
             className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-6"
           >
             Tamamlayıcı{" "}
@@ -922,45 +924,54 @@ function RelatedServices() {
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             Ses ve ışık sistemlerinizi tamamlayacak diğer profesyonel etkinlik çözümlerimiz
           </p>
-          <div 
-            className="w-32 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8 rounded-full" 
-            aria-hidden="true" 
+          <div
+            className="w-32 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8 rounded-full"
+            aria-hidden="true"
           />
         </div>
 
-        <div 
-          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto" 
-          role="navigation" 
+        <div
+          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto"
+          role="navigation"
           aria-label="Tamamlayıcı hizmetler"
         >
-          {services.map((service) => (
-            <Link
-              key={service.href}
-              href={service.href}
-              className="group bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl border-2 border-gray-100 hover:border-blue-200 transition-all duration-500 hover:scale-105 text-center focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white h-full flex flex-col"
-              aria-label={`${service.title} hizmeti sayfasına git`}
-            >
-              <div 
-                className="text-4xl mb-6 group-hover:scale-110 transition-transform duration-300" 
-                aria-hidden="true"
+          {services.map((service) => {
+            const titleId = `svc-title-${service.href.replace(/\W+/g, "")}`;
+            const descId = `svc-desc-${service.href.replace(/\W+/g, "")}`;
+            return (
+              <Link
+                key={service.href}
+                href={service.href}
+                className="group bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl border-2 border-gray-100 hover:border-blue-200 transition-all duration-500 hover:scale-105 text-center focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white h-full flex flex-col"
+                aria-describedby={descId}
               >
-                {service.icon}
-              </div>
-              <h3 className="font-bold text-xl text-gray-900 group-hover:text-blue-600 transition-colors mb-4 flex-grow">
-                {service.title}
-              </h3>
-              <p className="text-gray-600 text-lg leading-relaxed group-hover:text-gray-700 transition-colors">
-                {service.desc}
-              </p>
-            </Link>
-          ))}
+                <div
+                  className="text-4xl mb-6 group-hover:scale-110 transition-transform duration-300"
+                  aria-hidden="true"
+                >
+                  {service.icon}
+                </div>
+
+                <h3
+                  id={titleId}
+                  className="font-bold text-xl text-gray-900 group-hover:text-blue-600 transition-colors mb-4 flex-grow"
+                >
+                  {service.title}
+                </h3>
+
+                <p id={descId} className="text-gray-600 text-lg leading-relaxed group-hover:text-gray-700 transition-colors">
+                  {service.desc}
+                </p>
+              </Link>
+            );
+          })}
         </div>
 
         {/* Ekran okuyucu kullanıcıları için ek açıklama */}
         <div className="sr-only">
           <p>
-            Bu bölümde ses ve ışık sistemlerinizi tamamlayacak diğer hizmetlerimiz bulunmaktadır. 
-            Her bir hizmet kartına tıklayarak veya klavye ile seçerek ilgili sayfaya gidebilirsiniz.
+            Bu bölümde ses ve ışık sistemlerinizi tamamlayacak diğer hizmetlerimiz bulunmaktadır.
+            Her bir hizmet kartındaki başlık ve açıklama, bağlantının erişilebilir adının parçasıdır.
           </p>
         </div>
       </div>
