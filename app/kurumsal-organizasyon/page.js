@@ -5,7 +5,6 @@ import Script from "next/script";
 import CaseGallery from "@/components/CaseGallery";
 
 export const revalidate = 1800;
-
 const ORIGIN = "https://www.sahneva.com";
 
 export const metadata = {
@@ -62,6 +61,9 @@ const HERO = {
   sizes: "(max-width: 768px) 100vw, 100vw",
 };
 
+const waText =
+  "Merhaba%2C+kurumsal+organizasyon+icin+teklif+istiyorum.+Etkinlik+turu%3A+%5Bkonferans%2Flansman%2Fgala%5D%2C+Tarih%3A+%5Bgg.aa.yyyy%5D%2C+Kisi+sayisi%3A+%5Bxxx%5D.";
+
 const slugify = (s) =>
   s
     .toLowerCase()
@@ -69,138 +71,6 @@ const slugify = (s) =>
     .replace(/[^a-z0-9çğıöşü\s-]/g, "")
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-");
-const SERVICES = [
-  {
-    icon: "🎤",
-    title: "Konferans & Seminer",
-    description: "Profesyonel ses sistemi, LED ekran ve aydınlatma çözümleri",
-    features: [
-      "Simultane çeviri sistemleri",
-      "Kablosuz mikrofon sistemleri",
-      "Kayıt ve canlı yayın",
-      "Akustik optimizasyon",
-    ],
-  },
-  {
-    icon: "🚀",
-    title: "Ürün Lansmanı",
-    description: "Etkileyici görsel şovlar ve interaktif deneyimler",
-    features: [
-      "3D mapping ve projeksiyon",
-      "Özel sahne tasarımı",
-      "Medya duvarları",
-      "Interaktif ekranlar",
-    ],
-  },
-  {
-    icon: "🎭",
-    title: "Gala & Ödül Töreni",
-    description: "Şık ve profesyonel organizasyon çözümleri",
-    features: [
-      "Kırmızı halı kurulumu",
-      "Özel aydınlatma tasarımı",
-      "Sahne dekorasyonu",
-      "VIP alanları",
-    ],
-  },
-  {
-    icon: "🏟️",
-    title: "Miting & Açık Hava",
-    description: "Büyük kitlelere yönelik profesyonel çözümler",
-    features: [
-      "Yüksek parlaklıklı LED ekranlar",
-      "Güçlü ses sistemleri",
-      "Jeneratör ve altyapı",
-      "Güvenlik önlemleri",
-    ],
-  },
-  {
-    icon: "🛣️",
-    title: "Roadshow & Fuar",
-    description: "Mobil ve esnek organizasyon çözümleri",
-    features: [
-      "Taşınabilir sahne sistemleri",
-      "Hızlı kurulum çözümleri",
-      "Marka entegrasyonu",
-      "Interaktif standlar",
-    ],
-  },
-  {
-    icon: "💍",
-    title: "Özel Etkinlikler",
-    description: "Kurumsal düğün, yılbaşı partileri ve özel kutlamalar",
-    features: [
-      "Özel dekorasyon",
-      "Tema tasarımı",
-      "Eğlence ve şovlar",
-      "Fotoğraf/video çekim",
-    ],
-  },
-];
-
-const TECHNICAL_SPECS = {
-  led: "P2.5–P6 LED Ekranlar • 1500–6500 nit parlaklık",
-  sound: "Line-array ses sistemleri • 360° ses dağıtımı",
-  lighting: "LED wash ve spot ışıklar • Hareketli kafalar",
-  stage: "Modüler sahne sistemleri • 30–200 m² kapasite",
-  power: "Jeneratör ve güç dağıtımı • UPS sistemleri",
-  broadcast: "4K kamera sistemleri • Canlı yayın ve kayıt",
-};
-
-const PROCESS = [
-  {
-    step: "01",
-    title: "Keşif & Planlama",
-    description: "Mekan analizi, ihtiyaç değerlendirmesi ve kapsamlı planlama",
-    details: ["Mekan ölçümü", "Teknik gereksinimler", "Zaman planı", "Bütçe optimizasyonu"],
-  },
-  {
-    step: "02",
-    title: "Tasarım & Teklif",
-    description: "Özel tasarım ve şeffaf fiyatlandırma",
-    details: ["Sahne tasarımı", "Teknik çizimler", "Ekipman seçimi", "Detaylı teklif"],
-  },
-  {
-    step: "03",
-    title: "Kurulum & Test",
-    description: "Profesyonel kurulum ve kapsamlı test süreci",
-    details: ["Ekipman kurulumu", "Sistem entegrasyonu", "Test ve kalibrasyon", "Prova"],
-  },
-  {
-    step: "04",
-    title: "Operasyon & Destek",
-    description: "Etkinlik süresince kesintisiz destek",
-    details: ["Teknik operatörler", "Canlı destek", "Acil müdahale", "Güvenlik"],
-  },
-];
-
-const FAQ = [
-  {
-    q: "Kurulum süresi ne kadar?",
-    a: "Mekan erişimi ve kurguya bağlı olarak 4–12 saat; açık alan ve çok kameralı yayınlarda 1 güne çıkabilir. Acil kurulum hizmetimizle aynı gün teslimat sağlanabilir.",
-  },
-  {
-    q: "Yedek planınız var mı?",
-    a: "İşlemci, sinyal hattı ve kritik mikrofonlarda yedekleme; jeneratör–şebeke transfer senaryoları hazırdır. Tüm kritik ekipmanlarda %100 yedek sistem bulunur.",
-  },
-  {
-    q: "Elektrik ihtiyacı nedir?",
-    a: "LED ekranlar m² başına yaklaşık 300–800 W tüketir. Güç dağıtımı ve topraklama projeye göre planlanır. 1000 kişilik bir etkinlik için ortalama 60–100A elektrik ihtiyacı olur.",
-  },
-  {
-    q: "Canlı yayın ve kayıt desteği veriyor musunuz?",
-    a: "Evet. Çok kamerayla miks, kayıt ve streaming; scaler ve senkron ölçümleri dahil uçtan uca operasyon sağlarız. 4K çözünürlükte canlı yayın ve profesyonel kayıt hizmeti sunuyoruz.",
-  },
-  {
-    q: "Hangi şehirlerde hizmet veriyorsunuz?",
-    a: "Tüm Türkiye'de hizmet veriyoruz. İstanbul, Ankara, İzmir başta olmak üzere 81 ilde profesyonel ekiplerimizle hizmetinizdeyiz.",
-  },
-  {
-    q: "Kaç kişiye kadar etkinlik organize ediyorsunuz?",
-    a: "50 kişilik toplantılardan 50.000 kişilik açık hava konserlerine kadar her ölçekte etkinlik için profesyonel çözümler sunuyoruz.",
-  },
-];
-
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -227,37 +97,34 @@ const jsonLd = {
       },
       serviceType: "EventProduction",
       url: `${ORIGIN}/kurumsal-organizasyon`,
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: "4.9",
+        reviewCount: "250",
+        bestRating: "5",
+      },
     },
     {
-      "@type": "FAQPage",
-      mainEntity: FAQ.map((f) => ({
-        "@type": "Question",
-        name: f.q,
-        acceptedAnswer: { "@type": "Answer", text: f.a },
-      })),
-    },
-    {
-      "@type": "ItemList",
-      name: "Kurumsal Organizasyon Hizmetlerimiz",
-      numberOfItems: SERVICES.length,
-      itemListElement: SERVICES.map((s, i) => ({
-        "@type": "ListItem",
-        position: i + 1,
-        item: {
-          "@type": "Service",
-          name: s.title,
-          description: s.description,
-          serviceType: "EventProduction",
-          url: `${ORIGIN}/kurumsal-organizasyon#hizmetler`,
+      "@type": "Event",
+      name: "Ürün Lansmanı – İstanbul",
+      startDate: "2025-12-10",
+      location: {
+        "@type": "Place",
+        name: "Haliç Kongre Merkezi",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "İstanbul",
+          addressCountry: "TR",
         },
-      })),
+      },
+      performer: {
+        "@type": "Organization",
+        name: "Sahneva",
+      },
     },
   ],
 };
 export default function Page() {
-  const waText =
-    "Merhaba%2C+kurumsal+organizasyon+icin+teklif+istiyorum.+Etkinlik+turu%3A+%5Bkonferans%2Flansman%2Fgala%5D%2C+Tarih%3A+%5Bgg.aa.yyyy%5D%2C+Kisi+sayisi%3A+%5Bxxx%5D.";
-
   return (
     <>
       <Script
@@ -306,23 +173,23 @@ export default function Page() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-           <Link
-  href={`https://wa.me/905453048671?text=${waText}`}
-  target="_blank"
-  rel="noopener noreferrer"
-  className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:scale-105 transform transition-all duration-300 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-green-600"
-  title="WhatsApp üzerinden teklif al"
->
-  💬 Hemen Teklif Al
-</Link>
+            <Link
+              href={`https://wa.me/905453048671?text=${waText}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="WhatsApp üzerinden teklif al"
+              className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:scale-105 transform transition-all duration-300 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-green-600"
+            >
+              <span aria-hidden="true">💬</span> <span>Hemen Teklif Al</span>
+            </Link>
 
             <Link
-  href="#hizmetler"
-  aria-labelledby="btn-hizmetler"
-  className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl border-2 border-white text-white/95 bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:scale-105 transform transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
->
-  <span id="btn-hizmetler">🎯 Hizmetlerimiz</span>
-</Link>
+              href="#hizmetler"
+              title="Hizmetler bölümüne git"
+              className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl border-2 border-white text-white/95 bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:scale-105 transform transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+            >
+              <span aria-hidden="true">🎯</span> <span>Hizmetlerimiz</span>
+            </Link>
           </div>
 
           <ul className="flex flex-wrap justify-center items-center gap-6 text-white/90 text-sm drop-shadow" aria-label="Güven göstergeleri">
@@ -364,7 +231,74 @@ export default function Page() {
           </div>
 
           <ul className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {SERVICES.map((service) => {
+            {[
+              {
+                icon: "🎤",
+                title: "Konferans & Seminer",
+                description: "Profesyonel ses sistemi, LED ekran ve aydınlatma çözümleri",
+                features: [
+                  "Simultane çeviri sistemleri",
+                  "Kablosuz mikrofon sistemleri",
+                  "Kayıt ve canlı yayın",
+                  "Akustik optimizasyon",
+                ],
+              },
+              {
+                icon: "🚀",
+                title: "Ürün Lansmanı",
+                description: "Etkileyici görsel şovlar ve interaktif deneyimler",
+                features: [
+                  "3D mapping ve projeksiyon",
+                  "Özel sahne tasarımı",
+                  "Medya duvarları",
+                  "Interaktif ekranlar",
+                ],
+              },
+              {
+                icon: "🎭",
+                title: "Gala & Ödül Töreni",
+                description: "Şık ve profesyonel organizasyon çözümleri",
+                features: [
+                  "Kırmızı halı kurulumu",
+                  "Özel aydınlatma tasarımı",
+                  "Sahne dekorasyonu",
+                  "VIP alanları",
+                ],
+              },
+              {
+                icon: "🏟️",
+                title: "Miting & Açık Hava",
+                description: "Büyük kitlelere yönelik profesyonel çözümler",
+                features: [
+                  "Yüksek parlaklıklı LED ekranlar",
+                  "Güçlü ses sistemleri",
+                  "Jeneratör ve altyapı",
+                  "Güvenlik önlemleri",
+                ],
+              },
+              {
+                icon: "🛣️",
+                title: "Roadshow & Fuar",
+                description: "Mobil ve esnek organizasyon çözümleri",
+                features: [
+                  "Taşınabilir sahne sistemleri",
+                  "Hızlı kurulum çözümleri",
+                  "Marka entegrasyonu",
+                  "Interaktif standlar",
+                ],
+              },
+              {
+                icon: "💍",
+                title: "Özel Etkinlikler",
+                description: "Kurumsal düğün, yılbaşı partileri ve özel kutlamalar",
+                features: [
+                  "Özel dekorasyon",
+                  "Tema tasarımı",
+                  "Eğlence ve şovlar",
+                  "Fotoğraf/video çekim",
+                ],
+              },
+            ].map((service) => {
               const id = `svc-${slugify(service.title)}`;
               return (
                 <li key={id}>
@@ -405,7 +339,6 @@ export default function Page() {
           </ul>
         </div>
       </section>
-
       {/* TEKNİK ALTYAPI */}
       <section
         className="py-16 bg-gradient-to-b from-gray-50 to-white"
@@ -422,7 +355,14 @@ export default function Page() {
           </div>
 
           <ul className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {Object.entries(TECHNICAL_SPECS).map(([key, value]) => (
+            {Object.entries({
+              led: "P2.5–P6 LED Ekranlar • 1500–6500 nit parlaklık",
+              sound: "Line-array ses sistemleri • 360° ses dağıtımı",
+              lighting: "LED wash ve spot ışıklar • Hareketli kafalar",
+              stage: "Modüler sahne sistemleri • 30–200 m² kapasite",
+              power: "Jeneratör ve güç dağıtımı • UPS sistemleri",
+              broadcast: "4K kamera sistemleri • Canlı yayın ve kayıt",
+            }).map(([key, value]) => (
               <li key={key}>
                 <div className="bg-white rounded-2xl border border-gray-200 p-6 group hover:shadow-lg hover:border-blue-200 transition-all duration-300">
                   <h3 className="font-bold text-gray-900 mb-3 capitalize text-lg">
@@ -460,7 +400,32 @@ export default function Page() {
           </div>
 
           <ul className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-            {PROCESS.map((step) => (
+            {[
+              {
+                step: "01",
+                title: "Keşif & Planlama",
+                description: "Mekan analizi, ihtiyaç değerlendirmesi ve kapsamlı planlama",
+                details: ["Mekan ölçümü", "Teknik gereksinimler", "Zaman planı", "Bütçe optimizasyonu"],
+              },
+              {
+                step: "02",
+                title: "Tasarım & Teklif",
+                description: "Özel tasarım ve şeffaf fiyatlandırma",
+                details: ["Sahne tasarımı", "Teknik çizimler", "Ekipman seçimi", "Detaylı teklif"],
+              },
+              {
+                step: "03",
+                title: "Kurulum & Test",
+                description: "Profesyonel kurulum ve kapsamlı test süreci",
+                details: ["Ekipman kurulumu", "Sistem entegrasyonu", "Test ve kalibrasyon", "Prova"],
+              },
+              {
+                step: "04",
+                title: "Operasyon & Destek",
+                description: "Etkinlik süresince kesintisiz destek",
+                details: ["Teknik operatörler", "Canlı destek", "Acil müdahale", "Güvenlik"],
+              },
+            ].map((step) => (
               <li key={step.step}>
                 <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 text-center group hover:shadow-xl hover:scale-105 transition-all duration-300">
                   <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-black text-lg mb-4 mx-auto">
@@ -527,22 +492,17 @@ export default function Page() {
             İstatistikler
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto text-center">
-            <div>
-              <div className="text-3xl md:text-5xl font-black mb-2">500+</div>
-              <div className="text-blue-100 text-sm">Başarılı Proje</div>
-            </div>
-            <div>
-              <div className="text-3xl md:text-5xl font-black mb-2">50+</div>
-              <div className="text-blue-100 text-sm">Kurumsal Müşteri</div>
-            </div>
-            <div>
-              <div className="text-3xl md:text-5xl font-black mb-2">81</div>
-              <div className="text-blue-100 text-sm">İlde Hizmet</div>
-            </div>
-            <div>
-              <div className="text-3xl md:text-5xl font-black mb-2">10+</div>
-              <div className="text-blue-100 text-sm">Yıllık Deneyim</div>
-            </div>
+            {[
+              { value: "500+", label: "Başarılı Proje" },
+              { value: "50+", label: "Kurumsal Müşteri" },
+              { value: "81", label: "İlde Hizmet" },
+              { value: "10+", label: "Yıllık Deneyim" },
+            ].map((stat, i) => (
+              <div key={i}>
+                <div className="text-3xl md:text-5xl font-black mb-2">{stat.value}</div>
+                <div className="text-blue-100 text-sm">{stat.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -600,22 +560,17 @@ export default function Page() {
               <div className="mt-8 p-6 rounded-2xl border bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
                 <h4 className="m-0 font-black text-blue-700 mb-3">📊 Kritik Başarı Faktörleri</h4>
                 <ul className="grid md:grid-cols-2 gap-2 !mt-3 !mb-0">
-                  <li className="flex items-start gap-2">
-                    <span className="text-green-600 mt-1" aria-hidden="true">✓</span>
-                    Detaylı ön planlama ve risk analizi
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-green-600 mt-1" aria-hidden="true">✓</span>
-                    Yedekli teknik altyapı ve ekipman
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-green-600 mt-1" aria-hidden="true">✓</span>
-                    Deneyimli operasyon ekibi
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-green-600 mt-1" aria-hidden="true">✓</span>
-                    Zaman yönetimi ve prosedür disiplini
-                  </li>
+                  {[
+                    "Detaylı ön planlama ve risk analizi",
+                    "Yedekli teknik altyapı ve ekipman",
+                    "Deneyimli operasyon ekibi",
+                    "Zaman yönetimi ve prosedür disiplini",
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <span className="text-green-600 mt-1" aria-hidden="true">✓</span>
+                      {item}
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
