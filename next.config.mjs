@@ -42,14 +42,15 @@ const securityHeaders = (() => {
     siteUrl,
   ].join(" ");
 
-  // Preview’da vercel.live izinli; prod’da kapalı
+  // ✅ DÜZELTİLDİ: vercel.live hem preview hem de production için eklendi
   const FRAME_SRC = [
     "'self'",
     "https://www.google.com",
     "https://www.youtube.com",
     "https://www.youtube-nocookie.com",
     "https://player.vimeo.com",
-    ...(isPreview ? ["https://vercel.live", "https://*.vercel.live"] : []),
+    "https://vercel.live", // 👈 Artık her ortamda mevcut
+    ...(isPreview ? ["https://*.vercel.live"] : []), // 👈 Preview'da wildcard domain
   ].join(" ");
 
   const FRAME_ANCESTORS = isPreview
@@ -83,25 +84,7 @@ const securityHeaders = (() => {
     { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
     // COEP: globalde credentialless (daha güvenli); /iletisim'te override edeceğiz
     { key: "Cross-Origin-Embedder-Policy", value: "credentialless" },
-    // CORP: globalde same-site; /iletisim'te override edeceğiz
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    // (tek satır yeterli; editörde tekrar etmeyecekse yukarıdaki tekrarları silebilirsin)
+    // ✅ DÜZELTİLDİ: Gereksiz tekrarlar kaldırıldı
     { key: "Cross-Origin-Resource-Policy", value: "same-site" },
     {
       key: "Permissions-Policy",
@@ -115,7 +98,7 @@ const securityHeaders = (() => {
     { key: "Origin-Agent-Cluster", value: "?1" },
   ];
 
-  // X-Frame-Options: preview’da gönderme (embed lazım), prod’da DENY
+  // X-Frame-Options: preview'da gönderme (embed lazım), prod'da DENY
   return isPreview ? base : [...base, { key: "X-Frame-Options", value: "DENY" }];
 })();
 
@@ -123,7 +106,6 @@ const securityHeaders = (() => {
 
 const longTermCacheHeaders = [
   { key: "Cache-Control", value: `public, max-age=${ONE_YEAR_IN_SECONDS}, immutable` },
-  { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
 ];
 
 /* -------------------- Next.js Config -------------------- */
@@ -206,10 +188,8 @@ const nextConfig = {
         headers: [
           // COEP'i kapat (globalde credentialless; bu route'ta devre dışı)
           { key: "Cross-Origin-Embedder-Policy", value: "unsafe-none" },
-          // Bu sayfadan çağrılan cross-origin resource’lara izin
+          // Bu sayfadan çağrılan cross-origin resource'lara izin
           { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
-          // Preview'da Live View için frame'lenmeye izin (prod'da zaten DENY)
-          ...(isPreview ? [] : []),
         ],
       },
 
@@ -222,7 +202,7 @@ const nextConfig = {
         ],
       },
 
-      // Public asset’ler: uzun süreli cache
+      // Public asset'ler: uzun süreli cache
       {
         source: "/(.*)\\.(ico|png|jpg|jpeg|webp|avif|svg|gif|woff2)",
         headers: longTermCacheHeaders,
