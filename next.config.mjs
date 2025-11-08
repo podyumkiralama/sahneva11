@@ -5,22 +5,30 @@ const ONE_MONTH_IN_SECONDS = ONE_DAY_IN_SECONDS * 30;
 const ONE_YEAR_IN_SECONDS = ONE_DAY_IN_SECONDS * 365;
 
 const isProd = process.env.NODE_ENV === "production";
-const isPreview =
-  process.env.VERCEL_ENV === "preview" ||
-  process.env.NEXT_PUBLIC_VERCEL_ENV === "preview";
+// Vercel Live overlay kullanımı için CSP istisnaları tüm ortamlarda açık olsun.
+// Daha önce ortam tespiti yüzünden başlıklar uygulanmadığı için embed bloklanıyordu.
+const vercelLiveFrameAncestors =
+  "frame-ancestors 'self' https://vercel.live https://*.vercel.live;";
 
 const siteUrl = process.env.SITE_URL ?? "https://www.sahneva.com";
 
 /* -------------------- Security Headers (CSP dahil) -------------------- */
 
-const securityHeaders = (() => {
+const {
+  defaultSecurityHeaders,
+  applySecurityOverrides,
+} = (() => {
   // script-src (inline YOK)
+  const vercelLiveSources = ["https://vercel.live", "https://*.vercel.live"];
+
+  const vercelLiveSocketSources = ["wss://vercel.live", "wss://*.vercel.live"];
+
   const SCRIPT_SRC = [
     "'self'",
     "https://www.googletagmanager.com",
     "https://www.google-analytics.com",
     "https://va.vercel-scripts.com",
-    "https://vercel.live",
+    ...vercelLiveSources,
   ].join(" ");
 
   // script-src-elem (JSON-LD vb. için elem seviyesinde inline serbest)
@@ -30,7 +38,7 @@ const securityHeaders = (() => {
     "https://www.googletagmanager.com",
     "https://www.google-analytics.com",
     "https://va.vercel-scripts.com",
-    "https://vercel.live",
+    ...vercelLiveSources,
   ].join(" ");
 
   const CONNECT_SRC = [
@@ -40,21 +48,22 @@ const securityHeaders = (() => {
     "https://region1.google-analytics.com",
     "https://stats.g.doubleclick.net",
     siteUrl,
+    ...vercelLiveSources,
+    ...vercelLiveSocketSources,
   ].join(" ");
 
-  // Preview’da vercel.live izinli; prod’da kapalı
+  // vercel.live embed’i Vercel ortamlarında (preview + prod) ve local dev’de açık
   const FRAME_SRC = [
     "'self'",
     "https://www.google.com",
+    "https://*.google.com",
     "https://www.youtube.com",
     "https://www.youtube-nocookie.com",
     "https://player.vimeo.com",
-    ...(isPreview ? ["https://vercel.live", "https://*.vercel.live"] : []),
+    ...vercelLiveSources,
   ].join(" ");
 
-  const FRAME_ANCESTORS = isPreview
-    ? "frame-ancestors 'self' https://vercel.live https://*.vercel.live;"
-    : "frame-ancestors 'none';";
+  const FRAME_ANCESTORS = vercelLiveFrameAncestors;
 
   const csp = `
     default-src 'self';
@@ -85,24 +94,6 @@ const securityHeaders = (() => {
     { key: "Cross-Origin-Embedder-Policy", value: "credentialless" },
     // CORP: globalde same-site; /iletisim'te override edeceğiz
     { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    // (tek satır yeterli; editörde tekrar etmeyecekse yukarıdaki tekrarları silebilirsin)
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
     {
       key: "Permissions-Policy",
       value:
@@ -115,9 +106,25 @@ const securityHeaders = (() => {
     { key: "Origin-Agent-Cluster", value: "?1" },
   ];
 
-  // X-Frame-Options: preview’da gönderme (embed lazım), prod’da DENY
-  return isPreview ? base : [...base, { key: "X-Frame-Options", value: "DENY" }];
+  const applySecurityOverrides = (overrides = {}) => {
+    const headers = base.map((header) =>
+      overrides[header.key] ? { ...header, value: overrides[header.key] } : header,
+    );
+
+    // Vercel Live iframe’i tüm ortamlarda izinli olduğundan X-Frame-Options göndermiyoruz.
+    return headers;
+  };
+
+  return {
+    defaultSecurityHeaders: applySecurityOverrides(),
+    applySecurityOverrides,
+  };
 })();
+
+const iletisimSecurityHeaders = applySecurityOverrides({
+  "Cross-Origin-Embedder-Policy": "unsafe-none",
+  "Cross-Origin-Resource-Policy": "cross-origin",
+});
 
 /* -------------------- Uzun süreli cache başlıkları -------------------- */
 
@@ -197,21 +204,12 @@ const nextConfig = {
 
   async headers() {
     return [
-      // 🌐 Global güvenlik başlıkları
-      { source: "/(.*)", headers: securityHeaders },
-
       // 🗺️ Sadece /iletisim: Google Maps iframe için COEP kapat, CORP cross-origin
-      {
-        source: "/iletisim",
-        headers: [
-          // COEP'i kapat (globalde credentialless; bu route'ta devre dışı)
-          { key: "Cross-Origin-Embedder-Policy", value: "unsafe-none" },
-          // Bu sayfadan çağrılan cross-origin resource’lara izin
-          { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
-          // Preview'da Live View için frame'lenmeye izin (prod'da zaten DENY)
-          ...(isPreview ? [] : []),
-        ],
-      },
+      { source: "/iletisim", headers: iletisimSecurityHeaders },
+
+      // 🌐 Global güvenlik başlıkları (/iletisim hariç)
+      { source: "/:path((?!iletisim$).+)", headers: defaultSecurityHeaders },
+      { source: "/", headers: defaultSecurityHeaders },
 
       // Next statik runtime dosyaları: uzun cache + index dışı
       {
