@@ -4,9 +4,7 @@ import Link from "next/link";
 import Script from "next/script";
 import dynamic from "next/dynamic";
 
-/* ✅ CaseGallery: client sarmalayıcıyı lazy import ediyoruz (ssr:false KULLANMADAN) */
-const CaseGallery = dynamic(() => import("@/components/CaseGalleryClient"), {
-  loading: () => (
+import CaseGallery from "@/components/CaseGallery";
     <div
       className="h-64 flex items-center justify-center text-neutral-500"
       role="status"
