@@ -306,15 +306,15 @@ export default function Page() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Link
-              href={`https://wa.me/905453048671?text=${waText}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:scale-105 transform transition-all duration-300 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-green-600"
-              aria-label="WhatsApp üzerinden teklif al"
-            >
-              💬 Hemen Teklif Al
-            </Link>
+           <Link
+  href={`https://wa.me/905453048671?text=${waText}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:scale-105 transform transition-all duration-300 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-green-600"
+  title="WhatsApp üzerinden teklif al"
+>
+  💬 Hemen Teklif Al
+</Link>
 
             <Link
   href="#hizmetler"
