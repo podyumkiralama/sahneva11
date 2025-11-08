@@ -13,7 +13,6 @@ const serviceLinks = [
   { href: "/cadir-kiralama", label: "Çadır Kiralama", description: "Etkinlik çadırları" },
   { href: "/masa-sandalye-kiralama", label: "Masa Sandalye", description: "Toplantı ve davet ekipmanları" },
 ];
-
 export default function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -52,36 +51,7 @@ export default function Navbar() {
   }, [servicesOpen]);
 
   const isActive = (href) => pathname === href || pathname.startsWith(href);
-
-  return (
-    <>
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-blue-600 focus:px-3 focus:py-2 focus:text-white focus:font-semibold"
-      >
-        Ana içeriğe atla
-      </a>
-
-      <header
-        className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-          scrolled ? "bg-white/95 shadow-md border-b border-neutral-200" : "bg-white/90"
-        } backdrop-blur-lg`}
-        itemScope
-        itemType="https://schema.org/Organization"
-      >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link href="/" title="Sahneva Ana Sayfa" itemProp="url">
-            <Image
-              src="/img/logo.png"
-              alt="Sahneva Logo"
-              width={140}
-              height={40}
-              className="h-8 w-auto"
-              priority
-              itemProp="logo"
-            />
-          </Link>
-          <nav className="hidden md:flex items-center gap-6" aria-label="Ana menü">
+            <nav className="hidden md:flex items-center gap-6" aria-label="Ana menü">
             <Link
               href="/hakkimizda"
               className={`text-[15px] font-medium px-3 py-2 rounded-lg transition ${
@@ -143,7 +113,6 @@ export default function Navbar() {
             >
               İletişim
             </Link>
-
             <a
               href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum"
               target="_blank"
@@ -178,4 +147,52 @@ export default function Navbar() {
           mobileOpen ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="px-5 py
+        <div className="px-5 py-6 space-y-4">
+          <Link
+            href="/hakkimizda"
+            onClick={() => setMobileOpen(false)}
+            className="block text-[15px] font-medium text-neutral-800 px-4 py-3 rounded-lg hover:bg-neutral-100 transition"
+          >
+            Hakkımızda
+          </Link>
+
+          <button
+            type="button"
+            onClick={() => setMobileServicesOpen((s) => !s)}
+            className="w-full text-left text-[15px] font-medium text-neutral-800 px-4 py-3 rounded-lg hover:bg-neutral-100 transition"
+            aria-expanded={mobileServicesOpen}
+            aria-controls="mobile-services"
+          >
+            Hizmetler
+          </button>
+
+          {mobileServicesOpen && (
+            <div id="mobile-services" className="ml-2 border-l border-neutral-200 pl-4 space-y-2">
+              {serviceLinks.map(({ href, label, description }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={() => setMobileOpen(false)}
+                  className="block px-4 py-2 rounded-lg hover:bg-neutral-100 transition"
+                >
+                  <div className="text-sm font-semibold text-neutral-900">{label}</div>
+                  <div className="text-xs text-neutral-500">{description}</div>
+                </Link>
+              ))}
+            </div>
+          )}
+
+          <a
+            href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setMobileOpen(false)}
+            className="block text-center rounded-lg px-5 py-3 text-white text-sm font-semibold bg-blue-600 hover:bg-blue-700 transition shadow-md"
+          >
+            Teklif Al
+          </a>
+        </div>
+      </div>
+    </>
+  );
+}
