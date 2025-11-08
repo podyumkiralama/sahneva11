@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 export const revalidate = 1800;
 const ORIGIN = "https://www.sahneva.com";
 
-// Dinamik galeri
+// Dinamik galeri (referans sayfadaki CaseGallery kullanımıyla aynı)
 const CaseGallery = dynamic(() => import("@/components/CaseGallery"), {
   loading: () => (
     <div
@@ -235,7 +235,7 @@ export default function Page() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* HERO */}
+      {/* HERO — KURUMSAL SAYFAYLA AYNI KOMPOZİSYON */}
       <section
         className="relative flex items-center justify-center overflow-hidden bg-slate-900 pt-20 min-h-[72vh]"
         aria-labelledby="hero-title"
@@ -322,7 +322,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* HİZMETLER */}
+      {/* HİZMETLER — REFERANS DİLİYLE */}
       <section
         id="hizmetler"
         className="py-16 bg-gradient-to-b from-white to-blue-50/30"
@@ -359,10 +359,7 @@ export default function Page() {
                     <p className="text-gray-600 mb-4 text-sm">{service.description}</p>
                     <ul className="space-y-1">
                       {service.features.map((feature, i) => (
-                        <li
-                          key={i}
-                          className="flex items-center gap-2 text-sm text-gray-700"
-                        >
+                        <li key={i} className="flex items-center gap-2 text-sm text-gray-700">
                           <span
                             className="w-1.5 h-1.5 bg-blue-500 rounded-full flex-shrink-0"
                             aria-hidden="true"
@@ -398,10 +395,7 @@ export default function Page() {
             />
           </div>
 
-          <div
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto"
-            role="list"
-          >
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto" role="list">
             {USE_CASES.map((useCase, index) => (
               <div
                 key={index}
@@ -423,7 +417,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* TEKNİK ALTYAPI */}
+      {/* TEKNİK ALTYAPI — KURUMSAL SAYFAYLA AYNI BLOK DİLİ */}
       <section
         className="py-16 bg-gradient-to-b from-gray-50 to-white"
         aria-labelledby="altyapi-baslik"
@@ -465,7 +459,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* GALERİ */}
+      {/* GALERİ — AYNI BAŞLIK STİLİ */}
       <section
         className="py-16 bg-gradient-to-b from-white to-blue-50/30"
         aria-labelledby="galeri-baslik"
@@ -489,7 +483,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* İSTATİSTİKLER */}
+      {/* İSTATİSTİK ŞERİDİ — REFERANS BLOĞU */}
       <section
         className="py-16 bg-gradient-to-r from-blue-600 to-purple-600 text-white"
         aria-labelledby="istatistik-baslik"
@@ -498,6 +492,8 @@ export default function Page() {
           <h2 id="istatistik-baslik" className="sr-only">
             İstatistikler
           </h2>
+        </div>
+        <div className="container">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto text-center">
             {[
               { value: "1200+", label: "Etkinlik" },
@@ -514,7 +510,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* SEO MAKALESİ (≈300+ kelime, anahtar kelime zengin) */}
+      {/* SEO MAKALESİ — güçlendirilmiş (~300+ kelime) */}
       <section
         className="py-16 bg-gradient-to-b from-white to-gray-50"
         aria-labelledby="seo-article-heading"
@@ -536,40 +532,42 @@ export default function Page() {
             <div className="p-6 md:p-10 prose prose-lg max-w-none">
               <p>
                 <strong>Sahneva</strong>, Türkiye genelinde{" "}
-                <em>ses sistemi kiralama</em> ve <em>ışık sistemi kiralama</em> alanlarında
-                kurumsal standartta hizmet sunar. İster açık hava konseri, ister kapalı salon
-                konferansı planlıyor olun; akustik keşif, teknik projelendirme, güvenli{" "}
-                <em>truss & rigging</em> ve canlı operasyon dahil <strong>uçtan uca çözüm</strong>{" "}
-                sağlarız. Doğru konfigüre edilmiş <em>line array</em> sistemleri ile homojen SPL
-                dağılımı elde edilirken, dijital mikser ve <em>stagebox</em> mimarisiyle patch ve
-                routing süreçleri hızlanır. RGBW spot, wash, beam/spot armatürleri ve DMX tabanlı
-                sahne programlarıyla, etkinliğin tonuna uygun güçlü bir ışık atmosferi kurarız.
+                <em>ses sistemi kiralama</em> ve <em>ışık sistemi kiralama</em>{" "}
+                alanlarında kurumsal standartta çözümler sunar. Etkinliğiniz ister
+                açık hava konseri ister kapalı salon konferansı olsun; akustik
+                keşif, teknik projelendirme, güvenli <em>truss &amp; rigging</em> ve
+                canlı operasyon dahil <strong>uçtan uca hizmet</strong> modelimizle
+                tek ekipten yönetim sağlarız. Doğru konfigüre edilmiş{" "}
+                <em>line array</em> sistemleriyle homojen SPL dağılımı elde edilirken,
+                dijital mikser ve <em>stagebox</em> mimarisi patch, routing ve kayıt
+                süreçlerini hızlandırır. RGBW spot, wash ve beam/spot armatürleri; DMX
+                tabanlı sahne programlarıyla senkronize edilerek konuşma anlaşılabilirliği
+                yüksek, müzikal performansı dinamik ve temiz bir deneyime dönüştürür.
               </p>
-
               <p>
-                Kurulum stratejimiz, mekanın mimari ve akustik özelliklerine göre şekillenir. Açık
-                alan etkinliklerinde rüzgâr, yankı ve gecikme hatlarını dengelemek için
-                <em> delay tower</em> ve yan kapsama (<em>side fill</em>) çözümlerini uygularız.
-                Kapalı salonlarda ise yankı sürelerini ve izleyici konforunu gözeterek top+sub ya da
-                kompakt line array konfigürasyonlarına gideriz. FOH miksaj, monitör miks ve RF
-                planlama; sahne disiplinini bozmadan hızla devreye alınır. Haze/duman, blinder ve
-                strobe unsurları, etkinliğin dramatik anlarını güçlendirecek şekilde cue’lara
-                bağlanır. Böylece konuşma anlaşılabilirliği yüksek, müzikte ise dinamik ve temiz bir
-                performans elde edilir.
+                Uygulama stratejimiz mekânın mimari ve akustik yapısına göre şekillenir.
+                Açık alan etkinliklerinde rüzgâr ve zaman gecikmesini dengelemek için{" "}
+                <em>delay tower</em> ve <em>side fill</em> çözümleri kullanır; kapalı
+                salonlarda yankıyı azaltan top+sub ya da kompakt line array dizilimlerine
+                gideriz. FOH miksaj, monitör miks ve RF planlama; sahne disiplini
+                korunarak hızlıca devreye alınır. Haze/duman, blinder ve strobe gibi
+                unsurlar kritik anlarda vurguyu artırır; önceden planlanmış cue’lar ile
+                ışık show akıcı ve kontrollü şekilde ilerler. Böylece hem kurumsal
+                etkinliklerde net ve anlaşılır konuşma, hem konser/festival gibi yüksek
+                enerjili etkinliklerde güçlü bir atmosfer sağlanır.
               </p>
-
               <p>
-                Markanız için ölçülebilir bir değer üretiyoruz: <strong>düşük arıza oranı</strong>,
-                <strong> hızlı kurulum</strong>, <strong>yedekli altyapı</strong> ve{" "}
-                <strong>güvenlik</strong>. İstanbul başta olmak üzere 81 ilde; festival, belediye
-                etkinliği, AVM lansmanı, kurumsal toplantı ve mezuniyet törenlerinde standart bir
-                kalite sunuyoruz. <em>Ses sistemi kiralama İstanbul</em>,{" "}
+                <em>Ses sistemi kiralama İstanbul</em>,{" "}
                 <em>ışık sistemi kiralama İstanbul</em>, <em>konser ses ışık</em>,{" "}
-                <em>line array kiralama</em>, <em>led ışık kiralama</em> gibi aramalarda aradığınız
-                profesyonel çözüm ortağıyız. Projenizin ölçeğine göre uygun paketler,
-                şeffaf fiyatlama ve teknik çizimlerle riskleri azaltır; etkinlik gününde yalnızca
-                içeriğe odaklanmanızı sağlarız. Şimdi teklif alın, etkinliğinizin ses ve ışık
-                kalitesini <strong>Sahneva</strong> güvencesiyle garantiye alın.
+                <em>line array kiralama</em>, <em>led ışık kiralama</em> gibi anahtar
+                ihtiyaçlarınızda; düşük arıza oranı, hızlı kurulum, yedekli altyapı ve
+                güvenli rigging ile ölçülebilir kalite sunuyoruz. 81 ilde belediye
+                etkinlikleri, AVM lansmanları, fuar stantları, kurumsal toplantılar ve
+                mezuniyet törenlerinde standartlarımızı aynı seviyede koruruz. Projenize
+                uygun paketler, şeffaf fiyatlama ve teknik çizimlerle riskleri en aza indirir,
+                etkinlik gününde yalnızca içerik ve performansa odaklanmanızı sağlarız. Teklif
+                için hemen iletişime geçin; ses ve ışık kalitesini{" "}
+                <strong>Sahneva</strong> güvencesiyle garanti altına alın.
               </p>
 
               <div className="mt-8 p-6 rounded-2xl border bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
@@ -579,8 +577,8 @@ export default function Page() {
                 <ul className="grid md:grid-cols-2 gap-2 !mt-3 !mb-0">
                   {[
                     "Detaylı keşif ve akustik planlama",
-                    "Doğru kapsama için line array simülasyonu",
-                    "Güvenli rigging ve truss yerleşimi",
+                    "Line array simülasyonu ile doğru kapsama",
+                    "Güvenli rigging ve sertifikalı ekipman",
                     "Soundcheck ve cue planlı ışık programlama",
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-2">
@@ -597,13 +595,10 @@ export default function Page() {
         </div>
       </section>
 
-      {/* PAKETLER */}
+      {/* PAKETLER — REFERANS KART DİLİ */}
       <section className="container py-16">
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-black">Paket Örnekleri</h2>
-          <p className="mt-3 text-neutral-600">
-            Etkinlik ölçeğine göre önerdiğimiz hazır setler
-          </p>
         </div>
         <div className="grid gap-6 md:grid-cols-3 max-w-6xl mx-auto">
           {packages.map((pkg) => (
@@ -628,11 +623,9 @@ export default function Page() {
         </div>
       </section>
 
-      {/* FAQ */}
+      {/* FAQ + “Tüm Soruları Gör” butonu */}
       <section className="container pb-20">
-        <h2 className="text-2xl md:text-3xl font-black mb-6">
-          Sık Sorulan Sorular
-        </h2>
+        <h2 className="text-2xl md:text-3xl font-black mb-6">Sık Sorulan Sorular</h2>
         <div className="grid gap-4 md:grid-cols-2">
           {faq.map((f) => (
             <details key={f.q} className="group rounded-2xl border bg-white p-5">
@@ -645,6 +638,18 @@ export default function Page() {
               <p className="mt-3 text-neutral-700">{f.a}</p>
             </details>
           ))}
+        </div>
+
+        {/* Tüm soruları gör butonu */}
+        <div className="mt-8 flex justify-center">
+          <Link
+            href="/sss"
+            className="inline-flex items-center gap-2 rounded-xl bg-neutral-900 text-white px-6 py-3 font-semibold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-neutral-900"
+            aria-label="Tüm sık sorulan soruları görüntüle"
+            title="Tüm sık sorulan soruları görüntüle"
+          >
+            <span aria-hidden>📚</span> Tüm soruları gör
+          </Link>
         </div>
       </section>
 
@@ -670,7 +675,7 @@ export default function Page() {
             <div
               className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8"
               aria-hidden="true"
-            />
+            ></div>
           </div>
 
           <div
