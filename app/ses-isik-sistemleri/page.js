@@ -938,7 +938,6 @@ function RelatedServices() {
               key={service.href}
               href={service.href}
               className="group bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl border-2 border-gray-100 hover:border-blue-200 transition-all duration-500 hover:scale-105 text-center focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white h-full flex flex-col"
-              aria-label={`${service.title} hizmeti sayfasına git`}
             >
               <div 
                 className="text-4xl mb-6 group-hover:scale-110 transition-transform duration-300" 
@@ -956,7 +955,6 @@ function RelatedServices() {
           ))}
         </div>
 
-        {/* Ekran okuyucu kullanıcıları için ek açıklama */}
         <div className="sr-only">
           <p>
             Bu bölümde ses ve ışık sistemlerinizi tamamlayacak diğer hizmetlerimiz bulunmaktadır. 
@@ -967,7 +965,6 @@ function RelatedServices() {
     </section>
   );
 }
-
 /* ================== CTA ================== */
 function CTA() {
   return (
