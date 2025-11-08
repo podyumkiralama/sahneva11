@@ -8,6 +8,8 @@ const isProd = process.env.NODE_ENV === "production";
 const vercelEnv = process.env.VERCEL_ENV ?? process.env.NEXT_PUBLIC_VERCEL_ENV;
 const isVercelDeployment = process.env.VERCEL === "1" || Boolean(vercelEnv);
 const isPreview = !isProd || (isVercelDeployment && vercelEnv !== "production");
+// vercel.live overlay’ine tüm Vercel ortamlarında (prod dahil) izin ver
+const allowVercelLive = isPreview || isVercelDeployment;
 
 const siteUrl = process.env.SITE_URL ?? "https://www.sahneva.com";
 
@@ -18,13 +20,20 @@ const {
   applySecurityOverrides,
 } = (() => {
   // script-src (inline YOK)
+  const vercelLiveSources = allowVercelLive
+    ? ["https://vercel.live", "https://*.vercel.live"]
+    : [];
+
+  const vercelLiveSocketSources = allowVercelLive
+    ? ["wss://vercel.live", "wss://*.vercel.live"]
+    : [];
+
   const SCRIPT_SRC = [
     "'self'",
     "https://www.googletagmanager.com",
     "https://www.google-analytics.com",
     "https://va.vercel-scripts.com",
-    "https://vercel.live",
-    "https://*.vercel.live",
+    ...vercelLiveSources,
   ].join(" ");
 
   // script-src-elem (JSON-LD vb. için elem seviyesinde inline serbest)
@@ -34,8 +43,7 @@ const {
     "https://www.googletagmanager.com",
     "https://www.google-analytics.com",
     "https://va.vercel-scripts.com",
-    "https://vercel.live",
-    "https://*.vercel.live",
+    ...vercelLiveSources,
   ].join(" ");
 
   const CONNECT_SRC = [
@@ -45,17 +53,11 @@ const {
     "https://region1.google-analytics.com",
     "https://stats.g.doubleclick.net",
     siteUrl,
-    ...(isPreview
-      ? [
-          "https://vercel.live",
-          "https://*.vercel.live",
-          "wss://vercel.live",
-          "wss://*.vercel.live",
-        ]
-      : []),
+    ...vercelLiveSources,
+    ...vercelLiveSocketSources,
   ].join(" ");
 
-  // Preview’da vercel.live izinli; prod’da kapalı
+  // vercel.live embed’i Vercel ortamlarında (preview + prod) ve local dev’de açık
   const FRAME_SRC = [
     "'self'",
     "https://www.google.com",
@@ -63,10 +65,10 @@ const {
     "https://www.youtube.com",
     "https://www.youtube-nocookie.com",
     "https://player.vimeo.com",
-    ...(isPreview ? ["https://vercel.live", "https://*.vercel.live"] : []),
+    ...vercelLiveSources,
   ].join(" ");
 
-  const FRAME_ANCESTORS = isPreview
+  const FRAME_ANCESTORS = allowVercelLive
     ? "frame-ancestors 'self' https://vercel.live https://*.vercel.live;"
     : "frame-ancestors 'none';";
 
@@ -116,8 +118,10 @@ const {
       overrides[header.key] ? { ...header, value: overrides[header.key] } : header,
     );
 
-    // X-Frame-Options: preview’da gönderme (embed lazım), prod’da DENY
-    return isPreview ? headers : [...headers, { key: "X-Frame-Options", value: "DENY" }];
+    // X-Frame-Options: vercel.live embed gerekiyorsa gönderme, aksi halde DENY
+    return allowVercelLive
+      ? headers
+      : [...headers, { key: "X-Frame-Options", value: "DENY" }];
   };
 
   return {
