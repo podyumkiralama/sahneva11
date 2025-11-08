@@ -892,14 +892,14 @@ function RelatedServices() {
     { 
       href: "/sahne-kiralama", 
       title: "Sahne Kiralama", 
-      icon: "🎪", 
+      icon: "🛠️", 
       desc: "Portatif ve modüler sahne sistemleri kiralama" 
     },
     { 
-      href: "/projeksiyon-kiralama", 
-      title: "Projeksiyon Sistemleri", 
-      icon: "📽️", 
-      desc: "Profesyonel projeksiyon ve mapping çözümleri" 
+      href: "/cadir-kiralama", 
+      title: "Çadır Kiralama", 
+      icon: "🎪", 
+      desc: "Profesyonel etkinlik çadırları ve tenteli alan çözümleri" 
     },
   ];
   
