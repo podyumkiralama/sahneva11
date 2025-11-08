@@ -64,7 +64,7 @@ const securityHeaders = (() => {
     object-src 'none';
     upgrade-insecure-requests;
     img-src 'self' data: blob: https:;
-    font-src 'self' data: https://fonts.gstatic.com;
+    font-src 'self' data: https://fonts.gstatic.com https://vercel.live https://*.vercel.live;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     script-src ${SCRIPT_SRC};
     script-src-elem ${SCRIPT_SRC_ELEM};
@@ -197,6 +197,16 @@ const nextConfig = {
       // ✅ Vercel Live feedback için özel route
       {
         source: "/_next-live/feedback/:path*",
+        headers: [
+          { key: "Cross-Origin-Embedder-Policy", value: "unsafe-none" },
+          { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
+          { key: "Cross-Origin-Opener-Policy", value: "unsafe-none" },
+        ],
+      },
+
+      // Vercel Live statik feedback HTML'ini de koru (route parametre olmadan)
+      {
+        source: "/_next-live/feedback.html",
         headers: [
           { key: "Cross-Origin-Embedder-Policy", value: "unsafe-none" },
           { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
