@@ -1,134 +1,96 @@
-// next.config.mjs
+/** @type {import('next').NextConfig} */
 
-const ONE_DAY_IN_SECONDS = 60 * 60 * 24;
-const ONE_MONTH_IN_SECONDS = ONE_DAY_IN_SECONDS * 30;
-const ONE_YEAR_IN_SECONDS = ONE_DAY_IN_SECONDS * 365;
+const ONE_DAY = 60 * 60 * 24;
+const ONE_MONTH = ONE_DAY * 30;
+const ONE_YEAR = ONE_DAY * 365;
 
-const isProd = process.env.NODE_ENV === "production";
-const isPreview =
-  process.env.VERCEL_ENV === "preview" ||
-  process.env.NEXT_PUBLIC_VERCEL_ENV === "preview";
-
+const isProd = process.env.VERCEL_ENV === "production";
+const isPreview = process.env.VERCEL_ENV === "preview";
 const siteUrl = process.env.SITE_URL ?? "https://www.sahneva.com";
 
-/* -------------------- Security Headers (CSP dahil) -------------------- */
+// ---- allowlists ----
+const scriptSrcHosts = [
+  "https://www.googletagmanager.com",
+  "https://www.google-analytics.com",
+  "https://va.vercel-scripts.com",
+  "https://vercel.live",
+];
+
+const connectSrcHosts = [
+  "https://vitals.vercel-insights.com",
+  "https://www.google-analytics.com",
+  "https://region1.google-analytics.com",
+  "https://stats.g.doubleclick.net",
+  siteUrl,
+];
+
+// vercel.live’ı SADECE preview’da ekliyoruz:
+const baseFrame = [
+  "https://www.google.com",
+  "https://www.youtube.com",
+  "https://www.youtube-nocookie.com",
+  "https://player.vimeo.com",
+];
+const frameSrcHosts = isPreview
+  ? [...baseFrame, "https://vercel.live", "https://*.vercel.live"]
+  : baseFrame;
 
 const securityHeaders = (() => {
-  // script-src (inline YOK)
-  const SCRIPT_SRC = [
-    "'self'",
-    "https://www.googletagmanager.com",
-    "https://www.google-analytics.com",
-    "https://va.vercel-scripts.com",
-    "https://vercel.live",
-  ].join(" ");
-
-  // script-src-elem (JSON-LD vb. için elem seviyesinde inline serbest)
-  const SCRIPT_SRC_ELEM = [
-    "'self'",
-    "'unsafe-inline'",
-    "https://www.googletagmanager.com",
-    "https://www.google-analytics.com",
-    "https://va.vercel-scripts.com",
-    "https://vercel.live",
-  ].join(" ");
-
-  const CONNECT_SRC = [
-    "'self'",
-    "https://vitals.vercel-insights.com",
-    "https://www.google-analytics.com",
-    "https://region1.google-analytics.com",
-    "https://stats.g.doubleclick.net",
-    siteUrl,
-  ].join(" ");
-
-  // Preview’da vercel.live izinli; prod’da kapalı
-  const FRAME_SRC = [
-    "'self'",
-    "https://www.google.com",
-    "https://www.youtube.com",
-    "https://www.youtube-nocookie.com",
-    "https://player.vimeo.com",
-    ...(isPreview ? ["https://vercel.live", "https://*.vercel.live"] : []),
-  ].join(" ");
-
-  const FRAME_ANCESTORS = isPreview
-    ? "frame-ancestors 'self' https://vercel.live https://*.vercel.live;"
-    : "frame-ancestors 'none';";
+  const scriptSrc = ["'self'", "'unsafe-inline'", ...scriptSrcHosts].join(" ");
+  const connectSrc = ["'self'", ...connectSrcHosts].join(" ");
+  const frameSrc = ["'self'", ...frameSrcHosts].join(" ");
 
   const csp = `
     default-src 'self';
-    ${FRAME_ANCESTORS}
     base-uri 'self';
     object-src 'none';
+    frame-ancestors 'none';
     upgrade-insecure-requests;
     img-src 'self' data: blob: https:;
     font-src 'self' data: https://fonts.gstatic.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-    script-src ${SCRIPT_SRC};
-    script-src-elem ${SCRIPT_SRC_ELEM};
+    script-src ${scriptSrc};
+    script-src-elem ${scriptSrc};
     script-src-attr 'none';
-    connect-src ${CONNECT_SRC};
+    connect-src ${connectSrc};
     worker-src 'self' blob:;
-    frame-src ${FRAME_SRC};
+    frame-src ${frameSrc};
     form-action 'self' https://formspree.io https://wa.me;
   `
     .replace(/\s{2,}/g, " ")
     .trim();
 
-  const base = [
+  return [
+    // CSP
     { key: "Content-Security-Policy", value: csp },
+    // COOP + COEP (credentialless = 3rd-party iframelere uyumlu)
+    { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+    { key: "Cross-Origin-Embedder-Policy", value: "credentialless" },
+    // CORP (Lighthouse önerisi)
+    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+    // Diğer sert güvenlik başlıkları
     { key: "X-Content-Type-Options", value: "nosniff" },
     { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-    { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
-    // COEP: globalde credentialless (daha güvenli); /iletisim'te override edeceğiz
-    { key: "Cross-Origin-Embedder-Policy", value: "credentialless" },
-    // CORP: globalde same-site; /iletisim'te override edeceğiz
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
-    // (tek satır yeterli; editörde tekrar etmeyecekse yukarıdaki tekrarları silebilirsin)
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+    { key: "X-Frame-Options", value: "DENY" }, // kendi sitemizin başka sitede iframe edilmesini engeller
     {
       key: "Permissions-Policy",
-      value:
-        "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=(), fullscreen=()",
+      value: "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=()",
     },
     {
       key: "Strict-Transport-Security",
       value: "max-age=63072000; includeSubDomains; preload",
     },
-    { key: "Origin-Agent-Cluster", value: "?1" },
   ];
-
-  // X-Frame-Options: preview’da gönderme (embed lazım), prod’da DENY
-  return isPreview ? base : [...base, { key: "X-Frame-Options", value: "DENY" }];
 })();
 
-/* -------------------- Uzun süreli cache başlıkları -------------------- */
-
 const longTermCacheHeaders = [
-  { key: "Cache-Control", value: `public, max-age=${ONE_YEAR_IN_SECONDS}, immutable` },
-  { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
+  { key: "Cache-Control", value: `public, max-age=${ONE_YEAR}, immutable` },
+  {
+    key: "Strict-Transport-Security",
+    value: "max-age=63072000; includeSubDomains; preload",
+  },
 ];
 
-/* -------------------- Next.js Config -------------------- */
-
-/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
@@ -141,7 +103,7 @@ const nextConfig = {
     deviceSizes: [320, 420, 640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ["image/avif", "image/webp"],
-    minimumCacheTTL: ONE_MONTH_IN_SECONDS,
+    minimumCacheTTL: ONE_MONTH,
     remotePatterns: [],
     dangerouslyAllowSVG: false,
   },
@@ -153,26 +115,18 @@ const nextConfig = {
 
   experimental: {
     scrollRestoration: true,
-    optimizePackageImports: ["lucide-react", "@headlessui/react"],
+    optimizePackageImports: ["lucide-react", "@headlessui/react", "framer-motion", "react-icons"],
     esmExternals: true,
   },
 
   modularizeImports: {
-    "lucide-react": {
-      transform: "lucide-react/icons/{{member}}",
-    },
-    "react-icons/?(((\\w*)?/?)*)": {
-      transform: "react-icons/{{ matches.[1] }}/{{member}}",
-    },
+    "lucide-react": { transform: "lucide-react/lib/esm/icons/{{member}}" },
+    "react-icons/?(((\\w*)?/?)*)": { transform: "react-icons/{{ matches.[1] }}/{{member}}" },
   },
 
   env: {
     SITE_URL: siteUrl,
     NEXT_PUBLIC_APP_ENV: process.env.NODE_ENV ?? "development",
-  },
-
-  typescript: {
-    ignoreBuildErrors: false,
   },
 
   output: isProd ? "standalone" : undefined,
@@ -197,23 +151,7 @@ const nextConfig = {
 
   async headers() {
     return [
-      // 🌐 Global güvenlik başlıkları
       { source: "/(.*)", headers: securityHeaders },
-
-      // 🗺️ Sadece /iletisim: Google Maps iframe için COEP kapat, CORP cross-origin
-      {
-        source: "/iletisim",
-        headers: [
-          // COEP'i kapat (globalde credentialless; bu route'ta devre dışı)
-          { key: "Cross-Origin-Embedder-Policy", value: "unsafe-none" },
-          // Bu sayfadan çağrılan cross-origin resource’lara izin
-          { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
-          // Preview'da Live View için frame'lenmeye izin (prod'da zaten DENY)
-          ...(isPreview ? [] : []),
-        ],
-      },
-
-      // Next statik runtime dosyaları: uzun cache + index dışı
       {
         source: "/_next/static/(.*)",
         headers: [
@@ -221,14 +159,10 @@ const nextConfig = {
           { key: "X-Robots-Tag", value: "noindex, nofollow" },
         ],
       },
-
-      // Public asset’ler: uzun süreli cache
       {
         source: "/(.*)\\.(ico|png|jpg|jpeg|webp|avif|svg|gif|woff2)",
         headers: longTermCacheHeaders,
       },
-
-      // Diğer _next yollarını indeks dışı tut
       {
         source: "/_next/(.*)",
         headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
