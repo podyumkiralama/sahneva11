@@ -317,12 +317,11 @@ export default function Page() {
             </Link>
 
             <Link
-              href="#hizmetler"
-              className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl border-2 border-white text-white/95 bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:scale-105 transform transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
-              aria-label="Hizmetler bölümüne git"
-            >
-              🎯 Hizmetlerimiz
-            </Link>
+  href="#hizmetler"
+  aria-labelledby="btn-hizmetler"
+>
+  <span id="btn-hizmetler">🎯 Hizmetlerimiz</span>
+</Link>
           </div>
 
           <ul className="flex flex-wrap justify-center items-center gap-6 text-white/90 text-sm drop-shadow" aria-label="Güven göstergeleri">
