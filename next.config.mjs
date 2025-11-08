@@ -42,15 +42,15 @@ const securityHeaders = (() => {
     siteUrl,
   ].join(" ");
 
-  // ✅ DÜZELTİLDİ: vercel.live hem preview hem de production için eklendi
+  // ✅ DÜZELTİLDİ: vercel.live tüm ortamlarda eklendi
   const FRAME_SRC = [
     "'self'",
     "https://www.google.com",
     "https://www.youtube.com",
     "https://www.youtube-nocookie.com",
     "https://player.vimeo.com",
-    "https://vercel.live", // 👈 Artık her ortamda mevcut
-    ...(isPreview ? ["https://*.vercel.live"] : []), // 👈 Preview'da wildcard domain
+    "https://vercel.live",
+    "https://*.vercel.live",
   ].join(" ");
 
   const FRAME_ANCESTORS = isPreview
@@ -77,14 +77,15 @@ const securityHeaders = (() => {
     .replace(/\s{2,}/g, " ")
     .trim();
 
+  // ✅ DÜZELTİLDİ: COEP'i credentialless yap ve CORP'u optimize et
   const base = [
     { key: "Content-Security-Policy", value: csp },
     { key: "X-Content-Type-Options", value: "nosniff" },
     { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
     { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
-    // COEP: globalde credentialless (daha güvenli); /iletisim'te override edeceğiz
+    // ✅ COEP: credentialless - Vercel Live ile uyumlu
     { key: "Cross-Origin-Embedder-Policy", value: "credentialless" },
-    // ✅ DÜZELTİLDİ: Gereksiz tekrarlar kaldırıldı
+    // ✅ CORP: same-site - Güvenli ama daha az kısıtlayıcı
     { key: "Cross-Origin-Resource-Policy", value: "same-site" },
     {
       key: "Permissions-Policy",
@@ -182,7 +183,7 @@ const nextConfig = {
       // 🌐 Global güvenlik başlıkları
       { source: "/(.*)", headers: securityHeaders },
 
-      // 🗺️ Sadece /iletisim: Google Maps iframe için COEP kapat, CORP cross-origin
+      // 🗺️ Sadece /iletisim: Google Maps iframe için özel ayarlar
       {
         source: "/iletisim",
         headers: [
@@ -190,6 +191,16 @@ const nextConfig = {
           { key: "Cross-Origin-Embedder-Policy", value: "unsafe-none" },
           // Bu sayfadan çağrılan cross-origin resource'lara izin
           { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
+        ],
+      },
+
+      // ✅ Vercel Live feedback için özel route
+      {
+        source: "/_next-live/feedback/:path*",
+        headers: [
+          { key: "Cross-Origin-Embedder-Policy", value: "unsafe-none" },
+          { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
+          { key: "Cross-Origin-Opener-Policy", value: "unsafe-none" },
         ],
       },
 
