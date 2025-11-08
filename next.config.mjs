@@ -1,4 +1,4 @@
-// next.config.mjs
+// next.config.mjs - KESİN ÇÖZÜM
 
 const ONE_DAY_IN_SECONDS = 60 * 60 * 24;
 const ONE_MONTH_IN_SECONDS = ONE_DAY_IN_SECONDS * 30;
@@ -42,7 +42,7 @@ const securityHeaders = (() => {
     siteUrl,
   ].join(" ");
 
-  // ✅ Tüm gerekli frame kaynakları eklendi
+  // ✅ Tüm gerekli frame kaynakları
   const FRAME_SRC = [
     "'self'",
     "https://www.google.com",
@@ -54,6 +54,7 @@ const securityHeaders = (() => {
     "https://www.google.com/maps",
     "https://maps.google.com",
     "https://google.com/maps",
+    "https://*.google.com",
   ].join(" ");
 
   const FRAME_ANCESTORS = isPreview
@@ -80,14 +81,14 @@ const securityHeaders = (() => {
     .replace(/\s{2,}/g, " ")
     .trim();
 
-  // ✅ COEP: credentialless - CORP gereksinimini esnetir
+  // ✅ COEP'i TAMAMEN KALDIRIYORUZ - CORP gereksinimini ortadan kaldırır
   const base = [
     { key: "Content-Security-Policy", value: csp },
     { key: "X-Content-Type-Options", value: "nosniff" },
     { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
     { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
-    { key: "Cross-Origin-Embedder-Policy", value: "credentialless" },
-    { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
+    // ❌ COEP ARTIK YOK - Bu sayede CORP gereksinimi ortadan kalkar
+    // ❌ CORP ARTIK YOK - COEP olmayınca CORP'a gerek kalmaz
     {
       key: "Permissions-Policy",
       value:
@@ -180,26 +181,8 @@ const nextConfig = {
 
   async headers() {
     return [
-      // 🌐 Global güvenlik başlıkları
+      // 🌐 Global güvenlik başlıkları (ARTIK COEP ve CORP YOK)
       { source: "/(.*)", headers: securityHeaders },
-
-      // 🗺️ İletişim sayfası için özel ayarlar (Google Maps için)
-      {
-        source: "/iletisim",
-        headers: [
-          { key: "Cross-Origin-Embedder-Policy", value: "unsafe-none" },
-          { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
-        ],
-      },
-
-      // ✅ Vercel Live feedback için özel route
-      {
-        source: "/_next-live/feedback/:path*",
-        headers: [
-          { key: "Cross-Origin-Embedder-Policy", value: "unsafe-none" },
-          { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
-        ],
-      },
 
       // Next statik runtime dosyaları
       {
