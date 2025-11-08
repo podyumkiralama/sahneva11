@@ -403,6 +403,58 @@ export default function Page() {
         </div>
       </section>
 
+      {/* --- SEO MAKALESİ (BÖLÜM 1) — kutulu + arkası hareketli + iç bağlantılar --- */}
+      <section className="relative py-16">
+        <div
+          className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+          aria-hidden="true"
+        >
+          <div className="absolute -top-20 -left-10 w-64 h-64 rounded-full bg-blue-500/20 blur-3xl animate-pulse" />
+          <div className="absolute top-1/2 -right-16 w-72 h-72 rounded-full bg-purple-500/20 blur-3xl animate-pulse" />
+          <div className="absolute bottom-0 left-1/3 w-60 h-60 rounded-full bg-cyan-400/20 blur-3xl animate-pulse" />
+        </div>
+
+        <div className="container max-w-4xl mx-auto px-4">
+          <article className="relative overflow-hidden rounded-3xl border border-blue-200/60 bg-white/90 shadow-xl backdrop-blur">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-purple-50 opacity-70" />
+            <div className="relative p-6 md:p-10 prose prose-lg max-w-none">
+              <h2 className="!mt-0 font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-purple-700">
+                Ses ve Işık Sistemlerinde Profesyonel Çözümler — Bölüm 1
+              </h2>
+              <p>
+                <strong>Sahneva</strong>, Türkiye genelinde{" "}
+                <Link href="/ses-isik-sistemleri" className="underline decoration-2 underline-offset-4 decoration-blue-600">
+                  ses sistemi kiralama
+                </Link>{" "}
+                ve{" "}
+                <Link href="/ses-isik-sistemleri" className="underline decoration-2 underline-offset-4 decoration-purple-600">
+                  ışık sistemi kiralama
+                </Link>{" "}
+                alanlarında kurumsal standartta çözümler sunar. Etkinliğiniz ister açık hava konseri ister
+                kapalı salon konferansı olsun; akustik keşif, teknik projelendirme, güvenli{" "}
+                <span className="underline decoration-2 underline-offset-4 decoration-emerald-600">truss &amp; rigging</span> ve canlı
+                operasyon dahil <strong>uçtan uca hizmet</strong> modelimizle tek ekipten yönetim sağlarız.
+              </p>
+              <p>
+                Doğru konfigüre edilmiş <span className="underline decoration-2 underline-offset-4 decoration-blue-500">line array</span>{" "}
+                sistemleriyle homojen SPL dağılımı elde edilirken, dijital mikser ve{" "}
+                <span className="underline decoration-2 underline-offset-4 decoration-purple-500">stagebox</span> mimarisi patch, routing ve kayıt
+                süreçlerini hızlandırır. RGBW spot, wash ve beam/spot armatürleri; DMX tabanlı sahne programlarıyla senkronize edilerek konuşma
+                anlaşılabilirliği yüksek, müzikal performansı dinamik ve temiz bir deneyime dönüştürür. İhtiyaca göre{" "}
+                <Link href="/led-ekran-kiralama" className="underline decoration-2 underline-offset-4 decoration-fuchsia-600">
+                  LED ekran kiralama
+                </Link>{" "}
+                ve{" "}
+                <Link href="/podyum-kiralama" className="underline decoration-2 underline-offset-4 decoration-teal-600">
+                  podyum kiralama
+                </Link>{" "}
+                hizmetleriyle entegre çalışırız.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
       {/* TEKNİK ALTYAPI */}
       <section
         className="py-16 bg-gradient-to-b from-gray-50 to-white"
@@ -469,6 +521,51 @@ export default function Page() {
         </div>
       </section>
 
+      {/* --- SEO MAKALESİ (BÖLÜM 2) — kutulu + arkası hareketli + iç bağlantılar --- */}
+      <section className="relative py-16">
+        <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
+          <div className="absolute -top-24 right-1/4 w-64 h-64 rounded-full bg-indigo-500/20 blur-3xl animate-pulse" />
+          <div className="absolute bottom-10 left-0 w-72 h-72 rounded-full bg-sky-400/20 blur-3xl animate-pulse" />
+        </div>
+
+        <div className="container max-w-4xl mx-auto px-4">
+          <article className="relative overflow-hidden rounded-3xl border border-purple-200/60 bg-white/90 shadow-xl backdrop-blur">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-50 to-pink-50 opacity-70" />
+            <div className="relative p-6 md:p-10 prose prose-lg max-w-none">
+              <h2 className="!mt-0 font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-700 to-fuchsia-700">
+                Uygulama Stratejisi ve Entegre Çözümler — Bölüm 2
+              </h2>
+              <p>
+                Uygulama stratejimiz mekânın mimari ve akustik yapısına göre şekillenir. Açık alan etkinliklerinde rüzgâr ve zaman
+                gecikmesini dengelemek için <span className="underline decoration-2 underline-offset-4 decoration-blue-600">delay tower</span> ve{" "}
+                <span className="underline decoration-2 underline-offset-4 decoration-indigo-600">side fill</span> çözümleri kullanır; kapalı
+                salonlarda yankıyı azaltan top+sub ya da kompakt line array dizilimlerine gideriz. FOH miksaj, monitör miks ve RF planlama
+                sahne disiplini korunarak devreye alınır. Haze/duman, blinder ve strobe gibi unsurlar kritik anlarda vurguyu artırır; önceden
+                planlanmış cue’lar ile ışık show akıcı ve kontrollü ilerler.
+              </p>
+              <p>
+                İhtiyaca göre{" "}
+                <Link href="/kurumsal-organizasyon" className="underline decoration-2 underline-offset-4 decoration-rose-600">
+                  kurumsal organizasyon yönetimi
+                </Link>{" "}
+                kapsamında sahne tasarımı, teknik çizimler ve zaman planı tek çatı altında sunulur.{" "}
+                <Link href="/podyum-kiralama" className="underline decoration-2 underline-offset-4 decoration-teal-600">
+                  Podyum kiralama
+                </Link>
+                ,{" "}
+                <Link href="/led-ekran-kiralama" className="underline decoration-2 underline-offset-4 decoration-fuchsia-600">
+                  LED ekran kiralama
+                </Link>{" "}
+                ve <Link href="/sahne-kiralama" className="underline decoration-2 underline-offset-4 decoration-amber-600">sahne kiralama</Link>{" "}
+                gibi tamamlayıcı hizmetlerle tam entegre çalışırız. 81 ilde belediye etkinlikleri, AVM lansmanları, fuar stantları ve
+                mezuniyet törenlerinde ölçülebilir kalite, hızlı kurulum ve yedekli altyapı standarttır. Şeffaf fiyatlama ve teknik çizimlerle
+                riskleri en aza indirir, etkinlik gününde yalnızca içerik ve performansa odaklanmanızı sağlarız.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
       {/* İSTATİSTİK ŞERİDİ */}
       <section
         className="py-16 bg-gradient-to-r from-blue-600 to-purple-600 text-white"
@@ -494,95 +591,11 @@ export default function Page() {
         </div>
       </section>
 
-      {/* SEO MAKALESİ — Genişletilmiş */}
-      <section
-        className="py-16 bg-gradient-to-b from-white to-gray-50"
-        aria-labelledby="seo-article-heading"
-      >
-        <div className="container mx-auto px-4 max-w-4xl">
-          <article className="overflow-hidden rounded-3xl shadow-xl border border-gray-200 bg-white">
-            <header className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-8 md:p-10 text-center">
-              <h2 id="seo-article-heading" className="text-2xl md:text-3xl font-black tracking-tight drop-shadow">
-                Ses ve Işık Sistemlerinde Profesyonel Çözümler
-              </h2>
-              <p className="mt-3 text-blue-100 max-w-2xl mx-auto text-sm md:text-base">
-                Konser • Festival • Lansman • Konferans
-              </p>
-            </header>
-
-            <div className="p-6 md:p-10 prose prose-lg max-w-none">
-              <p>
-                <strong>Sahneva</strong>, Türkiye genelinde{" "}
-                <em>ses sistemi kiralama</em> ve <em>ışık sistemi kiralama</em>{" "}
-                alanlarında kurumsal standartta çözümler sunar. Etkinliğiniz ister
-                açık hava konseri ister kapalı salon konferansı olsun; akustik
-                keşif, teknik projelendirme, güvenli <em>truss &amp; rigging</em> ve
-                canlı operasyon dahil <strong>uçtan uca hizmet</strong> modelimizle
-                tek ekipten yönetim sağlarız. Doğru konfigüre edilmiş{" "}
-                <em>line array</em> sistemleriyle homojen SPL dağılımı elde edilirken,
-                dijital mikser ve <em>stagebox</em> mimarisi patch, routing ve kayıt
-                süreçlerini hızlandırır. RGBW spot, wash ve beam/spot armatürleri; DMX
-                tabanlı sahne programlarıyla senkronize edilerek konuşma anlaşılabilirliği
-                yüksek, müzikal performansı dinamik ve temiz bir deneyime dönüştürür.
-              </p>
-
-              <p>
-                Uygulama stratejimiz mekânın mimari ve akustik yapısına göre şekillenir.
-                Açık alan etkinliklerinde rüzgâr ve zaman gecikmesini dengelemek için{" "}
-                <em>delay tower</em> ve <em>side fill</em> çözümleri kullanır; kapalı
-                salonlarda yankıyı azaltan top+sub ya da kompakt line array dizilimlerine
-                gideriz. FOH miksaj, monitör miks ve RF planlama; sahne disiplini
-                korunarak hızlıca devreye alınır. Haze/duman, blinder ve strobe gibi
-                unsurlar kritik anlarda vurguyu artırır; önceden planlanmış cue’lar ile
-                ışık show akıcı ve kontrollü şekilde ilerler. Böylece hem kurumsal
-                etkinliklerde net ve anlaşılır konuşma, hem konser/festival gibi yüksek
-                enerjili etkinliklerde güçlü bir atmosfer sağlanır.
-              </p>
-
-              <p>
-                <em>Ses sistemi kiralama İstanbul</em>,{" "}
-                <em>ışık sistemi kiralama İstanbul</em>, <em>konser ses ışık</em>,{" "}
-                <em>line array kiralama</em>, <em>led ışık kiralama</em> gibi anahtar
-                ihtiyaçlarınızda; düşük arıza oranı, hızlı kurulum, yedekli altyapı ve
-                güvenli rigging ile ölçülebilir kalite sunuyoruz. 81 ilde belediye
-                etkinlikleri, AVM lansmanları, fuar stantları, kurumsal toplantılar ve
-                mezuniyet törenlerinde standartlarımızı aynı seviyede koruruz. Projenize
-                uygun paketler, şeffaf fiyatlama ve teknik çizimlerle riskleri en aza indirir,
-                etkinlik gününde yalnızca içerik ve performansa odaklanmanızı sağlarız. Teklif
-                için hemen iletişime geçin; ses ve ışık kalitesini{" "}
-                <strong>Sahneva</strong> güvencesiyle garanti altına alın.
-              </p>
-
-              {/* Güzelleştirilmiş öne çıkarım kutusu */}
-              <div className="mt-8 p-6 rounded-2xl border bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
-                <h4 className="m-0 font-black text-blue-700 mb-3">
-                  📊 Kritik Başarı Faktörleri
-                </h4>
-                <ul className="grid md:grid-cols-2 gap-2 !mt-3 !mb-0">
-                  {[
-                    "Detaylı keşif ve akustik planlama",
-                    "Line array simülasyonu ile doğru kapsama",
-                    "Güvenli rigging ve sertifikalı ekipman",
-                    "Soundcheck ve cue planlı ışık programlama",
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <span className="text-green-600 mt-1" aria-hidden="true">
-                        ✓
-                      </span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </article>
-        </div>
-      </section>
-
       {/* Paketler */}
       <section className="container py-16">
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-black">Paket Örnekleri</h2>
+          <p className="mt-3 text-neutral-600">Etkinlik ölçeğine göre önerdiğimiz hazır setler</p>
         </div>
         <div className="grid gap-6 md:grid-cols-3 max-w-6xl mx-auto">
           {packages.map((pkg) => (
