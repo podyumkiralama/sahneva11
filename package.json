@@ -55,4 +55,3 @@
     "prebuild": "npm dedupe"
   }
 }
-}
