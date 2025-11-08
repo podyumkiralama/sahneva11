@@ -2,8 +2,8 @@
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Inter } from "next/font/google";
 import UtilityBar from "../components/UtilityBar";
+import { Inter } from "next/font/google";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -45,36 +45,26 @@ export default function RootLayout({ children }) {
   return (
     <html lang="tr" dir="ltr" className={inter.className}>
       <body className="min-h-screen bg-white text-neutral-900 antialiased">
+        {/* Tek skip-link burada; hedef main#main-content */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:z-[9999] focus:top-3 focus:left-3 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-3 focus:rounded-lg focus:font-semibold focus:shadow-lg transition"
+        >
+          Ana içeriğe atla
+        </a>
 
-<a
-  href="#main-content"
-  className="
-    sr-only
-    focus:not-sr-only
-    focus:fixed
-    focus:z-[9999]
-    focus:top-3
-    focus:left-3
-    focus:bg-blue-600
-    focus:text-white
-    focus:px-4
-    focus:py-3
-    focus:rounded-lg
-    focus:font-semibold
-    focus:shadow-lg
-    transition
-  "
->
-  Ana içeriğe atla
-</a>
-
-
-        {/* Üst bileşenler */}
         <UtilityBar />
         <Navbar />
 
-        {/* DİKKAT: Layout içinde <main> yok; children sadece 1 kez render edilir */}
-        {children}
+        {/* Hedef: odaklanabilir main landmark */}
+        <main
+          id="main-content"
+          tabIndex={-1}
+          className="min-h-[60vh] focus:outline-none"
+          role="main"
+        >
+          {children}
+        </main>
 
         <Footer />
       </body>
