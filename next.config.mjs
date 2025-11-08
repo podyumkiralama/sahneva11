@@ -5,11 +5,10 @@ const ONE_MONTH_IN_SECONDS = ONE_DAY_IN_SECONDS * 30;
 const ONE_YEAR_IN_SECONDS = ONE_DAY_IN_SECONDS * 365;
 
 const isProd = process.env.NODE_ENV === "production";
-const vercelEnv = process.env.VERCEL_ENV ?? process.env.NEXT_PUBLIC_VERCEL_ENV;
-const isVercelDeployment = process.env.VERCEL === "1" || Boolean(vercelEnv);
-const isPreview = !isProd || (isVercelDeployment && vercelEnv !== "production");
-// vercel.live overlay’ine tüm Vercel ortamlarında (prod dahil) izin ver
-const allowVercelLive = isPreview || isVercelDeployment;
+// Vercel Live overlay kullanımı için CSP istisnaları tüm ortamlarda açık olsun.
+// Daha önce ortam tespiti yüzünden başlıklar uygulanmadığı için embed bloklanıyordu.
+const vercelLiveFrameAncestors =
+  "frame-ancestors 'self' https://vercel.live https://*.vercel.live;";
 
 const siteUrl = process.env.SITE_URL ?? "https://www.sahneva.com";
 
@@ -20,13 +19,9 @@ const {
   applySecurityOverrides,
 } = (() => {
   // script-src (inline YOK)
-  const vercelLiveSources = allowVercelLive
-    ? ["https://vercel.live", "https://*.vercel.live"]
-    : [];
+  const vercelLiveSources = ["https://vercel.live", "https://*.vercel.live"];
 
-  const vercelLiveSocketSources = allowVercelLive
-    ? ["wss://vercel.live", "wss://*.vercel.live"]
-    : [];
+  const vercelLiveSocketSources = ["wss://vercel.live", "wss://*.vercel.live"];
 
   const SCRIPT_SRC = [
     "'self'",
@@ -68,9 +63,7 @@ const {
     ...vercelLiveSources,
   ].join(" ");
 
-  const FRAME_ANCESTORS = allowVercelLive
-    ? "frame-ancestors 'self' https://vercel.live https://*.vercel.live;"
-    : "frame-ancestors 'none';";
+  const FRAME_ANCESTORS = vercelLiveFrameAncestors;
 
   const csp = `
     default-src 'self';
@@ -118,10 +111,8 @@ const {
       overrides[header.key] ? { ...header, value: overrides[header.key] } : header,
     );
 
-    // X-Frame-Options: vercel.live embed gerekiyorsa gönderme, aksi halde DENY
-    return allowVercelLive
-      ? headers
-      : [...headers, { key: "X-Frame-Options", value: "DENY" }];
+    // Vercel Live iframe’i tüm ortamlarda izinli olduğundan X-Frame-Options göndermiyoruz.
+    return headers;
   };
 
   return {
