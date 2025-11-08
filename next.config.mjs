@@ -77,16 +77,10 @@ const securityHeaders = (() => {
     .replace(/\s{2,}/g, " ")
     .trim();
 
-  // ✅ DÜZELTİLDİ: COEP'i credentialless yap ve CORP'u optimize et
   const base = [
     { key: "Content-Security-Policy", value: csp },
     { key: "X-Content-Type-Options", value: "nosniff" },
     { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-    { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
-    // ✅ COEP: credentialless - Vercel Live ile uyumlu
-    { key: "Cross-Origin-Embedder-Policy", value: "credentialless" },
-    // ✅ CORP: same-site - Güvenli ama daha az kısıtlayıcı
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
     {
       key: "Permissions-Policy",
       value:
@@ -102,6 +96,12 @@ const securityHeaders = (() => {
   // X-Frame-Options: preview'da gönderme (embed lazım), prod'da DENY
   return isPreview ? base : [...base, { key: "X-Frame-Options", value: "DENY" }];
 })();
+
+const crossOriginIsolationHeaders = [
+  { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+  { key: "Cross-Origin-Embedder-Policy", value: "credentialless" },
+  { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+];
 
 /* -------------------- Uzun süreli cache başlıkları -------------------- */
 
@@ -183,11 +183,18 @@ const nextConfig = {
       // 🌐 Global güvenlik başlıkları
       { source: "/(.*)", headers: securityHeaders },
 
+      // 🌐 COOP/COEP/CORP kombinasyonu - özel istisnalar hariç tüm sayfalara uygula
+      {
+        source: "/((?!_next-live/feedback|iletisim).*)",
+        headers: crossOriginIsolationHeaders,
+      },
+
       // 🗺️ Sadece /iletisim: Google Maps iframe için özel ayarlar
       {
         source: "/iletisim",
         headers: [
-          // COEP'i kapat (globalde credentialless; bu route'ta devre dışı)
+          // COOP/COEP'i kapat (Google Maps embed'i aksi halde bloklanıyor)
+          { key: "Cross-Origin-Opener-Policy", value: "unsafe-none" },
           { key: "Cross-Origin-Embedder-Policy", value: "unsafe-none" },
           // Bu sayfadan çağrılan cross-origin resource'lara izin
           { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
@@ -198,9 +205,9 @@ const nextConfig = {
       {
         source: "/_next-live/feedback/:path*",
         headers: [
+          { key: "Cross-Origin-Opener-Policy", value: "unsafe-none" },
           { key: "Cross-Origin-Embedder-Policy", value: "unsafe-none" },
           { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
-          { key: "Cross-Origin-Opener-Policy", value: "unsafe-none" },
         ],
       },
 
@@ -208,9 +215,9 @@ const nextConfig = {
       {
         source: "/_next-live/feedback.html",
         headers: [
+          { key: "Cross-Origin-Opener-Policy", value: "unsafe-none" },
           { key: "Cross-Origin-Embedder-Policy", value: "unsafe-none" },
           { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
-          { key: "Cross-Origin-Opener-Policy", value: "unsafe-none" },
         ],
       },
 
