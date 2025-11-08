@@ -20,7 +20,14 @@ const connectSrcHosts = [
   siteUrl,
 ];
 
-const frameSrcHosts = ["https://www.google.com", "https://vercel.live", "https://*.vercel.live"];
+const frameSrcHosts = [
+  "https://www.google.com",
+  "https://www.youtube.com",
+  "https://www.youtube-nocookie.com",
+  "https://player.vimeo.com",
+  "https://vercel.live",
+  "https://*.vercel.live",
+];
 
 const securityHeaders = (() => {
   const scriptSrc = ["'self'", "'unsafe-inline'", ...scriptSrcHosts].join(" ");
@@ -31,7 +38,7 @@ const securityHeaders = (() => {
       default-src 'self';
       base-uri 'self';
       object-src 'none';
-      frame-ancestors 'none';
+      frame-ancestors 'self' https://vercel.live https://*.vercel.live;
       upgrade-insecure-requests;
       img-src 'self' data: blob: https:;
       font-src 'self' data: https://fonts.gstatic.com;
@@ -49,7 +56,6 @@ const securityHeaders = (() => {
     { key: "Content-Security-Policy", value: csp },
     { key: "X-Content-Type-Options", value: "nosniff" },
     { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-    { key: "X-Frame-Options", value: "DENY" },
     { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
     { key: "Cross-Origin-Resource-Policy", value: "same-site" },
     { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=()" },
