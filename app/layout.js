@@ -27,7 +27,7 @@ export const metadata = {
     template: "%s | Sahneva",
   },
   description:
-    "Türkiye genelinde sahne, podyum, LED ekran, ses-ışık sistemleri kiralama ve profesyonel kurulum. Hızlı keşif, teknik ekip ve 7/24 destek.",
+    "Türkiye genelinde sahne, podyum, LED ekran, ses-ışık sistemleri ve çadır kiralama. Hızlı kurulum, profesyonel teknik ekip, uygun fiyat. Hemen teklif alın!",
   alternates: { canonical: "https://www.sahneva.com" },
   openGraph: {
     title: "Sahneva – Profesyonel Sahne & Etkinlik Teknolojileri",
