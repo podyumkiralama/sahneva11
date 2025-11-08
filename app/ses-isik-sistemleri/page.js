@@ -11,8 +11,8 @@ const CaseGallery = dynamic(() => import("@/components/CaseGallery"), {
       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
       <span className="sr-only">Galeri yükleniyor...</span>
     </div>
-  ),
-  ssr: false
+  )
+  // ssr: false kaldırıldı - Server Components'te kullanılamaz
 });
 
 export const revalidate = 1800;
