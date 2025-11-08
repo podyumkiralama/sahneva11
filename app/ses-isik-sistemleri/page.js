@@ -10,7 +10,11 @@ const ORIGIN = "https://www.sahneva.com";
 // Dinamik galeri
 const CaseGallery = dynamic(() => import("@/components/CaseGallery"), {
   loading: () => (
-    <div className="flex justify-center items-center h-64" role="status" aria-label="Galeri yükleniyor">
+    <div
+      className="flex justify-center items-center h-64"
+      role="status"
+      aria-label="Galeri yükleniyor"
+    >
       <span aria-hidden="true">🖼️</span>
       <span className="sr-only">Galeri yükleniyor...</span>
     </div>
@@ -32,7 +36,12 @@ export const metadata = {
     siteName: "Sahneva",
     locale: "tr_TR",
     images: [
-      { url: `${ORIGIN}/img/ses-isik/hero.webp`, width: 1200, height: 630, alt: "Sahneva Ses & Işık Sistemleri" },
+      {
+        url: `${ORIGIN}/img/ses-isik/hero.webp`,
+        width: 1200,
+        height: 630,
+        alt: "Sahneva Ses & Işık Sistemleri",
+      },
     ],
   },
   twitter: {
@@ -45,7 +54,13 @@ export const metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 
@@ -213,15 +228,35 @@ export default function Page() {
   return (
     <>
       {/* JSON-LD */}
-      <Script id="ld-json-ses-isik" type="application/ld+json" strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <Script
+        id="ld-json-ses-isik"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* HERO */}
-      <section className="relative flex items-center justify-center overflow-hidden bg-slate-900 pt-20 min-h-[72vh]" aria-labelledby="hero-title">
+      <section
+        className="relative flex items-center justify-center overflow-hidden bg-slate-900 pt-20 min-h-[72vh]"
+        aria-labelledby="hero-title"
+      >
         <div className="absolute inset-0">
-          <Image src={HERO.src} alt={HERO.alt} fill priority className="object-cover" sizes={HERO.sizes} />
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-800 to-blue-950 mix-blend-multiply" aria-hidden="true" />
-          <div className="absolute inset-0 bg-gradient-to-t from-blue-950/60 via-transparent to-purple-900/50" aria-hidden="true" />
+          <Image
+            src={HERO.src}
+            alt={HERO.alt}
+            fill
+            priority
+            className="object-cover"
+            sizes={HERO.sizes}
+          />
+          <div
+            className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-800 to-blue-950 mix-blend-multiply"
+            aria-hidden="true"
+          />
+          <div
+            className="absolute inset-0 bg-gradient-to-t from-blue-950/60 via-transparent to-purple-900/50"
+            aria-hidden="true"
+          />
         </div>
 
         <div className="relative z-10 container mx-auto px-4 text-center text-white py-16">
@@ -233,43 +268,77 @@ export default function Page() {
             <span className="text-sm font-semibold">Türkiye Geneli Profesyonel Hizmet</span>
           </div>
 
-          <h1 id="hero-title" className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight mb-6 drop-shadow-2xl">
+          <h1
+            id="hero-title"
+            className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight mb-6 drop-shadow-2xl"
+          >
             Ses & Işık Sistemleri
           </h1>
 
           <p className="text-lg md:text-xl lg:text-2xl text-white/95 max-w-4xl mx-auto leading-relaxed font-light mb-8">
             Konser • Festival • Lansman • Konferans
-            <span className="block mt-2">Line array, dijital mikser, hareketli başlık ve truss ile anahtar teslim çözümler</span>
+            <span className="block mt-2">
+              Line array, dijital mikser, hareketli başlık ve truss ile anahtar teslim çözümler
+            </span>
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Link href={WHATSAPP} target="_blank" rel="noopener noreferrer" title="WhatsApp üzerinden teklif al"
-              className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:scale-105 transform transition-all duration-300 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-green-600">
+            <Link
+              href={WHATSAPP}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="WhatsApp üzerinden teklif al"
+              className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:scale-105 transform transition-all duration-300 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-green-600"
+            >
               <span aria-hidden="true">💬</span> <span>Hemen Teklif Al</span>
             </Link>
-            <Link href="#hizmetler" title="Hizmetler bölümüne git"
-              className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl border-2 border-white text-white/95 bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:scale-105 transform transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80">
+
+            <Link
+              href="#hizmetler"
+              title="Hizmetler bölümüne git"
+              className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl border-2 border-white text-white/95 bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:scale-105 transform transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+            >
               <span aria-hidden="true">🎯</span> <span>Hizmetlerimiz</span>
             </Link>
           </div>
 
-          <ul className="flex flex-wrap justify-center items-center gap-6 text-white/90 text-sm drop-shadow" aria-label="Güven göstergeleri">
-            <li className="flex items-center gap-2"><span className="text-2xl" aria-hidden="true">⭐</span><span>4.9/5 (250+ Değerlendirme)</span></li>
-            <li className="flex items-center gap-2"><span className="text-2xl" aria-hidden="true">🏆</span><span>1200+ Etkinlik</span></li>
-            <li className="flex items-center gap-2"><span className="text-2xl" aria-hidden="true">🚀</span><span>81 İlde Hizmet</span></li>
+          <ul
+            className="flex flex-wrap justify-center items-center gap-6 text-white/90 text-sm drop-shadow"
+            aria-label="Güven göstergeleri"
+          >
+            <li className="flex items-center gap-2">
+              <span className="text-2xl" aria-hidden="true">⭐</span>
+              <span>4.9/5 (250+ Değerlendirme)</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="text-2xl" aria-hidden="true">🏆</span>
+              <span>1200+ Etkinlik</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="text-2xl" aria-hidden="true">🚀</span>
+              <span>81 İlde Hizmet</span>
+            </li>
           </ul>
         </div>
       </section>
 
       {/* HİZMETLER */}
-      <section id="hizmetler" className="py-16 bg-gradient-to-b from-white to-blue-50/30" aria-labelledby="hizmetler-baslik">
+      <section
+        id="hizmetler"
+        className="py-16 bg-gradient-to-b from-white to-blue-50/30"
+        aria-labelledby="hizmetler-baslik"
+      >
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 id="hizmetler-baslik" className="text-3xl md:text-5xl font-black mb-4">
               Ses & Işık{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Hizmetlerimiz</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                Hizmetlerimiz
+              </span>
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">Keşif, projelendirme, kurulum, canlı miks ve söküm dahil uçtan uca hizmet</p>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Keşif, projelendirme, kurulum, canlı miks ve söküm dahil uçtan uca hizmet
+            </p>
           </div>
 
           <ul className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -277,14 +346,27 @@ export default function Page() {
               const id = `svc-${slugify(service.title)}`;
               return (
                 <li key={id}>
-                  <article className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 group hover:shadow-xl hover:scale-105 transition-all duration-300" aria-labelledby={id}>
-                    <div className="text-3xl mb-3" aria-hidden="true">{service.icon}</div>
-                    <h3 id={id} className="text-xl font-black mb-2 text-gray-900">{service.title}</h3>
+                  <article
+                    className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 group hover:shadow-xl hover:scale-105 transition-all duration-300"
+                    aria-labelledby={id}
+                  >
+                    <div className="text-3xl mb-3" aria-hidden="true">
+                      {service.icon}
+                    </div>
+                    <h3 id={id} className="text-xl font-black mb-2 text-gray-900">
+                      {service.title}
+                    </h3>
                     <p className="text-gray-600 mb-4 text-sm">{service.description}</p>
                     <ul className="space-y-1">
                       {service.features.map((feature, i) => (
-                        <li key={i} className="flex items-center gap-2 text-sm text-gray-700">
-                          <span className="w-1.5 h-1.5 bg-blue-500 rounded-full flex-shrink-0" aria-hidden="true" />
+                        <li
+                          key={i}
+                          className="flex items-center gap-2 text-sm text-gray-700"
+                        >
+                          <span
+                            className="w-1.5 h-1.5 bg-blue-500 rounded-full flex-shrink-0"
+                            aria-hidden="true"
+                          />
                           {feature}
                         </li>
                       ))}
@@ -303,13 +385,23 @@ export default function Page() {
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-black text-white mb-6">
               Kullanım{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Alanları</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                Alanları
+              </span>
             </h2>
-            <p className="text-xl text-white/85 max-w-3xl mx-auto">Podyum çözümlerimizin tercih edildiği başlıca etkinlik türleri</p>
-            <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-purple-400 mx-auto mt-8" aria-hidden="true" />
+            <p className="text-xl text-white/85 max-w-3xl mx-auto">
+              Podyum çözümlerimizin tercih edildiği başlıca etkinlik türleri
+            </p>
+            <div
+              className="w-24 h-1 bg-gradient-to-r from-blue-400 to-purple-400 mx-auto mt-8"
+              aria-hidden="true"
+            />
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto" role="list">
+          <div
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto"
+            role="list"
+          >
             {USE_CASES.map((useCase, index) => (
               <div
                 key={index}
@@ -318,8 +410,12 @@ export default function Page() {
                 tabIndex={0}
               >
                 <div className="flex items-center gap-4">
-                  <div className="text-2xl" role="img" aria-label={useCase.text}>{useCase.icon}</div>
-                  <span className="text-white font-medium group-hover:text-blue-300 transition-colors">{useCase.text}</span>
+                  <div className="text-2xl" role="img" aria-label={useCase.text}>
+                    {useCase.icon}
+                  </div>
+                  <span className="text-white font-medium group-hover:text-blue-300 transition-colors">
+                    {useCase.text}
+                  </span>
                 </div>
               </div>
             ))}
@@ -328,12 +424,17 @@ export default function Page() {
       </section>
 
       {/* TEKNİK ALTYAPI */}
-      <section className="py-16 bg-gradient-to-b from-gray-50 to-white" aria-labelledby="altyapi-baslik">
+      <section
+        className="py-16 bg-gradient-to-b from-gray-50 to-white"
+        aria-labelledby="altyapi-baslik"
+      >
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 id="altyapi-baslik" className="text-3xl md:text-5xl font-black mb-4">
               Teknik{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Altyapımız</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                Altyapımız
+              </span>
             </h2>
           </div>
 
@@ -365,14 +466,21 @@ export default function Page() {
       </section>
 
       {/* GALERİ */}
-      <section className="py-16 bg-gradient-to-b from-white to-blue-50/30" aria-labelledby="galeri-baslik">
+      <section
+        className="py-16 bg-gradient-to-b from-white to-blue-50/30"
+        aria-labelledby="galeri-baslik"
+      >
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 id="galeri-baslik" className="text-3xl md:text-5xl font-black mb-4">
               Kurulum{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">Galerisi</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
+                Galerisi
+              </span>
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">Gerçek projelerden örnek kurulum fotoğrafları</p>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Gerçek projelerden örnek kurulum fotoğrafları
+            </p>
           </div>
 
           <div className="max-w-6xl mx-auto">
@@ -382,11 +490,21 @@ export default function Page() {
       </section>
 
       {/* İSTATİSTİKLER */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-purple-600 text-white" aria-labelledby="istatistik-baslik">
+      <section
+        className="py-16 bg-gradient-to-r from-blue-600 to-purple-600 text-white"
+        aria-labelledby="istatistik-baslik"
+      >
         <div className="container mx-auto px-4">
-          <h2 id="istatistik-baslik" className="sr-only">İstatistikler</h2>
+          <h2 id="istatistik-baslik" className="sr-only">
+            İstatistikler
+          </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto text-center">
-            {[{ value: "1200+", label: "Etkinlik" }, { value: "50+", label: "Kurumsal Müşteri" }, { value: "81", label: "İl" }, { value: "10+", label: "Yıl Deneyim" }].map((stat, i) => (
+            {[
+              { value: "1200+", label: "Etkinlik" },
+              { value: "50+", label: "Kurumsal Müşteri" },
+              { value: "81", label: "İl" },
+              { value: "10+", label: "Yıl Deneyim" },
+            ].map((stat, i) => (
               <div key={i}>
                 <div className="text-3xl md:text-5xl font-black mb-2">{stat.value}</div>
                 <div className="text-blue-100 text-sm">{stat.label}</div>
@@ -396,37 +514,68 @@ export default function Page() {
         </div>
       </section>
 
-      {/* SEO MAKALESİ */}
-      <section className="py-16 bg-gradient-to-b from-white to-gray-50" aria-labelledby="seo-article-heading">
+      {/* SEO MAKALESİ (≈300+ kelime, anahtar kelime zengin) */}
+      <section
+        className="py-16 bg-gradient-to-b from-white to-gray-50"
+        aria-labelledby="seo-article-heading"
+      >
         <div className="container mx-auto px-4 max-w-4xl">
           <article className="overflow-hidden rounded-3xl shadow-xl border border-gray-200 bg-white">
             <header className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-8 md:p-10 text-center">
-              <h2 id="seo-article-heading" className="text-2xl md:text-3xl font-black tracking-tight drop-shadow">
+              <h2
+                id="seo-article-heading"
+                className="text-2xl md:text-3xl font-black tracking-tight drop-shadow"
+              >
                 Ses ve Işık Sistemlerinde Profesyonel Çözümler
               </h2>
-              <p className="mt-3 text-blue-100 max-w-2xl mx-auto text-sm md:text-base">Konser • Festival • Lansman • Konferans</p>
+              <p className="mt-3 text-blue-100 max-w-2xl mx-auto text-sm md:text-base">
+                Konser • Festival • Lansman • Konferans
+              </p>
             </header>
 
             <div className="p-6 md:p-10 prose prose-lg max-w-none">
               <p>
-                Etkinliklerde anlaşılır ses ve etkileyici ışık atmosferi için doğru ekipman ve
-                deneyimli ekip şarttır. <strong>Sahneva</strong>, line array PA sistemlerinden
-                dijital miksere, kablosuz mikrofonlardan hareketli başlıklara ve truss–rigging
-                altyapısına kadar <strong>uçtan uca</strong> kurumsal çözümler sunar.
+                <strong>Sahneva</strong>, Türkiye genelinde{" "}
+                <em>ses sistemi kiralama</em> ve <em>ışık sistemi kiralama</em> alanlarında
+                kurumsal standartta hizmet sunar. İster açık hava konseri, ister kapalı salon
+                konferansı planlıyor olun; akustik keşif, teknik projelendirme, güvenli{" "}
+                <em>truss & rigging</em> ve canlı operasyon dahil <strong>uçtan uca çözüm</strong>{" "}
+                sağlarız. Doğru konfigüre edilmiş <em>line array</em> sistemleri ile homojen SPL
+                dağılımı elde edilirken, dijital mikser ve <em>stagebox</em> mimarisiyle patch ve
+                routing süreçleri hızlanır. RGBW spot, wash, beam/spot armatürleri ve DMX tabanlı
+                sahne programlarıyla, etkinliğin tonuna uygun güçlü bir ışık atmosferi kurarız.
               </p>
 
-              <h3 className="!mt-10 !mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 font-extrabold">
-                Kapsamlı Hizmet Anlayışı
-              </h3>
               <p>
-                Keşif ve akustik analiziyle başlar, teknik projelendirme ile devam eder. Kurulum,
-                kablolama ve testlerden sonra FOH miks ve ışık show kontrol ile etkinlik boyunca
-                kesintisiz destek sağlanır. Etkinlik bitiminde düzenli söküm ve lojistikle süreç
-                tamamlanır.
+                Kurulum stratejimiz, mekanın mimari ve akustik özelliklerine göre şekillenir. Açık
+                alan etkinliklerinde rüzgâr, yankı ve gecikme hatlarını dengelemek için
+                <em> delay tower</em> ve yan kapsama (<em>side fill</em>) çözümlerini uygularız.
+                Kapalı salonlarda ise yankı sürelerini ve izleyici konforunu gözeterek top+sub ya da
+                kompakt line array konfigürasyonlarına gideriz. FOH miksaj, monitör miks ve RF
+                planlama; sahne disiplinini bozmadan hızla devreye alınır. Haze/duman, blinder ve
+                strobe unsurları, etkinliğin dramatik anlarını güçlendirecek şekilde cue’lara
+                bağlanır. Böylece konuşma anlaşılabilirliği yüksek, müzikte ise dinamik ve temiz bir
+                performans elde edilir.
+              </p>
+
+              <p>
+                Markanız için ölçülebilir bir değer üretiyoruz: <strong>düşük arıza oranı</strong>,
+                <strong> hızlı kurulum</strong>, <strong>yedekli altyapı</strong> ve{" "}
+                <strong>güvenlik</strong>. İstanbul başta olmak üzere 81 ilde; festival, belediye
+                etkinliği, AVM lansmanı, kurumsal toplantı ve mezuniyet törenlerinde standart bir
+                kalite sunuyoruz. <em>Ses sistemi kiralama İstanbul</em>,{" "}
+                <em>ışık sistemi kiralama İstanbul</em>, <em>konser ses ışık</em>,{" "}
+                <em>line array kiralama</em>, <em>led ışık kiralama</em> gibi aramalarda aradığınız
+                profesyonel çözüm ortağıyız. Projenizin ölçeğine göre uygun paketler,
+                şeffaf fiyatlama ve teknik çizimlerle riskleri azaltır; etkinlik gününde yalnızca
+                içeriğe odaklanmanızı sağlarız. Şimdi teklif alın, etkinliğinizin ses ve ışık
+                kalitesini <strong>Sahneva</strong> güvencesiyle garantiye alın.
               </p>
 
               <div className="mt-8 p-6 rounded-2xl border bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
-                <h4 className="m-0 font-black text-blue-700 mb-3">📊 Kritik Başarı Faktörleri</h4>
+                <h4 className="m-0 font-black text-blue-700 mb-3">
+                  📊 Kritik Başarı Faktörleri
+                </h4>
                 <ul className="grid md:grid-cols-2 gap-2 !mt-3 !mb-0">
                   {[
                     "Detaylı keşif ve akustik planlama",
@@ -435,7 +584,9 @@ export default function Page() {
                     "Soundcheck ve cue planlı ışık programlama",
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-2">
-                      <span className="text-green-600 mt-1" aria-hidden="true">✓</span>
+                      <span className="text-green-600 mt-1" aria-hidden="true">
+                        ✓
+                      </span>
                       {item}
                     </li>
                   ))}
@@ -450,11 +601,16 @@ export default function Page() {
       <section className="container py-16">
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-black">Paket Örnekleri</h2>
-          <p className="mt-3 text-neutral-600">Etkinlik ölçeğine göre önerdiğimiz hazır setler</p>
+          <p className="mt-3 text-neutral-600">
+            Etkinlik ölçeğine göre önerdiğimiz hazır setler
+          </p>
         </div>
         <div className="grid gap-6 md:grid-cols-3 max-w-6xl mx-auto">
           {packages.map((pkg) => (
-            <article key={pkg.name} className="rounded-2xl border bg-white p-6 shadow-lg hover:shadow-xl transition">
+            <article
+              key={pkg.name}
+              className="rounded-2xl border bg-white p-6 shadow-lg hover:shadow-xl transition"
+            >
               <h3 className="text-xl font-extrabold">{pkg.name}</h3>
               <ul className="mt-4 space-y-2 text-neutral-800">
                 {pkg.points.map((pt) => (
@@ -464,7 +620,9 @@ export default function Page() {
                   </li>
                 ))}
               </ul>
-              {pkg.note && <p className="mt-3 text-sm text-neutral-500">{pkg.note}</p>}
+              {pkg.note && (
+                <p className="mt-3 text-sm text-neutral-500">{pkg.note}</p>
+              )}
             </article>
           ))}
         </div>
@@ -472,13 +630,17 @@ export default function Page() {
 
       {/* FAQ */}
       <section className="container pb-20">
-        <h2 className="text-2xl md:text-3xl font-black mb-6">Sık Sorulan Sorular</h2>
+        <h2 className="text-2xl md:text-3xl font-black mb-6">
+          Sık Sorulan Sorular
+        </h2>
         <div className="grid gap-4 md:grid-cols-2">
           {faq.map((f) => (
             <details key={f.q} className="group rounded-2xl border bg-white p-5">
               <summary className="cursor-pointer list-none text-lg font-semibold flex items-center justify-between">
                 <span>{f.q}</span>
-                <span aria-hidden className="ml-3 transition group-open:rotate-180">⌄</span>
+                <span aria-hidden className="ml-3 transition group-open:rotate-180">
+                  ⌄
+                </span>
               </summary>
               <p className="mt-3 text-neutral-700">{f.a}</p>
             </details>
@@ -487,17 +649,35 @@ export default function Page() {
       </section>
 
       {/* ✅ İLGİLİ HİZMETLER (en altta bağlantılar) */}
-      <section className="py-20 bg-gradient-to-br from-neutral-50 to-blue-100/30" aria-labelledby="related-services-title">
+      <section
+        className="py-20 bg-gradient-to-br from-neutral-50 to-blue-100/30"
+        aria-labelledby="related-services-title"
+      >
         <div className="container max-w-6xl mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 id="related-services-title" className="text-4xl md:text-5xl font-black text-neutral-900 mb-6">
-              Tamamlayıcı <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Hizmetlerimiz</span>
+            <h2
+              id="related-services-title"
+              className="text-4xl md:text-5xl font-black text-neutral-900 mb-6"
+            >
+              Tamamlayıcı{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                Hizmetlerimiz
+              </span>
             </h2>
-            <p className="text-xl text-neutral-600 max-w-3xl mx-auto">Çadır kurulumunuzu tamamlayacak diğer profesyonel hizmetlerimiz</p>
-            <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8" aria-hidden="true" />
+            <p className="text-xl text-neutral-600 max-w-3xl mx-auto">
+              Çadır kurulumunuzu tamamlayacak diğer profesyonel hizmetlerimiz
+            </p>
+            <div
+              className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8"
+              aria-hidden="true"
+            />
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto" role="navigation" aria-label="Tamamlayıcı hizmetler">
+          <div
+            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto"
+            role="navigation"
+            aria-label="Tamamlayıcı hizmetler"
+          >
             {[
               { href: "/podyum-kiralama", title: "Podyum Kiralama", icon: "📐" },
               { href: "/led-ekran-kiralama", title: "LED Ekran", icon: "🖥️" },
@@ -510,8 +690,12 @@ export default function Page() {
                 className="group bg-white rounded-xl p-6 shadow-lg hover:shadow-xl border border-neutral-100 hover:border-blue-200 transition-all duration-300 hover:scale-105 text-center focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50"
                 aria-label={`${service.title} hizmeti sayfasına git`}
               >
-                <div className="text-3xl mb-3" role="img" aria-hidden="true">{service.icon}</div>
-                <h3 className="font-semibold text-neutral-900 group-hover:text-blue-600 transition-colors">{service.title}</h3>
+                <div className="text-3xl mb-3" role="img" aria-hidden="true">
+                  {service.icon}
+                </div>
+                <h3 className="font-semibold text-neutral-900 group-hover:text-blue-600 transition-colors">
+                  {service.title}
+                </h3>
               </Link>
             ))}
           </div>
@@ -521,10 +705,24 @@ export default function Page() {
       {/* CTA (son blok) */}
       <section className="container pb-16">
         <div className="flex flex-col items-center justify-between gap-4 rounded-2xl bg-gradient-to-r from-blue-700 to-purple-700 p-6 text-center text-white md:flex-row md:p-8 md:text-left">
-          <h2 className="text-xl md:text-2xl font-bold">Ses & Işık çözümleri hakkında teklif almak ister misiniz?</h2>
+          <h2 className="text-xl md:text-2xl font-bold">
+            Ses & Işık çözümleri hakkında teklif almak ister misiniz?
+          </h2>
           <div className="flex gap-3">
-            <Link href="/iletisim" className="rounded-lg bg-white px-4 py-2 font-semibold text-blue-700 hover:opacity-90">İletişime Geç</Link>
-            <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="rounded-lg border border-white px-4 py-2 font-semibold hover:bg-white/20">WhatsApp</a>
+            <Link
+              href="/iletisim"
+              className="rounded-lg bg-white px-4 py-2 font-semibold text-blue-700 hover:opacity-90"
+            >
+              İletişime Geç
+            </Link>
+            <a
+              href={WHATSAPP}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-lg border border-white px-4 py-2 font-semibold hover:bg-white/20"
+            >
+              WhatsApp
+            </a>
           </div>
         </div>
       </section>
