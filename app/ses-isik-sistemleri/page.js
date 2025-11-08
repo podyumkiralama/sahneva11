@@ -529,67 +529,75 @@ export default function Page() {
               </p>
             </header>
 
-            <div className="p-6 md:p-10 prose prose-lg max-w-none">
-              <p>
-                <strong>Sahneva</strong>, Türkiye genelinde{" "}
-                <em>ses sistemi kiralama</em> ve <em>ışık sistemi kiralama</em>{" "}
-                alanlarında kurumsal standartta çözümler sunar. Etkinliğiniz ister
-                açık hava konseri ister kapalı salon konferansı olsun; akustik
-                keşif, teknik projelendirme, güvenli <em>truss &amp; rigging</em> ve
-                canlı operasyon dahil <strong>uçtan uca hizmet</strong> modelimizle
-                tek ekipten yönetim sağlarız. Doğru konfigüre edilmiş{" "}
-                <em>line array</em> sistemleriyle homojen SPL dağılımı elde edilirken,
-                dijital mikser ve <em>stagebox</em> mimarisi patch, routing ve kayıt
-                süreçlerini hızlandırır. RGBW spot, wash ve beam/spot armatürleri; DMX
-                tabanlı sahne programlarıyla senkronize edilerek konuşma anlaşılabilirliği
-                yüksek, müzikal performansı dinamik ve temiz bir deneyime dönüştürür.
-              </p>
-              <p>
-                Uygulama stratejimiz mekânın mimari ve akustik yapısına göre şekillenir.
-                Açık alan etkinliklerinde rüzgâr ve zaman gecikmesini dengelemek için{" "}
-                <em>delay tower</em> ve <em>side fill</em> çözümleri kullanır; kapalı
-                salonlarda yankıyı azaltan top+sub ya da kompakt line array dizilimlerine
-                gideriz. FOH miksaj, monitör miks ve RF planlama; sahne disiplini
-                korunarak hızlıca devreye alınır. Haze/duman, blinder ve strobe gibi
-                unsurlar kritik anlarda vurguyu artırır; önceden planlanmış cue’lar ile
-                ışık show akıcı ve kontrollü şekilde ilerler. Böylece hem kurumsal
-                etkinliklerde net ve anlaşılır konuşma, hem konser/festival gibi yüksek
-                enerjili etkinliklerde güçlü bir atmosfer sağlanır.
-              </p>
-              <p>
-                <em>Ses sistemi kiralama İstanbul</em>,{" "}
-                <em>ışık sistemi kiralama İstanbul</em>, <em>konser ses ışık</em>,{" "}
-                <em>line array kiralama</em>, <em>led ışık kiralama</em> gibi anahtar
-                ihtiyaçlarınızda; düşük arıza oranı, hızlı kurulum, yedekli altyapı ve
-                güvenli rigging ile ölçülebilir kalite sunuyoruz. 81 ilde belediye
-                etkinlikleri, AVM lansmanları, fuar stantları, kurumsal toplantılar ve
-                mezuniyet törenlerinde standartlarımızı aynı seviyede koruruz. Projenize
-                uygun paketler, şeffaf fiyatlama ve teknik çizimlerle riskleri en aza indirir,
-                etkinlik gününde yalnızca içerik ve performansa odaklanmanızı sağlarız. Teklif
-                için hemen iletişime geçin; ses ve ışık kalitesini{" "}
-                <strong>Sahneva</strong> güvencesiyle garanti altına alın.
-              </p>
+           <div className="p-6 md:p-10 prose prose-lg max-w-none">
+  <p>
+    <strong>Sahneva</strong>, Türkiye genelinde <em>ses sistemi kiralama</em> ve{" "}
+    <em>ışık sistemi kiralama</em> ihtiyaçlarına kurumsal standartta yaklaşır. İster
+    açık hava konseri ister kapalı salon konferansı olsun; akustik keşif, teknik
+    projelendirme, güvenli <em>truss &amp; rigging</em>, FOH/monitör miks ve canlı
+    operasyonu tek ekipten yönetiriz. Doğru konfigüre edilmiş <em>line array</em>
+    dizilimleriyle homojen SPL elde edilir; <strong>dijital mikser</strong> ve{" "}
+    <em>stagebox</em> mimarisi, patch–routing–kayıt süreçlerini hızlandırır.
+    RGBW spot, wash ve beam/spot armatürleri DMX tabanlı sahne programlarıyla
+    senkronize edilerek yüksek anlaşılabilirlik ve etkileyici bir sahne atmosferi
+    sağlar.
+  </p>
 
-              <div className="mt-8 p-6 rounded-2xl border bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
-                <h4 className="m-0 font-black text-blue-700 mb-3">
-                  📊 Kritik Başarı Faktörleri
-                </h4>
-                <ul className="grid md:grid-cols-2 gap-2 !mt-3 !mb-0">
-                  {[
-                    "Detaylı keşif ve akustik planlama",
-                    "Line array simülasyonu ile doğru kapsama",
-                    "Güvenli rigging ve sertifikalı ekipman",
-                    "Soundcheck ve cue planlı ışık programlama",
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <span className="text-green-600 mt-1" aria-hidden="true">
-                        ✓
-                      </span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+  <h3 className="!mt-8 !mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 font-extrabold">
+    Mekâna Göre Doğru Kurgular
+  </h3>
+  <p>
+    Stratejimiz mekânın mimari ve akustik özelliklerine göre şekillenir. Açık alan
+    etkinliklerinde rüzgâr ve gecikme etkilerini dengelemek için <em>delay tower</em>{" "}
+    ve <em>side fill</em> çözümlerini devreye alır; kapalı salonlarda yankıyı azaltan
+    top+sub veya kompakt <em>line array</em> kurgularına gideriz. RF planlama ile
+    kablosuz hatlarda kesintileri önler, <strong>soundcheck</strong> ve cue
+    planlı <strong>Işık show</strong> akışlarıyla sahne disiplinini koruruz. Haze/duman,
+    blinder ve strobe gibi vurgu unsurlarını doğru zamanda kullanarak kurumsal
+    konuşmalarda netliği, konser/festivallerde ise enerjiyi yükseltiriz.
+  </p>
+
+  <h3 className="!mt-8 !mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 font-extrabold">
+    Ölçülebilir Kalite, Yedekli Altyapı
+  </h3>
+  <p>
+    <em>Konser ses ışık</em>, <em>line array kiralama</em>,{" "}
+    <em>led ışık kiralama</em> ve <em>ışık sistemi kiralama İstanbul</em> gibi
+    anahtar ihtiyaçlarda hedefimiz düşük arıza oranı, hızlı kurulum ve tutarlı
+    sonuçtur. SPL/coverage ölçümleriyle performansı doğrular, kritik
+    bileşenlerde yedekli tasarım uygularız. 81 ilde belediye etkinlikleri, AVM
+    lansmanları, fuar stantları, kurumsal toplantılar ve mezuniyet törenlerinde
+    aynı kalite çizgisini korur; teknik çizimler ve şeffaf fiyatlama ile riskleri
+    baştan azaltırız.
+  </p>
+
+  <div className="mt-8 p-6 rounded-2xl border bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
+    <h4 className="m-0 font-black text-blue-700 mb-3">📊 Kritik Başarı Faktörleri</h4>
+    <ul className="grid md:grid-cols-2 gap-2 !mt-3 !mb-0">
+      {[
+        "Detaylı keşif ve akustik/coverage planlama",
+        "Line array simülasyonu ile doğru kapsama",
+        "Sertifikalı rigging, güvenli yük dağılımı",
+        "Soundcheck ve cue tabanlı DMX programlama",
+      ].map((item, i) => (
+        <li key={i} className="flex items-start gap-2">
+          <span className="text-green-600 mt-1" aria-hidden="true">✓</span>
+          {item}
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <p className="!mt-8">
+    <strong>Ses sistemi kiralama İstanbul</strong> ve Türkiye geneli projelerinizde,
+    kurumsal standartta operasyon, ölçülebilir kalite ve hızlı kurulum için
+    <strong> Sahneva</strong>’ya güvenebilirsiniz. Etkinliğinize en uygun paket
+    kurgusunu birlikte belirleyelim; <em>line array</em>, dijital mikser, kablosuz
+    sistemler ve ışık tasarımını tek elde toplayarak içerik ve performansa odaklanın.
+    Hemen teklif alın, sahnenizi güvenle teslim edin.
+  </p>
+</div>
+
             </div>
           </article>
         </div>
