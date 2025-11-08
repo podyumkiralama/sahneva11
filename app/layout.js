@@ -3,6 +3,7 @@ import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import UtilityBar from "../components/UtilityBar";
+import Script from "next/script";
 import { Inter } from "next/font/google";
 
 const inter = Inter({
@@ -39,10 +40,22 @@ export const metadata = {
   },
 };
 
+const GA_MEASUREMENT_ID =
+  process.env.NEXT_PUBLIC_GA_ID || "G-J5YK10YLLC";
+
 export default function RootLayout({ children }) {
   return (
     <html lang="tr" dir="ltr" className={inter.className}>
       <body className="min-h-screen bg-white text-neutral-900 antialiased">
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script
+          src="/ga-init.js"
+          strategy="afterInteractive"
+          data-ga-id={GA_MEASUREMENT_ID}
+        />
         <a
           href="#main-content"
           aria-label="Ana içeriğe hızlı geçiş"
