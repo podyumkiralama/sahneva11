@@ -187,4 +187,14 @@ export default function Navbar() {
 
           <button
             type="button"
-            onClick={()
+            onClick={() => setMobileServicesOpen((s) => !s)}
+            className="w-full text-left text-[15px] font-medium text-neutral-800 px-4 py-3 rounded-lg hover:bg-neutral-100 transition"
+            aria-expanded={mobileServicesOpen}
+            aria-controls="mobile-services"
+          >
+            Hizmetler
+          </button>
+
+          {mobileServicesOpen && (
+            <div id="mobile-services" className="ml-2 border-l border-neutral-200 pl-4 space-y-2">
+              {serviceLinks.map(({ href, label })
