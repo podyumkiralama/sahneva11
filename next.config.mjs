@@ -5,11 +5,13 @@ const ONE_YEAR_IN_SECONDS = ONE_DAY_IN_SECONDS * 365;
 const isProd = process.env.NODE_ENV === "production";
 const siteUrl = process.env.SITE_URL ?? "https://www.sahneva.com";
 
+const vercelLiveHosts = ["https://vercel.live", "https://*.vercel.live"];
+
 const scriptSrcHosts = [
   "https://www.googletagmanager.com",
   "https://www.google-analytics.com",
   "https://va.vercel-scripts.com",
-  "https://vercel.live",
+  ...vercelLiveHosts,
 ];
 
 const connectSrcHosts = [
@@ -17,6 +19,9 @@ const connectSrcHosts = [
   "https://www.google-analytics.com",
   "https://region1.google-analytics.com",
   "https://stats.g.doubleclick.net",
+  ...vercelLiveHosts,
+  "wss://vercel.live",
+  "wss://*.vercel.live",
   siteUrl,
 ];
 
@@ -25,8 +30,7 @@ const frameSrcHosts = [
   "https://www.youtube.com",
   "https://www.youtube-nocookie.com",
   "https://player.vimeo.com",
-  "https://vercel.live",
-  "https://*.vercel.live",
+  ...vercelLiveHosts,
 ];
 
 const securityHeaders = (() => {
@@ -38,7 +42,7 @@ const securityHeaders = (() => {
       default-src 'self';
       base-uri 'self';
       object-src 'none';
-      frame-ancestors 'self' https://vercel.live https://*.vercel.live;
+      frame-ancestors ${["'self'", ...vercelLiveHosts].join(" ")};
       upgrade-insecure-requests;
       img-src 'self' data: blob: https:;
       font-src 'self' data: https://fonts.gstatic.com;
@@ -49,6 +53,7 @@ const securityHeaders = (() => {
       connect-src ${connectSrc};
       worker-src 'self' blob:;
       frame-src ${frameSrc};
+      child-src ${frameSrc};
       form-action 'self' https://formspree.io https://wa.me;
     `.replace(/\s{2,}/g, " ").trim();
 
