@@ -204,11 +204,12 @@ const nextConfig = {
 
   async headers() {
     return [
-      // 🌐 Global güvenlik başlıkları (/iletisim hariç)
-      { source: "/((?!iletisim$).*)", headers: defaultSecurityHeaders },
-
       // 🗺️ Sadece /iletisim: Google Maps iframe için COEP kapat, CORP cross-origin
       { source: "/iletisim", headers: iletisimSecurityHeaders },
+
+      // 🌐 Global güvenlik başlıkları (/iletisim hariç)
+      { source: "/:path((?!iletisim$).+)", headers: defaultSecurityHeaders },
+      { source: "/", headers: defaultSecurityHeaders },
 
       // Next statik runtime dosyaları: uzun cache + index dışı
       {
