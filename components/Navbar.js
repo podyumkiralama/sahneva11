@@ -224,14 +224,14 @@ export default function Navbar() {
             </Link>
 
             <a
-              href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ml-4 inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-white text-sm font-semibold bg-green-600 hover:bg-green-700 transition shadow-md"
-              title="WhatsApp üzerinden teklif alın"
-            >
-              💬 WhatsApp
-            </a>
+  href="https://wa.me/905453048671?text=Merhaba%2C+teklif+almak+istiyorum"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="ml-4 inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-white text-sm font-semibold bg-green-700 hover:bg-green-800 transition shadow-md"
+  title="WhatsApp üzerinden teklif alın"
+>
+  💬 WhatsApp
+</a>
           </nav>
           <button
             onClick={() => setMobileOpen((s) => !s)}
