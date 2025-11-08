@@ -1,6 +1,13 @@
+import forms from "@tailwindcss/forms";
+import typography from "@tailwindcss/typography";
+
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: ["./app/**/*.{js,jsx,ts,tsx}", "./components/**/*.{js,jsx,ts,tsx}"],
+export default {
+  content: [
+    "./app/**/*.{js,jsx,ts,tsx,mdx}",
+    "./components/**/*.{js,jsx,ts,tsx,mdx}",
+    "./pages/**/*.{js,jsx,ts,tsx,mdx}",
+  ],
   theme: {
     extend: {
       colors: {
@@ -10,8 +17,8 @@ module.exports = {
           200: "#c7d2fe",
           300: "#a5b4fc",
           400: "#818cf8",
-          500: "#6366f1", // indigo
-          600: "#7c3aed", // purple accent
+          500: "#6366f1",
+          600: "#7c3aed",
           700: "#4f46e5",
           800: "#3730a3",
           900: "#1e1b4b",
@@ -23,13 +30,9 @@ module.exports = {
           600: "#374151",
         },
       },
-      boxShadow: {
-        card: "0 10px 30px -12px rgba(2, 6, 23, .25)",
-      },
-      borderRadius: {
-        "2xl": "1rem",
-      },
+      boxShadow: { card: "0 10px 30px -12px rgba(2, 6, 23, .25)" },
+      borderRadius: { "2xl": "1rem" },
     },
   },
-  plugins: [require("@tailwindcss/typography"), require("@tailwindcss/forms")],
+  plugins: [typography(), forms()],
 };
