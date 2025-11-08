@@ -1,12 +1,19 @@
+import colors from "tailwindcss/colors";
+
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: ["class"],
+  darkMode: "class",
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    colors: {
+      ...colors,
+      brand: { DEFAULT: "var(--brand)", 700: "var(--brand-700)" },
+      accent: { DEFAULT: "var(--accent)", 700: "var(--accent-700)" },
+    },
     container: {
       center: true,
       padding: "1rem",
@@ -15,10 +22,6 @@ export default {
     extend: {
       fontFamily: {
         sans: ["SahnevaFallback","system-ui","-apple-system","Segoe UI","Roboto","Arial","Noto Sans","Helvetica Neue","sans-serif"],
-      },
-      colors: {
-        brand: { DEFAULT: "var(--brand)", 700: "var(--brand-700)" },
-        accent:{ DEFAULT: "var(--accent)", 700: "var(--accent-700)" },
       },
       borderRadius: { xl: "0.75rem", "2xl": "1rem" },
       boxShadow: { card: "0 8px 24px rgba(0,0,0,0.08)" },
