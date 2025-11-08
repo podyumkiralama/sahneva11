@@ -1,10 +1,10 @@
-import SectionHeading from "@/components/SectionHeading";
-import FeatureGrid from "@/components/FeatureGrid";
-import Timeline from "@/components/Timeline";
-import FaqDetails from "@/components/FaqDetails";
-import StatBar from "@/components/StatBar";
-import CtaRibbon from "@/components/CtaRibbon";
-import CaseGalleryClient from "@/components/CaseGalleryClient";
+import SectionHeading from "../../components/SectionHeading";
+import FeatureGrid from "../../components/FeatureGrid";
+import Timeline from "../../components/Timeline";
+import FaqDetails from "../../components/FaqDetails";
+import StatBar from "../../components/StatBar";
+import CtaRibbon from "../../components/CtaRibbon";
+import CaseGalleryClient from "../../components/CaseGalleryClient";
 
 export const revalidate = 86400;
 
