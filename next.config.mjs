@@ -7,7 +7,7 @@ const ONE_YEAR_IN_SECONDS = ONE_DAY_IN_SECONDS * 365;
 const isProd = process.env.NODE_ENV === "production";
 const vercelEnv = process.env.VERCEL_ENV ?? process.env.NEXT_PUBLIC_VERCEL_ENV;
 const isVercelDeployment = process.env.VERCEL === "1" || Boolean(vercelEnv);
-const isPreview = isVercelDeployment && vercelEnv !== "production";
+const isPreview = !isProd || (isVercelDeployment && vercelEnv !== "production");
 
 const siteUrl = process.env.SITE_URL ?? "https://www.sahneva.com";
 
