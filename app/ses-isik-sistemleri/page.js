@@ -4,18 +4,13 @@ import Link from "next/link";
 import Script from "next/script";
 import dynamic from "next/dynamic";
 
-// ISR
 export const revalidate = 1800;
 const ORIGIN = "https://www.sahneva.com";
 
 /* -------------------- Dinamik Galeri -------------------- */
 const CaseGallery = dynamic(() => import("@/components/CaseGallery"), {
   loading: () => (
-    <div
-      className="flex justify-center items-center h-64"
-      role="status"
-      aria-label="Galeri yükleniyor"
-    >
+    <div className="flex justify-center items-center h-64" role="status" aria-label="Galeri yükleniyor">
       <span aria-hidden="true">🖼️</span>
       <span className="sr-only">Galeri yükleniyor...</span>
     </div>
@@ -36,14 +31,7 @@ export const metadata = {
     type: "website",
     siteName: "Sahneva",
     locale: "tr_TR",
-    images: [
-      {
-        url: `${ORIGIN}/img/ses-isik/hero.webp`,
-        width: 1200,
-        height: 630,
-        alt: "Sahneva Ses & Işık Sistemleri",
-      },
-    ],
+    images: [{ url: `${ORIGIN}/img/ses-isik/hero.webp`, width: 1200, height: 630, alt: "Sahneva Ses & Işık Sistemleri" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -55,13 +43,7 @@ export const metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-      "max-video-preview": -1,
-    },
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
   },
 };
 
@@ -74,9 +56,7 @@ const HERO = {
 };
 
 const PHONE = "+905453048671";
-const waText =
-  "Merhaba%2C+ses+ve+isik+sistemleri+icin+teklif+istiyorum.+Etkinlik+turu%3A+%5Bkonser%2Fkurumsal%5D%2C+Tarih%3A+%5Bgg.aa.yyyy%5D%2C+Kisi+sayisi%3A+%5Bxxx%5D.";
-const WHATSAPP = `https://wa.me/${PHONE.replace("+", "")}?text=${waText}`;
+const WHATSAPP = `https://wa.me/${PHONE.replace("+", "")}?text=Merhaba%2C+ses+ve+isik+sistemleri+icin+teklif+istiyorum.+Etkinlik+turu%3A+%5Bkonser%2Fkurumsal%5D%2C+Tarih%3A+%5Bgg.aa.yyyy%5D%2C+Kisi+sayisi%3A+%5Bxxx%5D.`;
 
 /* -------------------- Yardımcı -------------------- */
 const slugify = (s) =>
@@ -89,47 +69,31 @@ const slugify = (s) =>
 
 /* -------------------- İçerik -------------------- */
 const services = [
-  {
-    icon: "🔊",
-    title: "Line Array & PA",
-    description: "Uzak mesafe kapsama, homojen SPL ve net anlaşılabilirlik",
-    features: ["L/R cluster + sub dizilim", "Monitörleme (wedges/IEM)", "FOH miks & ölçüm"],
-  },
-  {
-    icon: "🎛️",
-    title: "Dijital Mikser & Stagebox",
-    description: "Hızlı patch, sahneden kontrollü routing ve sahne disiplini",
-    features: ["32–48ch dijital miks", "Sahnede stagebox", "Kaydetme & playback"],
-  },
-  {
-    icon: "🎤",
-    title: "Kablosuz Sistemler",
-    description: "El/yaka mikrofonlar, sağlam RF planlama ve yedeklilik",
-    features: ["Çoklu alıcı", "Pil/anten yönetimi", "Konferans & performans"],
-  },
-  {
-    icon: "💡",
-    title: "Işık Tasarımı",
-    description: "RGBW spot, wash, beam/spot ve dramatik sahne atmosferi",
-    features: ["Preset & cue programlama", "DMX topoloji", "Haze/duman efektleri"],
-  },
-  {
-    icon: "🧱",
-    title: "Truss & Rigging",
-    description: "Ön/yan/arka kiriş, yan kule ve güvenli askı noktaları",
-    features: ["U set truss", "Ground support", "Lojistik & montaj"],
-  },
-  {
-    icon: "🎚️",
-    title: "Canlı Operasyon",
-    description: "FOH miks, ışık show kontrol ve etkinlik boyunca kesintisiz destek",
-    features: ["Soundcheck & prova", "Acil müdahale", "Etkinlik sonrası söküm"],
-  },
+  { icon: "🔊", title: "Line Array & PA", description: "Uzak mesafe kapsama, homojen SPL ve net anlaşılabilirlik", features: ["L/R cluster + sub dizilim", "Monitörleme (wedges/IEM)", "FOH miks & ölçüm"] },
+  { icon: "🎛️", title: "Dijital Mikser & Stagebox", description: "Hızlı patch, sahneden kontrollü routing ve sahne disiplini", features: ["32–48ch dijital miks", "Sahnede stagebox", "Kaydetme & playback"] },
+  { icon: "🎤", title: "Kablosuz Sistemler", description: "El/yaka mikrofonlar, sağlam RF planlama ve yedeklilik", features: ["Çoklu alıcı", "Pil/anten yönetimi", "Konferans & performans"] },
+  { icon: "💡", title: "Işık Tasarımı", description: "RGBW spot, wash, beam/spot ve dramatik sahne atmosferi", features: ["Preset & cue programlama", "DMX topoloji", "Haze/duman efektleri"] },
+  { icon: "🧱", title: "Truss & Rigging", description: "Ön/yan/arka kiriş, yan kule ve güvenli askı noktaları", features: ["U set truss", "Ground support", "Lojistik & montaj"] },
+  { icon: "🎚️", title: "Canlı Operasyon", description: "FOH miks, ışık show kontrol ve etkinlik boyunca kesintisiz destek", features: ["Soundcheck & prova", "Acil müdahale", "Etkinlik sonrası söküm"] },
 ];
 
+/** Galeri görünürlüğü:
+ *  - İlk 4 görsel 'cover: true' → sayfada tek sırada görünür
+ *  - Diğer görseller 'hidden: true' → sayfada görünmez, lightbox’ta görünür
+ *  - CaseGallery bu alanları desteklemiyorsa 'visibleCount' & 'hideOverflow' prop'ları da gönderildi
+ */
 const gallery = [
-  { src: "/img/ses-isik/ses-sistemi.webp", alt: "Profesyonel line array ve FOH kurulum" },
-  { src: "/img/ses-isik/isik-sistemi.webp", alt: "Hareketli başlıklar ve wash ışık senaryosu" },
+  // Görünen 4 kapak
+  { src: "/img/ses-isik/1.webp", alt: "Line array L/R ve sub dizilim — açık alan", cover: true },
+  { src: "/img/ses-isik/2.webp", alt: "FOH dijital mikser ve sahne stagebox", cover: true },
+  { src: "/img/ses-isik/3.webp", alt: "Beam/spot hareketli başlık ve wash atmosferi", cover: true },
+  { src: "/img/ses-isik/4.webp", alt: "U set truss ve rigging çözümü", cover: true },
+
+  // Gizli (yalnızca lightbox)
+  { src: "/img/ses-isik/5.webp", alt: "Konferans — top+sub kompakt kurulum", hidden: true },
+  { src: "/img/ses-isik/6.webp", alt: "Festival — side fill ve delay tower", hidden: true },
+  { src: "/img/ses-isik/7.webp", alt: "Miting — geniş meydan ışık ve ses", hidden: true },
+  { src: "/img/ses-isik/8.webp", alt: "AVM lansmanı — kompakt ışık paketi", hidden: true },
 ];
 
 /* ---- Kullanım Alanları ---- */
@@ -172,12 +136,7 @@ const jsonLd = {
       },
       serviceType: "EventProduction",
       url: `${ORIGIN}/ses-isik-sistemleri`,
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: "4.9",
-        reviewCount: "250",
-        bestRating: "5",
-      },
+      aggregateRating: { "@type": "AggregateRating", ratingValue: "4.9", reviewCount: "250", bestRating: "5" },
     },
   ],
 };
@@ -203,27 +162,12 @@ export default function Page() {
   return (
     <>
       {/* JSON-LD */}
-      <Script
-        id="ld-json-ses-isik"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <Script id="ld-json-ses-isik" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* 1) HERO */}
-      <section
-        className="relative flex items-center justify-center overflow-hidden bg-slate-900 pt-20 min-h=[72vh] min-h-[72vh]"
-        aria-labelledby="hero-title"
-      >
+      <section className="relative flex items-center justify-center overflow-hidden bg-slate-900 pt-20 min-h-[72vh]" aria-labelledby="hero-title">
         <div className="absolute inset-0">
-          <Image
-            src={HERO.src}
-            alt={HERO.alt}
-            fill
-            priority
-            className="object-cover"
-            sizes={HERO.sizes}
-          />
+          <Image src={HERO.src} alt={HERO.alt} fill priority className="object-cover" sizes={HERO.sizes} />
           <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-800 to-blue-950 mix-blend-multiply" aria-hidden="true" />
           <div className="absolute inset-0 bg-gradient-to-t from-blue-950/60 via-transparent to-purple-900/50" aria-hidden="true" />
         </div>
@@ -237,33 +181,18 @@ export default function Page() {
             <span className="text-sm font-semibold">Türkiye Geneli Profesyonel Hizmet</span>
           </div>
 
-          <h1 id="hero-title" className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight mb-6 drop-shadow-2xl">
-            Ses & Işık Sistemleri
-          </h1>
+          <h1 id="hero-title" className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight mb-6 drop-shadow-2xl">Ses & Işık Sistemleri</h1>
 
           <p className="text-lg md:text-xl lg:text-2xl text-white/95 max-w-4xl mx-auto leading-relaxed font-light mb-8">
             Konser • Festival • Lansman • Konferans
-            <span className="block mt-2">
-              Line array, dijital mikser, hareketli başlık ve truss ile anahtar teslim çözümler
-            </span>
+            <span className="block mt-2">Line array, dijital mikser, hareketli başlık ve truss ile anahtar teslim çözümler</span>
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Link
-              href={WHATSAPP}
-              target="_blank"
-              rel="noopener noreferrer"
-              title="WhatsApp üzerinden teklif al"
-              className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:scale-105 transform transition-all duration-300 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-green-600"
-            >
+            <Link href={WHATSAPP} target="_blank" rel="noopener noreferrer" title="WhatsApp üzerinden teklif al" className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:scale-105 transform transition-all duration-300 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-green-600">
               <span aria-hidden="true">💬</span> <span>Hemen Teklif Al</span>
             </Link>
-
-            <Link
-              href="#hizmetler"
-              title="Hizmetler bölümüne git"
-              className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl border-2 border-white text-white/95 bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:scale-105 transform transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
-            >
+            <Link href="#hizmetler" title="Hizmetler bölümüne git" className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl border-2 border-white text-white/95 bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:scale-105 transform transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80">
               <span aria-hidden="true">🎯</span> <span>Hizmetlerimiz</span>
             </Link>
           </div>
@@ -311,7 +240,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 3) GALERİ (Hizmetler altına alındı) */}
+      {/* 3) GALERİ — 4 thumb tek sıra, fazlası sadece lightbox */}
       <section className="py-16 bg-gradient-to-b from-white to-blue-50/30" aria-labelledby="galeri-baslik">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -320,13 +249,15 @@ export default function Page() {
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">Gerçek projelerden örnek kurulum fotoğrafları</p>
           </div>
+
           <div className="max-w-6xl mx-auto">
-            <CaseGallery images={gallery} />
+            {/* CaseGallery ilk 4'ü gösterir; gizli olanları yalnız lightbox'ta açar */}
+            <CaseGallery images={gallery} visibleCount={4} hideOverflow />
           </div>
         </div>
       </section>
 
-      {/* 4) TEKNİK ALTYAPIMIZ (Galeri altı) */}
+      {/* 4) TEKNİK ALTYAPIMIZ */}
       <section className="py-16 bg-gradient-to-b from-gray-50 to-white" aria-labelledby="altyapi-baslik">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -382,7 +313,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 6) KULLANIM ALANLARI (Rakamlar altı) */}
+      {/* 6) KULLANIM ALANLARI */}
       <section className="py-20 bg-gradient-to-br from-neutral-900 to-blue-900/95">
         <div className="container max-w-6xl mx-auto px-4">
           <div className="text-center mb-16">
@@ -395,11 +326,7 @@ export default function Page() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto" role="list">
             {USE_CASES.map((useCase, index) => (
-              <FocusableCard
-                key={index}
-                className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/30 hover:border-white/50 transition-all duration-300 group"
-                role="listitem"
-              >
+              <FocusableCard key={index} className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/30 hover:border-white/50 transition-all duration-300 group" role="listitem">
                 <div className="flex items-center gap-4">
                   <div className="text-2xl" role="img" aria-label={useCase.text}>{useCase.icon}</div>
                   <span className="text-white font-medium group-hover:text-blue-300 transition-colors">{useCase.text}</span>
@@ -410,7 +337,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 7) MAKALELER (yan yana, gradient başlıklar, kutulu + arka hareketli) */}
+      {/* 7) MAKALELER — yan yana, altı çizgili anahtar kelimeler (link DEĞİL) */}
       <section className="relative py-16">
         <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
           <div className="absolute -top-24 right-1/4 w-64 h-64 rounded-full bg-indigo-500/20 blur-3xl animate-pulse" />
@@ -428,32 +355,21 @@ export default function Page() {
                 </h2>
                 <p>
                   <strong>Sahneva</strong>, Türkiye genelinde{" "}
-                  <Link href="/ses-isik-sistemleri" className="underline decoration-2 underline-offset-4 decoration-blue-600">
-                    ses sistemi kiralama
-                  </Link>{" "}
-                  ve{" "}
-                  <Link href="/ses-isik-sistemleri" className="underline decoration-2 underline-offset-4 decoration-purple-600">
-                    ışık sistemi kiralama
-                  </Link>{" "}
-                  alanlarında kurumsal standartta çözümler sunar. Etkinliğiniz ister açık hava konseri ister
-                  kapalı salon konferansı olsun; akustik keşif, teknik projelendirme, güvenli{" "}
-                  <span className="underline decoration-2 underline-offset-4 decoration-emerald-600">truss &amp; rigging</span> ve canlı
-                  operasyon dahil <strong>uçtan uca hizmet</strong> modelimizle tek ekipten yönetim sağlarız.
+                  <span className="underline decoration-2 underline-offset-4 decoration-blue-600">ses sistemi kiralama</span> ve{" "}
+                  <span className="underline decoration-2 underline-offset-4 decoration-purple-600">ışık sistemi kiralama</span> alanlarında
+                  kurumsal standartta çözümler sunar. Etkinliğiniz ister açık hava konseri ister kapalı salon konferansı olsun;
+                  akustik keşif, teknik projelendirme, güvenli{" "}
+                  <span className="underline decoration-2 underline-offset-4 decoration-emerald-600">truss &amp; rigging</span> ve canlı operasyon
+                  dahil <strong>uçtan uca hizmet</strong> modelimizle tek ekipten yönetim sağlarız.
                 </p>
                 <p>
                   Doğru konfigüre edilmiş <span className="underline decoration-2 underline-offset-4 decoration-blue-500">line array</span>{" "}
                   sistemleriyle homojen SPL dağılımı elde edilirken, dijital mikser ve{" "}
                   <span className="underline decoration-2 underline-offset-4 decoration-purple-500">stagebox</span> mimarisi patch, routing ve
                   kayıt süreçlerini hızlandırır. RGBW spot, wash ve beam/spot armatürleri; DMX tabanlı sahne programlarıyla senkronize edilerek
-                  konuşma anlaşılabilirliği yüksek, müzikal performansı dinamik ve temiz bir deneyime dönüştürür. İhtiyaca göre{" "}
-                  <Link href="/led-ekran-kiralama" className="underline decoration-2 underline-offset-4 decoration-fuchsia-600">
-                    LED ekran kiralama
-                  </Link>{" "}
-                  ve{" "}
-                  <Link href="/podyum-kiralama" className="underline decoration-2 underline-offset-4 decoration-teal-600">
-                    podyum kiralama
-                  </Link>{" "}
-                  hizmetleriyle entegre çalışırız.
+                  konuşma anlaşılabilirliği yüksek, müzikal performansı dinamik ve temiz bir deneyime dönüştürür. Gerektiğinde
+                  <span className="underline decoration-2 underline-offset-4 decoration-fuchsia-600"> LED ekran kiralama</span> ve
+                  <span className="underline decoration-2 underline-offset-4 decoration-teal-600"> podyum kiralama</span> hizmetleriyle entegre çalışırız.
                 </p>
               </div>
             </article>
@@ -474,22 +390,14 @@ export default function Page() {
                   planlanmış cue’lar ile ışık show akıcı ve kontrollü ilerler.
                 </p>
                 <p>
-                  İhtiyaca göre{" "}
-                  <Link href="/kurumsal-organizasyon" className="underline decoration-2 underline-offset-4 decoration-rose-600">
-                    kurumsal organizasyon yönetimi
-                  </Link>{" "}
-                  kapsamında sahne tasarımı, teknik çizimler ve zaman planı tek çatı altında sunulur.{" "}
-                  <Link href="/podyum-kiralama" className="underline decoration-2 underline-offset-4 decoration-teal-600">
-                    Podyum kiralama
-                  </Link>
-                  ,{" "}
-                  <Link href="/led-ekran-kiralama" className="underline decoration-2 underline-offset-4 decoration-fuchsia-600">
-                    LED ekran kiralama
-                  </Link>{" "}
-                  ve <Link href="/sahne-kiralama" className="underline decoration-2 underline-offset-4 decoration-amber-600">sahne kiralama</Link>{" "}
-                  gibi tamamlayıcı hizmetlerle tam entegre çalışırız. 81 ilde belediye etkinlikleri, AVM lansmanları, fuar stantları ve
-                  mezuniyet törenelerinde ölçülebilir kalite, hızlı kurulum ve yedekli altyapı standarttır. Şeffaf fiyatlama ve teknik çizimlerle
-                  riskleri en aza indirir, etkinlik gününde yalnızca içerik ve performansa odaklanmanızı sağlarız.
+                  İhtiyaca göre <span className="underline decoration-2 underline-offset-4 decoration-rose-600">kurumsal organizasyon yönetimi</span>{" "}
+                  kapsamında sahne tasarımı, teknik çizimler ve zaman planı tek çatı altında sunulur.
+                  <span className="underline decoration-2 underline-offset-4 decoration-teal-600"> Podyum kiralama</span>,
+                  <span className="underline decoration-2 underline-offset-4 decoration-fuchsia-600"> LED ekran kiralama</span> ve
+                  <span className="underline decoration-2 underline-offset-4 decoration-amber-600"> sahne kiralama</span> gibi tamamlayıcı
+                  hizmetlerle tam entegre çalışırız. 81 ilde belediye etkinlikleri, AVM lansmanları, fuar stantları ve mezuniyet törenlerinde
+                  ölçülebilir kalite, hızlı kurulum ve yedekli altyapı standarttır. Şeffaf fiyatlama ve teknik çizimlerle riskleri en aza indirir,
+                  etkinlik gününde yalnızca içerik ve performansa odaklanmanızı sağlarız.
                 </p>
               </div>
             </article>
@@ -502,22 +410,10 @@ export default function Page() {
         <h2 className="text-2xl md:text-3xl font-black mb-6">Sık Sorulan Sorular</h2>
         <div className="grid gap-4 md:grid-cols-2">
           {[
-            {
-              q: "Hangi sistem benim etkinliğime uygun?",
-              a: "Kapalı/açık alan, seyirci sayısı ve sahne boyutuna göre line array veya top+sub öneriyoruz. Kısa bir keşifle en verimli yapılandırmayı sunarız.",
-            },
-            {
-              q: "Kurulum süresi ne kadar?",
-              a: "Salon kurulumları genellikle aynı gün; açık alan/rigging gereken projeler 1 gün önce kurulum + etkinlik günü soundcheck olarak planlanır.",
-            },
-            {
-              q: "Canlı operasyon ve mühendislik dahil mi?",
-              a: "Evet. FOH miksaj, monitör miks ve ışık show kontrolü ekibimiz tarafından canlı yönetilir.",
-            },
-            {
-              q: "Lojistik ve güç altyapısı kimde?",
-              a: "Nakliye ve kurulum bizde. Güç altyapısı bilgileri (jeneratör veya tesisat) tarafınızdan sağlanır; gerekli yönlendirmeyi yapıyoruz.",
-            },
+            { q: "Hangi sistem benim etkinliğime uygun?", a: "Kapalı/açık alan, seyirci sayısı ve sahne boyutuna göre line array veya top+sub öneriyoruz. Kısa bir keşifle en verimli yapılandırmayı sunarız." },
+            { q: "Kurulum süresi ne kadar?", a: "Salon kurulumları genellikle aynı gün; açık alan/rigging gereken projeler 1 gün önce kurulum + etkinlik günü soundcheck olarak planlanır." },
+            { q: "Canlı operasyon ve mühendislik dahil mi?", a: "Evet. FOH miksaj, monitör miks ve ışık show kontrolü ekibimiz tarafından canlı yönetilir." },
+            { q: "Lojistik ve güç altyapısı kimde?", a: "Nakliye ve kurulum bizde. Güç altyapısı bilgileri (jeneratör veya tesisat) tarafınızdan sağlanır; gerekli yönlendirmeyi yapıyoruz." },
           ].map((f) => (
             <details key={f.q} className="group rounded-2xl border bg-white p-5">
               <summary className="cursor-pointer list-none text-lg font-semibold flex items-center justify-between">
@@ -530,11 +426,7 @@ export default function Page() {
         </div>
 
         <div className="mt-8 text-center">
-          <Link
-            href="/sss"
-            className="inline-flex items-center justify-center rounded-xl px-6 py-3 font-semibold bg-neutral-900 text-white hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900"
-            aria-label="Tüm SSS sorularını görüntüle"
-          >
+          <Link href="/sss" className="inline-flex items-center justify-center rounded-xl px-6 py-3 font-semibold bg-neutral-900 text-white hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900" aria-label="Tüm SSS sorularını görüntüle">
             Tüm Soruları Gör
           </Link>
         </div>
@@ -558,12 +450,7 @@ export default function Page() {
               { href: "/ses-isik-sistemleri", title: "Ses & Işık", icon: "🎵" },
               { href: "/sahne-kiralama", title: "Sahne Kiralama", icon: "🎪" },
             ].map((service, index) => (
-              <Link
-                key={index}
-                href={service.href}
-                className="group bg-white rounded-xl p-6 shadow-lg hover:shadow-xl border border-neutral-100 hover:border-blue-200 transition-all duration-300 hover:scale-105 text-center focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50"
-                aria-label={`${service.title} hizmeti sayfasına git`}
-              >
+              <Link key={index} href={service.href} className="group bg-white rounded-xl p-6 shadow-lg hover:shadow-xl border border-neutral-100 hover:border-blue-200 transition-all duration-300 hover:scale-105 text-center focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50" aria-label={`${service.title} hizmeti sayfasına git`}>
                 <div className="text-3xl mb-3" role="img" aria-hidden="true">{service.icon}</div>
                 <h3 className="font-semibold text-neutral-900 group-hover:text-blue-600 transition-colors">{service.title}</h3>
               </Link>
