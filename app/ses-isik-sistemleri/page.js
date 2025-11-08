@@ -873,92 +873,90 @@ function FAQ() {
   );
 }
 
-/* ================== Tamamlayıcı Hizmetler ================== */
-function RelatedServices() {
-  const services = [
-    { 
-      href: "/podyum-kiralama", 
-      title: "Podyum Kiralama", 
-      icon: "📐", 
-      desc: "Profesyonel sahne platformları ve podyum sistemleri"
-    },
-    { 
-      href: "/led-ekran-kiralama", 
-      title: "LED Ekran Kiralama", 
-      icon: "🖥️", 
-      desc: "Yüksek çözünürlüklü LED ekran ve video wall çözümleri"
-    },
-    { 
-      href: "/sahne-kiralama", 
-      title: "Sahne Kiralama", 
-      icon: "🛠️", 
-      desc: "Portatif ve modüler sahne sistemleri kiralama"
-    },
-    { 
-      href: "/cadir-kiralama", 
-      title: "Çadır Kiralama", 
-      icon: "🎪", 
-      desc: "Profesyonel etkinlik çadırları ve tenteli alan çözümleri"
-    },
-  ];
-  
+/* ================== HERO ================== */
+function Hero() {
   return (
-    <section 
-      className="py-20 bg-gradient-to-br from-gray-50 to-blue-100/30" 
-      aria-labelledby="tamamlayici-hizmetler-baslik"
-    >
-      <div className="container max-w-7xl mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 
-            id="tamamlayici-hizmetler-baslik" 
-            className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-6"
+    <section className="relative flex items-center justify-center overflow-hidden bg-slate-900 pt-24 min-h-[85vh]" aria-labelledby="hero-title">
+      <div className="absolute inset-0">
+        <Image 
+          src={HERO.src} 
+          alt={HERO.alt} 
+          fill 
+          priority 
+          className="object-cover"
+          sizes={HERO.sizes}
+          quality={90}
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/80 via-purple-800/70 to-blue-950/90" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-t from-blue-950/80 via-transparent to-purple-900/60" aria-hidden="true" />
+      </div>
+
+      <div className="relative z-10 container mx-auto px-4 text-center text-white py-16">
+        <div className="inline-flex items-center gap-3 bg-white/20 backdrop-blur-lg rounded-2xl px-6 py-3 border border-white/30 mb-10">
+          <span className="relative flex w-3 h-3" aria-hidden="true">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+            <span className="relative inline-flex rounded-full w-3 h-3 bg-green-500" />
+          </span>
+          <span className="text-base font-bold text-white">Türkiye Geneli Profesyonel Hizmet</span>
+        </div>
+
+        <h1 id="hero-title" className="text-5xl md:text-7xl lg:text-8xl font-black leading-tight mb-8 drop-shadow-2xl">
+          Profesyonel <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">Ses & Işık</span>
+        </h1>
+
+        <p className="text-2xl md:text-3xl text-white/95 max-w-4xl mx-auto leading-relaxed font-light mb-6">
+          Konser • Festival • Lansman • Konferans
+        </p>
+        <p className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto leading-relaxed font-normal mb-10">
+          Line array ses sistemleri, dijital mikserler ve hareketli ışık başlıkları ile 
+          <span className="font-semibold text-white"> anahtar teslim çözümler</span>
+        </p>
+
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+          <Link
+            href={WHATSAPP}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="WhatsApp üzerinden hemen teklif alın"
+            className="inline-flex items-center justify-center font-bold px-10 py-5 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:scale-105 transform transition-all duration-300 hover:shadow-2xl focus:outline-none focus-visible:ring-4 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-green-600 shadow-lg text-lg"
           >
-            Tamamlayıcı{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-              Hizmetlerimiz
-            </span>
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Ses ve ışık sistemlerinizi tamamlayacak diğer profesyonel etkinlik çözümlerimiz
-          </p>
-          <div 
-            className="w-32 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8 rounded-full" 
-            aria-hidden="true" 
-          />
+            <span aria-hidden="true" className="text-2xl mr-3">💬</span> 
+            <span>Hemen Teklif Al</span>
+          </Link>
+
+          <Link
+            href="#hizmetler"
+            title="Hizmetlerimiz hakkında daha fazla bilgi edinin"
+            className="inline-flex items-center justify-center font-bold px-10 py-5 rounded-2xl border-2 border-white text-white/95 bg-white/10 backdrop-blur-lg hover:bg-white/20 hover:scale-105 transform transition-all duration-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/80 shadow-lg text-lg"
+          >
+            <span aria-hidden="true" className="text-2xl mr-3">🎯</span> 
+            <span>Hizmetlerimiz</span>
+          </Link>
         </div>
 
-        <div 
-          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto" 
-          role="navigation" 
-          aria-label="Tamamlayıcı hizmetler"
-        >
-          {services.map((service) => (
-            <Link
-              key={service.href}
-              href={service.href}
-              className="group bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl border-2 border-gray-100 hover:border-blue-200 transition-all duration-500 hover:scale-105 text-center focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white h-full flex flex-col"
-            >
-              <div 
-                className="text-4xl mb-6 group-hover:scale-110 transition-transform duration-300" 
-                aria-hidden="true"
-              >
-                {service.icon}
-              </div>
-              <h3 className="font-bold text-xl text-gray-900 group-hover:text-blue-600 transition-colors mb-4 flex-grow">
-                {service.title}
-              </h3>
-              <p className="text-gray-600 text-lg leading-relaxed group-hover:text-gray-700 transition-colors">
-                {service.desc}
-              </p>
-            </Link>
-          ))}
+        <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
+          <div className="flex flex-col items-center text-center p-6 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20">
+            <span className="text-3xl mb-3" aria-hidden="true">⭐</span>
+            <div className="text-2xl font-black text-white">4.9/5</div>
+            <div className="text-white/80 text-base">250+ Değerlendirme</div>
+          </div>
+          <div className="flex flex-col items-center text-center p-6 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20">
+            <span className="text-3xl mb-3" aria-hidden="true">🏆</span>
+            <div className="text-2xl font-black text-white">1200+</div>
+            <div className="text-white/80 text-base">Etkinlik</div>
+          </div>
+          <div className="flex flex-col items-center text-center p-6 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20">
+            <span className="text-3xl mb-3" aria-hidden="true">🚀</span>
+            <div className="text-2xl font-black text-white">81 İl</div>
+            <div className="text-white/80 text-base">Hizmet</div>
+          </div>
         </div>
+      </div>
 
-        <div className="sr-only">
-          <p>
-            Bu bölümde ses ve ışık sistemlerinizi tamamlayacak diğer hizmetlerimiz bulunmaktadır. 
-            Her bir hizmet kartına tıklayarak veya klavye ile seçerek ilgili sayfaya gidebilirsiniz.
-          </p>
+      {/* Aşağı kaydırma indikatörü */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
+          <div className="w-1 h-3 bg-white rounded-full mt-2" />
         </div>
       </div>
     </section>
