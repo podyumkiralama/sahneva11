@@ -207,19 +207,21 @@ export default function ContactPage() {
                   <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 lg:mx-0 mx-auto" />
                 </div>
 
-                <div className="rounded-2xl overflow-hidden shadow-2xl border border-neutral-200">
-                  <iframe
-                    title="Sahneva Konumu - Profesyonel Etkinlik Ekipmanları"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3006.7561988118778!2d28.97663777518891!3d41.09737131400938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab7eef124ac6d%3A0x27d8390d39336498!2sSahneva%20Organizasyon!5e0!3m2!1str!2str!4v1691234567890!5m2!1str!2str"
-                    width="100%"
-                    height="300"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    // COEP: credentialless ile uyumlu, referrer’i kısıtlıyoruz:
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    className="w-full"
-                  />
+                <div className="rounded-2xl overflow-hidden shadow-2xl border border-neutral-200 bg-gray-100">
+                  <div className="aspect-video w-full">
+                    <iframe
+                      title="Sahneva Konumu - Profesyonel Etkinlik Ekipmanları"
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3006.7561988118778!2d28.97663777518891!3d41.09737131400938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab7eef124ac6d%3A0x27d8390d39336498!2sSahneva%20Organizasyon!5e0!3m2!1str!2str!4v1691234567890!5m2!1str!2str"
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      className="w-full h-full"
+                      sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                    />
+                  </div>
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4">
