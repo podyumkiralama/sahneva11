@@ -42,7 +42,7 @@ const securityHeaders = (() => {
     siteUrl,
   ].join(" ");
 
-  // ✅ DÜZELTİLDİ: vercel.live tüm ortamlarda eklendi
+  // ✅ Tüm gerekli frame kaynakları eklendi
   const FRAME_SRC = [
     "'self'",
     "https://www.google.com",
@@ -51,6 +51,9 @@ const securityHeaders = (() => {
     "https://player.vimeo.com",
     "https://vercel.live",
     "https://*.vercel.live",
+    "https://www.google.com/maps",
+    "https://maps.google.com",
+    "https://google.com/maps",
   ].join(" ");
 
   const FRAME_ANCESTORS = isPreview
@@ -77,16 +80,14 @@ const securityHeaders = (() => {
     .replace(/\s{2,}/g, " ")
     .trim();
 
-  // ✅ DÜZELTİLDİ: COEP'i credentialless yap ve CORP'u optimize et
+  // ✅ COEP: credentialless - CORP gereksinimini esnetir
   const base = [
     { key: "Content-Security-Policy", value: csp },
     { key: "X-Content-Type-Options", value: "nosniff" },
     { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
     { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
-    // ✅ COEP: credentialless - Vercel Live ile uyumlu
     { key: "Cross-Origin-Embedder-Policy", value: "credentialless" },
-    // ✅ CORP: same-site - Güvenli ama daha az kısıtlayıcı
-    { key: "Cross-Origin-Resource-Policy", value: "same-site" },
+    { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
     {
       key: "Permissions-Policy",
       value:
@@ -99,7 +100,6 @@ const securityHeaders = (() => {
     { key: "Origin-Agent-Cluster", value: "?1" },
   ];
 
-  // X-Frame-Options: preview'da gönderme (embed lazım), prod'da DENY
   return isPreview ? base : [...base, { key: "X-Frame-Options", value: "DENY" }];
 })();
 
@@ -183,13 +183,11 @@ const nextConfig = {
       // 🌐 Global güvenlik başlıkları
       { source: "/(.*)", headers: securityHeaders },
 
-      // 🗺️ Sadece /iletisim: Google Maps iframe için özel ayarlar
+      // 🗺️ İletişim sayfası için özel ayarlar (Google Maps için)
       {
         source: "/iletisim",
         headers: [
-          // COEP'i kapat (globalde credentialless; bu route'ta devre dışı)
           { key: "Cross-Origin-Embedder-Policy", value: "unsafe-none" },
-          // Bu sayfadan çağrılan cross-origin resource'lara izin
           { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
         ],
       },
@@ -200,11 +198,10 @@ const nextConfig = {
         headers: [
           { key: "Cross-Origin-Embedder-Policy", value: "unsafe-none" },
           { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
-          { key: "Cross-Origin-Opener-Policy", value: "unsafe-none" },
         ],
       },
 
-      // Next statik runtime dosyaları: uzun cache + index dışı
+      // Next statik runtime dosyaları
       {
         source: "/_next/static/(.*)",
         headers: [
@@ -213,13 +210,13 @@ const nextConfig = {
         ],
       },
 
-      // Public asset'ler: uzun süreli cache
+      // Public asset'ler
       {
         source: "/(.*)\\.(ico|png|jpg|jpeg|webp|avif|svg|gif|woff2)",
         headers: longTermCacheHeaders,
       },
 
-      // Diğer _next yollarını indeks dışı tut
+      // Diğer _next yolları
       {
         source: "/_next/(.*)",
         headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
