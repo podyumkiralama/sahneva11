@@ -9,44 +9,44 @@ const serviceLinks = [
   {
     href: "/podyum-kiralama",
     label: "Podyum Kiralama",
-    title: "Modüler podyum kiralama ve kurulum hizmeti - Sahneva",
+    title: "Modüler podyum kiralama - Sahneva",
     icon: "👑",
-    description: "Profesyonel modüler podyum sistemleri"
+    description: "Modüler podyum sistemleri"
   },
   {
     href: "/led-ekran-kiralama",
     label: "LED Ekran Kiralama",
-    title: "Yüksek çözünürlüklü LED ekran kiralama - Sahneva",
+    title: "LED ekran kiralama - Sahneva",
     icon: "🖥️",
-    description: "HD LED ekran ve video wall çözümleri"
+    description: "HD video wall çözümleri"
   },
   {
     href: "/ses-isik-sistemleri",
     label: "Ses & Işık Sistemleri",
-    title: "Profesyonel ses ve ışık sistemi kiralama - Sahneva",
+    title: "Ses ışık kiralama - Sahneva",
     icon: "🎭",
-    description: "Konser kalitesinde ses ve ışık ekipmanları"
+    description: "Konser kalitesinde ekipman"
   },
   {
     href: "/cadir-kiralama",
     label: "Çadır Kiralama",
-    title: "Etkinlik çadırı kiralama ve kurulum - Sahneva",
+    title: "Etkinlik çadırı kiralama - Sahneva",
     icon: "⛺",
-    description: "Her türlü etkinlik için çadır çözümleri"
+    description: "Her türlü etkinlik için çadır"
   },
   {
     href: "/masa-sandalye-kiralama",
-    label: "Masa Sandalye Kiralama",
-    title: "Masa sandalye kiralama hizmeti - Sahneva",
+    label: "Masa Sandalye",
+    title: "Masa sandalye kiralama - Sahneva",
     icon: "🪑",
-    description: "Toplantı ve davetler için masa sandalye"
+    description: "Toplantı ve davet ekipmanları"
   },
   {
     href: "/sahne-kiralama",
     label: "Sahne Kiralama",
-    title: "Profesyonel sahne kiralama ve kurulum - Sahneva",
+    title: "Sahne kiralama - Sahneva",
     icon: "🎪",
-    description: "Portatif ve modüler sahne sistemleri"
+    description: "Portatif sahne sistemleri"
   }
 ];
 export default function Navbar() {
@@ -58,10 +58,9 @@ export default function Navbar() {
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
 
   const dropdownRef = useRef(null);
-  const hoverTimer = useRef(null);
 
   const active = useCallback(
-    (href) => pathname === href || (href !== "/" && pathname?.startsWith(href)),
+    (href) => pathname === href || pathname.startsWith(href),
     [pathname]
   );
 
@@ -72,16 +71,14 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === "Escape") {
-        setMobileOpen(false);
+    const onClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setServicesOpen(false);
-        setMobileServicesOpen(false);
       }
     };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
+    if (servicesOpen) document.addEventListener("mousedown", onClickOutside);
+    return () => document.removeEventListener("mousedown", onClickOutside);
+  }, [servicesOpen]);
 
   useEffect(() => {
     setMobileOpen(false);
@@ -95,39 +92,20 @@ export default function Navbar() {
       document.body.style.overflow = "";
     };
   }, [mobileOpen]);
-
-  useEffect(() => {
-    const onClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setServicesOpen(false);
-      }
-    };
-    if (servicesOpen) document.addEventListener("mousedown", onClickOutside);
-    return () => document.removeEventListener("mousedown", onClickOutside);
-  }, [servicesOpen]);
     return (
     <>
-      {/* Skip link */}
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-blue-600 focus:px-3 focus:py-2 focus:text-white focus:font-semibold"
-      >
-        Ana içeriğe atla
-      </a>
-
       <header
         className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-          scrolled ? "bg-white/95 shadow-md border-b border-neutral-200" : "bg-white/90"
+          scrolled
+            ? "bg-white/95 shadow-md border-b border-neutral-200"
+            : "bg-white/90"
         } backdrop-blur-lg`}
-        itemScope
-        itemType="https://schema.org/Organization"
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <Link
             href="/"
             title="Sahneva Ana Sayfa"
             aria-label="Sahneva Ana Sayfa"
-            itemProp="url"
           >
             <Image
               src="/img/logo.png"
@@ -138,11 +116,13 @@ export default function Navbar() {
               loading="eager"
               sizes="(max-width: 768px) 120px, 160px"
               className="h-8 lg:h-10 w-auto transition-all duration-300"
-              itemProp="logo"
             />
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-6" aria-label="Ana menü">
+          <nav
+            className="hidden lg:flex items-center gap-6"
+            aria-label="Ana menü"
+          >
             <Link
               href="/hakkimizda"
               className={`text-[15px] font-medium px-3 py-2 rounded-lg transition ${
@@ -151,7 +131,6 @@ export default function Navbar() {
                   : "text-neutral-800 hover:text-blue-700 hover:bg-neutral-100"
               }`}
               aria-current={active("/hakkimizda") ? "page" : undefined}
-              title="Sahneva Hakkında"
             >
               Hakkımızda
             </Link>
@@ -174,37 +153,59 @@ export default function Navbar() {
               >
                 Hizmetler
                 <svg
-                  className={`w-4 h-4 transition-transform ${servicesOpen ? "rotate-180" : ""}`}
+                  className={`w-4 h-4 transition-transform ${
+                    servicesOpen ? "rotate-180" : ""
+                  }`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
+
+              {/* Hover köprüsü */}
+              <span
+                aria-hidden="true"
+                className="absolute left-0 right-0 top-full h-2"
+                onMouseEnter={() => setServicesOpen(true)}
+              />
 
               {servicesOpen && (
                 <div
                   id="services-menu"
                   role="menu"
+                  onMouseEnter={() => setServicesOpen(true)}
+                  onMouseLeave={() => setServicesOpen(false)}
                   className="absolute left-0 top-full mt-2 w-80 bg-white border border-neutral-200 rounded-xl shadow-lg z-50"
                 >
                   <div className="flex flex-col p-2">
-                    {serviceLinks.map(({ href, label, title, icon, description }) => (
-                      <Link
-                        key={href}
-                        href={href}
-                        className="flex items-start gap-3 px-4 py-3 rounded-lg hover:bg-neutral-100 transition"
-                        role="menuitem"
-                        title={title}
-                      >
-                        <span className="text-lg mt-0.5">{icon}</span>
-                        <div>
-                          <div className="text-sm font-semibold text-neutral-900">{label}</div>
-                          <div className="text-xs text-neutral-500">{description}</div>
-                        </div>
-                      </Link>
-                    ))}
+                    {serviceLinks.map(
+                      ({ href, label, title, icon, description }) => (
+                        <Link
+                          key={href}
+                          href={href}
+                          className="flex items-start gap-3 px-4 py-3 rounded-lg hover:bg-neutral-100 transition"
+                          role="menuitem"
+                          title={title}
+                        >
+                          <span className="text-lg mt-0.5">{icon}</span>
+                          <div>
+                            <div className="text-sm font-semibold text-neutral-900">
+                              {label}
+                            </div>
+                            <div className="text-xs text-neutral-500">
+                              {description}
+                            </div>
+                          </div>
+                        </Link>
+                      )
+                    )}
                   </div>
                 </div>
               )}
@@ -218,7 +219,6 @@ export default function Navbar() {
                   : "text-neutral-800 hover:text-blue-700 hover:bg-neutral-100"
               }`}
               aria-current={active("/iletisim") ? "page" : undefined}
-              title="Sahneva İletişim"
             >
               İletişim
             </Link>
