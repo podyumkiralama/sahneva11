@@ -182,7 +182,7 @@ const FAQ = [
   { q: "Kaç kişiye kadar etkinlik organize ediyorsunuz?", a: "50 kişilik toplantılardan 50.000 kişilik açık hava konserlerine kadar her ölçekte etkinlik için profesyonel çözümler sunuyoruz." },
 ];
 
-// JS (page.js) için doğru sürüm
+// utils
 const slugify = (s) =>
   s
     .toLowerCase()
@@ -191,11 +191,11 @@ const slugify = (s) =>
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-");
 
-
-function SkipToMain() {
+// Sadece bu sayfaya özgü skip target (benzersiz id)
+function SkipToSection() {
   return (
     <a
-      href="#main-content"
+      href="#kurumsal-main"
       className="sr-only focus:not-sr-only focus:fixed focus:z-[9999] focus:top-4 focus:left-4 focus:bg-blue-600 focus:text-white focus:px-6 focus:py-4 focus:rounded-lg focus:font-bold focus:shadow-2xl focus:border-2 focus:border-white transition-all duration-200"
     >
       Ana içeriğe atla
@@ -270,12 +270,12 @@ export default function Page() {
       <Script id="ld-image" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(imageLd) }} />
       <Script id="ld-itemlist" type="application/ld+json" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesItemListLd) }} />
 
-      <SkipToMain />
+      {/* Sayfa içi skip (benzersiz hedefe) */}
+      <SkipToSection />
 
-      {/* HERO */}
+      {/* HERO — rol="banner" KALDIRILDI (banner yalnızca site-wide header için olmalı) */}
       <section
         className="relative flex items-center justify-center overflow-hidden bg-slate-900 pt-20 min-h-[72vh]"
-        role="banner"
         aria-labelledby="hero-title"
       >
         <div className="absolute inset-0">
@@ -332,7 +332,8 @@ export default function Page() {
         </div>
       </section>
 
-      <main id="main-content" className="bg-white" tabIndex={-1}>
+      {/* ⚠️ BURASI ARTIK BENZERSİZ ID — layout’ta ayrıca main varsa, bu div olarak da kalabilir */}
+      <main id="kurumsal-main" className="bg-white" tabIndex={-1} role="main" aria-label="Kurumsal organizasyon ana içerik">
         {/* HİZMETLER */}
         <section id="hizmetler" className="py-16 bg-gradient-to-b from-white to-blue-50/30" aria-labelledby="hizmetler-baslik">
           <div className="container mx-auto px-4">
@@ -347,7 +348,7 @@ export default function Page() {
               {SERVICES.map((service) => {
                 const id = `svc-${slugify(service.title)}`;
                 return (
-                  <li key={id}>
+                  <li key={id} role="listitem">
                     <article
                       className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 group hover:shadow-xl hover:scale-105 transition-all duration-300"
                       aria-labelledby={id}
@@ -519,7 +520,7 @@ export default function Page() {
           </div>
         </section>
 
-        {/* SEO MAKALESİ — TAM SÜRÜM */}
+        {/* SEO MAKALESİ */}
         <section className="py-16 bg-gradient-to-b from-white to-gray-50" aria-labelledby="seo-article-heading">
           <div className="container mx-auto px-4 max-w-4xl">
             <article className="overflow-hidden rounded-3xl shadow-xl border border-gray-200 bg-white">
@@ -610,7 +611,7 @@ export default function Page() {
           </div>
         </section>
 
-        {/* SON CTA — TAM SÜRÜM */}
+        {/* SON CTA */}
         <section className="py-28 bg-gradient-to-b from-white to-gray-50" aria-labelledby="cta-heading">
           <div className="container mx-auto px-4 max-w-7xl">
             <div className="w-full min-h-[520px] md:min-h-[600px] rounded-3xl bg-gradient-to-r from-blue-600 to-purple-600 text-white p-12 md:p-20 text-center shadow-2xl flex flex-col justify-center items-center">
