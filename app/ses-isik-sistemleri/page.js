@@ -836,7 +836,7 @@ function FAQ() {
           </p>
         </div>
 
-        <div className="space-y-6" role="list" aria-label="Sık sorulan sorular listesi">
+        <div className="space-y-6"  aria-label="Sık sorulan sorular listesi">
           {faqs.map((faq, index) => (
             <details 
               key={index} 
