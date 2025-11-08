@@ -4,7 +4,11 @@ export const metadata = {
 
 export default function NotFound() {
   return (
-    <main className="min-h-[60vh] container mx-auto px-4 py-16 text-center">
+    <main
+      id="main-content"
+      tabIndex={-1}
+      className="min-h-[60vh] container mx-auto px-4 py-16 text-center"
+    >
       <h1 className="text-3xl md:text-4xl font-bold">Sayfa bulunamadı</h1>
       <p className="mt-4 text-neutral-600">
         Aradığınız sayfa taşınmış veya hiç var olmamış olabilir.
