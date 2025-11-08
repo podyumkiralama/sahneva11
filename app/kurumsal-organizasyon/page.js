@@ -404,7 +404,8 @@ export default function Page() {
         </div>
       </section>
 
-      <main id="main-content" className="bg-white" tabIndex={-1}>
+      <div className="bg-white" role="region" aria-label="Kurumsal organizasyon içeriği">
+
         {/* HİZMETLER */}
         <section
           id="hizmetler"
@@ -763,7 +764,7 @@ export default function Page() {
             </div>
           </div>
         </section>
-      </main>
+      </div>
     </>
   );
 }
