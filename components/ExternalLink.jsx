@@ -1,5 +1,3 @@
-"use client";
-
 /**
  * Erişilebilir dış bağlantı bileşeni
  * - target="_blank" ise: rel güvenliği + “(yeni sekmede açılır)” sr-only uyarısı ekler

@@ -1,9 +1,7 @@
 // components/SeoArticles.jsx
-"use client";
 
 import Image from "next/image";
 import Link from "next/link";
-import Script from "next/script";
 import { SEO_ARTICLES } from "@/lib/articlesData";
 
 const SITE = "https://www.sahneva.com";
@@ -48,10 +46,10 @@ function ArticlesJsonLd({ items = [] }) {
   };
 
   return (
-    <Script
+    <script
       id="home-articles-jsonld"
       type="application/ld+json"
-      strategy="afterInteractive"
+      suppressHydrationWarning
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />
   );
