@@ -26,7 +26,7 @@ const CaseGallery = dynamic(() => import("@/components/CaseGallery"), {
 
 /* ================== META ================== */
 export const metadata = {
-  title: "Ses ve Işık Sistemleri Kiralama | Profesyonel Çözümler | Sahneva",
+  title: "Ses ve Işık Sistemleri Kiralama | Profesyonel Çözümler",
   description: "Konser, festival ve kurumsal etkinlikler için profesyonel ses & ışık sistemleri kiralama. Line array, dijital mikser, hareketli ışık, truss ve canlı operasyon. 81 ilde hizmet.",
   keywords: "ses sistemi kiralama, ışık sistemi kiralama, line array kiralama, ses ışık kiralama, konser ses sistemi",
   alternates: { canonical: `${ORIGIN}/ses-isik-sistemleri` },
