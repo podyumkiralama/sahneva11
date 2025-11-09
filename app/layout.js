@@ -3,12 +3,10 @@ import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Script from "next/script";
-import dynamic from "next/dynamic";
 import { Inter } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-
-// ⚙️ UtilityBar: sadece client'ta yüklensin (SSR=false)
 const UtilityBar = dynamic(() => import("../components/UtilityBar"), { ssr: false });
+
 
 const inter = Inter({
   subsets: ["latin"],
@@ -65,7 +63,7 @@ export default function RootLayout({ children }) {
           `}
         </Script>
 
-        {/* Skip link */}
+        {/* Skip link: tek hedef -> #main-content */}
         <a
           href="#main-content"
           aria-label="Ana içeriğe hızlı geçiş"
@@ -74,13 +72,16 @@ export default function RootLayout({ children }) {
           Ana içeriğe atla
         </a>
 
-        {/* UtilityBar: kill-switch ile kontrol */}
-        {!UB_DISABLED && <UtilityBar />}
-
+        <UtilityBar />
         <Navbar />
 
         {/* Tek landmark */}
-        <main id="main-content" role="main" tabIndex={-1} className="min-h-[60vh] focus:outline-none">
+        <main
+          id="main-content"
+          role="main"
+          tabIndex={-1}
+          className="min-h-[60vh] focus:outline-none"
+        >
           {children}
         </main>
 
