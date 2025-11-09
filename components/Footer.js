@@ -1,5 +1,4 @@
 // components/Footer.js
-
 import Link from "next/link";
 
 const SOCIAL_LINKS = [
@@ -274,8 +273,9 @@ export default function Footer() {
             <span className="mx-3 text-blue-400" aria-hidden="true">
               •
             </span>
+            {/* DEĞİŞTİRİLDİ: #top yerine #main-content */}
             <a
-              href="#top"
+              href="#main-content"
               className="text-gray-300 hover:text-white underline-offset-4 hover:underline focus-visible:underline transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/60 rounded-sm"
             >
               Başa dön
