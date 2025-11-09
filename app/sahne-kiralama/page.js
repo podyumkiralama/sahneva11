@@ -194,7 +194,7 @@ const PAGE_DATA = {
       details: ["Anahtar teslim", "Teknik ekip", "7/24 destek"],
     },
   ],
-  // YENİ: KULLANIM ALANLARI BÖLÜMÜ
+  // KULLANIM ALANLARI - AYNEN KURUMSAL SAYFADAKİ GİBİ
   useCases: [
     {
       icon: "🎵",
@@ -206,8 +206,6 @@ const PAGE_DATA = {
         "Sahne monitör sistemleri ve backline altyapı",
         "Sanatçı yeşil odası ve backstage alanları"
       ],
-      stats: ["1000-50.000 kişi", "Açık/kapalı alan", "24/7 teknik destek"],
-      image: "/img/sahne/konser.webp"
     },
     {
       icon: "💼",
@@ -219,8 +217,6 @@ const PAGE_DATA = {
         "Kablosuz mikrofon ve simultane çeviri sistemleri",
         "Sahne arkası hazırlık ve VIP alanları"
       ],
-      stats: ["50-5000 kişi", "Otel/kongre merkezi", "Simultane çeviri"],
-      image: "/img/sahne/konferans.webp"
     },
     {
       icon: "🚀",
@@ -232,8 +228,6 @@ const PAGE_DATA = {
         "Interaktif ekranlar ve dokunmatik duvarlar",
         "Medya duvarları ve sosyal wall entegrasyonu"
       ],
-      stats: ["100-2000 kişi", "Marka odaklı", "Medya dostu"],
-      image: "/img/sahne/lansman.webp"
     },
     {
       icon: "🏆",
@@ -245,8 +239,6 @@ const PAGE_DATA = {
         "Sahne üstü ödül sunum alanları",
         "VIP resepsiyon ve kokteyl alanı"
       ],
-      stats: ["200-3000 kişi", "Gece etkinliği", "VIP odaklı"],
-      image: "/img/sahne/odul-toreni.webp"
     },
     {
       icon: "🎓",
@@ -258,8 +250,6 @@ const PAGE_DATA = {
         "Sahne arkası hazırlık odaları",
         "Aile ve misafirler için oturma düzeni"
       ],
-      stats: ["500-10.000 kişi", "Eğitim kurumu", "Aile dostu"],
-      image: "/img/sahne/mezuniyet.webp"
     },
     {
       icon: "🛍️",
@@ -271,8 +261,6 @@ const PAGE_DATA = {
         "Marka renklerine özel aydınlatma",
         "Mobil ve taşınabilir sahne çözümleri"
       ],
-      stats: ["7/24 kurulum", "AVM uyumlu", "Hızlı montaj"],
-      image: "/img/sahne/avm.webp"
     }
   ],
   components: [
@@ -514,110 +502,86 @@ export default function Page() {
         </div>
       </section>
 
-      {/* YENİ: KULLANIM ALANLARI */}
+      {/* KULLANIM ALANLARI - KURUMSAL SAYFAYLA AYNI TASARIM */}
       <section
-        className="py-16 bg-gradient-to-b from-gray-50 to-white"
+        id="hizmetler"
+        className="py-16 bg-gradient-to-b from-white to-blue-50/30"
         aria-labelledby="kullanim-alanlari-baslik"
       >
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 id="kullanim-alanlari-baslik" className="text-3xl md:text-5xl font-black mb-4">
+            <h2
+              id="kullanim-alanlari-baslik"
+              className="text-3xl md:text-5xl font-black mb-4"
+            >
               Kullanım{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
                 Alanları
               </span>
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Her türlü etkinlik için özelleştirilmiş sahne çözümleri sunuyoruz
+              Her türlü etkinlik için profesyonel ve anahtar teslim sahne çözümleri
             </p>
           </div>
 
-          <div className="grid gap-8 max-w-6xl mx-auto">
-            {PAGE_DATA.useCases.map((useCase, index) => (
-              <article 
-                key={useCase.title} 
-                className={`bg-white rounded-2xl border border-gray-200 shadow-lg overflow-hidden group hover:shadow-xl transition-all duration-300 ${
-                  index % 2 === 1 ? 'md:flex-row-reverse' : ''
-                } md:flex`}
-              >
-                <div className="md:w-1/3 relative">
-                  <div className="aspect-video md:aspect-square md:h-full relative">
-                    <Image
-                      src={useCase.image}
-                      alt={useCase.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent md:bg-gradient-to-r md:from-black/30 md:via-transparent md:to-transparent" />
-                  </div>
-                </div>
-                
-                <div className="md:w-2/3 p-6 md:p-8">
-                  <div className="flex items-start gap-4 mb-4">
-                    <div className="text-3xl flex-shrink-0" aria-hidden="true">
-                      {useCase.icon}
+          <ul className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {PAGE_DATA.useCases.map((service) => {
+              const id = `svc-${slugify(service.title)}`;
+              return (
+                <li key={id}>
+                  <article
+                    className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 group hover:shadow-xl hover:scale-105 transition-all duration-300"
+                    aria-labelledby={id}
+                  >
+                    <div className="text-3xl mb-3" aria-hidden="true">
+                      {service.icon}
                     </div>
-                    <div>
-                      <h3 className="text-2xl font-black text-gray-900 mb-2">
-                        {useCase.title}
-                      </h3>
-                      <p className="text-gray-600 mb-4">
-                        {useCase.description}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-3 text-sm uppercase tracking-wide">Özellikler</h4>
-                      <ul className="space-y-2">
-                        {useCase.features.map((feature, i) => (
-                          <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
-                            <span className="text-green-500 mt-1 flex-shrink-0" aria-hidden="true">✓</span>
-                            <span>{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-3 text-sm uppercase tracking-wide">Teknik Detaylar</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {useCase.stats.map((stat, i) => (
-                          <span 
-                            key={i}
-                            className="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-medium"
-                          >
-                            {stat}
-                          </span>
-                        ))}
-                      </div>
-                      
-                      <div className="mt-6">
-                        <Link
-                          href={`https://wa.me/905453048671?text=${encodeURIComponent(`Merhaba, ${useCase.title} için sahne kiralama teklifi almak istiyorum.`)}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center font-semibold px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:scale-105 transform transition-all duration-300 text-sm"
+                    <h3
+                      id={id}
+                      className="text-xl font-black mb-2 text-gray-900"
+                    >
+                      {service.title}
+                    </h3>
+                    <p className="text-gray-600 mb-4 text-sm">
+                      {service.description}
+                    </p>
+                    <ul className="space-y-1">
+                      {service.features.map((feature, i) => (
+                        <li
+                          key={i}
+                          className="flex items-center gap-2 text-sm text-gray-700"
                         >
-                          <span aria-hidden="true">💬</span>
-                          <span className="ml-2">Bu Etkinlik İçin Teklif Al</span>
-                        </Link>
-                      </div>
+                          <span
+                            className="w-1.5 h-1.5 bg-blue-500 rounded-full flex-shrink-0"
+                            aria-hidden="true"
+                          />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="mt-4">
+                      <Link
+                        href={`https://wa.me/905453048671?text=${encodeURIComponent(`Merhaba, ${service.title} için sahne kiralama teklifi almak istiyorum.`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center w-full font-semibold px-4 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:scale-105 transform transition-all duration-300 text-sm"
+                      >
+                        <span aria-hidden="true">💬</span>
+                        <span className="ml-2">Bu Etkinlik İçin Teklif Al</span>
+                      </Link>
                     </div>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
+                  </article>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       </section>
 
       {/* PAKETLER */}
       <section
         id="paketler"
-        className="py-16 bg-gradient-to-b from-white to-purple-50/30"
+        className="py-16 bg-gradient-to-b from-gray-50 to-white"
         aria-labelledby="paketler-baslik"
       >
         <div className="container mx-auto px-4">
@@ -678,59 +642,51 @@ export default function Page() {
         </div>
       </section>
 
-      {/* SAHNE BİLEŞENLERİ */}
+      {/* SAHNE BİLEŞENLERİ - KURUMSAL SAYFADAKİ TEKNİK ALTYAPI GİBİ */}
       <section
-        className="py-16 bg-gradient-to-b from-white to-blue-50/30"
+        className="py-16 bg-gradient-to-b from-white to-purple-50/30"
         aria-labelledby="bilesenler-baslik"
       >
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 id="bilesenler-baslik" className="text-3xl md:text-5xl font-black mb-4">
-              Sahne{" "}
+              Teknik{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
-                Bileşenleri
+                Bileşenler
               </span>
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-            {PAGE_DATA.components.map((component) => (
-              <article key={component.title} className="rounded-2xl border border-gray-200 bg-white p-6 group hover:shadow-lg transition-all duration-300">
-                <div className="flex items-start gap-4">
-                  <div className="text-3xl flex-shrink-0" aria-hidden="true">
-                    {component.icon}
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-lg font-black text-gray-900 mb-2">
-                      {component.title}
-                    </h3>
-                    <p className="text-gray-600 text-sm mb-3">
-                      {component.description}
-                    </p>
-                    <ul className="space-y-1 mb-3">
-                      {component.features.map((feature, i) => (
-                        <li key={i} className="flex items-center gap-2 text-xs text-gray-600">
-                          <span className="w-1 h-1 bg-gray-400 rounded-full flex-shrink-0" aria-hidden="true" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                    {component.link && (
-                      <Link href={component.link} className="inline-block text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">
-                        Detaylı bilgi →
-                      </Link>
-                    )}
-                  </div>
+          <ul className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {Object.entries({
+              podyum: "1×1 / 2×1 modüler podyum • 20-100 cm yükseklik • Kaymaz kaplama",
+              truss: "Aluminyum truss sistemleri • Ön kiriş, yan kule • Profesyonel rigging",
+              led: "P2-P6 LED ekranlar • 1500-6500 nit parlaklık • IP65 koruma",
+              ses: "Line-array ses sistemleri • Dijital mikser • Kablosuz mikrofon",
+              isik: "LED wash ve spot ışıklar • Hareketli kafalar • DMX kontrol",
+              guvenlik: "Korkuluk ve rampa sistemleri • Statik hesaplama • Yedekli altyapı",
+            }).map(([key, value]) => (
+              <li key={key}>
+                <div className="bg-white rounded-2xl border border-gray-200 p-6 group hover:shadow-lg hover:border-blue-200 transition-all duration-300">
+                  <h3 className="font-bold text-gray-900 mb-3 capitalize text-lg">
+                    {key === "podyum" && "🎭 Podyum Sistemleri"}
+                    {key === "truss" && "🏗️ Truss & Rigging"}
+                    {key === "led" && "🖥️ LED Ekranlar"}
+                    {key === "ses" && "🔊 Ses Sistemleri"}
+                    {key === "isik" && "💡 Aydınlatma"}
+                    {key === "guvenlik" && "🛡️ Güvenlik Sistemleri"}
+                  </h3>
+                  <p className="text-gray-600 text-sm">{value}</p>
                 </div>
-              </article>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 
       {/* GALERİ */}
       <section
-        className="py-16 bg-gradient-to-b from-white to-purple-50/30"
+        className="py-16 bg-gradient-to-b from-white to-blue-50/30"
         aria-labelledby="galeri-baslik"
       >
         <div className="container mx-auto px-4">
@@ -759,9 +715,9 @@ export default function Page() {
         </div>
       </section>
 
-      {/* SÜREÇ */}
+      {/* SÜREÇ - KURUMSAL SAYFADAKİ GİBİ */}
       <section
-        className="py-16 bg-gradient-to-b from-white to-blue-50/30"
+        className="py-16 bg-gradient-to-b from-white to-purple-50/30"
         aria-labelledby="surec-baslik"
       >
         <div className="container mx-auto px-4">
@@ -825,7 +781,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* SSS */}
+      {/* SSS - KURUMSAL SAYFADAKİ GİBİ */}
       <section
         className="py-16 bg-gradient-to-b from-white to-gray-50"
         aria-labelledby="sss-baslik"
@@ -840,10 +796,10 @@ export default function Page() {
             </h2>
           </div>
 
-          <div className="grid gap-4">
+          <div className="grid gap-4 md:grid-cols-2">
             {PAGE_DATA.faq.map((item, index) => (
               <article key={index} className="bg-white rounded-2xl border border-gray-200 p-6 hover:shadow-lg transition-shadow">
-                <h3 className="font-semibold text-gray-900 mb-2">{item.question}</h3>
+                <h3 className="font-medium text-gray-900 mb-2">{item.question}</h3>
                 <p className="text-gray-600 text-sm">{item.answer}</p>
               </article>
             ))}
@@ -947,7 +903,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* CTA - KURUMSAL SAYFADAKİ GİBİ */}
       <section className="py-16 bg-gradient-to-b from-white to-blue-50/30">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center justify-between gap-6 rounded-3xl bg-gradient-to-r from-blue-600 to-purple-600 p-8 md:p-12 text-center text-white md:flex-row md:text-left">
