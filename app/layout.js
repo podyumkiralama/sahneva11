@@ -29,8 +29,8 @@ export const metadata = {
     template: "%s | Sahneva",
   },
   description:
-    "Türkiye genelinde sahne, podyum, LED ekran, ses-ışık sistemleri ve çadır kiralama. Hızlı kurulum, profesyonel teknik ekip, uygun fiyat. Hemen teklif alın!",
-  alternates: { canonical: "https://www.sahneva.com/" }, // ← trailing slash
+    "Türkiye genelinde sahne, podyum, LED ekran, ses-ışık ve çadır kiralama. Hızlı kurulum, profesyonel teknik ekip, uygun fiyat.",
+  alternates: { canonical: "https://www.sahneva.com/" },
   openGraph: {
     title: "Sahneva – Profesyonel Sahne & Etkinlik Teknolojileri",
     description:
@@ -38,22 +38,8 @@ export const metadata = {
     url: "https://www.sahneva.com/",
     siteName: "Sahneva",
     type: "website",
-    images: [
-      {
-        url: "https://www.sahneva.com/og/sahneva-home.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Sahneva Ana Sayfa",
-      },
-    ],
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Sahneva – Profesyonel Sahne & Etkinlik Teknolojileri",
-    description:
-      "Sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri. Türkiye geneli hızlı kurulum ve profesyonel teknik destek.",
-    images: ["https://www.sahneva.com/og/sahneva-home.jpg"],
-  },
+  robots: { index: true, follow: true },
 };
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID || "G-J5YK10YLLC";
@@ -67,13 +53,16 @@ export default function RootLayout({ children }) {
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
           strategy="afterInteractive"
         />
-        <Script
-          src="/ga-init.js"
-          strategy="afterInteractive"
-          data-ga-id={GA_MEASUREMENT_ID}
-        />
+        <Script id="ga-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}', { anonymize_ip: true });
+          `}
+        </Script>
 
-        {/* Skip link (tek hedef burası) */}
+        {/* Skip link: tek hedef -> #main-content */}
         <a
           href="#main-content"
           aria-label="Ana içeriğe hızlı geçiş"
@@ -85,10 +74,11 @@ export default function RootLayout({ children }) {
         <UtilityBar />
         <Navbar />
 
+        {/* Tek landmark */}
         <main
           id="main-content"
-          tabIndex={-1}
           role="main"
+          tabIndex={-1}
           className="min-h-[60vh] focus:outline-none"
         >
           {children}
