@@ -613,4 +613,3 @@ function SearchModal({ onClose, routes }) {
     </div>
   );
 }
-}
