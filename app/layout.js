@@ -2,11 +2,10 @@
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import UtilityBar from "../components/UtilityBar";
 import Script from "next/script";
 import { Inter } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-const UtilityBar = dynamic(() => import("../components/UtilityBar"), { ssr: false });
-
 
 const inter = Inter({
   subsets: ["latin"],
