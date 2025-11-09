@@ -9,8 +9,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 // ⚙️ UtilityBar: sadece client'ta yüklensin (SSR=false)
 const UtilityBar = dynamic(() => import("../components/UtilityBar"), { ssr: false });
-// 🔌 Kill-switch: Vercel env ile anında kapat
-const UB_DISABLED = process.env.NEXT_PUBLIC_UB_DISABLED === "1";
 
 const inter = Inter({
   subsets: ["latin"],
