@@ -1,51 +1,35 @@
+// app/(site)/page.js
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
+import Script from "next/script";
 import heroImg from "@/public/img/hero-bg.webp";
 
 // Statik bileşenler
-import CorporateEvents from "../../components/CorporateEvents";
-import Faq from "../../components/Faq";
-import ReviewBanner from "../../components/ReviewBanner";
+import CorporateEvents from "@/components/CorporateEvents";
+import Faq from "@/components/Faq";
+import ReviewBanner from "@/components/ReviewBanner";
+
+// ============ SABİT VERİLER ============
+const HERO_FEATURES = [
+  { icon: "⭐", title: "4.9/5 Puan", description: "500+ Mutlu Müşteri", color: "from-yellow-400 to-orange-400" },
+  { icon: "⚡", title: "Aynı Gün", description: "Hızlı Kurulum", color: "from-blue-400 to-cyan-400" },
+  { icon: "👑", title: "Premium", description: "Kalite Garantisi", color: "from-purple-400 to-pink-400" },
+];
+
+const WHY_SAHNEVA_FEATURES = [
+  { icon: "⭐", title: "Yüksek Müşteri Memnuniyeti", desc: "Her organizasyonda %98'in üzerinde müşteri memnuniyeti. Referanslar ve Google yorumları bizim güvencemiz.", stat: "%98 Memnuniyet" },
+  { icon: "⚡", title: "Hızlı Kurulum ve Teslimat", desc: "Aynı gün profesyonel sahne, LED ekran ve ses-ışık kurulumları.", stat: "2–6 Saat" },
+  { icon: "🖥️", title: "Premium LED Ekran Teknolojisi", desc: "P2–P6 pixel pitch ile yüksek çözünürlüklü indoor/outdoor LED ekran.", stat: "P2–P6" },
+  { icon: "👷", title: "Uzman Teknik Ekip", desc: "10+ yıl deneyimli sahne, ses, ışık ve LED uzmanlarından kadro.", stat: "15+ Uzman" },
+  { icon: "💰", title: "Rekabetçi Fiyat Garantisi", desc: "Kaliteli hizmeti uygun fiyatla, bütçenize uygun çözümler.", stat: "%30 Tasarruf" },
+  { icon: "🏙️", title: "Türkiye Geneli Hizmet", desc: "İstanbul, Ankara, İzmir başta 81 ilde profesyonel hizmet.", stat: "81 İl" },
+];
 
 // Dinamik bileşenler
-const ServicesTabsLazy = dynamic(() => import("../../components/ServicesTabs"), {
-  loading: () => <SectionSkeleton label="Hizmetler yükleniyor" />,
-});
-const ProjectsGalleryLazy = dynamic(() => import("../../components/ProjectsGallery"), {
-  loading: () => (
-    <div
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-      role="status"
-      aria-live="polite"
-      aria-busy="true"
-      aria-label="Projeler yükleniyor"
-    >
-      {[1, 2, 3].map((i) => (
-        <div
-          key={i}
-          className="bg-neutral-200 rounded-2xl h-80 animate-pulse motion-reduce:animate-none"
-          aria-hidden="true"
-        />
-      ))}
-      <span className="sr-only">Projeler yükleniyor</span>
-    </div>
-  ),
-});
-
-// ISR
-export const revalidate = 3600;
-
-// Erişilebilir yükleme bileşeni
 function SectionSkeleton({ label = "İçerik yükleniyor" }) {
   return (
-    <div
-      className="container py-10"
-      role="status"
-      aria-live="polite"
-      aria-busy="true"
-      aria-label={label}
-    >
+    <div className="container py-10" role="status" aria-live="polite" aria-busy="true" aria-label={label}>
       <div className="flex flex-col items-center space-y-4">
         <div className="h-10 w-40 rounded bg-gradient-to-r from-neutral-100 to-neutral-200 animate-pulse motion-reduce:animate-none" />
         <div className="h-40 w-full rounded-2xl bg-gradient-to-r from-neutral-100 to-neutral-200 animate-pulse motion-reduce:animate-none" />
@@ -55,71 +39,157 @@ function SectionSkeleton({ label = "İçerik yükleniyor" }) {
   );
 }
 
-// JSON-LD
+const ServicesTabsLazy = dynamic(() => import("@/components/ServicesTabs"), {
+  loading: () => <SectionSkeleton label="Hizmetler yükleniyor" />,
+});
+
+const ProjectsGalleryLazy = dynamic(() => import("@/components/ProjectsGallery"), {
+  loading: () => (
+    <div
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      role="status"
+      aria-live="polite"
+      aria-busy="true"
+      aria-label="Projeler yükleniyor"
+    >
+      {[1, 2, 3].map((i) => (
+        <div key={i} className="bg-neutral-200 rounded-2xl h-80 animate-pulse motion-reduce:animate-none" aria-hidden="true" />
+      ))}
+      <span className="sr-only">Projeler yükleniyor</span>
+    </div>
+  ),
+});
+
+// ISR
+export const revalidate = 3600;
+
+// ========= Metadata (SEO) =========
+export const metadata = {
+  title: "Sahne, LED Ekran, Ses-Işık Kiralama | Türkiye Geneli – Sahneva",
+  description:
+    "Sahne, podyum, LED ekran, ses-ışık sistemleri ve teknik prodüksiyon. 81 ilde hızlı kurulum, 500+ proje, %98 memnuniyet.",
+  alternates: {
+    canonical: "https://www.sahneva.com/",
+    languages: {
+      "tr-TR": "https://www.sahneva.com/",
+      "x-default": "https://www.sahneva.com/",
+    },
+  },
+  openGraph: {
+    title: "Sahneva – Etkinlik Teknoloji Partneriniz",
+    description:
+      "Sahne, LED ekran, ses-ışık kiralama ve kurulum. Türkiye geneli hızlı kurulum ve uzman teknik ekip.",
+    url: "https://www.sahneva.com/",
+    siteName: "Sahneva",
+    images: [{ url: "https://www.sahneva.com/og-home.jpg", width: 1200, height: 630, alt: "Sahneva" }],
+    locale: "tr_TR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sahneva",
+    description:
+      "Sahne, LED ekran, ses-ışık kiralama ve kurulum. Türkiye geneli hızlı kurulum ve uzman ekip.",
+    images: ["https://www.sahneva.com/og-home.jpg"],
+  },
+};
+
+// ========= JSON-LD (CSP uyumlu; next/script) =========
 function StructuredData() {
   const data = {
     "@context": "https://schema.org",
     "@graph": [
       {
+        "@type": "Organization",
+        "@id": "https://www.sahneva.com/#org",
+        "name": "Sahneva",
+        "url": "https://www.sahneva.com",
+        // TODO: OG logo dosya yolunu gerçek URL ile değiştirin:
+        "logo": "https://www.sahneva.com/logo.png",
+        "sameAs": [
+          "https://g.page/r/CZhkMzkNOdgnEBI"
+          // TODO: Instagram/TikTok/LinkedIn/Facebook varsa ekleyin
+        ],
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "telephone": "+90 545 304 86 71",
+            "contactType": "customer service",
+            "areaServed": "TR",
+            "availableLanguage": ["tr", "en"]
+          }
+        ],
+        // İsteğe bağlı adres; sadece ülke verebiliriz:
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "TR"
+          // TODO: addressLocality / streetAddress eklenebilir
+        }
+      },
+      {
         "@type": "Service",
-        name: "Etkinlik Ekipmanları Kiralama",
-        description: "Türkiye genelinde sahne, podyum, LED ekran, ses ve ışık sistemleri kiralama; kurulum ve teknik operasyon.",
-        url: "https://sahneva.com",
-        areaServed: { "@type": "Country", name: "TR" },
-        provider: { "@type": "Organization", name: "Sahneva" },
-        serviceType: [
+        "@id": "https://www.sahneva.com/#service",
+        "name": "Etkinlik Ekipmanları Kiralama",
+        "description": "Türkiye genelinde sahne, podyum, LED ekran, ses ve ışık sistemleri kiralama; kurulum ve teknik operasyon.",
+        "url": "https://www.sahneva.com",
+        "areaServed": { "@type": "Country", "name": "TR" },
+        "provider": { "@id": "https://www.sahneva.com/#org" },
+        "serviceType": [
           "Sahne Kiralama",
           "Podyum Kiralama",
           "LED Ekran Kiralama",
           "Ses Sistemi Kiralama",
           "Işık Sistemi Kiralama",
-          "Etkinlik Prodüksiyon",
+          "Etkinlik Prodüksiyon"
         ],
-        aggregateRating: {
+        "aggregateRating": {
           "@type": "AggregateRating",
-          ratingValue: "4.9",
-          reviewCount: "500",
-          bestRating: "5",
-        },
+          "ratingValue": "4.9",
+          "ratingCount": "500",
+          "bestRating": "5",
+          "worstRating": "1"
+        }
       },
       {
         "@type": "FAQPage",
-        mainEntity: [
+        "@id": "https://www.sahneva.com/#faq",
+        "mainEntity": [
           {
             "@type": "Question",
-            name: "Sahne kiralama süresi ne kadar?",
-            acceptedAnswer: {
+            "name": "Sahne kiralama süresi ne kadar?",
+            "acceptedAnswer": {
               "@type": "Answer",
-              text: "Kurulum süresi genellikle 2–6 saat arasında değişir.",
-            },
-          },
-        ],
-      },
-      {
-        "@type": "Event",
-        name: "LED Ekran Lansmanı – İstanbul",
-        startDate: "2025-12-10",
-        location: {
-          "@type": "Place",
-          name: "Haliç Kongre Merkezi",
-          address: {
-            "@type": "PostalAddress",
-            addressLocality: "İstanbul",
-            addressCountry: "TR",
-          },
-        },
-      },
-    ],
+              "text": "Kurulum süresi genellikle 2–6 saat arasında değişir."
+            }
+          }
+        ]
+      }
+      // İsteğe bağlı gerçek etkinlik varsa ekleyin:
+      // {
+      //   "@type": "Event",
+      //   "name": "LED Ekran Lansmanı – İstanbul",
+      //   "startDate": "2025-12-10",
+      //   "location": {
+      //     "@type": "Place",
+      //     "name": "Haliç Kongre Merkezi",
+      //     "address": { "@type": "PostalAddress", "addressLocality": "İstanbul", "addressCountry": "TR" }
+      //   }
+      // }
+    ]
   };
 
   return (
-    <script
+    <Script
+      id="ld-json-home"
       type="application/ld+json"
+      strategy="afterInteractive"
       suppressHydrationWarning
       dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
     />
   );
-}export default function HomePage() {
+}
+
+export default function HomePage() {
   return (
     <div className="overflow-x-hidden">
       <StructuredData />
@@ -132,7 +202,7 @@ function StructuredData() {
         Ana içeriğe atla
       </a>
 
-      {/* HERO SECTION */}
+      {/* HERO */}
       <section
         className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 pt-16 lg:pt-20"
         aria-labelledby="hero-title"
@@ -149,17 +219,14 @@ function StructuredData() {
             loading="eager"
             className="object-cover object-center"
             style={{
-              transform: "scale(1.02)",
+              // LCP için scale kaldırıldı
               filter: "brightness(0.7) contrast(1.1) saturate(1.1)",
             }}
           />
         </div>
 
         {/* Overlay katmanları */}
-        <div
-          className="absolute inset-0 bg-gradient-to-br from-slate-900/85 via-blue-900/70 to-purple-900/75"
-          aria-hidden="true"
-        />
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/85 via-blue-900/70 to-purple-900/75" aria-hidden="true" />
         <div
           className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-pulse motion-reduce:animate-none"
           style={{ animationDuration: "8s" }}
@@ -170,21 +237,11 @@ function StructuredData() {
         <div className="relative z-10 container py-12 md:py-16">
           <div className="max-w-6xl mx-auto text-center mb-10">
             <div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md rounded-full px-6 py-3 border border-white/20 mb-6">
-              <span
-                className="w-2 h-2 bg-green-400 rounded-full animate-pulse motion-reduce:animate-none"
-                aria-hidden="true"
-              />
-              <span className="text-white/90 text-sm font-medium">
-                Türkiye Geneli Profesyonel Hizmet
-              </span>
+              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse motion-reduce:animate-none" aria-hidden="true" />
+              <span className="text-white/90 text-sm font-medium">Türkiye Geneli Profesyonel Hizmet</span>
             </div>
 
-            {/* Başlık */}
-            <h1
-              id="hero-title"
-              className="text-white text-3xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight tracking-tight"
-              aria-label="Profesyonel Sahne Sistemleri"
-            >
+            <h1 id="hero-title" className="text-white text-3xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight tracking-tight" aria-label="Profesyonel Sahne Sistemleri">
               <span className="block">Profesyonel</span>
               <span
                 className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-purple-300 to-cyan-300 bg-[length:300%_100%] animate-[gradient_8s_ease_infinite] motion-reduce:animate-none"
@@ -194,31 +251,19 @@ function StructuredData() {
               </span>
             </h1>
 
-            {/* Anahtar kelimeler */}
             <p className="text-white/90 text-lg md:text-xl lg:text-2xl mb-6 leading-relaxed font-medium max-w-4xl mx-auto">
-              <span
-                className="bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text font-bold"
-                aria-hidden="true"
-              >
+              <span className="bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text font-bold" aria-hidden="true">
                 Sahne Kiralama
               </span>
               ,{" "}
-              <span
-                className="bg-gradient-to-r from-purple-400 to-cyan-400 text-transparent bg-clip-text font-bold"
-                aria-hidden="true"
-              >
+              <span className="bg-gradient-to-r from-purple-400 to-cyan-400 text-transparent bg-clip-text font-bold" aria-hidden="true">
                 LED Ekran
               </span>
               ,{" "}
-              <span
-                className="bg-gradient-to-r from-cyan-400 to-blue-400 text-transparent bg-clip-text font-bold"
-                aria-hidden="true"
-              >
+              <span className="bg-gradient-to-r from-cyan-400 to-blue-400 text-transparent bg-clip-text font-bold" aria-hidden="true">
                 Ses-Işık Sistemleri
               </span>
-              <span className="sr-only">
-                Sahne Kiralama, LED Ekran, Ses-Işık Sistemleri
-              </span>
+              <span className="sr-only">Sahne Kiralama, LED Ekran, Ses-Işık Sistemleri</span>
             </p>
 
             <p className="text-white/80 text-base md:text-lg mb-8 max-w-3xl mx-auto">
@@ -229,7 +274,7 @@ function StructuredData() {
             <div className="flex flex-col sm:flex-row justify-center items-center gap-3 md:gap-4 mb-12">
               <a
                 href="tel:+905453048671"
-                title="Telefonla ara"
+                aria-label="Telefonla arayın: +90 545 304 86 71"
                 className="w-full sm:w-auto min-w-[180px] text-center group relative bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold text-base px-6 py-3 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 border border-white/20 backdrop-blur-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
               >
                 <span className="relative z-10 flex items-center justify-center gap-2">
@@ -242,7 +287,6 @@ function StructuredData() {
                 href="https://wa.me/905453048671?text=Merhaba%2C+web+sitenizden+ula%C5%9F%C4%B1yorum.+Sahne+kiralama+ve+LED+ekran+fiyatlar%C4%B1+hakk%C4%B1nda+detayl%C4%B1+teklif+almak+istiyorum.&utm_source=homepage&utm_medium=hero_cta&utm_campaign=whatsapp"
                 target="_blank"
                 rel="noopener noreferrer"
-                title="WhatsApp üzerinden teklif al"
                 className="w-full sm:w-auto min-w-[180px] text-center group relative bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold text-base px-6 py-3 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 border border-white/20 backdrop-blur-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
               >
                 <span className="relative z-10 flex items-center justify-center gap-2">
@@ -252,21 +296,14 @@ function StructuredData() {
                 <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
               </a>
             </div>
+
             {/* Öne çıkan özellikler */}
-            <ul
-              className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-12 list-none p-0 m-0"
-              aria-label="Öne çıkan özellikler"
-            >
-              {[
-                { icon: "⭐", title: "4.9/5 Puan", description: "500+ Mutlu Müşteri", color: "from-yellow-400 to-orange-400" },
-                { icon: "⚡", title: "Aynı Gün", description: "Hızlı Kurulum", color: "from-blue-400 to-cyan-400" },
-                { icon: "👑", title: "Premium", description: "Kalite Garantisi", color: "from-purple-400 to-pink-400" },
-              ].map((item, index) => (
+            <h2 className="sr-only">Öne çıkan özellikler</h2>
+            <ul className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-12 list-none p-0 m-0">
+              {HERO_FEATURES.map((item, index) => (
                 <li key={index} className="m-0 p-0">
                   <div className="group bg-white/10 backdrop-blur-lg rounded-xl p-4 border border-white/20 hover:border-white/40 transition-all duration-500 hover:scale-105 hover:bg-white/15">
-                    <div className={`text-2xl mb-2 bg-gradient-to-r ${item.color} text-transparent bg-clip-text`} aria-hidden="true">
-                      {item.icon}
-                    </div>
+                    <div className="text-2xl mb-2" aria-hidden="true">{item.icon}</div>
                     <div className="text-white font-bold text-base mb-1">{item.title}</div>
                     <div className="text-white/70 text-xs">{item.description}</div>
                   </div>
@@ -290,7 +327,6 @@ function StructuredData() {
                 <div className="flex-shrink-0">
                   <a
                     href="#teklif-al"
-                    title="Teklif formuna git"
                     className="bg-white text-blue-600 hover:bg-gray-100 font-bold px-5 py-2 rounded-lg transition-all duration-300 hover:scale-105 shadow-lg text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600/60"
                   >
                     Hemen Teklif Al
@@ -311,31 +347,20 @@ function StructuredData() {
         </div>
       </section>
 
-      {/* Ana içerik başlangıcı */}
+      {/* Ana içerik */}
       <main id="main" className="relative">
         <div aria-hidden="true" className="h-12 lg:h-16" />
         <div className="sticky top-0 z-40">
           <ReviewBanner />
         </div>
+
         {/* Hizmetler */}
-        <section
-          className="relative py-12 bg-gradient-to-b from-white to-neutral-50/80"
-          aria-labelledby="hizmetler-title"
-        >
-          <div
-            className="absolute inset-0 bg-[linear-gradient(#e5e7eb_1px,transparent_1px),linear-gradient(90deg,#e5e7eb_1px,transparent_1px)] bg-[size:16px_16px] [mask-image:radial-gradient(ellipse_at_center,transparent_20%,white)]"
-            aria-hidden="true"
-          />
+        <section className="relative py-12 bg-gradient-to-b from-white to-neutral-50/80" aria-labelledby="hizmetler-title">
+          <div className="absolute inset-0 bg-[linear-gradient(#e5e7eb_1px,transparent_1px),linear-gradient(90deg,#e5e7eb_1px,transparent_1px)] bg-[size:16px_16px] [mask-image:radial-gradient(ellipse_at_center,transparent_20%,white)]" aria-hidden="true" />
           <div className="container relative z-10">
             <div className="text-center mb-12">
-              <h2
-                id="hizmetler-title"
-                className="text-3xl md:text-4xl font-black text-neutral-900 mb-4"
-              >
-                Profesyonel{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-                  Hizmetlerimiz
-                </span>
+              <h2 id="hizmetler-title" className="text-3xl md:text-4xl font-black text-neutral-900 mb-4">
+                Profesyonel <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Hizmetlerimiz</span>
               </h2>
               <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
                 Türkiye geneli sahne, podyum, LED ekran kiralama ve ses-ışık sistemleri kurulumu
@@ -348,20 +373,11 @@ function StructuredData() {
         </section>
 
         {/* Projeler */}
-        <section
-          className="py-12 bg-gradient-to-br from-neutral-900 to-blue-900/95"
-          aria-labelledby="projeler-title"
-        >
+        <section className="py-12 bg-gradient-to-br from-neutral-900 to-blue-900/95" aria-labelledby="projeler-title">
           <div className="container">
             <div className="text-center mb-12">
-              <h2
-                id="projeler-title"
-                className="text-3xl md:text-4xl font-black text-white mb-4"
-              >
-                Başarılı{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-                  Projelerimiz
-                </span>
+              <h2 id="projeler-title" className="text-3xl md:text-4xl font-black text-white mb-4">
+                Başarılı <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Projelerimiz</span>
               </h2>
               <p className="text-lg text-white/80 max-w-3xl mx-auto">
                 500'den fazla kurumsal etkinlik, konser, fuar ve özel organizasyonda güvenilir çözüm ortağı
@@ -374,20 +390,11 @@ function StructuredData() {
         </section>
 
         {/* Kurumsal Organizasyon */}
-        <section
-          className="py-12 bg-white"
-          aria-labelledby="kurumsal-title"
-        >
+        <section className="py-12 bg-white" aria-labelledby="kurumsal-title">
           <div className="container">
             <div className="text-center mb-12">
-              <h2
-                id="kurumsal-title"
-                className="text-3xl md:text-4xl font-black text-neutral-900 mb-4"
-              >
-                Kurumsal{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-                  Organizasyon Çözümlerimiz
-                </span>
+              <h2 id="kurumsal-title" className="text-3xl md:text-4xl font-black text-neutral-900 mb-4">
+                Kurumsal <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Organizasyon Çözümlerimiz</span>
               </h2>
               <p className="text-lg text-neutral-600 max-w-3xl mx-auto">
                 Lansman, konferans, bayi toplantısı ve kurumsal etkinlikleriniz için sahne, podyum, LED ekran, ses–ışık ve teknik operasyonu tek çatı altında sunuyoruz.
@@ -396,55 +403,26 @@ function StructuredData() {
             <CorporateEvents />
           </div>
         </section>
+
         {/* Neden Sahneva? */}
-        <section
-          className="py-12 bg-gradient-to-br from-blue-50/80 to-purple-50/60"
-          aria-labelledby="neden-tercih-heading"
-        >
+        <section className="py-12 bg-gradient-to-br from-blue-50/80 to-purple-50/60" aria-labelledby="neden-tercih-heading">
           <div className="container">
             <div className="text-center mb-12">
-              <h2
-                id="neden-tercih-heading"
-                className="text-3xl md:text-4xl font-black text-neutral-900 mb-6"
-              >
-                Neden{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-                  Sahneva
-                </span>
-                'yı Tercih Etmelisiniz?
+              <h2 id="neden-tercih-heading" className="text-3xl md:text-4xl font-black text-neutral-900 mb-6">
+                Neden <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Sahneva</span>'yı Tercih Etmelisiniz?
               </h2>
-              <p className="text-lg text-neutral-600 max-w-3xl mx-auto">
-                10 yılı aşkın deneyimimiz, uzman ekibimiz ve kaliteli ekipmanlarımızla fark yaratıyoruz
-              </p>
+              <p className="text-lg text-neutral-600 max-w-3xl mx-auto">10 yılı aşkın deneyimimiz, uzman ekibimiz ve kaliteli ekipmanlarımızla fark yaratıyoruz</p>
             </div>
 
             <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 list-none p-0 m-0">
-              {[
-                { icon: "⭐", title: "Yüksek Müşteri Memnuniyeti", desc: "Her organizasyonda %98'in üzerinde müşteri memnuniyeti. Referanslar ve Google yorumları bizim güvencemiz.", stat: "%98 Memnuniyet" },
-                { icon: "⚡", title: "Hızlı Kurulum ve Teslimat", desc: "Aynı gün profesyonel sahne, LED ekran ve ses-ışık kurulumları.", stat: "2–6 Saat" },
-                { icon: "🖥️", title: "Premium LED Ekran Teknolojisi", desc: "P2–P6 pixel pitch ile yüksek çözünürlüklü indoor/outdoor LED ekran.", stat: "P2–P6" },
-                { icon: "👷", title: "Uzman Teknik Ekip", desc: "10+ yıl deneyimli sahne, ses, ışık ve LED uzmanlarından kadro.", stat: "15+ Uzman" },
-                { icon: "💰", title: "Rekabetçi Fiyat Garantisi", desc: "Kaliteli hizmeti uygun fiyatla, bütçenize uygun çözümler.", stat: "%30 Tasarruf" },
-                { icon: "🏙️", title: "Türkiye Geneli Hizmet", desc: "İstanbul, Ankara, İzmir başta 81 ilde profesyonel hizmet.", stat: "81 İl" },
-              ].map(({ icon, title, desc, stat }, i) => (
+              {WHY_SAHNEVA_FEATURES.map(({ icon, title, desc, stat }, i) => (
                 <li key={i} className="m-0 p-0">
-                  <article
-                    className="group relative bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-500 p-6 border border-neutral-100 hover:border-blue-200/70 hover:scale-105"
-                    aria-labelledby={`why-card-${i}-title`}
-                  >
+                  <article className="group relative bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-500 p-6 border border-neutral-100 hover:border-blue-200/70 hover:scale-105" aria-labelledby={`why-card-${i}-title`}>
                     <div className="absolute top-3 right-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                       {stat}
                     </div>
-                    <div
-                      className="text-3xl mb-4 bg-gradient-to-r from-blue-500 to-purple-500 text-transparent bg-clip-text"
-                      aria-hidden="true"
-                    >
-                      {icon}
-                    </div>
-                    <h3
-                      id={`why-card-${i}-title`}
-                      className="font-black text-lg mb-3 text-neutral-900 group-hover:text-blue-600 transition-colors"
-                    >
+                    <div className="text-3xl mb-4" aria-hidden="true">{icon}</div>
+                    <h3 id={`why-card-${i}-title`} className="font-black text-lg mb-3 text-neutral-900 group-hover:text-blue-600 transition-colors">
                       {title}
                     </h3>
                     <p className="text-neutral-700 leading-relaxed text-sm">{desc}</p>
@@ -456,20 +434,10 @@ function StructuredData() {
         </section>
 
         {/* SEO metinleri */}
-        <section
-          className="py-12 bg-white"
-          aria-labelledby="seo-title"
-        >
+        <section className="py-12 bg-white" aria-labelledby="seo-title">
           <div className="container">
-            <h2
-              id="seo-title"
-              className="text-3xl md:text-4xl font-black text-center mb-12 text-neutral-900"
-            >
-              Türkiye'nin{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-                1 Numaralı
-              </span>{" "}
-              Etkinlik Teknoloji Partneri
+            <h2 id="seo-title" className="text-3xl md:text-4xl font-black text-center mb-12 text-neutral-900">
+              Türkiye'nin <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">1 Numaralı</span> Etkinlik Teknoloji Partneri
             </h2>
 
             <div className="grid gap-6 lg:gap-8 lg:grid-cols-2">
@@ -503,6 +471,7 @@ function StructuredData() {
                   </ul>
                 </div>
               </article>
+
               {/* Sağ blok */}
               <article className="bg-gradient-to-br from-purple-50 to-white rounded-2xl p-6 shadow-lg border border-purple-100">
                 <h3 className="font-black text-xl mb-4 text-neutral-900 flex items-center gap-3">
@@ -533,20 +502,11 @@ function StructuredData() {
         </section>
 
         {/* SSS */}
-        <section
-          className="py-12 bg-gradient-to-br from-neutral-900 to-blue-900/95"
-          aria-labelledby="sss-title"
-        >
+        <section className="py-12 bg-gradient-to-br from-neutral-900 to-blue-900/95" aria-labelledby="sss-title">
           <div className="container">
             <div className="text-center mb-12">
-              <h2
-                id="sss-title"
-                className="text-3xl md:text-4xl font-black text-white mb-4"
-              >
-                Sıkça{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-                  Sorulan Sorular
-                </span>
+              <h2 id="sss-title" className="text-3xl md:text-4xl font-black text-white mb-4">
+                Sıkça <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Sorulan Sorular</span>
               </h2>
               <p className="text-lg text-white/80 max-w-3xl mx-auto">
                 Sahne, LED ekran, ses-ışık sistemleri ve kurulum süreçleri hakkında merak ettikleriniz
