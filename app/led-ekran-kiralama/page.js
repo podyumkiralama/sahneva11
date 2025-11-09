@@ -303,35 +303,35 @@ function Services() {
 /* ================== Galeri ================== */
 const GALLERY_IMAGES = [
   { 
-    src: "/img/led/1.webp", 
+    src: "/img/galeri/led-ekran-kiralama-1.webp", 
     alt: "Konser sahnesinde kurulmuş büyük LED ekran, kalabalık önünde canlı performans gösterimi" 
   },
   { 
-    src: "/img/led/2.webp", 
+    src: "/img/galeri/led-ekran-kiralama-2.webp", 
     alt: "Kurumsal etkinlikte kullanılan LED ekran, sunum sırasında profesyonel aydınlatma ile aydınlatılmış" 
   },
   { 
-    src: "/img/led/3.webp", 
+    src: "/img/galeri/led-ekran-kiralama-3.webp",
     alt: "Açık hava festivalinde yüksek parlaklıklı LED ekran, gün ışığında net görüntü" 
   },
   { 
-    src: "/img/led/4.webp", 
+    src: "/img/galeri/led-ekran-kiralama-4.webp",
     alt: "Fuar standında kullanılan video wall sistemi, marka tanıtımı için optimize edilmiş" 
   },
   { 
-    src: "/img/led/5.webp", 
+    src: "/img/galeri/led-ekran-kiralama-5.webp", 
     alt: "Stadyumda dev LED ekran, spor etkinliği sırasında canlı skor ve görüntüler" 
   },
   { 
-    src: "/img/led/6.webp", 
+    src: "/img/galeri/led-ekran-kiralama-6.webp", 
     alt: "Düğün organizasyonunda LED ekran, canlı fotoğraf ve video gösterimi" 
   },
   { 
-    src: "/img/led/7.webp", 
+    src: "/img/galeri/led-ekran-kiralama-7.webp", 
     alt: "TV stüdyosunda kullanılan profesyonel LED ekran, canlı yayın için optimize edilmiş" 
   },
   { 
-    src: "/img/led/8.webp", 
+    src: "/img/galeri/led-ekran-kiralama-8.webp",
     alt: "Alışveriş merkezinde reklam LED ekranı, yüksek trafikli alanda marka gösterimi" 
   },
 ];
