@@ -194,6 +194,87 @@ const PAGE_DATA = {
       details: ["Anahtar teslim", "Teknik ekip", "7/24 destek"],
     },
   ],
+  // YENİ: KULLANIM ALANLARI BÖLÜMÜ
+  useCases: [
+    {
+      icon: "🎵",
+      title: "Konser & Müzik Festivalleri",
+      description: "Ana sahne, alt sahne ve akustik performanslar için profesyonel çözümler",
+      features: [
+        "Yüksek kapasiteli line array ses sistemleri",
+        "Hareketli ışık başlıkları ve lazer efektleri",
+        "Sahne monitör sistemleri ve backline altyapı",
+        "Sanatçı yeşil odası ve backstage alanları"
+      ],
+      stats: ["1000-50.000 kişi", "Açık/kapalı alan", "24/7 teknik destek"],
+      image: "/img/sahne/konser.webp"
+    },
+    {
+      icon: "💼",
+      title: "Kurumsal Konferans & Toplantılar",
+      description: "Şirket içi toplantılar, yıllık genel kurullar ve sektör konferansları",
+      features: [
+        "Temiz ve profesyonel sahne tasarımı",
+        "Yüksek çözünürlüklü LED ekranlar",
+        "Kablosuz mikrofon ve simultane çeviri sistemleri",
+        "Sahne arkası hazırlık ve VIP alanları"
+      ],
+      stats: ["50-5000 kişi", "Otel/kongre merkezi", "Simultane çeviri"],
+      image: "/img/sahne/konferans.webp"
+    },
+    {
+      icon: "🚀",
+      title: "Ürün Lansmanı & Tanıtım",
+      description: "Yeni ürün ve hizmetlerin tanıtıldığı etkileyici lansman etkinlikleri",
+      features: [
+        "Özel tasarım sahne ve dekorasyon",
+        "3D mapping ve projeksiyon yüzeyleri",
+        "Interaktif ekranlar ve dokunmatik duvarlar",
+        "Medya duvarları ve sosyal wall entegrasyonu"
+      ],
+      stats: ["100-2000 kişi", "Marka odaklı", "Medya dostu"],
+      image: "/img/sahne/lansman.webp"
+    },
+    {
+      icon: "🏆",
+      title: "Ödül Törenleri & Galalar",
+      description: "Şık ve görkemli ödül törenleri, yılbaşı partileri ve özel galalar",
+      features: [
+        "Kırmızı halı ve fotoğraf duvarı kurulumu",
+        "Özel aydınlatma ve dekor tasarımı",
+        "Sahne üstü ödül sunum alanları",
+        "VIP resepsiyon ve kokteyl alanı"
+      ],
+      stats: ["200-3000 kişi", "Gece etkinliği", "VIP odaklı"],
+      image: "/img/sahne/odul-toreni.webp"
+    },
+    {
+      icon: "🎓",
+      title: "Mezuniyet & Okul Etkinlikleri",
+      description: "Mezuniyet törenleri, yılsonu gösterileri ve okul festivalleri",
+      features: [
+        "Güvenli ve ergonomik sahne tasarımı",
+        "Öğrenci performansları için uygun altyapı",
+        "Sahne arkası hazırlık odaları",
+        "Aile ve misafirler için oturma düzeni"
+      ],
+      stats: ["500-10.000 kişi", "Eğitim kurumu", "Aile dostu"],
+      image: "/img/sahne/mezuniyet.webp"
+    },
+    {
+      icon: "🛍️",
+      title: "AVM & Perakende Etkinlikleri",
+      description: "Alışveriş merkezlerinde düzenlenen promosyon ve marka etkinlikleri",
+      features: [
+        "Hızlı kurulum ve söküm",
+        "Yüksek ses seviyesi kontrollü sistemler",
+        "Marka renklerine özel aydınlatma",
+        "Mobil ve taşınabilir sahne çözümleri"
+      ],
+      stats: ["7/24 kurulum", "AVM uyumlu", "Hızlı montaj"],
+      image: "/img/sahne/avm.webp"
+    }
+  ],
   components: [
     {
       icon: "🎭",
@@ -433,10 +514,110 @@ export default function Page() {
         </div>
       </section>
 
+      {/* YENİ: KULLANIM ALANLARI */}
+      <section
+        className="py-16 bg-gradient-to-b from-gray-50 to-white"
+        aria-labelledby="kullanim-alanlari-baslik"
+      >
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 id="kullanim-alanlari-baslik" className="text-3xl md:text-5xl font-black mb-4">
+              Kullanım{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
+                Alanları
+              </span>
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Her türlü etkinlik için özelleştirilmiş sahne çözümleri sunuyoruz
+            </p>
+          </div>
+
+          <div className="grid gap-8 max-w-6xl mx-auto">
+            {PAGE_DATA.useCases.map((useCase, index) => (
+              <article 
+                key={useCase.title} 
+                className={`bg-white rounded-2xl border border-gray-200 shadow-lg overflow-hidden group hover:shadow-xl transition-all duration-300 ${
+                  index % 2 === 1 ? 'md:flex-row-reverse' : ''
+                } md:flex`}
+              >
+                <div className="md:w-1/3 relative">
+                  <div className="aspect-video md:aspect-square md:h-full relative">
+                    <Image
+                      src={useCase.image}
+                      alt={useCase.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent md:bg-gradient-to-r md:from-black/30 md:via-transparent md:to-transparent" />
+                  </div>
+                </div>
+                
+                <div className="md:w-2/3 p-6 md:p-8">
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="text-3xl flex-shrink-0" aria-hidden="true">
+                      {useCase.icon}
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-black text-gray-900 mb-2">
+                        {useCase.title}
+                      </h3>
+                      <p className="text-gray-600 mb-4">
+                        {useCase.description}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-3 text-sm uppercase tracking-wide">Özellikler</h4>
+                      <ul className="space-y-2">
+                        {useCase.features.map((feature, i) => (
+                          <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
+                            <span className="text-green-500 mt-1 flex-shrink-0" aria-hidden="true">✓</span>
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-3 text-sm uppercase tracking-wide">Teknik Detaylar</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {useCase.stats.map((stat, i) => (
+                          <span 
+                            key={i}
+                            className="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-medium"
+                          >
+                            {stat}
+                          </span>
+                        ))}
+                      </div>
+                      
+                      <div className="mt-6">
+                        <Link
+                          href={`https://wa.me/905453048671?text=${encodeURIComponent(`Merhaba, ${useCase.title} için sahne kiralama teklifi almak istiyorum.`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center font-semibold px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:scale-105 transform transition-all duration-300 text-sm"
+                        >
+                          <span aria-hidden="true">💬</span>
+                          <span className="ml-2">Bu Etkinlik İçin Teklif Al</span>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* PAKETLER */}
       <section
         id="paketler"
-        className="py-16 bg-gradient-to-b from-gray-50 to-white"
+        className="py-16 bg-gradient-to-b from-white to-purple-50/30"
         aria-labelledby="paketler-baslik"
       >
         <div className="container mx-auto px-4">
@@ -499,7 +680,7 @@ export default function Page() {
 
       {/* SAHNE BİLEŞENLERİ */}
       <section
-        className="py-16 bg-gradient-to-b from-white to-purple-50/30"
+        className="py-16 bg-gradient-to-b from-white to-blue-50/30"
         aria-labelledby="bilesenler-baslik"
       >
         <div className="container mx-auto px-4">
@@ -549,7 +730,7 @@ export default function Page() {
 
       {/* GALERİ */}
       <section
-        className="py-16 bg-gradient-to-b from-white to-blue-50/30"
+        className="py-16 bg-gradient-to-b from-white to-purple-50/30"
         aria-labelledby="galeri-baslik"
       >
         <div className="container mx-auto px-4">
@@ -580,7 +761,7 @@ export default function Page() {
 
       {/* SÜREÇ */}
       <section
-        className="py-16 bg-gradient-to-b from-white to-purple-50/30"
+        className="py-16 bg-gradient-to-b from-white to-blue-50/30"
         aria-labelledby="surec-baslik"
       >
         <div className="container mx-auto px-4">
