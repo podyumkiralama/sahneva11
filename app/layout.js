@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import UtilityBar from "../components/UtilityBar";
 import Script from "next/script";
 import { Inter } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -77,6 +78,7 @@ export default function RootLayout({ children }) {
         </main>
 
         <Footer />
+        <SpeedInsights />
       </body>
     </html>
   );
