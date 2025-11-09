@@ -4,21 +4,25 @@ import Link from "next/link";
 import Script from "next/script";
 import dynamic from "next/dynamic";
 
-/* ================== Dinamik galeri (CaseGallery) ================== */
-const CaseGallery = dynamic(() => import("@/components/CaseGallery"), {
-  loading: () => (
-    <div className="flex justify-center items-center h-64" role="status" aria-label="Galeri yükleniyor">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
-      <span className="sr-only">Galeri yükleniyor...</span>
-    </div>
-  )
-});
-
+/* ================== Sabitler ================== */
 export const revalidate = 1800;
 const ORIGIN = "https://www.sahneva.com";
 const PHONE = "+905453048671";
 const WA_TEXT = "Merhaba%2C+çadır+kiralama+icin+teklif+istiyorum.+Etkinlik+turu%3A+%5Bdüğün%2Ffuar%2Fkonser%5D%2C+Tarih%3A+%5Bgg.aa.yyyy%5D%2C+Kisi+sayisi%3A+%5Bxxx%5D.";
 const WHATSAPP = `https://wa.me/${PHONE.replace("+", "")}?text=${WA_TEXT}`;
+
+// Base64 blur placeholder
+const BLUR_DATA_URL = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAADAAQDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==";
+
+/* ================== Dinamik galeri (CaseGallery) ================== */
+const CaseGallery = dynamic(() => import("@/components/CaseGallery"), {
+  loading: () => (
+    <div className="flex justify-center items-center h-64" role="status" aria-label="Galeri yükleniyor">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" aria-hidden="true" />
+      <span className="sr-only">Galeri yükleniyor...</span>
+    </div>
+  )
+});
 
 /* ================== META ================== */
 export const metadata = {
@@ -61,7 +65,11 @@ export const metadata = {
 
 /* ================== Yardımcılar & Sabitler ================== */
 const slugify = (s) =>
-  s.toLowerCase().replace(/&/g, " ve ").replace(/[^a-z0-9çğıöşü\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-");
+  s.toLowerCase()
+    .replace(/&/g, " ve ")
+    .replace(/[^a-z0-9çğıöşü\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
 
 const HERO = {
   src: "/img/cadir/hero.webp",
@@ -153,7 +161,10 @@ function Hero() {
           priority 
           className="object-cover"
           sizes={HERO.sizes}
-          quality={90}
+          quality={85}
+          placeholder="blur"
+          blurDataURL={BLUR_DATA_URL}
+          loading="eager"
         />
         <div className="absolute inset-0 bg-gradient-to-br from-blue-900/80 via-purple-800/70 to-blue-950/90" aria-hidden="true" />
         <div className="absolute inset-0 bg-gradient-to-t from-blue-950/80 via-transparent to-purple-900/60" aria-hidden="true" />
@@ -187,6 +198,7 @@ function Hero() {
             rel="noopener noreferrer"
             title="WhatsApp üzerinden hemen teklif alın"
             className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:scale-105 transform transition-all duration-300 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-green-600 shadow-lg"
+            role="button"
           >
             <span aria-hidden="true" className="text-xl mr-2">💬</span> 
             <span className="text-base">Hemen Teklif Al</span>
@@ -196,6 +208,7 @@ function Hero() {
             href="#hizmetler"
             title="Hizmetlerimiz hakkında daha fazla bilgi edinin"
             className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl border-2 border-white text-white/95 bg-white/10 backdrop-blur-lg hover:bg-white/20 hover:scale-105 transform transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 shadow-lg"
+            role="button"
           >
             <span aria-hidden="true" className="text-xl mr-2">🎯</span> 
             <span className="text-base">Hizmetlerimiz</span>
@@ -276,6 +289,7 @@ function Services() {
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:scale-105 transform transition-all duration-300 hover:shadow-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500"
+            role="button"
           >
             <span aria-hidden="true" className="text-xl mr-3">📞</span>
             <span>Detaylı Teklif için İletişime Geçin</span>
@@ -336,7 +350,7 @@ function Gallery() {
         </div>
 
         <div className="max-w-7xl mx-auto">
-          <CaseGallery images={GALLERY_IMAGES} visibleCount={8} />
+          <CaseGallery images={GALLERY_IMAGES} visibleCount={8} priorityCount={2} />
         </div>
 
         <div className="text-center mt-12">
@@ -346,6 +360,7 @@ function Gallery() {
           <Link
             href="/projeler"
             className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white transform transition-all duration-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-purple-300"
+            role="button"
           >
             <span aria-hidden="true" className="text-xl mr-3">📸</span>
             <span>Tüm Projeleri Görüntüle</span>
@@ -414,7 +429,7 @@ function Technical() {
             <div key={item.category} className="group">
               <div className="bg-white rounded-3xl border-2 border-gray-100 p-8 shadow-lg hover:shadow-xl group-hover:scale-105 transition-all duration-500 h-full">
                 <h3 className="font-bold text-2xl text-gray-900 mb-4 group-hover:text-blue-600 transition-colors flex items-center gap-3">
-                  <span className="text-3xl">
+                  <span className="text-3xl" aria-hidden="true">
                     {item.category === "malzeme" && "🏗️"}
                     {item.category === "guvenlik" && "🛡️"}
                     {item.category === "olcu" && "📐"}
@@ -454,12 +469,11 @@ function StatsBand() {
   ];
   
   return (
-    <section className="py-20 bg-gradient-to-r from-blue-700 via-purple-700 to-blue-800 text-white" aria-labelledby="istatistik-baslik">
+    <section className="py-20 bg-gradient-to-r from-blue-700 via-purple-700 to-blue-800 text-white" aria-label="Başarı İstatistiklerimiz">
       <div className="container mx-auto px-4">
-        <h2 id="istatistik-baslik" className="sr-only">Başarı İstatistiklerimiz</h2>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-          {stats.map((stat, index) => (
-            <div key={stat.label} className="text-center group">
+          {stats.map((stat) => (
+            <div key={stat.label} className="text-center group" role="group" aria-label={`${stat.label}: ${stat.value}`}>
               <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20 group-hover:bg-white/20 transition-all duration-500 group-hover:scale-105">
                 <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300" aria-hidden="true">
                   {stat.icon}
@@ -493,14 +507,14 @@ function UseCases() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto" role="list">
-          {USE_CASES.map((uc, index) => (
+          {USE_CASES.map((uc) => (
             <div
               key={uc.text}
               className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/30 hover:border-white/50 transition-all duration-500 group hover:scale-105"
               role="listitem"
             >
               <div className="flex flex-col items-start gap-4">
-                <div className="text-3xl bg-white/20 rounded-2xl p-4 group-hover:scale-110 transition-transform duration-300" role="img" aria-label={uc.text}>
+                <div className="text-3xl bg-white/20 rounded-2xl p-4 group-hover:scale-110 transition-transform duration-300" aria-hidden="true">
                   {uc.icon}
                 </div>
                 <div>
@@ -522,6 +536,7 @@ function UseCases() {
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-white text-blue-700 hover:scale-105 transform transition-all duration-300 hover:shadow-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-white"
+            role="button"
           >
             <span aria-hidden="true" className="text-xl mr-3">💬</span>
             <span>Etkinliğiniz için Özel Çözüm Alın</span>
@@ -572,7 +587,7 @@ function Articles() {
                 <div className="grid md:grid-cols-2 gap-8 mb-8">
                   <div className="space-y-6">
                     <h4 className="text-2xl font-black text-gray-900 flex items-center gap-4">
-                      <span className="bg-blue-100 text-blue-600 rounded-2xl p-3">🏕️</span>
+                      <span className="bg-blue-100 text-blue-600 rounded-2xl p-3" aria-hidden="true">🏕️</span>
                       Çadır Sistemleri ve Teknolojileri
                     </h4>
                     <p>
@@ -591,7 +606,7 @@ function Articles() {
                   
                   <div className="space-y-6">
                     <h4 className="text-2xl font-black text-gray-900 flex items-center gap-4">
-                      <span className="bg-purple-100 text-purple-600 rounded-2xl p-3">🔮</span>
+                      <span className="bg-purple-100 text-purple-600 rounded-2xl p-3" aria-hidden="true">🔮</span>
                       Özel Çadır Sistemleri
                     </h4>
                     <p>
@@ -608,7 +623,7 @@ function Articles() {
                 {/* Önemli Bilgi Kutusu */}
                 <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-blue-500 rounded-r-2xl p-6 mb-8">
                   <h5 className="font-black text-blue-700 text-xl mb-4 flex items-center gap-3">
-                    <span className="text-2xl">💡</span> 
+                    <span className="text-2xl" aria-hidden="true">💡</span> 
                     Profesyonel Uygulama Stratejisi
                   </h5>
                   <p className="text-gray-700 text-lg mb-0 leading-relaxed">
@@ -621,7 +636,7 @@ function Articles() {
                 {/* Başarı Faktörleri Grid */}
                 <div className="mb-8">
                   <h4 className="text-2xl font-black text-gray-900 mb-8 flex items-center gap-4">
-                    <span className="bg-green-100 text-green-600 rounded-2xl p-3">🚀</span>
+                    <span className="bg-green-100 text-green-600 rounded-2xl p-3" aria-hidden="true">🚀</span>
                     Kritik Başarı Faktörleri
                   </h4>
                   <div className="grid md:grid-cols-2 gap-6">
@@ -649,7 +664,7 @@ function Articles() {
                     ].map((item, index) => (
                       <div key={index} className="bg-white border-2 border-gray-100 rounded-2xl p-6 hover:shadow-lg transition-all duration-300 group hover:border-blue-200">
                         <div className="flex items-start gap-4">
-                          <span className="text-3xl group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
+                          <span className="text-3xl group-hover:scale-110 transition-transform duration-300 flex-shrink-0" aria-hidden="true">
                             {item.icon}
                           </span>
                           <div>
@@ -668,7 +683,7 @@ function Articles() {
 
                 <div className="bg-yellow-50 border-l-4 border-yellow-400 rounded-r-2xl p-6 mt-8">
                   <h5 className="font-black text-yellow-700 text-lg mb-3 flex items-center gap-3">
-                    <span className="text-xl">💎</span>
+                    <span className="text-xl" aria-hidden="true">💎</span>
                     Neden Sahneva?
                   </h5>
                   <p className="text-yellow-800 mb-0">
@@ -705,7 +720,7 @@ function Articles() {
                 
                 <div className="bg-gray-50 rounded-2xl p-5 mt-6 border border-gray-200">
                   <h4 className="font-bold text-gray-900 text-lg mb-3 flex items-center gap-3">
-                    <span className="bg-purple-100 text-purple-600 rounded-xl p-2">📋</span>
+                    <span className="bg-purple-100 text-purple-600 rounded-xl p-2" aria-hidden="true">📋</span>
                     Teknik Özellikler ve Standartlar
                   </h4>
                   <ul className="text-gray-700 space-y-2 text-base">
@@ -746,7 +761,7 @@ function Articles() {
                 <div className="space-y-6">
                   <div className="bg-blue-50 rounded-2xl p-5 border border-blue-200">
                     <h4 className="font-bold text-gray-900 text-lg flex items-center gap-3 mb-2">
-                      <span className="bg-blue-100 text-blue-600 rounded-xl p-2">💍</span>
+                      <span className="bg-blue-100 text-blue-600 rounded-xl p-2" aria-hidden="true">💍</span>
                       Düğün ve Özel Davetler
                     </h4>
                     <p className="text-gray-700 text-base mb-0">
@@ -756,7 +771,7 @@ function Articles() {
                   
                   <div className="bg-purple-50 rounded-2xl p-5 border border-purple-200">
                     <h4 className="font-bold text-gray-900 text-lg flex items-center gap-3 mb-2">
-                      <span className="bg-purple-100 text-purple-600 rounded-xl p-2">🎪</span>
+                      <span className="bg-purple-100 text-purple-600 rounded-xl p-2" aria-hidden="true">🎪</span>
                       Fuar ve Sergiler
                     </h4>
                     <p className="text-gray-700 text-base mb-0">
@@ -766,7 +781,7 @@ function Articles() {
                   
                   <div className="bg-green-50 rounded-2xl p-5 border border-green-200">
                     <h4 className="font-bold text-gray-900 text-lg flex items-center gap-3 mb-2">
-                      <span className="bg-green-100 text-green-600 rounded-xl p-2">🏭</span>
+                      <span className="bg-green-100 text-green-600 rounded-xl p-2" aria-hidden="true">🏭</span>
                       Endüstriyel Çözümler
                     </h4>
                     <p className="text-gray-700 text-base mb-0">
@@ -816,13 +831,18 @@ function FAQ() {
           </p>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-6" role="list" aria-label="Sık sorulan sorular listesi">
           {faqs.map((faq, index) => (
             <details 
               key={index} 
               className="group bg-gray-50 rounded-3xl p-8 hover:bg-gray-100 transition-all duration-500 open:bg-blue-50 open:border-blue-200 border-2 border-transparent open:border"
             >
-              <summary className="cursor-pointer list-none flex items-center justify-between text-xl font-bold text-gray-900">
+              <summary 
+                className="cursor-pointer list-none flex items-center justify-between text-xl font-bold text-gray-900"
+                role="button"
+                aria-expanded="false"
+                tabIndex={0}
+              >
                 <span className="pr-4">{faq.q}</span>
                 <span 
                   aria-hidden="true" 
@@ -831,7 +851,7 @@ function FAQ() {
                   ⌄
                 </span>
               </summary>
-              <div className="mt-6 text-gray-700 leading-relaxed text-lg pl-4 border-l-4 border-blue-500">
+              <div className="mt-6 text-gray-700 leading-relaxed text-lg pl-4 border-l-4 border-blue-500" role="region">
                 {faq.a}
               </div>
             </details>
@@ -846,6 +866,7 @@ function FAQ() {
             href="/sss"
             className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:scale-105 transform transition-all duration-300 hover:shadow-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500"
             title="Sık Sorulan Sorular sayfasındaki tüm soruları görüntüle"
+            role="button"
           >
             <span aria-hidden="true" className="text-xl mr-3">📚</span> 
             <span className="text-lg">Tüm SSS'yi Görüntüle</span>
@@ -886,37 +907,61 @@ function RelatedServices() {
   ];
   
   return (
-    <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-100/30" aria-labelledby="tamamlayici-hizmetler-baslik">
+    <section 
+      className="py-20 bg-gradient-to-br from-gray-50 to-blue-100/30" 
+      aria-labelledby="tamamlayici-hizmetler-baslik"
+    >
       <div className="container max-w-7xl mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 id="tamamlayici-hizmetler-baslik" className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-6">
-            Tamamlayıcı <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Hizmetlerimiz</span>
+          <h2 
+            id="tamamlayici-hizmetler-baslik" 
+            className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-6"
+          >
+            Tamamlayıcı{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+              Hizmetlerimiz
+            </span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             Çadır kurulumunuzu tamamlayacak diğer profesyonel etkinlik çözümlerimiz
           </p>
-          <div className="w-32 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8 rounded-full" aria-hidden="true" />
+          <div 
+            className="w-32 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-8 rounded-full" 
+            aria-hidden="true" 
+          />
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto" role="navigation" aria-label="Tamamlayıcı hizmetler">
-          {services.map((service) => (
-            <Link
-              key={service.href}
-              href={service.href}
-              className="group bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl border-2 border-gray-100 hover:border-blue-200 transition-all duration-500 hover:scale-105 text-center focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300/50 h-full flex flex-col"
-              aria-label={`${service.title} hizmeti sayfasına git`}
-            >
-              <div className="text-4xl mb-6 group-hover:scale-110 transition-transform duration-300" aria-hidden="true">
-                {service.icon}
-              </div>
-              <h3 className="font-bold text-xl text-gray-900 group-hover:text-blue-600 transition-colors mb-4 flex-grow">
-                {service.title}
-              </h3>
-              <p className="text-gray-600 text-lg leading-relaxed group-hover:text-gray-700 transition-colors">
-                {service.desc}
-              </p>
-            </Link>
-          ))}
+        <nav aria-label="Tamamlayıcı hizmetler">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+            {services.map((service) => (
+              <Link
+                key={service.href}
+                href={service.href}
+                className="group bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl border-2 border-gray-100 hover:border-blue-200 transition-all duration-500 hover:scale-105 text-center focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white h-full flex flex-col"
+                aria-label={`${service.title} - ${service.desc}`}
+              >
+                <div 
+                  className="text-4xl mb-6 group-hover:scale-110 transition-transform duration-300" 
+                  aria-hidden="true"
+                >
+                  {service.icon}
+                </div>
+                <h3 className="font-bold text-xl text-gray-900 group-hover:text-blue-600 transition-colors mb-4 flex-grow">
+                  {service.title}
+                </h3>
+                <p className="text-gray-600 text-lg leading-relaxed group-hover:text-gray-700 transition-colors">
+                  {service.desc}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </nav>
+
+        <div className="sr-only">
+          <p>
+            Bu bölümde çadır kurulumunuzu tamamlayacak diğer hizmetlerimiz bulunmaktadır. 
+            Her bir hizmet kartına tıklayarak veya klavye ile seçerek ilgili sayfaya gidebilirsiniz.
+          </p>
         </div>
       </div>
     </section>
@@ -942,6 +987,7 @@ function CTA() {
               <Link 
                 href="/iletisim" 
                 className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-white text-blue-700 hover:scale-105 transform transition-all duration-300 hover:shadow-2xl focus:outline-none focus-visible:ring-4 focus-visible:ring-white shadow-lg"
+                role="button"
               >
                 <span aria-hidden="true" className="text-xl mr-3">📞</span> 
                 <span className="text-lg">Hemen Teklif Al</span>
@@ -951,12 +997,13 @@ function CTA() {
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl border-2 border-white text-white bg-transparent hover:bg-white/20 hover:scale-105 transform transition-all duration-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-white shadow-lg"
+                role="button"
               >
                 <span aria-hidden="true" className="text-xl mr-3">💬</span> 
                 <span className="text-lg">WhatsApp'tan Yaz</span>
               </a>
             </div>
-            <div className="mt-8 text-blue-200 text-lg">
+            <div className="mt-8 text-blue-200 text-lg" role="contentinfo">
               📍 81 ilde hizmet • ⏰ 7/24 teknik destek • ⭐ 8+ yıl deneyim
             </div>
           </div>
