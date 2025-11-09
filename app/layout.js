@@ -2,10 +2,15 @@
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import UtilityBar from "../components/UtilityBar";
 import Script from "next/script";
+import dynamic from "next/dynamic";
 import { Inter } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+
+// ⚙️ UtilityBar: sadece client'ta yüklensin (SSR=false)
+const UtilityBar = dynamic(() => import("../components/UtilityBar"), { ssr: false });
+// 🔌 Kill-switch: Vercel env ile anında kapat
+const UB_DISABLED = process.env.NEXT_PUBLIC_UB_DISABLED === "1";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -62,7 +67,7 @@ export default function RootLayout({ children }) {
           `}
         </Script>
 
-        {/* Skip link: tek hedef -> #main-content */}
+        {/* Skip link */}
         <a
           href="#main-content"
           aria-label="Ana içeriğe hızlı geçiş"
@@ -71,16 +76,13 @@ export default function RootLayout({ children }) {
           Ana içeriğe atla
         </a>
 
-        <UtilityBar />
+        {/* UtilityBar: kill-switch ile kontrol */}
+        {!UB_DISABLED && <UtilityBar />}
+
         <Navbar />
 
         {/* Tek landmark */}
-        <main
-          id="main-content"
-          role="main"
-          tabIndex={-1}
-          className="min-h-[60vh] focus:outline-none"
-        >
+        <main id="main-content" role="main" tabIndex={-1} className="min-h-[60vh] focus:outline-none">
           {children}
         </main>
 
