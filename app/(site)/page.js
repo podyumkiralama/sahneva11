@@ -1,3 +1,4 @@
+// app/(site)/page.js
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
@@ -8,9 +9,7 @@ import CorporateEvents from "@/components/CorporateEvents";
 import Faq from "@/components/Faq";
 import ReviewBanner from "@/components/ReviewBanner";
 
-// —————————————————————————————————————————
-// SEO METADATA (Sayfa özel)
-// —————————————————————————————————————————
+// — SEO (sayfa özel)
 export const metadata = {
   title: "Sahne Sistemleri, LED Ekran, Ses-Işık | Türkiye Geneli | Sahneva",
   description:
@@ -29,7 +28,12 @@ export const metadata = {
     url: "https://www.sahneva.com/",
     siteName: "Sahneva",
     images: [
-      { url: "/og/sahneva-home.jpg", width: 1200, height: 630, alt: "Sahneva Ana Sayfa" },
+      {
+        url: "https://www.sahneva.com/og/sahneva-home.jpg", // ← mutlak URL
+        width: 1200,
+        height: 630,
+        alt: "Sahneva Ana Sayfa",
+      },
     ],
     locale: "tr_TR",
     type: "website",
@@ -39,17 +43,12 @@ export const metadata = {
     title: "Sahne Sistemleri, LED Ekran, Ses-Işık | Sahneva",
     description:
       "Sahne kiralama, podyum, LED ekran ve ses-ışık sistemleri. Türkiye geneli hızlı kurulum, 500+ referans.",
-    images: ["/og/sahneva-home.jpg"],
+    images: ["https://www.sahneva.com/og/sahneva-home.jpg"], // ← mutlak URL
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: { index: true, follow: true },
 };
 
-// —————————————————————————————————————————
-// SABİT VERİLER
-// —————————————————————————————————————————
+// — Sabit veriler
 const HERO_FEATURES = [
   { icon: "⭐", title: "4.9/5 Puan", description: "500+ Mutlu Müşteri", color: "from-yellow-400 to-orange-400" },
   { icon: "⚡", title: "Aynı Gün", description: "Hızlı Kurulum", color: "from-blue-400 to-cyan-400" },
@@ -65,18 +64,10 @@ const WHY_SAHNEVA_FEATURES = [
   { icon: "🏙️", title: "Türkiye Geneli Hizmet", desc: "İstanbul, Ankara, İzmir başta 81 ilde profesyonel hizmet.", stat: "81 İl" },
 ];
 
-// —————————————————————————————————————————
-// ERİŞİLEBİLİR YÜKLEME İSKELETİ
-// —————————————————————————————————————————
+// — Erişilebilir iskelet
 function SectionSkeleton({ label = "İçerik yükleniyor" }) {
   return (
-    <div
-      className="container py-10"
-      role="status"
-      aria-live="polite"
-      aria-busy="true"
-      aria-label={label}
-    >
+    <div className="container py-10" role="status" aria-live="polite" aria-busy="true" aria-label={label}>
       <div className="flex flex-col items-center space-y-4">
         <div className="h-10 w-40 rounded bg-gradient-to-r from-neutral-100 to-neutral-200 animate-pulse motion-reduce:animate-none" />
         <div className="h-40 w-full rounded-2xl bg-gradient-to-r from-neutral-100 to-neutral-200 animate-pulse motion-reduce:animate-none" />
@@ -86,13 +77,10 @@ function SectionSkeleton({ label = "İçerik yükleniyor" }) {
   );
 }
 
-// —————————————————————————————————————————
-// DİNAMİK BİLEŞENLER
-// —————————————————————————————————————————
+// — Dinamik bileşenler
 const ServicesTabsLazy = dynamic(() => import("@/components/ServicesTabs"), {
   loading: () => <SectionSkeleton label="Hizmetler yükleniyor" />,
 });
-
 const ProjectsGalleryLazy = dynamic(() => import("@/components/ProjectsGallery"), {
   loading: () => (
     <div
@@ -103,11 +91,7 @@ const ProjectsGalleryLazy = dynamic(() => import("@/components/ProjectsGallery")
       aria-label="Projeler yükleniyor"
     >
       {[1, 2, 3].map((i) => (
-        <div
-          key={i}
-          className="bg-neutral-200 rounded-2xl h-80 animate-pulse motion-reduce:animate-none"
-          aria-hidden="true"
-        />
+        <div key={i} className="bg-neutral-200 rounded-2xl h-80 animate-pulse motion-reduce:animate-none" aria-hidden="true" />
       ))}
       <span className="sr-only">Projeler yükleniyor</span>
     </div>
@@ -117,9 +101,7 @@ const ProjectsGalleryLazy = dynamic(() => import("@/components/ProjectsGallery")
 // ISR
 export const revalidate = 3600;
 
-// —————————————————————————————————————————
-// JSON-LD (Schema.org)
-// —————————————————————————————————————————
+// — JSON-LD
 function StructuredData() {
   const data = {
     "@context": "https://schema.org",
@@ -129,33 +111,10 @@ function StructuredData() {
         "@id": "https://www.sahneva.com/#org",
         "name": "Sahneva Organizasyon ve Reklam hizmetleri",
         "url": "https://www.sahneva.com/",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.sahneva.com/img/logo.png",
-          "width": 512,
-          "height": 512
-        },
-        "sameAs": [
-          "https://www.instagram.com/sahnevaorganizasyon/",
-          "https://www.youtube.com/@SAHNEVA"
-        ],
-        "contactPoint": [
-          {
-            "@type": "ContactPoint",
-            "telephone": "+905453048671",
-            "contactType": "customer service",
-            "areaServed": "TR",
-            "availableLanguage": ["tr"]
-          }
-        ],
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Hamidiye, Anadolu Cd. 61 a",
-          "postalCode": "34400",
-          "addressLocality": "Kağıthane",
-          "addressRegion": "İstanbul",
-          "addressCountry": "TR"
-        }
+        "logo": { "@type": "ImageObject", "url": "https://www.sahneva.com/img/logo.png", "width": 512, "height": 512 },
+        "sameAs": ["https://www.instagram.com/sahnevaorganizasyon/","https://www.youtube.com/@SAHNEVA"],
+        "contactPoint": [{ "@type": "ContactPoint", "telephone": "+905453048671", "contactType": "customer service", "areaServed": "TR", "availableLanguage": ["tr"] }],
+        "address": { "@type": "PostalAddress", "streetAddress": "Hamidiye, Anadolu Cd. 61 a", "postalCode": "34400", "addressLocality": "Kağıthane", "addressRegion": "İstanbul", "addressCountry": "TR" }
       },
       {
         "@type": "WebSite",
@@ -178,18 +137,9 @@ function StructuredData() {
         "itemListElement": [
           {
             "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Podyum Kiralama",
-              "description": "Podyum Sahne kiralama"
-            },
+            "itemOffered": { "@type": "Service", "name": "Podyum Kiralama", "description": "Podyum Sahne kiralama" },
             "priceCurrency": "TRY",
-            "priceSpecification": {
-              "@type": "UnitPriceSpecification",
-              "price": 250,
-              "priceCurrency": "TRY",
-              "unitText": "m²"
-            },
+            "priceSpecification": { "@type": "UnitPriceSpecification", "price": 250, "priceCurrency": "TRY", "unitText": "m²" },
             "availability": "https://schema.org/InStock",
             "areaServed": "TR"
           },
@@ -209,31 +159,19 @@ function StructuredData() {
         "url": "https://www.sahneva.com/",
         "areaServed": { "@type": "Country", "name": "TR" },
         "provider": { "@id": "https://www.sahneva.com/#org" },
-        "serviceType": [
-          "Sahne Kiralama",
-          "Podyum Kiralama",
-          "LED Ekran Kiralama",
-          "Ses Sistemi Kiralama",
-          "Işık Sistemi Kiralama",
-          "Etkinlik Prodüksiyon"
-        ]
+        "serviceType": ["Sahne Kiralama","Podyum Kiralama","LED Ekran Kiralama","Ses Sistemi Kiralama","Işık Sistemi Kiralama","Etkinlik Prodüksiyon"]
       },
       {
         "@type": "ImageObject",
         "@id": "https://www.sahneva.com/#og",
         "contentUrl": "https://www.sahneva.com/og/sahneva-home.jpg",
-        "width": 1200,
-        "height": 630
+        "width": 1200, "height": 630
       },
       {
         "@type": "FAQPage",
         "@id": "https://www.sahneva.com/#faq",
         "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Sahne kiralama süresi ne kadar?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Kurulum süresi genellikle 2–6 saat arasında değişir." }
-          }
+          { "@type": "Question", "name": "Sahne kiralama süresi ne kadar?", "acceptedAnswer": { "@type": "Answer", "text": "Kurulum süresi genellikle 2–6 saat arasında değişir." } }
         ]
       }
     ]
@@ -248,23 +186,15 @@ function StructuredData() {
   );
 }
 
-// —————————————————————————————————————————
-// SAYFA
-// —————————————————————————————————————————
+// — Sayfa
 export default function HomePage() {
   return (
     <div className="overflow-x-hidden">
       <StructuredData />
 
-      {/* Skip Link */}
-      <a
-        href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:z-[9999] focus:top-3 focus:left-3 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-3 focus:rounded-lg focus:font-semibold focus:shadow-lg transition-all duration-200"
-      >
-        Ana içeriğe atla
-      </a>
+      {/* Not: Sayfa içi skip-link kaldırıldı (tek skip-link layout'ta). */}
 
-      {/* HERO SECTION */}
+      {/* HERO */}
       <section
         className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#0b0f1a] via-blue-950 to-purple-950 pt-16 lg:pt-20"
         aria-labelledby="hero-title"
@@ -280,74 +210,33 @@ export default function HomePage() {
             placeholder="blur"
             loading="eager"
             className="object-cover object-center"
-            style={{
-              transform: "scale(1.02)",
-              filter: "brightness(0.7) contrast(1.1) saturate(1.05)",
-            }}
+            style={{ transform: "scale(1.02)", filter: "brightness(0.7) contrast(1.1) saturate(1.05)" }}
           />
         </div>
 
-        {/* Overlay katmanları */}
-        <div
-          className="absolute inset-0 bg-gradient-to-br from-slate-900/85 via-blue-900/70 to-purple-900/75"
-          aria-hidden="true"
-        />
-        <div
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-pulse motion-reduce:animate-none"
-          style={{ animationDuration: "8s" }}
-          aria-hidden="true"
-        />
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/85 via-blue-900/70 to-purple-900/75" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-pulse motion-reduce:animate-none" style={{ animationDuration: "8s" }} aria-hidden="true" />
 
         {/* İçerik */}
         <div className="relative z-10 container py-12 md:py-16">
           <div className="max-w-6xl mx-auto text-center mb-10">
             <div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md rounded-full px-6 py-3 border border-white/20 mb-6">
-              <span
-                className="w-2 h-2 bg-green-400 rounded-full animate-pulse motion-reduce:animate-none"
-                aria-hidden="true"
-              />
-              <span className="text-white/90 text-sm font-medium">
-                Türkiye Geneli Profesyonel Hizmet
-              </span>
+              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse motion-reduce:animate-none" aria-hidden="true" />
+              <span className="text-white/90 text-sm font-medium">Türkiye Geneli Profesyonel Hizmet</span>
             </div>
 
-            {/* Başlık */}
-            <h1
-              id="hero-title"
-              className="text-white text-3xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight tracking-tight"
-              aria-label="Profesyonel Sahne Sistemleri"
-            >
+            <h1 id="hero-title" className="text-white text-3xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight tracking-tight" aria-label="Profesyonel Sahne Sistemleri">
               <span className="block">Profesyonel</span>
-              <span
-                className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-purple-300 to-cyan-300 bg-[length:300%_100%] animate-[gradient_8s_ease_infinite] motion-reduce:animate-none"
-                aria-hidden="true"
-              >
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-purple-300 to-cyan-300 bg-[length:300%_100%] animate-[gradient_8s_ease_infinite] motion-reduce:animate-none" aria-hidden="true">
                 Sahne Sistemleri
               </span>
             </h1>
 
-            {/* Anahtar kelimeler */}
             <p className="text-white/90 text-lg md:text-xl lg:text-2xl mb-6 leading-relaxed font-medium max-w-4xl mx-auto">
-              <span
-                className="bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text font-bold"
-                aria-hidden="true"
-              >
-                Sahne Kiralama
-              </span>
-              ,{" "}
-              <span
-                className="bg-gradient-to-r from-purple-400 to-cyan-400 text-transparent bg-clip-text font-bold"
-                aria-hidden="true"
-              >
-                LED Ekran
-              </span>
-              ,{" "}
-              <span
-                className="bg-gradient-to-r from-cyan-400 to-blue-400 text-transparent bg-clip-text font-bold"
-                aria-hidden="true"
-              >
-                Ses-Işık Sistemleri
-              </span>
+              <span className="bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text font-bold" aria-hidden="true">Sahne Kiralama</span>,{" "}
+              <span className="bg-gradient-to-r from-purple-400 to-cyan-400 text-transparent bg-clip-text font-bold" aria-hidden="true">LED Ekran</span>,{" "}
+              <span className="bg-gradient-to-r from-cyan-400 to-blue-400 text-transparent bg-clip-text font-bold" aria-hidden="true">Ses-Işık Sistemleri</span>
               <span className="sr-only">Sahne Kiralama, LED Ekran, Ses-Işık Sistemleri</span>
             </p>
 
@@ -355,7 +244,7 @@ export default function HomePage() {
               500+ başarılı proje, %98 müşteri memnuniyeti ve Türkiye geneli hızlı kurulum ile yanınızdayız
             </p>
 
-            {/* CTA Butonları */}
+            {/* CTA'lar */}
             <div className="flex flex-col sm:flex-row justify-center items-center gap-3 md:gap-4 mb-12">
               <a
                 href="tel:+905453048671"
@@ -381,15 +270,13 @@ export default function HomePage() {
               </a>
             </div>
 
-            {/* === ÖNE ÇIKANLAR === */}
+            {/* Öne çıkanlar */}
             <h2 className="sr-only">Öne çıkan özellikler</h2>
             <ul className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-12 list-none p-0 m-0">
               {HERO_FEATURES.map((item, index) => (
                 <li key={index} className="m-0 p-0">
                   <div className="group bg-white/10 backdrop-blur-lg rounded-xl p-4 border border-white/20 hover:border-white/40 transition-all duration-500 hover:scale-105 hover:bg-white/15">
-                    <div className={`text-2xl mb-2 bg-gradient-to-r ${item.color} text-transparent bg-clip-text`} aria-hidden="true">
-                      {item.icon}
-                    </div>
+                    <div className={`text-2xl mb-2 bg-gradient-to-r ${item.color} text-transparent bg-clip-text`} aria-hidden="true">{item.icon}</div>
                     <div className="text-white font-bold text-base mb-1">{item.title}</div>
                     <div className="text-white/70 text-xs">{item.description}</div>
                   </div>
@@ -433,9 +320,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Ana içerik başlangıcı */}
-      <main id="main" className="relative">
-        {/* #teklif-al hedefi (Erişilebilir) */}
+      {/* Ana içerik (Not: nested main yok) */}
+      <div id="main" className="relative">
+        {/* #teklif-al hedefi */}
         <div id="teklif-al" className="sr-only" aria-hidden="true" />
 
         <div aria-hidden="true" className="h-12 lg:h-16" />
@@ -445,19 +332,13 @@ export default function HomePage() {
 
         {/* Hizmetler */}
         <section className="relative py-12 bg-gradient-to-b from-white to-neutral-50/80" aria-labelledby="hizmetler-title">
-          <div
-            className="absolute inset-0 bg-[linear-gradient(#e5e7eb_1px,transparent_1px),linear-gradient(90deg,#e5e7eb_1px,transparent_1px)] bg-[size:16px_16px] [mask-image:radial-gradient(ellipse_at_center,transparent_20%,white)]"
-            aria-hidden="true"
-          />
+          <div className="absolute inset-0 bg-[linear-gradient(#e5e7eb_1px,transparent_1px),linear-gradient(90deg,#e5e7eb_1px,transparent_1px)] bg-[size:16px_16px] [mask-image:radial-gradient(ellipse_at_center,transparent_20%,white)]" aria-hidden="true" />
           <div className="container relative z-10">
             <div className="text-center mb-12">
               <h2 id="hizmetler-title" className="text-3xl md:text-4xl font-black text-neutral-900 mb-4">
-                Profesyonel {" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Hizmetlerimiz</span>
+                Profesyonel <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Hizmetlerimiz</span>
               </h2>
-              <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
-                Türkiye geneli sahne, podyum, LED ekran kiralama ve ses-ışık sistemleri kurulumu
-              </p>
+              <p className="text-lg text-neutral-600 max-w-2xl mx-auto">Türkiye geneli sahne, podyum, LED ekran kiralama ve ses-ışık sistemleri kurulumu</p>
             </div>
             <Suspense fallback={<SectionSkeleton label="Hizmetler yükleniyor" />}>
               <ServicesTabsLazy />
@@ -470,12 +351,9 @@ export default function HomePage() {
           <div className="container">
             <div className="text-center mb-12">
               <h2 id="projeler-title" className="text-3xl md:text-4xl font-black text-white mb-4">
-                Başarılı {" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Projelerimiz</span>
+                Başarılı <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Projelerimiz</span>
               </h2>
-              <p className="text-lg text-white/80 max-w-3xl mx-auto">
-                500'den fazla kurumsal etkinlik, konser, fuar ve özel organizasyonda güvenilir çözüm ortağı
-              </p>
+              <p className="text-lg text-white/80 max-w-3xl mx-auto">500'den fazla kurumsal etkinlik, konser, fuar ve özel organizasyonda güvenilir çözüm ortağı</p>
             </div>
             <Suspense fallback={<SectionSkeleton label="Projeler yükleniyor" />}>
               <ProjectsGalleryLazy />
@@ -488,12 +366,9 @@ export default function HomePage() {
           <div className="container">
             <div className="text-center mb-12">
               <h2 id="kurumsal-title" className="text-3xl md:text-4xl font-black text-neutral-900 mb-4">
-                Kurumsal {" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Organizasyon Çözümlerimiz</span>
+                Kurumsal <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Organizasyon Çözümlerimiz</span>
               </h2>
-              <p className="text-lg text-neutral-600 max-w-3xl mx-auto">
-                Lansman, konferans, bayi toplantısı ve kurumsal etkinlikleriniz için sahne, podyum, LED ekran, ses–ışık ve teknik operasyonu tek çatı altında sunuyoruz.
-              </p>
+              <p className="text-lg text-neutral-600 max-w-3xl mx-auto">Lansman, konferans, bayi toplantısı ve kurumsal etkinlikleriniz için sahne, podyum, LED ekran, ses–ışık ve teknik operasyonu tek çatı altında sunuyoruz.</p>
             </div>
             <CorporateEvents />
           </div>
@@ -504,31 +379,18 @@ export default function HomePage() {
           <div className="container">
             <div className="text-center mb-12">
               <h2 id="neden-tercih-heading" className="text-3xl md:text-4xl font-black text-neutral-900 mb-6">
-                Neden {" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Sahneva</span>
-                'yı Tercih Etmelisiniz?
+                Neden <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Sahneva</span>'yı Tercih Etmelisiniz?
               </h2>
-              <p className="text-lg text-neutral-600 max-w-3xl mx-auto">
-                10 yılı aşkın deneyimimiz, uzman ekibimiz ve kaliteli ekipmanlarımızla fark yaratıyoruz
-              </p>
+              <p className="text-lg text-neutral-600 max-w-3xl mx-auto">10 yılı aşkın deneyimimiz, uzman ekibimiz ve kaliteli ekipmanlarımızla fark yaratıyoruz</p>
             </div>
 
             <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 list-none p-0 m-0">
               {WHY_SAHNEVA_FEATURES.map(({ icon, title, desc, stat }, i) => (
                 <li key={i} className="m-0 p-0">
-                  <article
-                    className="group relative bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-500 p-6 border border-neutral-100 hover:border-blue-200/70 hover:scale-105"
-                    aria-labelledby={`why-card-${i}-title`}
-                  >
-                    <div className="absolute top-3 right-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                      {stat}
-                    </div>
-                    <div className="text-3xl mb-4 bg-gradient-to-r from-blue-500 to-purple-500 text-transparent bg-clip-text" aria-hidden="true">
-                      {icon}
-                    </div>
-                    <h3 id={`why-card-${i}-title`} className="font-black text-lg mb-3 text-neutral-900 group-hover:text-blue-600 transition-colors">
-                      {title}
-                    </h3>
+                  <article className="group relative bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-500 p-6 border border-neutral-100 hover:border-blue-200/70 hover:scale-105" aria-labelledby={`why-card-${i}-title`}>
+                    <div className="absolute top-3 right-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-bold px-2 py-1 rounded-full">{stat}</div>
+                    <div className="text-3xl mb-4 bg-gradient-to-r from-blue-500 to-purple-500 text-transparent bg-clip-text" aria-hidden="true">{icon}</div>
+                    <h3 id={`why-card-${i}-title`} className="font-black text-lg mb-3 text-neutral-900 group-hover:text-blue-600 transition-colors">{title}</h3>
                     <p className="text-neutral-700 leading-relaxed text-sm">{desc}</p>
                   </article>
                 </li>
@@ -541,9 +403,7 @@ export default function HomePage() {
         <section className="py-12 bg-white" aria-labelledby="seo-title">
           <div className="container">
             <h2 id="seo-title" className="text-3xl md:text-4xl font-black text-center mb-12 text-neutral-900">
-              Türkiye'nin {" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">1 Numaralı</span>{" "}
-              Etkinlik Teknoloji Partneri
+              Türkiye'nin <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">1 Numaralı</span> Etkinlik Teknoloji Partneri
             </h2>
 
             <div className="grid gap-6 lg:gap-8 lg:grid-cols-2">
@@ -612,17 +472,14 @@ export default function HomePage() {
           <div className="container">
             <div className="text-center mb-12">
               <h2 id="sss-title" className="text-3xl md:text-4xl font-black text-white mb-4">
-                Sıkça {" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Sorulan Sorular</span>
+                Sıkça <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Sorulan Sorular</span>
               </h2>
-              <p className="text-lg text-white/80 max-w-3xl mx-auto">
-                Sahne, LED ekran, ses-ışık sistemleri ve kurulum süreçleri hakkında merak ettikleriniz
-              </p>
+              <p className="text-lg text-white/80 max-w-3xl mx-auto">Sahne, LED ekran, ses-ışık sistemleri ve kurulum süreçleri hakkında merak ettikleriniz</p>
             </div>
             <Faq />
           </div>
         </section>
-      </main>
+      </div>
     </div>
   );
 }
