@@ -334,6 +334,22 @@ const GALLERY_IMAGES = [
     src: "/img/cadir/8.webp", 
     alt: "Markalı çadır - Kurumsal etkinlikler için özel tasarım" 
   },
+  { 
+    src: "/img/cadir/9.webp", 
+    alt: "Markalı çadır - Kurumsal etkinlikler için özel tasarım" 
+  },
+    { 
+    src: "/img/cadir/10.webp", 
+    alt: "Markalı çadır - Kurumsal etkinlikler için özel tasarım" 
+  },
+    { 
+    src: "/img/cadir/11.webp", 
+    alt: "Markalı çadır - Kurumsal etkinlikler için özel tasarım" 
+  },
+    { 
+    src: "/img/cadir/12.webp", 
+    alt: "Markalı çadır - Kurumsal etkinlikler için özel tasarım" 
+  },
 ];
 
 function Gallery() {
