@@ -70,6 +70,7 @@ export default function Footer() {
       </h2>
 
       <div className="relative z-10 container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 py-12 px-6">
+        {/* Marka */}
         <section
           aria-labelledby="ft-brand"
           itemProp="brand"
@@ -127,6 +128,7 @@ export default function Footer() {
           </ul>
         </section>
 
+        {/* Hizmetler */}
         <nav aria-labelledby="ft-services">
           <h3
             id="ft-services"
@@ -148,6 +150,7 @@ export default function Footer() {
           </ul>
         </nav>
 
+        {/* Hızlı Erişim */}
         <nav aria-labelledby="ft-quick">
           <h3
             id="ft-quick"
@@ -169,6 +172,7 @@ export default function Footer() {
           </ul>
         </nav>
 
+        {/* İletişim */}
         <section aria-labelledby="ft-contact">
           <h3
             id="ft-contact"
@@ -273,7 +277,6 @@ export default function Footer() {
             <span className="mx-3 text-blue-400" aria-hidden="true">
               •
             </span>
-            {/* DEĞİŞTİRİLDİ: #top yerine #main-content */}
             <a
               href="#main-content"
               className="text-gray-300 hover:text-white underline-offset-4 hover:underline focus-visible:underline transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/60 rounded-sm"
