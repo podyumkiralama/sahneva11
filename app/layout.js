@@ -30,24 +30,39 @@ export const metadata = {
   },
   description:
     "Türkiye genelinde sahne, podyum, LED ekran, ses-ışık sistemleri ve çadır kiralama. Hızlı kurulum, profesyonel teknik ekip, uygun fiyat. Hemen teklif alın!",
-  alternates: { canonical: "https://www.sahneva.com" },
+  alternates: { canonical: "https://www.sahneva.com/" }, // ← trailing slash
   openGraph: {
     title: "Sahneva – Profesyonel Sahne & Etkinlik Teknolojileri",
     description:
       "Sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri. Türkiye geneli hızlı kurulum ve profesyonel teknik destek.",
-    url: "https://www.sahneva.com",
+    url: "https://www.sahneva.com/",
     siteName: "Sahneva",
     type: "website",
+    images: [
+      {
+        url: "https://www.sahneva.com/og/sahneva-home.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Sahneva Ana Sayfa",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sahneva – Profesyonel Sahne & Etkinlik Teknolojileri",
+    description:
+      "Sahne, podyum, LED ekran, ses-ışık ve kurulum hizmetleri. Türkiye geneli hızlı kurulum ve profesyonel teknik destek.",
+    images: ["https://www.sahneva.com/og/sahneva-home.jpg"],
   },
 };
 
-const GA_MEASUREMENT_ID =
-  process.env.NEXT_PUBLIC_GA_ID || "G-J5YK10YLLC";
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID || "G-J5YK10YLLC";
 
 export default function RootLayout({ children }) {
   return (
     <html lang="tr" dir="ltr" className={inter.className}>
       <body className="min-h-screen bg-white text-neutral-900 antialiased">
+        {/* Google Analytics */}
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
           strategy="afterInteractive"
@@ -57,6 +72,8 @@ export default function RootLayout({ children }) {
           strategy="afterInteractive"
           data-ga-id={GA_MEASUREMENT_ID}
         />
+
+        {/* Skip link (tek hedef burası) */}
         <a
           href="#main-content"
           aria-label="Ana içeriğe hızlı geçiş"
