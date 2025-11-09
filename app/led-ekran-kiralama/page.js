@@ -38,7 +38,7 @@ export const metadata = {
     siteName: "Sahneva",
     locale: "tr_TR",
     images: [{ 
-      url: `${ORIGIN}/img/led-ekran/hero.webp`, 
+      url: `${ORIGIN}/img/hizmet-led-ekran.webp`, 
       width: 1200, 
       height: 630, 
       alt: "Sahneva LED Ekran Kiralama - Profesyonel Görsel Çözümler" 
@@ -48,7 +48,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "LED Ekran Kiralama | Profesyonel Çözümler | Sahneva",
     description: "P2-P6 piksel aralığı, 4K çözünürlük, yüksek parlaklık LED ekran kiralama. Konser, fuar ve kurumsal etkinlikler.",
-    images: [`${ORIGIN}/img/led-ekran/hero.webp`],
+    images: [`${ORIGIN}/img/hizmet-led-ekran.webp`],
   },
   robots: {
     index: true,
@@ -72,7 +72,7 @@ const slugify = (s) =>
     .replace(/-+/g, "-");
 
 const HERO = {
-  src: "/img/led-ekran/hero.webp",
+  src: "/img/hizmet-led-ekran.webp",
   alt: "Profesyonel LED ekran kurulumu - Konser sahnesinde büyük LED wall ve görsel şov",
   sizes: "(max-width: 768px) 100vw, 100vw",
 };
@@ -303,35 +303,35 @@ function Services() {
 /* ================== Galeri ================== */
 const GALLERY_IMAGES = [
   { 
-    src: "/img/led-ekran/1.webp", 
+    src: "/img/led/1.webp", 
     alt: "Konser sahnesinde kurulmuş büyük LED ekran, kalabalık önünde canlı performans gösterimi" 
   },
   { 
-    src: "/img/led-ekran/2.webp", 
+    src: "/img/led/2.webp", 
     alt: "Kurumsal etkinlikte kullanılan LED ekran, sunum sırasında profesyonel aydınlatma ile aydınlatılmış" 
   },
   { 
-    src: "/img/led-ekran/3.webp", 
+    src: "/img/led/3.webp", 
     alt: "Açık hava festivalinde yüksek parlaklıklı LED ekran, gün ışığında net görüntü" 
   },
   { 
-    src: "/img/led-ekran/4.webp", 
+    src: "/img/led/4.webp", 
     alt: "Fuar standında kullanılan video wall sistemi, marka tanıtımı için optimize edilmiş" 
   },
   { 
-    src: "/img/led-ekran/5.webp", 
+    src: "/img/led/5.webp", 
     alt: "Stadyumda dev LED ekran, spor etkinliği sırasında canlı skor ve görüntüler" 
   },
   { 
-    src: "/img/led-ekran/6.webp", 
+    src: "/img/led/6.webp", 
     alt: "Düğün organizasyonunda LED ekran, canlı fotoğraf ve video gösterimi" 
   },
   { 
-    src: "/img/led-ekran/7.webp", 
+    src: "/img/led/7.webp", 
     alt: "TV stüdyosunda kullanılan profesyonel LED ekran, canlı yayın için optimize edilmiş" 
   },
   { 
-    src: "/img/led-ekran/8.webp", 
+    src: "/img/led/8.webp", 
     alt: "Alışveriş merkezinde reklam LED ekranı, yüksek trafikli alanda marka gösterimi" 
   },
 ];
