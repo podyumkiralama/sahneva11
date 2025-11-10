@@ -163,6 +163,7 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: ONE_MONTH_IN_SECONDS,
+    qualities: [75, 80],
     remotePatterns: [
       {
         protocol: 'https',
@@ -185,8 +186,6 @@ const nextConfig = {
     scrollRestoration: true,
     optimizePackageImports: ["lucide-react", "@headlessui/react"],
     esmExternals: true,
-    legacyBrowsers: false,
-    browsersListForSwc: true,
   },
 
   modularizeImports: {

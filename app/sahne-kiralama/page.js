@@ -1215,13 +1215,13 @@ function JsonLd() {
           "@type": "Organization",
           name: "Sahneva",
           telephone: "+905453048671",
-          address: { 
-            "@type": "PostalAddress", 
-            addressLocality: "İstanbul", 
-            addressCountry: "TR" 
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "İstanbul",
+            addressCountry: "TR"
           },
           url: ORIGIN,
-          logo: `${ORIGIN}/logo.png`,
+          logo: `${ORIGIN}/img/logo.png`,
         },
         areaServed: "TR",
         serviceType: "EventProduction",
