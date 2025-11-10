@@ -1,4 +1,4 @@
-// components/AccessibilityBar.js
+// components/UtilityBar.js
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -41,6 +41,7 @@ const LS_KEYS = {
   HIGHLIGHT_LINKS: "acc_highlight_links",
   TOOLTIPS: "acc_tooltips",
   PAGE_STRUCTURE: "acc_page_structure",
+  PANEL_POSITION: "acc_panel_position", // Yeni: panel konumu
 };
 
 const PROFILES = {
@@ -60,11 +61,13 @@ export default function AccessibilityBar() {
   const [activeTab, setActiveTab] = useState("profiles");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [panelPosition, setPanelPosition] = useState("right"); // "left" | "right"
 
   // Refs
   const styleRef = useRef(null);
   const guideRef = useRef(null);
   const animationStyleRef = useRef(null);
+  const panelRef = useRef(null);
 
   // Yardımcı fonksiyonlar
   const setLS = (key, value) => {
@@ -195,10 +198,35 @@ export default function AccessibilityBar() {
       .accessibility-active .reading-guide {
         display: block;
       }
+
+      /* Panel animasyonları */
+      .accessibility-panel {
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+      }
+
+      .accessibility-panel-enter {
+        transform: translateX(${panelPosition === 'right' ? '100%' : '-100%'});
+        opacity: 0;
+      }
+
+      .accessibility-panel-enter-active {
+        transform: translateX(0);
+        opacity: 1;
+      }
+
+      .accessibility-panel-exit {
+        transform: translateX(0);
+        opacity: 1;
+      }
+
+      .accessibility-panel-exit-active {
+        transform: translateX(${panelPosition === 'right' ? '100%' : '-100%'});
+        opacity: 0;
+      }
     `;
 
     styleRef.current.textContent = styles;
-  }, [fontSize]);
+  }, [fontSize, panelPosition]);
 
   // Animasyonları durdur
   const stopAnimations = useCallback(() => {
@@ -266,10 +294,12 @@ export default function AccessibilityBar() {
     const active = getLS(LS_KEYS.ACTIVE, false);
     const savedFontSize = getLS(LS_KEYS.FONT_SIZE, 16);
     const profile = getLS(LS_KEYS.PROFILE, null);
+    const savedPosition = getLS(LS_KEYS.PANEL_POSITION, "right");
 
     setIsActive(active);
     setFontSize(savedFontSize);
     setActiveProfile(profile);
+    setPanelPosition(savedPosition);
 
     if (active) {
       document.documentElement.classList.add('accessibility-active');
@@ -297,6 +327,13 @@ export default function AccessibilityBar() {
       startAnimations();
     }
   }, [isActive, applyStyles, startAnimations]);
+
+  // Panel konumunu değiştir
+  const togglePanelPosition = useCallback(() => {
+    const newPosition = panelPosition === "right" ? "left" : "right";
+    setPanelPosition(newPosition);
+    setLS(LS_KEYS.PANEL_POSITION, newPosition);
+  }, [panelPosition]);
 
   // Profil uygula
   const applyProfile = useCallback((profile) => {
@@ -362,6 +399,7 @@ export default function AccessibilityBar() {
     setActiveProfile(null);
     setFontSize(16);
     setIsActive(false);
+    setPanelPosition("right");
     startAnimations();
     
     if (guideRef.current) {
@@ -402,24 +440,43 @@ export default function AccessibilityBar() {
     );
   }, [searchQuery]);
 
-  // Ana bileşen
+  // Ana bileşen - Sadece FAB butonu
   if (!isActive) {
     return (
-      <button
-        onClick={() => setIsActive(true)}
-        className="fixed bottom-8 right-8 z-50 w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-2xl flex items-center justify-center text-2xl transition-all duration-300 hover:scale-110"
-        aria-label="Erişilebilirlik ayarlarını aç"
-        title="Erişilebilirlik"
-      >
-        ♿
-      </button>
+      <div className={`fixed ${panelPosition === 'right' ? 'right-8' : 'left-8'} bottom-8 z-50 flex flex-col gap-3`}>
+        {/* Ana Açma Butonu */}
+        <button
+          onClick={() => setIsActive(true)}
+          className="w-14 h-14 bg-gradient-to-br from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full shadow-2xl flex items-center justify-center text-2xl transition-all duration-300 hover:scale-110 group"
+          aria-label="Erişilebilirlik ayarlarını aç"
+          title="Erişilebilirlik Panelini Aç"
+        >
+          <span className="group-hover:scale-110 transition-transform">♿</span>
+        </button>
+
+        {/* Konum Değiştir Butonu */}
+        <button
+          onClick={togglePanelPosition}
+          className="w-10 h-10 bg-gray-600 hover:bg-gray-700 text-white rounded-full shadow-lg flex items-center justify-center text-lg transition-all duration-300 hover:scale-110"
+          aria-label={`Paneli ${panelPosition === 'right' ? 'sola' : 'sağa'} taşı`}
+          title="Paneli Taşı"
+        >
+          {panelPosition === 'right' ? '◀' : '▶'}
+        </button>
+      </div>
     );
   }
 
   return (
     <>
       {/* Ana Panel */}
-      <div className="fixed top-0 right-0 z-[10000] w-full max-w-96 h-screen bg-white shadow-2xl border-l border-gray-200 flex flex-col">
+      <div 
+        ref={panelRef}
+        className={`fixed top-0 ${panelPosition === 'right' ? 'right-0' : 'left-0'} z-[10000] w-full max-w-96 h-screen bg-white shadow-2xl border-l border-gray-200 flex flex-col accessibility-panel`}
+        style={{
+          transform: `translateX(${panelPosition === 'right' ? '0' : '0'})`
+        }}
+      >
         
         {/* Header */}
         <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
@@ -432,12 +489,28 @@ export default function AccessibilityBar() {
               <p className="text-blue-100 text-sm">Ayarlarınızı kişiselleştirin</p>
             </div>
           </div>
-          <button
-            onClick={() => setIsActive(false)}
-            className="w-8 h-8 rounded-lg bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
-          >
-            ✕
-          </button>
+          
+          {/* Header Butonları */}
+          <div className="flex items-center gap-2">
+            {/* Konum Değiştir Butonu */}
+            <button
+              onClick={togglePanelPosition}
+              className="w-8 h-8 rounded-lg bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
+              aria-label={`Paneli ${panelPosition === 'right' ? 'sola' : 'sağa'} taşı`}
+              title="Paneli Taşı"
+            >
+              {panelPosition === 'right' ? '◀' : '▶'}
+            </button>
+
+            {/* Kapat Butonu */}
+            <button
+              onClick={() => setIsActive(false)}
+              className="w-8 h-8 rounded-lg bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
+              aria-label="Erişilebilirlik panelini kapat"
+            >
+              ✕
+            </button>
+          </div>
         </div>
 
         {/* Tabs */}
@@ -528,7 +601,7 @@ export default function AccessibilityBar() {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => setFontSizeWithSave(Math.max(12, fontSize - 2))}
-                    className="flex-1 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg font-bold text-lg"
+                    className="flex-1 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg font-bold text-lg transition-colors"
                   >
                     A-
                   </button>
@@ -537,7 +610,7 @@ export default function AccessibilityBar() {
                   </div>
                   <button
                     onClick={() => setFontSizeWithSave(Math.min(24, fontSize + 2))}
-                    className="flex-1 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg font-bold text-lg"
+                    className="flex-1 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg font-bold text-lg transition-colors"
                   >
                     A+
                   </button>
@@ -712,6 +785,25 @@ export default function AccessibilityBar() {
             </div>
           )}
         </div>
+
+        {/* Footer - Hızlı Erişim Butonları */}
+        <div className="border-t border-gray-200 bg-gray-50 p-3">
+          <div className="flex justify-between gap-2">
+            <button
+              onClick={() => setIsActive(false)}
+              className="flex-1 py-2 bg-gray-600 text-white rounded-lg font-semibold hover:bg-gray-700 transition-colors text-sm"
+            >
+              Kapat
+            </button>
+            <button
+              onClick={togglePanelPosition}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm"
+              title="Paneli Taşı"
+            >
+              {panelPosition === 'right' ? '◀' : '▶'}
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Arama Modalı */}
@@ -769,12 +861,13 @@ function Toggle({ label, checked, onChange }) {
       <span className="text-gray-700 font-medium">{label}</span>
       <button
         onClick={onChange}
-        className={`w-12 h-6 rounded-full transition-colors ${
+        className={`w-12 h-6 rounded-full transition-colors relative ${
           checked ? 'bg-blue-500' : 'bg-gray-300'
         }`}
+        aria-pressed={checked}
       >
         <div
-          className={`w-4 h-4 rounded-full bg-white transform transition-transform ${
+          className={`w-4 h-4 rounded-full bg-white transform transition-transform absolute top-1 ${
             checked ? 'translate-x-7' : 'translate-x-1'
           }`}
         />
@@ -797,7 +890,7 @@ function Slider({ label, value, min, max, step, onChange }) {
         step={step}
         value={value}
         onChange={(e) => onChange(parseFloat(e.target.value))}
-        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-blue-500"
       />
     </div>
   );
@@ -833,7 +926,7 @@ function ToolButton({ icon, label, onClick }) {
 function SearchModal({ query, setQuery, results, onClose }) {
   return (
     <div className="fixed inset-0 z-[10001] bg-black/50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl">
+      <div className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl max-h-[80vh] flex flex-col">
         <div className="p-4 border-b border-gray-200">
           <div className="flex items-center gap-3">
             <div className="flex-1 relative">
@@ -843,6 +936,7 @@ function SearchModal({ query, setQuery, results, onClose }) {
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Sayfalarda arama yapın..."
                 className="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                autoFocus
               />
               <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                 🔍
@@ -850,25 +944,33 @@ function SearchModal({ query, setQuery, results, onClose }) {
             </div>
             <button
               onClick={onClose}
-              className="px-4 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+              className="px-4 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
             >
               Kapat
             </button>
           </div>
         </div>
         
-        <div className="max-h-96 overflow-y-auto">
-          {results.map((route) => (
-            <Link
-              key={route.href}
-              href={route.href}
-              onClick={onClose}
-              className="flex items-center gap-3 p-4 hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
-            >
-              <span className="text-xl">{route.icon}</span>
-              <span className="font-medium text-gray-700">{route.label}</span>
-            </Link>
-          ))}
+        <div className="flex-1 overflow-y-auto">
+          {results.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-12 text-gray-500">
+              <div className="text-4xl mb-4">🔍</div>
+              <div className="text-lg font-semibold">Sonuç bulunamadı</div>
+              <div className="text-sm mt-2">Farklı bir anahtar kelime deneyin</div>
+            </div>
+          ) : (
+            results.map((route) => (
+              <Link
+                key={route.href}
+                href={route.href}
+                onClick={onClose}
+                className="flex items-center gap-3 p-4 hover:bg-gray-50 border-b border-gray-100 last:border-b-0 transition-colors"
+              >
+                <span className="text-xl">{route.icon}</span>
+                <span className="font-medium text-gray-700">{route.label}</span>
+              </Link>
+            ))
+          )}
         </div>
       </div>
     </div>
