@@ -1,0 +1,8 @@
+{
+  "name": "typescript",
+  "version": "0.0.0-stub",
+  "bin": {
+    "tsc": "./bin/tsc.js",
+    "tsserver": "./bin/tsserver.js"
+  }
+}
