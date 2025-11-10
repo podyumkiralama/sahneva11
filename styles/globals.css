@@ -219,3 +219,29 @@ html.hc a{ color:#00eaff; text-decoration:underline; text-decoration-thickness:2
 .ub-focusmode { /* focus mode styles */ }
 .ub-hideimg img { display: none !important; }
 .ub-readmode { /* reading mode styles */ }
+/* Accessibility Styles */
+.accessibility-active {
+  /* Varsayılan değişkenler - JS ile override edilecek */
+  --acc-font-size: 16px;
+  --acc-line-height: 1.6;
+  --acc-letter-spacing: 0px;
+  --acc-word-spacing: 0px;
+}
+
+/* Reading Guide */
+.reading-guide {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 2px;
+  background: red;
+  z-index: 10000;
+  pointer-events: none;
+  display: none;
+}
+
+.accessibility-active .reading-guide {
+  display: block;
+}
