@@ -240,7 +240,6 @@ export default function CaseGallery({ images = [], visibleCount = 4 }) {
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 80vw"
                 className="object-contain"
                 quality={90}
-                priority
               />
             </div>
           </div>

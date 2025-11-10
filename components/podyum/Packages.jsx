@@ -57,7 +57,7 @@ export default function Packages({ packages, contactHref }) {
               </header>
 
               <div className="px-6 py-6">
-                <h4 className="text-lg font-semibold text-slate-900">Paket içeriği</h4>
+                <h3 className="text-lg font-semibold text-slate-900">Paket içeriği</h3>
                 <ul className="mt-4 space-y-2 text-sm text-slate-700">
                   {pkg.includes.map((item) => (
                     <li key={item} className="flex items-start gap-2">
