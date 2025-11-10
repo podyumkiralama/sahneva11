@@ -111,8 +111,6 @@ export default function ServicesTabs() {
   const [imageErrors, setImageErrors] = useState({});
   const listRef = useRef(null);
 
-  const activeService = services.find((s) => s.id === activeTab);
-
   const handleImageError = (serviceId) => {
     setImageErrors((prev) => ({ ...prev, [serviceId]: true }));
   };
@@ -129,7 +127,7 @@ export default function ServicesTabs() {
     if (!buttons?.length) return;
 
     const currentIndex = Array.from(buttons).findIndex(
-      (b) => b.getAttribute("aria-selected") === "true"
+      (b) => b.getAttribute("aria-selected") === "true",
     );
 
     const move = (index) => {
@@ -141,7 +139,8 @@ export default function ServicesTabs() {
     };
 
     if (e.key === "ArrowRight") move((currentIndex + 1) % buttons.length);
-    if (e.key === "ArrowLeft") move((currentIndex - 1 + buttons.length) % buttons.length);
+    if (e.key === "ArrowLeft")
+      move((currentIndex - 1 + buttons.length) % buttons.length);
     if (e.key === "Home") move(0);
     if (e.key === "End") move(buttons.length - 1);
   }, []);
@@ -165,12 +164,14 @@ export default function ServicesTabs() {
               aria-controls={`panel-${service.id}`}
               id={`tab-${service.id}`}
               onClick={() => setActiveTab(service.id)}
+              type="button"
               className={`inline-flex items-center gap-2 px-4 py-3 min-h-11 rounded-xl font-semibold text-sm
                           transition-all duration-300 border-2 whitespace-nowrap flex-shrink-0
                           focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/70
-                          ${activeTab === service.id
-                            ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white border-transparent shadow-lg scale-105"
-                            : "bg-white text-gray-700 border-gray-200 hover:border-blue-300 hover:bg-blue-50 hover:shadow-md"
+                          ${
+                            activeTab === service.id
+                              ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white border-transparent shadow-lg scale-105"
+                              : "bg-white text-gray-700 border-gray-200 hover:border-blue-300 hover:bg-blue-50 hover:shadow-md"
                           }`}
             >
               <span className="text-lg" aria-hidden="true">
@@ -194,166 +195,178 @@ export default function ServicesTabs() {
       </div>
 
       {/* Tab Panel */}
-      <div
-        className="bg-white rounded-3xl shadow-2xl p-6 md:p-12 border border-gray-100"
-        role="tabpanel"
-        id={`panel-${activeService?.id}`}
-        aria-labelledby={`tab-${activeService?.id}`}
-        tabIndex={0}
-      >
-        {activeService && (
-          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-start">
-            {/* Metin Kısmı */}
-            <div className="space-y-6 order-2 lg:order-1">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-3xl" aria-hidden="true">
-                  {activeService.icon}
-                </span>
-                <h3 className="text-2xl md:text-4xl font-black text-gray-900">
-                  {activeService.title}
-                </h3>
-              </div>
+      <div className="relative">
+        {services.map((service) => {
+          const isActive = activeTab === service.id;
 
-              <p className="text-lg text-gray-600 leading-relaxed">
-                {activeService.description}
-              </p>
+          return (
+            <section
+              key={service.id}
+              className="bg-white rounded-3xl shadow-2xl p-6 md:p-12 border border-gray-100"
+              role="tabpanel"
+              id={`panel-${service.id}`}
+              aria-labelledby={`tab-${service.id}`}
+              tabIndex={isActive ? 0 : -1}
+              hidden={!isActive}
+            >
+              <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-start">
+                {/* Metin Kısmı */}
+                <div className="space-y-6 order-2 lg:order-1">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="text-3xl" aria-hidden="true">
+                      {service.icon}
+                    </span>
+                    <h3 className="text-2xl md:text-4xl font-black text-gray-900">
+                      {service.title}
+                    </h3>
+                  </div>
 
-              <div className="space-y-4">
-                <h4 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                  <svg
-                    className="w-5 h-5 text-blue-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  Hizmet Özellikleri
-                </h4>
+                  <p className="text-lg text-gray-600 leading-relaxed">
+                    {service.description}
+                  </p>
 
-                {/* UL/LI semantik */}
-                <ul className="space-y-3">
-                  {activeService.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start gap-3 group">
-                      <span
-                        className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform"
+                  <div className="space-y-4">
+                    <h4 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                      <svg
+                        className="w-5 h-5 text-blue-500"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
                         aria-hidden="true"
                       >
-                        <svg
-                          className="w-3 h-3 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={3}
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
-                      </span>
-                      <span className="text-gray-700 group-hover:text-gray-900 transition-colors">
-                        {feature}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                      Hizmet Özellikleri
+                    </h4>
 
-              {/* Detay CTA */}
-              <div className="pt-4">
-                <Link
-                  href={activeService.href}
-                  className="group inline-flex items-center justify-center gap-3
-                             bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700
-                             text-white font-bold text-lg px-8 py-4 min-h-11 rounded-xl transition-all duration-300
-                             hover:scale-105 shadow-lg w-full md:w-auto focus:outline-none
-                             focus-visible:ring-2 focus-visible:ring-purple-500/70"
-                  title="Detayları gör ve fiyat teklifi al"
-                >
-                  <span>Detaylı Bilgi ve Fiyat Teklifi Al</span>
-                  <svg
-                    className="w-5 h-5 group-hover:scale-110 transition-transform"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </Link>
-              </div>
-            </div>
+                    {/* UL/LI semantik */}
+                    <ul className="space-y-3">
+                      {service.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-start gap-3 group">
+                          <span
+                            className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform"
+                            aria-hidden="true"
+                          >
+                            <svg
+                              className="w-3 h-3 text-white"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={3}
+                                d="M5 13l4 4L19 7"
+                              />
+                            </svg>
+                          </span>
+                          <span className="text-gray-700 group-hover:text-gray-900 transition-colors">
+                            {feature}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
-            {/* Görsel Kısmı */}
-            <div className="relative h-64 md:h-80 lg:h-96 rounded-2xl overflow-hidden shadow-xl order-1 lg:order-2 group">
-              <Image
-                src={getImageSrc(activeService)}
-                alt={`${activeService.title} hizmeti - Sahneva profesyonel çözümü`}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-500"
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 560px"
-                quality={75}
-                loading="lazy"
-                decoding="async"
-                placeholder="empty"
-                onError={() => handleImageError(activeService.id)}
-                style={{ objectFit: "cover", width: "100%", height: "100%" }}
-              />
-
-              <div
-                className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"
-                aria-hidden="true"
-              />
-
-              <div className="absolute bottom-4 left-4 right-4">
-                <div className="bg-white/90 backdrop-blur-sm rounded-lg p-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                  <h4 className="font-bold text-gray-900 text-lg">
-                    {activeService.title}
-                  </h4>
-                  <p className="text-gray-600 text-sm">Profesyonel Çözüm</p>
+                  {/* Detay CTA */}
+                  <div className="pt-4">
+                    <Link
+                      href={service.href}
+                      className="group inline-flex items-center justify-center gap-3
+                               bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700
+                               text-white font-bold text-lg px-8 py-4 min-h-11 rounded-xl transition-all duration-300
+                               hover:scale-105 shadow-lg w-full md:w-auto focus:outline-none
+                               focus-visible:ring-2 focus-visible:ring-purple-500/70"
+                      title="Detayları gör ve fiyat teklifi al"
+                    >
+                      <span>Detaylı Bilgi ve Fiyat Teklifi Al</span>
+                      <svg
+                        className="w-5 h-5 group-hover:scale-110 transition-transform"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </Link>
+                  </div>
                 </div>
-              </div>
 
-              {/* İkon buton — görünür metin yok → aria-label gerekli */}
-              <Link
-                href={activeService.href}
-                className="absolute top-4 right-4 bg-black/60 hover:bg-black/80 text-white p-3 rounded-lg
+                {/* Görsel Kısmı */}
+                <div className="relative h-64 md:h-80 lg:h-96 rounded-2xl overflow-hidden shadow-xl order-1 lg:order-2 group">
+                  <Image
+                    src={getImageSrc(service)}
+                    alt={`${service.title} hizmeti - Sahneva profesyonel çözümü`}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 560px"
+                    quality={75}
+                    loading="lazy"
+                    decoding="async"
+                    placeholder="empty"
+                    onError={() => handleImageError(service.id)}
+                    style={{
+                      objectFit: "cover",
+                      width: "100%",
+                      height: "100%",
+                    }}
+                  />
+
+                  <div
+                    className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"
+                    aria-hidden="true"
+                  />
+
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <div className="bg-white/90 backdrop-blur-sm rounded-lg p-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                      <h4 className="font-bold text-gray-900 text-lg">
+                        {service.title}
+                      </h4>
+                      <p className="text-gray-600 text-sm">Profesyonel Çözüm</p>
+                    </div>
+                  </div>
+
+                  {/* İkon buton — görünür metin yok → aria-label gerekli */}
+                  <Link
+                    href={service.href}
+                    className="absolute top-4 right-4 bg-black/60 hover:bg-black/80 text-white p-3 rounded-lg
                            transition-all duration-300 hover:scale-110 focus:outline-none
                            focus-visible:ring-2 focus-visible:ring-white/70 min-w-11 min-h-11 flex items-center justify-center"
-                title={`${activeService.title} detay sayfasına git`}
-                aria-label={`${activeService.title} hizmet detay sayfasını aç`}
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                  />
-                </svg>
-              </Link>
-            </div>
-          </div>
-        )}
+                    title={`${service.title} detay sayfasına git`}
+                    aria-label={`${service.title} hizmet detay sayfasını aç`}
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                      />
+                    </svg>
+                  </Link>
+                </div>
+              </div>
+            </section>
+          );
+        })}
       </div>
     </div>
   );
