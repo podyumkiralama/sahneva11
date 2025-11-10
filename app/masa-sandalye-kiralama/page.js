@@ -38,7 +38,7 @@ export const metadata = {
     siteName: "Sahneva",
     locale: "tr_TR",
     images: [{ 
-      url: `${ORIGIN}/img/masa-sandalye/hero.webp`, 
+      url: `${ORIGIN}/img/sandalye/3.webp`, 
       width: 1200, 
       height: 630, 
       alt: "Sahneva Masa Sandalye Kiralama - Profesyonel Davet ve Konferans Çözümleri" 
@@ -48,7 +48,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Masa Sandalye Kiralama | Profesyonel Çözümler | Sahneva",
     description: "Napolyon ve konferans sandalyeleri, banket ve bistro masalar, örtü-kılıf; numaralandırma ve profesyonel yerleşim.",
-    images: [`${ORIGIN}/img/masa-sandalye/hero.webp`],
+    images: [`${ORIGIN}/img/sandalye/3.webp`],
   },
   robots: {
     index: true,
@@ -72,7 +72,7 @@ const slugify = (s) =>
     .replace(/-+/g, "-");
 
 const HERO = {
-  src: "/img/masa-sandalye/hero.webp",
+  src: "/img/sandalye/3.webp",
   alt: "Profesyonel masa sandalye kurulumu - Şık davet düzeni ve dekorasyon",
   sizes: "(max-width: 768px) 100vw, 100vw",
 };
@@ -469,27 +469,27 @@ function Packages() {
 /* ================== Galeri ================== */
 const GALLERY_IMAGES = [
   { 
-    src: "/img/masa-sandalye/galeri-1.webp", 
+    src: "/img/sandalye/1.webp", 
     alt: "Yuvarlak banket masa ve Napolyon sandalyelerle 100 kişilik davet düzeni" 
   },
   { 
-    src: "/img/masa-sandalye/galeri-2.webp", 
+    src: "/img/sandalye/2.webp", 
     alt: "Konferans düzeninde sıralı yastıklı sandalyeler ve dikdörtgen masalar" 
   },
   { 
-    src: "/img/masa-sandalye/galeri-3.webp",
+    src: "/img/sandalye/3.webp",
     alt: "Bistro masalarla kokteyl alanı - strech kılıf ve şal ile dekoratif detaylar" 
   },
   { 
-    src: "/img/masa-sandalye/galeri-4.webp",
+    src: "/img/sandalye/4.webp",
     alt: "Düğün organizasyonunda şık masa düzeni ve dekorasyon" 
   },
   { 
-    src: "/img/masa-sandalye/galeri-5.webp", 
+    src: "/img/sandalye/5.webp", 
     alt: "Kurumsal toplantıda konferans sandalyeleri ve masa düzeni" 
   },
   { 
-    src: "/img/masa-sandalye/galeri-6.webp", 
+    src: "/img/sandalye/6.webp", 
     alt: "Açık hava etkinliğinde dayanıklı masa sandalye kurulumu" 
   },
 ];
