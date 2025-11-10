@@ -2,9 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
-
-import HeaderNav from "@/components/podyum/HeaderNav";
-import LazyGallery from "@/components/podyum/LazyGallery";
+import dynamic from "next/dynamic";
 
 /* ================== Sabitler ================== */
 export const revalidate = 1800;
@@ -15,6 +13,16 @@ const WHATSAPP = `https://wa.me/${PHONE.replace("+", "")}?text=${WA_TEXT}`;
 
 // Base64 blur placeholder
 const BLUR_DATA_URL = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAADAAQDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==";
+
+/* ================== Dinamik galeri ================== */
+const CaseGallery = dynamic(() => import("@/components/CaseGallery"), {
+  loading: () => (
+    <div className="flex justify-center items-center h-64" role="status" aria-label="Galeri yükleniyor">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" aria-hidden="true" />
+      <span className="sr-only">Galeri yükleniyor...</span>
+    </div>
+  )
+});
 
 /* ================== META ================== */
 export const metadata = {
@@ -199,44 +207,10 @@ const PACKAGES = [
   },
 ];
 
-const FAQ_ITEMS = [
-  {
-    q: "Podyum kiralama fiyatları ne kadar?",
-    a: "Podyum kiralama fiyatları alan büyüklüğüne ve yüksekliğine göre değişmektedir. Mini podyum (12 m²) 8.500 TL, orta podyum (24 m²) 16.500 TL, pro podyum (48 m²) 28.500 TL'den başlayan fiyatlarla. Profesyonel kurulum ve teslimat hizmetleri paket fiyatlarına dahildir."
-  },
-  {
-    q: "Podyum kurulumu ne kadar sürer?",
-    a: "Standart bir podyum kurulumu 2-6 saat arasında tamamlanır. 12 m²'ye kadar küçük kurulumlar 2-3 saat, 12-24 m² orta ölçekli kurulumlar 3-4 saat, 24 m²+ büyük kurulumlar ise 4-6 saat sürmektedir. Kompleks rigging gerektiren projelerde bu süre 8 saate kadar çıkabilir."
-  },
-  {
-    q: "Hangi panel sistemlerini kullanıyorsunuz?",
-    a: "1×1 m ve 2×1 m modüler panel sistemleri kullanıyoruz. Düzensiz zeminlerde 1×1 m paneller, düz zeminlerde ise 2×1 m paneller tercih ediyoruz. Her iki panel de kaymaz kaplama, alüminyum karkas ve çelik bağlantı elemanları ile maximum güvenlik sunar."
-  },
-  {
-    q: "Açık hava etkinlikleri için uygun mu?",
-    a: "Evet, tüm podyum sistemlerimiz açık hava kullanımına uygundur. Rüzgar yükü hesapları, zemin stabilite analizleri ve su geçirmez kaplamalar ile açık hava etkinlikleri için güvenli çözümler sunuyoruz. Ancak şiddetli fırtına ve kasırga gibi ekstrem hava koşullarında güvenlik önlemi olarak kullanıma ara verilmesini öneriyoruz."
-  },
-];
-
-function SkipToContentLink() {
-  return (
-    <a
-      href="#main-content"
-      className="absolute left-4 top-4 z-50 -translate-y-full rounded-full bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition focus-visible:translate-y-0 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300"
-    >
-      Ana içeriğe atla
-    </a>
-  );
-}
-
 /* ================== HERO ================== */
 function Hero() {
   return (
-    <section
-      id="hero"
-      className="relative flex min-h-[80vh] items-center justify-center overflow-hidden bg-slate-900 pt-24"
-      aria-labelledby="hero-title"
-    >
+    <section className="relative flex items-center justify-center overflow-hidden bg-slate-900 pt-20 min-h-[80vh]" aria-labelledby="hero-title">
       <div className="absolute inset-0">
         <Image 
           src={HERO.src} 
@@ -263,9 +237,6 @@ function Hero() {
           <span className="text-sm font-bold text-white">İstanbul Geneli Profesyonel Kurulum</span>
         </div>
 
-        <h2 className="sr-only" id="hero-baslik">
-          Podyum kiralama çözümleri için kahraman bölüm
-        </h2>
         <h1 id="hero-title" className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight mb-4 drop-shadow-2xl">
           Profesyonel <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">Podyum Kiralama</span>
         </h1>
@@ -278,26 +249,28 @@ function Hero() {
           <span className="font-semibold text-white"> profesyonel sahne çözümleri</span>
         </p>
 
-        <div className="mb-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <a
+        <div className="flex flex-col sm:flex-row gap-3 justify-center items-center mb-8">
+          <Link
             href={WHATSAPP}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="WhatsApp üzerinden hemen teklif alın"
-            className="inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 px-8 py-4 font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-green-600"
+            title="WhatsApp üzerinden hemen teklif alın"
+            className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:scale-105 transform transition-all duration-300 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-green-600 shadow-lg"
+            role="button"
           >
-            <span aria-hidden="true" className="mr-2 text-xl">💬</span>
+            <span aria-hidden="true" className="text-xl mr-2">💬</span> 
             <span className="text-base">Hemen Teklif Al</span>
-          </a>
+          </Link>
 
-          <a
+          <Link
             href="#paketler"
-            aria-label="Paketlerimiz hakkında daha fazla bilgi edinin"
-            className="inline-flex items-center justify-center rounded-2xl border-2 border-white bg-white/10 px-8 py-4 font-bold text-white/95 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+            title="Paketlerimiz hakkında daha fazla bilgi edinin"
+            className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl border-2 border-white text-white/95 bg-white/10 backdrop-blur-lg hover:bg-white/20 hover:scale-105 transform transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 shadow-lg"
+            role="button"
           >
-            <span aria-hidden="true" className="mr-2 text-xl">🎯</span>
+            <span aria-hidden="true" className="text-xl mr-2">🎯</span> 
             <span className="text-base">Paketleri Gör</span>
-          </a>
+          </Link>
         </div>
 
         <div className="grid grid-cols-3 gap-4 max-w-xl mx-auto">
@@ -369,16 +342,16 @@ function Services() {
         </div>
 
         <div className="text-center mt-12">
-          <a
+          <Link
             href={WHATSAPP}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="WhatsApp üzerinden detaylı teklif iste"
-            className="inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-4 font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500"
+            className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:scale-105 transform transition-all duration-300 hover:shadow-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500"
+            role="button"
           >
-            <span aria-hidden="true" className="mr-3 text-xl">📞</span>
+            <span aria-hidden="true" className="text-xl mr-3">📞</span>
             <span>Detaylı Teklif için İletişime Geçin</span>
-          </a>
+          </Link>
         </div>
       </div>
     </section>
@@ -480,16 +453,16 @@ function Packages() {
 
                 {/* CTA */}
                 <div className="p-8 pt-0">
-                  <a
+                  <Link
                     href={`${WHATSAPP}&package=${encodeURIComponent(pkg.name)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`${pkg.name} paketi için WhatsApp üzerinden teklif iste`}
-                    className="inline-flex w-full items-center justify-center rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 px-6 py-4 font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-green-500"
+                    className="w-full inline-flex items-center justify-center font-bold px-6 py-4 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:scale-105 transform transition-all duration-300 hover:shadow-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-green-500"
+                    role="button"
                   >
-                    <span aria-hidden="true" className="mr-2 text-xl">💬</span>
+                    <span aria-hidden="true" className="text-xl mr-2">💬</span>
                     <span>Bu Paket için Teklif Al</span>
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -538,7 +511,7 @@ const GALLERY_IMAGES = [
 
 function Gallery() {
   return (
-    <section id="galeri" className="py-20 bg-white" aria-labelledby="galeri-baslik">
+    <section className="py-20 bg-white" aria-labelledby="galeri-baslik">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 id="galeri-baslik" className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 text-gray-900">
@@ -550,7 +523,7 @@ function Gallery() {
         </div>
 
         <div className="max-w-7xl mx-auto">
-          <LazyGallery images={GALLERY_IMAGES} visibleCount={8} />
+          <CaseGallery images={GALLERY_IMAGES} visibleCount={8} priorityCount={2} />
         </div>
 
         <div className="text-center mt-12">
@@ -560,7 +533,7 @@ function Gallery() {
           <Link
             href="/projeler"
             className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white transform transition-all duration-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-purple-300"
-            aria-label="Sahneva projeler galerisine git"
+            role="button"
           >
             <span aria-hidden="true" className="text-xl mr-3">📸</span>
             <span>Tüm Projeleri Görüntüle</span>
@@ -613,7 +586,7 @@ function Technical() {
   ];
 
   return (
-    <section id="teknik" className="py-20 bg-gradient-to-b from-gray-50 to-white" aria-labelledby="altyapi-baslik">
+    <section className="py-20 bg-gradient-to-b from-gray-50 to-white" aria-labelledby="altyapi-baslik">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 id="altyapi-baslik" className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 text-gray-900">
@@ -667,13 +640,10 @@ function StatsBand() {
     { value: "81", label: "İlde Hizmet", icon: "🗺️" },
     { value: "5+", label: "Yıl Deneyim", icon: "⭐" },
   ];
-
+  
   return (
-    <section id="istatistikler" className="py-20 bg-gradient-to-r from-blue-700 via-purple-700 to-blue-800 text-white" aria-labelledby="istatistikler-baslik">
+    <section className="py-20 bg-gradient-to-r from-blue-700 via-purple-700 to-blue-800 text-white" aria-label="Başarı İstatistiklerimiz">
       <div className="container mx-auto px-4">
-        <h2 id="istatistikler-baslik" className="sr-only">
-          Başarı İstatistiklerimiz
-        </h2>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
           {stats.map((stat) => (
             <div key={stat.label} className="text-center group" role="group" aria-label={`${stat.label}: ${stat.value}`}>
@@ -734,16 +704,16 @@ function UseCases() {
         </div>
 
         <div className="text-center mt-12">
-          <a
+          <Link
             href={WHATSAPP}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Etkinliğiniz için WhatsApp üzerinden özel çözüm alın"
-            className="inline-flex items-center justify-center rounded-2xl bg-white px-8 py-4 font-bold text-blue-700 transition-all duration-300 hover:scale-105 hover:shadow-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-white"
+            className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-white text-blue-700 hover:scale-105 transform transition-all duration-300 hover:shadow-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-white"
+            role="button"
           >
-            <span aria-hidden="true" className="mr-3 text-xl">💬</span>
+            <span aria-hidden="true" className="text-xl mr-3">💬</span>
             <span>Etkinliğiniz için Özel Çözüm Alın</span>
-          </a>
+          </Link>
         </div>
       </div>
     </section>
@@ -1005,8 +975,27 @@ function Articles() {
 
 /* ================== SSS ================== */
 function FAQ() {
+  const faqs = [
+    { 
+      q: "Podyum kiralama fiyatları ne kadar?", 
+      a: "Podyum kiralama fiyatları alan büyüklüğüne ve yüksekliğine göre değişmektedir. Mini podyum (12 m²) 8.500 TL, orta podyum (24 m²) 16.500 TL, pro podyum (48 m²) 28.500 TL'den başlayan fiyatlarla. Profesyonel kurulum ve teslimat hizmetleri paket fiyatlarına dahildir." 
+    },
+    { 
+      q: "Podyum kurulumu ne kadar sürer?", 
+      a: "Standart bir podyum kurulumu 2-6 saat arasında tamamlanır. 12 m²'ye kadar küçük kurulumlar 2-3 saat, 12-24 m² orta ölçekli kurulumlar 3-4 saat, 24 m²+ büyük kurulumlar ise 4-6 saat sürmektedir. Kompleks rigging gerektiren projelerde bu süre 8 saate kadar çıkabilir." 
+    },
+    { 
+      q: "Hangi panel sistemlerini kullanıyorsunuz?", 
+      a: "1×1 m ve 2×1 m modüler panel sistemleri kullanıyoruz. Düzensiz zeminlerde 1×1 m paneller, düz zeminlerde ise 2×1 m paneller tercih ediyoruz. Her iki panel de kaymaz kaplama, alüminyum karkas ve çelik bağlantı elemanları ile maximum güvenlik sunar." 
+    },
+    { 
+      q: "Açık hava etkinlikleri için uygun mu?", 
+      a: "Evet, tüm podyum sistemlerimiz açık hava kullanımına uygundur. Rüzgar yükü hesapları, zemin stabilite analizleri ve su geçirmez kaplamalar ile açık hava etkinlikleri için güvenli çözümler sunuyoruz. Ancak şiddetli fırtına ve kasırga gibi ekstrem hava koşullarında güvenlik önlemi olarak kullanıma ara verilmesini öneriyoruz." 
+    },
+  ];
+  
   return (
-    <section id="sss" className="py-20 bg-white" aria-labelledby="sss-baslik">
+    <section className="py-20 bg-white" aria-labelledby="sss-baslik">
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="text-center mb-16">
           <h2 id="sss-baslik" className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-6">
@@ -1018,15 +1007,20 @@ function FAQ() {
         </div>
 
         <div className="space-y-6" role="list" aria-label="Sık sorulan sorular listesi">
-          {FAQ_ITEMS.map((faq, index) => (
-            <details
-              key={index}
+          {faqs.map((faq, index) => (
+            <details 
+              key={index} 
               className="group bg-gray-50 rounded-3xl p-8 hover:bg-gray-100 transition-all duration-500 open:bg-blue-50 open:border-blue-200 border-2 border-transparent open:border"
             >
-              <summary className="cursor-pointer list-none flex items-center justify-between text-xl font-bold text-gray-900">
+              <summary 
+                className="cursor-pointer list-none flex items-center justify-between text-xl font-bold text-gray-900"
+                role="button"
+                aria-expanded="false"
+                tabIndex={0}
+              >
                 <span className="pr-4">{faq.q}</span>
-                <span
-                  aria-hidden="true"
+                <span 
+                  aria-hidden="true" 
                   className="ml-4 transition-transform duration-500 group-open:rotate-180 text-blue-600 bg-blue-100 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0"
                 >
                   ⌄
@@ -1047,9 +1041,9 @@ function FAQ() {
             href="/sss"
             className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:scale-105 transform transition-all duration-300 hover:shadow-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500"
             title="Sık Sorulan Sorular sayfasındaki tüm soruları görüntüle"
-            aria-label="Sahneva SSS sayfasındaki tüm soruları görüntüle"
+            role="button"
           >
-            <span aria-hidden="true" className="text-xl mr-3">📚</span>
+            <span aria-hidden="true" className="text-xl mr-3">📚</span> 
             <span className="text-lg">Tüm SSS'yi Görüntüle</span>
           </Link>
         </div>
@@ -1164,23 +1158,23 @@ function CTA() {
               Etkinliğiniz için en uygun podyum sistemlerini sunalım. Ücretsiz keşif, profesyonel danışmanlık ve 
               rekabetçi fiyat garantisi ile hizmetinizdeyiz.
             </p>
-            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link
-                href="/iletisim"
-                className="inline-flex items-center justify-center rounded-2xl bg-white px-8 py-4 font-bold text-blue-700 transition-all duration-300 hover:scale-105 hover:shadow-2xl focus:outline-none focus-visible:ring-4 focus-visible:ring-white shadow-lg"
-                aria-label="İletişim sayfasından teklif talep et"
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Link 
+                href="/iletisim" 
+                className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl bg-white text-blue-700 hover:scale-105 transform transition-all duration-300 hover:shadow-2xl focus:outline-none focus-visible:ring-4 focus-visible:ring-white shadow-lg"
+                role="button"
               >
-                <span aria-hidden="true" className="mr-3 text-xl">📞</span>
+                <span aria-hidden="true" className="text-xl mr-3">📞</span> 
                 <span className="text-lg">Hemen Teklif Al</span>
               </Link>
-              <a
-                href={WHATSAPP}
-                target="_blank"
+              <a 
+                href={WHATSAPP} 
+                target="_blank" 
                 rel="noopener noreferrer"
-                aria-label="WhatsApp üzerinden Sahneva ile iletişime geç"
-                className="inline-flex items-center justify-center rounded-2xl border-2 border-white px-8 py-4 font-bold text-white transition-all duration-300 hover:scale-105 hover:bg-white/20 focus:outline-none focus-visible:ring-4 focus-visible:ring-white shadow-lg"
+                className="inline-flex items-center justify-center font-bold px-8 py-4 rounded-2xl border-2 border-white text-white bg-transparent hover:bg-white/20 hover:scale-105 transform transition-all duration-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-white shadow-lg"
+                role="button"
               >
-                <span aria-hidden="true" className="mr-3 text-xl">💬</span>
+                <span aria-hidden="true" className="text-xl mr-3">💬</span> 
                 <span className="text-lg">WhatsApp'tan Yaz</span>
               </a>
             </div>
@@ -1194,93 +1188,6 @@ function CTA() {
   );
 }
 
-function Footer() {
-  return (
-    <footer className="bg-slate-950 text-white" aria-labelledby="footer-baslik">
-      <div className="container mx-auto grid gap-12 px-4 py-16 md:grid-cols-2 lg:grid-cols-4">
-        <div className="lg:col-span-2">
-          <h2 id="footer-baslik" className="text-2xl font-black uppercase tracking-widest">
-            Sahneva
-          </h2>
-          <p className="mt-4 max-w-md text-base text-white/80">
-            Profesyonel podyum, sahne ve etkinlik altyapısı çözümleriyle İstanbul merkezli olarak Türkiye genelinde hizmet veriyoruz.
-          </p>
-          <address className="mt-6 space-y-1 not-italic text-white/70">
-            <span className="block">Ahmet Mithat Efendi Caddesi No: 23</span>
-            <span className="block">Ataşehir / İstanbul</span>
-          </address>
-          <div className="mt-4 space-y-2 text-sm">
-            <a
-              href="tel:+905453048671"
-              className="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 font-semibold text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
-              aria-label="Sahneva telefon numarası +90 545 304 86 71"
-            >
-              <span aria-hidden="true">📞</span>
-              +90 545 304 86 71
-            </a>
-            <div className="text-white/70">7/24 teknik destek</div>
-          </div>
-        </div>
-
-        <div>
-          <h3 className="text-xl font-bold text-white">Hizmetler</h3>
-          <ul className="mt-4 space-y-2 text-white/70">
-            <li>
-              <Link href="/sahne-kiralama" className="hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950" aria-label="Sahne kiralama hizmeti sayfasına git">
-                Sahne Kiralama
-              </Link>
-            </li>
-            <li>
-              <Link href="/led-ekran-kiralama" className="hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950" aria-label="LED ekran kiralama hizmeti sayfasına git">
-                LED Ekran Kiralama
-              </Link>
-            </li>
-            <li>
-              <Link href="/ses-isik-sistemleri" className="hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950" aria-label="Ses ve ışık sistemleri hizmeti sayfasına git">
-                Ses & Işık Sistemleri
-              </Link>
-            </li>
-            <li>
-              <Link href="/cadir-kiralama" className="hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950" aria-label="Çadır kiralama hizmeti sayfasına git">
-                Çadır Kiralama
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 className="text-xl font-bold text-white">Bağlantılar</h3>
-          <ul className="mt-4 space-y-2 text-white/70">
-            <li>
-              <Link href="/projeler" className="hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950" aria-label="Sahneva projeler sayfasına git">
-                Projeler
-              </Link>
-            </li>
-            <li>
-              <Link href="/sss" className="hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950" aria-label="Sık sorulan sorular sayfasına git">
-                SSS
-              </Link>
-            </li>
-            <li>
-              <Link href="/hakkimizda" className="hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950" aria-label="Hakkımızda sayfasına git">
-                Hakkımızda
-              </Link>
-            </li>
-            <li>
-              <Link href="/iletisim" className="hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950" aria-label="İletişim sayfasına git">
-                İletişim
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div className="border-t border-white/10 py-6 text-center text-xs text-white/50">
-        © {new Date().getFullYear()} Sahneva. Tüm hakları saklıdır.
-      </div>
-    </footer>
-  );
-}
-
 /* ================== JSON-LD ================== */
 function JsonLd() {
   const jsonLd = {
@@ -1289,30 +1196,19 @@ function JsonLd() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          {
-            "@type": "ListItem",
-            position: 1,
-            name: "Anasayfa",
-            item: `${ORIGIN}/`
+          { 
+            "@type": "ListItem", 
+            position: 1, 
+            name: "Anasayfa", 
+            item: `${ORIGIN}/` 
           },
-          {
-            "@type": "ListItem",
-            position: 2,
-            name: "Podyum Kiralama",
-            item: `${ORIGIN}/podyum-kiralama`
+          { 
+            "@type": "ListItem", 
+            position: 2, 
+            name: "Podyum Kiralama", 
+            item: `${ORIGIN}/podyum-kiralama` 
           },
         ],
-      },
-      {
-        "@type": "FAQPage",
-        mainEntity: FAQ_ITEMS.map((faq) => ({
-          "@type": "Question",
-          name: faq.q,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: faq.a,
-          },
-        })),
       },
       {
         "@type": "Service",
@@ -1321,11 +1217,11 @@ function JsonLd() {
         provider: {
           "@type": "Organization",
           name: "Sahneva",
-          telephone: PHONE,
-          address: {
-            "@type": "PostalAddress",
-            addressLocality: "İstanbul",
-            addressCountry: "TR"
+          telephone: "+905453048671",
+          address: { 
+            "@type": "PostalAddress", 
+            addressLocality: "İstanbul", 
+            addressCountry: "TR" 
           },
           url: ORIGIN,
           logo: `${ORIGIN}/logo.png`,
@@ -1337,59 +1233,12 @@ function JsonLd() {
           description: "Profesyonel podyum kiralama hizmeti"
         },
         url: `${ORIGIN}/podyum-kiralama`,
-        aggregateRating: {
-          "@type": "AggregateRating",
-          ratingValue: "4.9",
-          reviewCount: "183",
-          bestRating: "5",
+        aggregateRating: { 
+          "@type": "AggregateRating", 
+          ratingValue: "4.9", 
+          reviewCount: "183", 
+          bestRating: "5" 
         },
-      },
-      {
-        "@type": "LocalBusiness",
-        "@id": `${ORIGIN}/#sahneva-podyum`,
-        name: "Sahneva",
-        image: `${ORIGIN}/img/hizmet-podyum.webp`,
-        url: ORIGIN,
-        telephone: PHONE,
-        priceRange: "₺₺",
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: "Ahmet Mithat Efendi Caddesi No: 23",
-          addressLocality: "Ataşehir",
-          addressRegion: "İstanbul",
-          postalCode: "34750",
-          addressCountry: "TR",
-        },
-        geo: {
-          "@type": "GeoCoordinates",
-          latitude: 40.9929,
-          longitude: 29.1274,
-        },
-        areaServed: {
-          "@type": "Country",
-          name: "Türkiye",
-        },
-        openingHoursSpecification: [
-          {
-            "@type": "OpeningHoursSpecification",
-            dayOfWeek: [
-              "Monday",
-              "Tuesday",
-              "Wednesday",
-              "Thursday",
-              "Friday",
-              "Saturday",
-              "Sunday",
-            ],
-            opens: "00:00",
-            closes: "23:59",
-          },
-        ],
-        sameAs: [
-          "https://www.instagram.com/sahneva",
-          "https://www.facebook.com/sahneva",
-          "https://www.youtube.com/@sahneva",
-        ],
       },
       {
         "@type": "WebPage",
@@ -1417,24 +1266,19 @@ function JsonLd() {
 /* ================== Sayfa Bileşeni ================== */
 export default function Page() {
   return (
-    <div className="relative">
+    <>
       <JsonLd />
-      <SkipToContentLink />
-      <HeaderNav />
-      <main id="main-content" className="bg-white text-slate-900">
-        <Hero />
-        <Services />
-        <Packages />
-        <Gallery />
-        <Technical />
-        <StatsBand />
-        <UseCases />
-        <Articles />
-        <FAQ />
-        <RelatedServices />
-        <CTA />
-      </main>
-      <Footer />
-    </div>
+      <Hero />
+      <Services />
+      <Packages />
+      <Gallery />
+      <Technical />
+      <StatsBand />
+      <UseCases />
+      <Articles />
+      <FAQ />
+      <RelatedServices />
+      <CTA />
+    </>
   );
 }
