@@ -1,6 +1,6 @@
 {
   "name": "typescript",
-  "version": "0.0.0-stub",
+  "version": "5.6.3",
   "bin": {
     "tsc": "./bin/tsc.js",
     "tsserver": "./bin/tsserver.js"
