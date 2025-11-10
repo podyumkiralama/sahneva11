@@ -48,6 +48,13 @@ const LS_KEYS = {
   COGNITIVE_DISABILITY: "acc_cognitive_disability",
   BLIND_USERS: "acc_blind_users",
   KEYBOARD_NAV: "acc_keyboard_nav",
+  // Yeni ayarlar
+  CONTENT_SEARCH: "acc_content_search",
+  CONTENT_READING_MASK: "acc_content_reading_mask",
+  COLOR_DARK_MODE: "acc_color_dark_mode",
+  COLOR_LIGHT_MODE: "acc_color_light_mode",
+  ORIENTATION_VIRTUAL_KEYBOARD: "acc_orientation_virtual_keyboard",
+  TOOLS_QUICK_NAV: "acc_tools_quick_nav",
 };
 
 export default function AccessibilityBar() {
@@ -59,13 +66,38 @@ export default function AccessibilityBar() {
   const [searchQuery, setSearchQuery] = useState("");
   const [panelPosition, setPanelPosition] = useState("right");
 
-  // Profil durumları
+  // Tüm ayar durumları
   const [seizureSafe, setSeizureSafe] = useState(false);
   const [visionImpaired, setVisionImpaired] = useState(false);
   const [adhdFriendly, setAdhdFriendly] = useState(false);
   const [cognitiveDisability, setCognitiveDisability] = useState(false);
   const [blindUsers, setBlindUsers] = useState(false);
   const [keyboardNav, setKeyboardNav] = useState(false);
+  
+  // İçerik ayarları
+  const [dyslexicFont, setDyslexicFont] = useState(false);
+  const [highlightHeadings, setHighlightHeadings] = useState(false);
+  const [highlightLinks, setHighlightLinks] = useState(false);
+  const [contentSearch, setContentSearch] = useState(false);
+  const [readingMask, setReadingMask] = useState(false);
+  
+  // Renk ayarları
+  const [highContrast, setHighContrast] = useState(false);
+  const [invertColors, setInvertColors] = useState(false);
+  const [grayscale, setGrayscale] = useState(false);
+  const [underlineLinks, setUnderlineLinks] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const [lightMode, setLightMode] = useState(false);
+  
+  // Yönlendirme ayarları
+  const [bigCursor, setBigCursor] = useState(false);
+  const [stopAnimations, setStopAnimations] = useState(false);
+  const [muteSounds, setMuteSounds] = useState(false);
+  const [hideImages, setHideImages] = useState(false);
+  const [virtualKeyboard, setVirtualKeyboard] = useState(false);
+  
+  // Araçlar ayarları
+  const [quickNav, setQuickNav] = useState(false);
 
   // Refs
   const styleRef = useRef(null);
@@ -111,7 +143,7 @@ export default function AccessibilityBar() {
         word-spacing: var(--acc-word-spacing) !important;
       }
 
-      ${getLS(LS_KEYS.HIGH_CONTRAST, false) ? `
+      ${highContrast ? `
         .accessibility-active {
           --acc-bg: #000000 !important;
           --acc-text: #ffffff !important;
@@ -128,32 +160,32 @@ export default function AccessibilityBar() {
         }
       ` : ''}
 
-      ${getLS(LS_KEYS.INVERT_COLORS, false) ? `
+      ${invertColors ? `
         .accessibility-active {
           filter: invert(1) hue-rotate(180deg) !important;
         }
       ` : ''}
 
-      ${getLS(LS_KEYS.GRAYSCALE, false) ? `
+      ${grayscale ? `
         .accessibility-active {
           filter: grayscale(1) !important;
         }
       ` : ''}
 
-      ${getLS(LS_KEYS.UNDERLINE_LINKS, false) ? `
+      ${underlineLinks ? `
         .accessibility-active a {
           text-decoration: underline !important;
           text-decoration-skip-ink: none !important;
         }
       ` : ''}
 
-      ${getLS(LS_KEYS.DYSLEXIC_FONT, false) ? `
+      ${dyslexicFont ? `
         .accessibility-active * {
           font-family: "OpenDyslexic", "Comic Sans MS", sans-serif !important;
         }
       ` : ''}
 
-      ${getLS(LS_KEYS.HIGHLIGHT_HEADINGS, false) ? `
+      ${highlightHeadings ? `
         .accessibility-active h1,
         .accessibility-active h2,
         .accessibility-active h3,
@@ -167,7 +199,7 @@ export default function AccessibilityBar() {
         }
       ` : ''}
 
-      ${getLS(LS_KEYS.HIGHLIGHT_LINKS, false) ? `
+      ${highlightLinks ? `
         .accessibility-active a {
           background: #ffff00 !important;
           color: #000000 !important;
@@ -177,12 +209,34 @@ export default function AccessibilityBar() {
         }
       ` : ''}
 
-      ${getLS(LS_KEYS.BIG_CURSOR, false) ? `
+      ${bigCursor ? `
         .accessibility-active {
           cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="black" stroke="white" stroke-width="2"/></svg>') 16 16, auto !important;
         }
         .accessibility-active * {
           cursor: inherit !important;
+        }
+      ` : ''}
+
+      ${darkMode ? `
+        .accessibility-active {
+          background: #1a1a1a !important;
+          color: #ffffff !important;
+        }
+        .accessibility-active * {
+          background: inherit !important;
+          color: inherit !important;
+        }
+      ` : ''}
+
+      ${lightMode ? `
+        .accessibility-active {
+          background: #ffffff !important;
+          color: #000000 !important;
+        }
+        .accessibility-active * {
+          background: inherit !important;
+          color: inherit !important;
         }
       ` : ''}
 
@@ -202,10 +256,26 @@ export default function AccessibilityBar() {
       .accessibility-active .reading-guide {
         display: block;
       }
+
+      .reading-mask {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.1);
+        pointer-events: none;
+        z-index: 9999;
+        display: none;
+      }
+
+      .accessibility-active .reading-mask {
+        display: block;
+      }
     `;
 
     styleRef.current.textContent = styles;
-  }, [fontSize]);
+  }, [fontSize, highContrast, invertColors, grayscale, underlineLinks, dyslexicFont, highlightHeadings, highlightLinks, bigCursor, darkMode, lightMode]);
 
   // Animasyonları durdur
   const stopAnimations = useCallback(() => {
@@ -230,19 +300,71 @@ export default function AccessibilityBar() {
     }
   }, []);
 
+  // Okuma kılavuzu ve maskesi
+  const initReadingGuide = useCallback(() => {
+    if (!guideRef.current) {
+      guideRef.current = document.createElement('div');
+      guideRef.current.className = 'reading-guide';
+      document.body.appendChild(guideRef.current);
+
+      const mask = document.createElement('div');
+      mask.className = 'reading-mask';
+      document.body.appendChild(mask);
+    }
+
+    const guide = guideRef.current;
+    const mask = document.querySelector('.reading-mask');
+
+    const onMouseMove = (e) => {
+      if (guideRef.current) {
+        guide.style.top = e.clientY + 'px';
+        if (mask) {
+          mask.style.clipPath = `circle(100px at ${e.clientX}px ${e.clientY}px)`;
+        }
+      }
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+
+    return () => {
+      document.removeEventListener('mousemove', onMouseMove);
+    };
+  }, []);
+
   // Başlangıç yükleme
   useEffect(() => {
     const active = getLS(LS_KEYS.ACTIVE, false);
     const savedFontSize = getLS(LS_KEYS.FONT_SIZE, 16);
     const savedPosition = getLS(LS_KEYS.PANEL_POSITION, "right");
 
-    // Profil durumlarını yükle
+    // Tüm state'leri yükle
     setSeizureSafe(getLS(LS_KEYS.SEIZURE_SAFE, false));
     setVisionImpaired(getLS(LS_KEYS.VISION_IMPAIRED, false));
     setAdhdFriendly(getLS(LS_KEYS.ADHD_FRIENDLY, false));
     setCognitiveDisability(getLS(LS_KEYS.COGNITIVE_DISABILITY, false));
     setBlindUsers(getLS(LS_KEYS.BLIND_USERS, false));
     setKeyboardNav(getLS(LS_KEYS.KEYBOARD_NAV, false));
+    
+    setDyslexicFont(getLS(LS_KEYS.DYSLEXIC_FONT, false));
+    setHighlightHeadings(getLS(LS_KEYS.HIGHLIGHT_HEADINGS, false));
+    setHighlightLinks(getLS(LS_KEYS.HIGHLIGHT_LINKS, false));
+    setContentSearch(getLS(LS_KEYS.CONTENT_SEARCH, false));
+    setReadingMask(getLS(LS_KEYS.CONTENT_READING_MASK, false));
+    
+    setHighContrast(getLS(LS_KEYS.HIGH_CONTRAST, false));
+    setInvertColors(getLS(LS_KEYS.INVERT_COLORS, false));
+    setGrayscale(getLS(LS_KEYS.GRAYSCALE, false));
+    setUnderlineLinks(getLS(LS_KEYS.UNDERLINE_LINKS, false));
+    setDarkMode(getLS(LS_KEYS.COLOR_DARK_MODE, false));
+    setLightMode(getLS(LS_KEYS.COLOR_LIGHT_MODE, false));
+    
+    setBigCursor(getLS(LS_KEYS.BIG_CURSOR, false));
+    setStopAnimations(getLS(LS_KEYS.STOP_ANIMATIONS, false));
+    setMuteSounds(getLS(LS_KEYS.MUTE_SOUNDS, false));
+    setHideImages(getLS(LS_KEYS.HIDE_IMAGES, false));
+    setVirtualKeyboard(getLS(LS_KEYS.ORIENTATION_VIRTUAL_KEYBOARD, false));
+    
+    setQuickNav(getLS(LS_KEYS.TOOLS_QUICK_NAV, false));
 
     setIsActive(active);
     setFontSize(savedFontSize);
@@ -251,8 +373,16 @@ export default function AccessibilityBar() {
     if (active) {
       document.documentElement.classList.add('accessibility-active');
       applyStyles();
+      
+      if (getLS(LS_KEYS.STOP_ANIMATIONS, false)) {
+        stopAnimations();
+      }
+      
+      if (getLS(LS_KEYS.READING_GUIDE, false) || getLS(LS_KEYS.CONTENT_READING_MASK, false)) {
+        initReadingGuide();
+      }
     }
-  }, [applyStyles]);
+  }, [applyStyles, stopAnimations, initReadingGuide]);
 
   // Aktif durum değiştiğinde
   useEffect(() => {
@@ -274,128 +404,140 @@ export default function AccessibilityBar() {
     setLS(LS_KEYS.PANEL_POSITION, newPosition);
   }, [panelPosition]);
 
-  // Profil toggle fonksiyonları
-  const toggleSeizureSafe = useCallback(() => {
-    const newState = !seizureSafe;
-    setSeizureSafe(newState);
-    setLS(LS_KEYS.SEIZURE_SAFE, newState);
-    
-    if (newState) {
-      setLS(LS_KEYS.STOP_ANIMATIONS, true);
-      setLS(LS_KEYS.MUTE_SOUNDS, true);
-      stopAnimations();
-    } else {
-      setLS(LS_KEYS.STOP_ANIMATIONS, false);
-      setLS(LS_KEYS.MUTE_SOUNDS, false);
-      startAnimations();
-    }
-    
-    setIsActive(true);
-    applyStyles();
-  }, [seizureSafe, applyStyles, stopAnimations, startAnimations]);
+  // Genel toggle fonksiyonu
+  const createToggleHandler = useCallback((state, setState, key, extraAction = null) => {
+    return () => {
+      const newState = !state;
+      setState(newState);
+      setLS(key, newState);
+      
+      if (extraAction) {
+        extraAction(newState);
+      }
+      
+      setIsActive(true);
+      applyStyles();
+    };
+  }, [applyStyles]);
 
-  const toggleVisionImpaired = useCallback(() => {
-    const newState = !visionImpaired;
-    setVisionImpaired(newState);
-    setLS(LS_KEYS.VISION_IMPAIRED, newState);
-    
-    if (newState) {
-      setLS(LS_KEYS.HIGH_CONTRAST, true);
-      setLS(LS_KEYS.UNDERLINE_LINKS, true);
-      setLS(LS_KEYS.BIG_CURSOR, true);
-      setFontSize(18);
-      setLS(LS_KEYS.FONT_SIZE, 18);
-    } else {
-      setLS(LS_KEYS.HIGH_CONTRAST, false);
-      setLS(LS_KEYS.UNDERLINE_LINKS, false);
-      setLS(LS_KEYS.BIG_CURSOR, false);
-      setFontSize(16);
-      setLS(LS_KEYS.FONT_SIZE, 16);
+  // Profil toggle'ları
+  const toggleSeizureSafe = createToggleHandler(
+    seizureSafe, setSeizureSafe, LS_KEYS.SEIZURE_SAFE,
+    (newState) => {
+      if (newState) {
+        stopAnimations();
+        setLS(LS_KEYS.MUTE_SOUNDS, true);
+        setMuteSounds(true);
+      } else {
+        startAnimations();
+        setLS(LS_KEYS.MUTE_SOUNDS, false);
+        setMuteSounds(false);
+      }
     }
-    
-    setIsActive(true);
-    applyStyles();
-  }, [visionImpaired, applyStyles]);
+  );
 
-  const toggleAdhdFriendly = useCallback(() => {
-    const newState = !adhdFriendly;
-    setAdhdFriendly(newState);
-    setLS(LS_KEYS.ADHD_FRIENDLY, newState);
-    
-    if (newState) {
-      setLS(LS_KEYS.STOP_ANIMATIONS, true);
-      setLS(LS_KEYS.READING_GUIDE, true);
-      stopAnimations();
-    } else {
-      setLS(LS_KEYS.STOP_ANIMATIONS, false);
-      setLS(LS_KEYS.READING_GUIDE, false);
-      startAnimations();
+  const toggleVisionImpaired = createToggleHandler(
+    visionImpaired, setVisionImpaired, LS_KEYS.VISION_IMPAIRED,
+    (newState) => {
+      if (newState) {
+        setFontSize(18);
+        setLS(LS_KEYS.FONT_SIZE, 18);
+        setLS(LS_KEYS.HIGH_CONTRAST, true);
+        setHighContrast(true);
+        setLS(LS_KEYS.UNDERLINE_LINKS, true);
+        setUnderlineLinks(true);
+        setLS(LS_KEYS.BIG_CURSOR, true);
+        setBigCursor(true);
+      }
     }
-    
-    setIsActive(true);
-    applyStyles();
-  }, [adhdFriendly, applyStyles, stopAnimations, startAnimations]);
+  );
 
-  const toggleCognitiveDisability = useCallback(() => {
-    const newState = !cognitiveDisability;
-    setCognitiveDisability(newState);
-    setLS(LS_KEYS.COGNITIVE_DISABILITY, newState);
-    
-    if (newState) {
-      setLS(LS_KEYS.DYSLEXIC_FONT, true);
-      setLS(LS_KEYS.READING_GUIDE, true);
-      setLS(LS_KEYS.HIGHLIGHT_HEADINGS, true);
-      setLS(LS_KEYS.HIGHLIGHT_LINKS, true);
-      setFontSize(18);
-      setLS(LS_KEYS.FONT_SIZE, 18);
-    } else {
-      setLS(LS_KEYS.DYSLEXIC_FONT, false);
-      setLS(LS_KEYS.READING_GUIDE, false);
-      setLS(LS_KEYS.HIGHLIGHT_HEADINGS, false);
-      setLS(LS_KEYS.HIGHLIGHT_LINKS, false);
-      setFontSize(16);
-      setLS(LS_KEYS.FONT_SIZE, 16);
+  const toggleAdhdFriendly = createToggleHandler(
+    adhdFriendly, setAdhdFriendly, LS_KEYS.ADHD_FRIENDLY,
+    (newState) => {
+      if (newState) {
+        stopAnimations();
+        setLS(LS_KEYS.READING_GUIDE, true);
+        initReadingGuide();
+      } else {
+        startAnimations();
+        setLS(LS_KEYS.READING_GUIDE, false);
+      }
     }
-    
-    setIsActive(true);
-    applyStyles();
-  }, [cognitiveDisability, applyStyles]);
+  );
 
-  const toggleBlindUsers = useCallback(() => {
-    const newState = !blindUsers;
-    setBlindUsers(newState);
-    setLS(LS_KEYS.BLIND_USERS, newState);
-    
-    if (newState) {
-      setLS(LS_KEYS.IMAGE_ALT, true);
-      setLS(LS_KEYS.PAGE_STRUCTURE, true);
-      setLS(LS_KEYS.TOOLTIPS, true);
-    } else {
-      setLS(LS_KEYS.IMAGE_ALT, false);
-      setLS(LS_KEYS.PAGE_STRUCTURE, false);
-      setLS(LS_KEYS.TOOLTIPS, false);
+  const toggleCognitiveDisability = createToggleHandler(
+    cognitiveDisability, setCognitiveDisability, LS_KEYS.COGNITIVE_DISABILITY,
+    (newState) => {
+      if (newState) {
+        setFontSize(18);
+        setLS(LS_KEYS.FONT_SIZE, 18);
+        setLS(LS_KEYS.DYSLEXIC_FONT, true);
+        setDyslexicFont(true);
+        setLS(LS_KEYS.READING_GUIDE, true);
+        initReadingGuide();
+        setLS(LS_KEYS.HIGHLIGHT_HEADINGS, true);
+        setHighlightHeadings(true);
+        setLS(LS_KEYS.HIGHLIGHT_LINKS, true);
+        setHighlightLinks(true);
+      }
     }
-    
-    setIsActive(true);
-    applyStyles();
-  }, [blindUsers, applyStyles]);
+  );
 
-  const toggleKeyboardNav = useCallback(() => {
-    const newState = !keyboardNav;
-    setKeyboardNav(newState);
-    setLS(LS_KEYS.KEYBOARD_NAV, newState);
-    
-    if (newState) {
-      setLS(LS_KEYS.HIGHLIGHT_LINKS, true);
-      setLS(LS_KEYS.TOOLTIPS, true);
-    } else {
-      setLS(LS_KEYS.HIGHLIGHT_LINKS, false);
-      setLS(LS_KEYS.TOOLTIPS, false);
+  const toggleBlindUsers = createToggleHandler(
+    blindUsers, setBlindUsers, LS_KEYS.BLIND_USERS,
+    (newState) => {
+      if (newState) {
+        setLS(LS_KEYS.IMAGE_ALT, true);
+        setLS(LS_KEYS.PAGE_STRUCTURE, true);
+        setLS(LS_KEYS.TOOLTIPS, true);
+      }
     }
-    
-    setIsActive(true);
-    applyStyles();
-  }, [keyboardNav, applyStyles]);
+  );
+
+  const toggleKeyboardNav = createToggleHandler(
+    keyboardNav, setKeyboardNav, LS_KEYS.KEYBOARD_NAV,
+    (newState) => {
+      if (newState) {
+        setLS(LS_KEYS.HIGHLIGHT_LINKS, true);
+        setHighlightLinks(true);
+        setLS(LS_KEYS.TOOLTIPS, true);
+      }
+    }
+  );
+
+  // Diğer toggle'lar
+  const toggleDyslexicFont = createToggleHandler(dyslexicFont, setDyslexicFont, LS_KEYS.DYSLEXIC_FONT);
+  const toggleHighlightHeadings = createToggleHandler(highlightHeadings, setHighlightHeadings, LS_KEYS.HIGHLIGHT_HEADINGS);
+  const toggleHighlightLinks = createToggleHandler(highlightLinks, setHighlightLinks, LS_KEYS.HIGHLIGHT_LINKS);
+  const toggleContentSearch = createToggleHandler(contentSearch, setContentSearch, LS_KEYS.CONTENT_SEARCH);
+  const toggleReadingMask = createToggleHandler(readingMask, setReadingMask, LS_KEYS.CONTENT_READING_MASK, 
+    (newState) => {
+      if (newState) {
+        initReadingGuide();
+      }
+    }
+  );
+
+  const toggleHighContrast = createToggleHandler(highContrast, setHighContrast, LS_KEYS.HIGH_CONTRAST);
+  const toggleInvertColors = createToggleHandler(invertColors, setInvertColors, LS_KEYS.INVERT_COLORS);
+  const toggleGrayscale = createToggleHandler(grayscale, setGrayscale, LS_KEYS.GRAYSCALE);
+  const toggleUnderlineLinks = createToggleHandler(underlineLinks, setUnderlineLinks, LS_KEYS.UNDERLINE_LINKS);
+  const toggleDarkMode = createToggleHandler(darkMode, setDarkMode, LS_KEYS.COLOR_DARK_MODE);
+  const toggleLightMode = createToggleHandler(lightMode, setLightMode, LS_KEYS.COLOR_LIGHT_MODE);
+
+  const toggleBigCursor = createToggleHandler(bigCursor, setBigCursor, LS_KEYS.BIG_CURSOR);
+  const toggleStopAnimations = createToggleHandler(stopAnimations, setStopAnimations, LS_KEYS.STOP_ANIMATIONS,
+    (newState) => {
+      if (newState) stopAnimations();
+      else startAnimations();
+    }
+  );
+  const toggleMuteSounds = createToggleHandler(muteSounds, setMuteSounds, LS_KEYS.MUTE_SOUNDS);
+  const toggleHideImages = createToggleHandler(hideImages, setHideImages, LS_KEYS.HIDE_IMAGES);
+  const toggleVirtualKeyboard = createToggleHandler(virtualKeyboard, setVirtualKeyboard, LS_KEYS.ORIENTATION_VIRTUAL_KEYBOARD);
+
+  const toggleQuickNav = createToggleHandler(quickNav, setQuickNav, LS_KEYS.TOOLS_QUICK_NAV);
 
   // Ayarları sıfırla
   const resetAll = useCallback(() => {
@@ -412,6 +554,24 @@ export default function AccessibilityBar() {
     setCognitiveDisability(false);
     setBlindUsers(false);
     setKeyboardNav(false);
+    setDyslexicFont(false);
+    setHighlightHeadings(false);
+    setHighlightLinks(false);
+    setContentSearch(false);
+    setReadingMask(false);
+    setHighContrast(false);
+    setInvertColors(false);
+    setGrayscale(false);
+    setUnderlineLinks(false);
+    setDarkMode(false);
+    setLightMode(false);
+    setBigCursor(false);
+    setStopAnimations(false);
+    setMuteSounds(false);
+    setHideImages(false);
+    setVirtualKeyboard(false);
+    setQuickNav(false);
+    
     setFontSize(16);
     setIsActive(false);
     setPanelPosition("right");
@@ -421,6 +581,9 @@ export default function AccessibilityBar() {
       guideRef.current.remove();
       guideRef.current = null;
     }
+    
+    const mask = document.querySelector('.reading-mask');
+    if (mask) mask.remove();
   }, [startAnimations]);
 
   // Font boyutu ayarla
@@ -429,20 +592,6 @@ export default function AccessibilityBar() {
     setLS(LS_KEYS.FONT_SIZE, size);
     applyStyles();
   }, [applyStyles]);
-
-  // Toggle ayar
-  const toggleSetting = useCallback((key) => {
-    const current = getLS(key, false);
-    setLS(key, !current);
-    applyStyles();
-    
-    if (key === LS_KEYS.STOP_ANIMATIONS) {
-      if (!current) stopAnimations();
-      else startAnimations();
-    }
-    
-    setIsActive(true);
-  }, [applyStyles, stopAnimations, startAnimations]);
 
   // Arama sonuçları
   const searchResults = useMemo(() => {
@@ -502,7 +651,6 @@ export default function AccessibilityBar() {
           
           {/* Header Butonları */}
           <div className="flex items-center gap-2">
-            {/* Konum Değiştir Butonu */}
             <button
               onClick={togglePanelPosition}
               className="w-8 h-8 rounded-lg bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
@@ -512,7 +660,6 @@ export default function AccessibilityBar() {
               {panelPosition === 'right' ? '◀' : '▶'}
             </button>
 
-            {/* Kapat Butonu */}
             <button
               onClick={() => setIsActive(false)}
               className="w-8 h-8 rounded-lg bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
@@ -558,7 +705,7 @@ export default function AccessibilityBar() {
                 <p className="text-sm text-gray-600 mt-1">İhtiyaçlarınıza uygun ayarları otomatik olarak uygulayın</p>
               </div>
 
-              <ProfileToggle
+              <ToggleCard
                 icon="⚡"
                 title="Epilepsi Güvenli Profili"
                 description="Yanıp sönen efektleri temizler ve renkleri azaltır"
@@ -566,7 +713,7 @@ export default function AccessibilityBar() {
                 onToggle={toggleSeizureSafe}
               />
               
-              <ProfileToggle
+              <ToggleCard
                 icon="👁️"
                 title="Görme Engelli Profili"
                 description="Web sitesinin görsellerini geliştirir"
@@ -574,7 +721,7 @@ export default function AccessibilityBar() {
                 onToggle={toggleVisionImpaired}
               />
               
-              <ProfileToggle
+              <ToggleCard
                 icon="🧠"
                 title="DEHB Dostu Profili"
                 description="Daha fazla odaklanma ve daha az dikkat dağıtıcı öğe"
@@ -582,7 +729,7 @@ export default function AccessibilityBar() {
                 onToggle={toggleAdhdFriendly}
               />
               
-              <ProfileToggle
+              <ToggleCard
                 icon="🎯"
                 title="Bilişsel Engelli Profili"
                 description="Okuma ve odaklanmaya yardımcı olur"
@@ -590,7 +737,7 @@ export default function AccessibilityBar() {
                 onToggle={toggleCognitiveDisability}
               />
               
-              <ProfileToggle
+              <ToggleCard
                 icon="⌨️"
                 title="Klavye Navigasyonu (Motor)"
                 description="Web sitesini klavye ile kullanın"
@@ -598,7 +745,7 @@ export default function AccessibilityBar() {
                 onToggle={toggleKeyboardNav}
               />
               
-              <ProfileToggle
+              <ToggleCard
                 icon="🔈"
                 title="Görme Engelli Kullanıcılar (Ekran Okuyucu)"
                 description="Web sitesini ekran okuyucular için optimize edin"
@@ -608,10 +755,17 @@ export default function AccessibilityBar() {
             </div>
           )}
 
-          {/* Diğer sekmeler aynı kalacak... */}
+          {/* İçerik */}
           {activeTab === "content" && (
             <div className="space-y-6">
-              <Section title="Yazı Boyutu">
+              <div className="text-center mb-2">
+                <h3 className="text-lg font-semibold text-gray-900">İçerik ve Okunabilirlik Ayarları</h3>
+                <p className="text-sm text-gray-600 mt-1">Metin ve içerik görünümünü optimize edin</p>
+              </div>
+
+              {/* Yazı Boyutu */}
+              <div className="bg-gray-50 p-4 rounded-xl">
+                <h4 className="font-semibold text-gray-900 mb-3">Yazı Boyutu</h4>
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => setFontSizeWithSave(Math.max(12, fontSize - 2))}
@@ -629,90 +783,207 @@ export default function AccessibilityBar() {
                     A+
                   </button>
                 </div>
-              </Section>
+              </div>
 
-              <Section title="Okunabilirlik">
-                <Toggle
-                  label="Disleksi Yazı Tipi"
-                  checked={getLS(LS_KEYS.DYSLEXIC_FONT, false)}
-                  onChange={() => toggleSetting(LS_KEYS.DYSLEXIC_FONT)}
-                />
-                <Toggle
-                  label="Başlıkları Vurgula"
-                  checked={getLS(LS_KEYS.HIGHLIGHT_HEADINGS, false)}
-                  onChange={() => toggleSetting(LS_KEYS.HIGHLIGHT_HEADINGS)}
-                />
-                <Toggle
-                  label="Bağlantıları Vurgula"
-                  checked={getLS(LS_KEYS.HIGHLIGHT_LINKS, false)}
-                  onChange={() => toggleSetting(LS_KEYS.HIGHLIGHT_LINKS)}
-                />
-              </Section>
-            </div>
-          )}
-
-          {activeTab === "color" && (
-            <div className="space-y-4">
-              <Toggle
-                label="Yüksek Kontrast"
-                checked={getLS(LS_KEYS.HIGH_CONTRAST, false)}
-                onChange={() => toggleSetting(LS_KEYS.HIGH_CONTRAST)}
+              {/* Okunabilirlik Ayarları */}
+              <ToggleCard
+                icon="🔤"
+                title="Disleksi Yazı Tipi"
+                description="Okumayı kolaylaştıran özel yazı tipi"
+                isActive={dyslexicFont}
+                onToggle={toggleDyslexicFont}
               />
-              <Toggle
-                label="Renkleri Ters Çevir"
-                checked={getLS(LS_KEYS.INVERT_COLORS, false)}
-                onChange={() => toggleSetting(LS_KEYS.INVERT_COLORS)}
+              
+              <ToggleCard
+                icon="📑"
+                title="Başlıkları Vurgula"
+                description="Tüm başlıkları belirgin şekilde işaretler"
+                isActive={highlightHeadings}
+                onToggle={toggleHighlightHeadings}
               />
-              <Toggle
-                label="Siyah-Beyaz"
-                checked={getLS(LS_KEYS.GRAYSCALE, false)}
-                onChange={() => toggleSetting(LS_KEYS.GRAYSCALE)}
+              
+              <ToggleCard
+                icon="🔗"
+                title="Bağlantıları Vurgula"
+                description="Tüm linkleri belirgin şekilde gösterir"
+                isActive={highlightLinks}
+                onToggle={toggleHighlightLinks}
               />
-            </div>
-          )}
-
-          {activeTab === "orientation" && (
-            <div className="space-y-4">
-              <Toggle
-                label="Büyük İmleç"
-                checked={getLS(LS_KEYS.BIG_CURSOR, false)}
-                onChange={() => toggleSetting(LS_KEYS.BIG_CURSOR)}
-              />
-              <Toggle
-                label="Animasyonları Durdur"
-                checked={getLS(LS_KEYS.STOP_ANIMATIONS, false)}
-                onChange={() => toggleSetting(LS_KEYS.STOP_ANIMATIONS)}
-              />
-              <Toggle
-                label="Sesleri Kapat"
-                checked={getLS(LS_KEYS.MUTE_SOUNDS, false)}
-                onChange={() => toggleSetting(LS_KEYS.MUTE_SOUNDS)}
-              />
-            </div>
-          )}
-
-          {activeTab === "tools" && (
-            <div className="space-y-4">
-              <ToolButton
+              
+              <ToggleCard
                 icon="🔍"
-                label="Site İçi Arama"
+                title="İçerik Arama"
+                description="Sayfa içeriğinde hızlı arama yapın"
+                isActive={contentSearch}
+                onToggle={toggleContentSearch}
+              />
+              
+              <ToggleCard
+                icon="👁️"
+                title="Okuma Maskesi"
+                description="Okuduğunuz alanı vurgulayan maske"
+                isActive={readingMask}
+                onToggle={toggleReadingMask}
+              />
+            </div>
+          )}
+
+          {/* Renk */}
+          {activeTab === "color" && (
+            <div className="space-y-6">
+              <div className="text-center mb-2">
+                <h3 className="text-lg font-semibold text-gray-900">Renk ve Görünüm Ayarları</h3>
+                <p className="text-sm text-gray-600 mt-1">Renk kontrastı ve görsel ayarlarını değiştirin</p>
+              </div>
+
+              <ToggleCard
+                icon="🎨"
+                title="Yüksek Kontrast"
+                description="Metin ve arkaplan kontrastını maksimuma çıkarır"
+                isActive={highContrast}
+                onToggle={toggleHighContrast}
+              />
+              
+              <ToggleCard
+                icon="🔄"
+                title="Renkleri Ters Çevir"
+                description="Tüm renkleri tersine çevirir"
+                isActive={invertColors}
+                onToggle={toggleInvertColors}
+              />
+              
+              <ToggleCard
+                icon="⚫"
+                title="Siyah-Beyaz Mod"
+                description="Tüm renkleri gri tonlarına çevirir"
+                isActive={grayscale}
+                onToggle={toggleGrayscale}
+              />
+              
+              <ToggleCard
+                icon="🔗"
+                title="Bağlantıların Altını Çiz"
+                description="Tüm linklerin altını çizer"
+                isActive={underlineLinks}
+                onToggle={toggleUnderlineLinks}
+              />
+              
+              <ToggleCard
+                icon="🌙"
+                title="Koyu Mod"
+                description="Koyu arkaplan ve açık renk metin"
+                isActive={darkMode}
+                onToggle={toggleDarkMode}
+              />
+              
+              <ToggleCard
+                icon="☀️"
+                title="Açık Mod"
+                description="Açık arkaplan ve koyu renk metin"
+                isActive={lightMode}
+                onToggle={toggleLightMode}
+              />
+            </div>
+          )}
+
+          {/* Yönlendirme */}
+          {activeTab === "orientation" && (
+            <div className="space-y-6">
+              <div className="text-center mb-2">
+                <h3 className="text-lg font-semibold text-gray-900">Yönlendirme ve Navigasyon</h3>
+                <p className="text-sm text-gray-600 mt-1">Site gezintisi ve etkileşim ayarları</p>
+              </div>
+
+              <ToggleCard
+                icon="🖱️"
+                title="Büyük İmleç"
+                description="Daha kolay görünen büyük fare imleci"
+                isActive={bigCursor}
+                onToggle={toggleBigCursor}
+              />
+              
+              <ToggleCard
+                icon="⏸️"
+                title="Animasyonları Durdur"
+                description="Tüm hareketli öğeleri durdurur"
+                isActive={stopAnimations}
+                onToggle={toggleStopAnimations}
+              />
+              
+              <ToggleCard
+                icon="🔇"
+                title="Sesleri Kapat"
+                description="Tüm ses ve video seslerini kapatır"
+                isActive={muteSounds}
+                onToggle={toggleMuteSounds}
+              />
+              
+              <ToggleCard
+                icon="🖼️"
+                title="Resimleri Gizle"
+                description="Tüm görselleri gizler"
+                isActive={hideImages}
+                onToggle={toggleHideImages}
+              />
+              
+              <ToggleCard
+                icon="⌨️"
+                title="Sanal Klavye"
+                description="Fare ile kullanılabilen sanal klavye"
+                isActive={virtualKeyboard}
+                onToggle={toggleVirtualKeyboard}
+              />
+            </div>
+          )}
+
+          {/* Araçlar */}
+          {activeTab === "tools" && (
+            <div className="space-y-6">
+              <div className="text-center mb-2">
+                <h3 className="text-lg font-semibold text-gray-900">Yardımcı Araçlar</h3>
+                <p className="text-sm text-gray-600 mt-1">Ekstra yardımcı araçlar ve hızlı erişim</p>
+              </div>
+
+              <ToggleCard
+                icon="🧭"
+                title="Hızlı Navigasyon"
+                description="Sayfa içinde hızlı gezinme menüsü"
+                isActive={quickNav}
+                onToggle={toggleQuickNav}
+              />
+              
+              <ActionCard
+                icon="🔍"
+                title="Site İçi Arama"
+                description="Sayfalarda hızlı arama yapın"
                 onClick={() => setIsSearchOpen(true)}
               />
-              <ToolButton
+              
+              <ActionCard
                 icon="📞"
-                label="Hızlı İletişim"
+                title="Hızlı İletişim"
+                description="Telefon ile hemen ulaşın"
                 onClick={() => window.open('tel:+905453048671')}
               />
-              <ToolButton
+              
+              <ActionCard
                 icon="💬"
-                label="WhatsApp"
+                title="WhatsApp"
+                description="WhatsApp'tan mesaj gönderin"
                 onClick={() => window.open('https://wa.me/905453048671')}
+              />
+              
+              <ActionCard
+                icon="⬆️"
+                title="Yukarı Çık"
+                description="Sayfanın en üstüne dönün"
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               />
               
               <div className="pt-4 border-t border-gray-200">
                 <button
                   onClick={resetAll}
-                  className="w-full py-3 bg-red-50 text-red-600 rounded-lg font-semibold hover:bg-red-100 transition-colors"
+                  className="w-full py-4 bg-red-50 text-red-600 rounded-lg font-semibold hover:bg-red-100 transition-colors border border-red-200"
                 >
                   ↻ Tüm Ayarları Sıfırla
                 </button>
@@ -754,8 +1025,8 @@ export default function AccessibilityBar() {
   );
 }
 
-// Yeni ProfileToggle Bileşeni - accessiBe stili
-function ProfileToggle({ icon, title, description, isActive, onToggle }) {
+// ToggleCard Bileşeni - accessiBe stili
+function ToggleCard({ icon, title, description, isActive, onToggle }) {
   return (
     <div className="flex items-center justify-between p-4 rounded-xl border border-gray-200 bg-white hover:border-gray-300 transition-colors">
       <div className="flex items-start gap-3 flex-1">
@@ -788,47 +1059,21 @@ function ProfileToggle({ icon, title, description, isActive, onToggle }) {
   );
 }
 
-// Diğer bileşenler aynı kalacak...
-function Section({ title, children }) {
-  return (
-    <div>
-      <h3 className="font-semibold text-gray-900 mb-3 text-sm uppercase tracking-wide">
-        {title}
-      </h3>
-      {children}
-    </div>
-  );
-}
-
-function Toggle({ label, checked, onChange }) {
-  return (
-    <div className="flex items-center justify-between py-3">
-      <span className="text-gray-700 font-medium">{label}</span>
-      <button
-        onClick={onChange}
-        className={`w-12 h-6 rounded-full transition-colors relative ${
-          checked ? 'bg-blue-500' : 'bg-gray-300'
-        }`}
-        aria-pressed={checked}
-      >
-        <div
-          className={`w-4 h-4 rounded-full bg-white transform transition-transform absolute top-1 ${
-            checked ? 'translate-x-7' : 'translate-x-1'
-          }`}
-        />
-      </button>
-    </div>
-  );
-}
-
-function ToolButton({ icon, label, onClick }) {
+// ActionCard Bileşeni - Tıklanabilir butonlar için
+function ActionCard({ icon, title, description, onClick }) {
   return (
     <button
       onClick={onClick}
-      className="w-full flex items-center gap-3 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors text-left"
+      className="w-full flex items-center justify-between p-4 rounded-xl border border-gray-200 bg-white hover:border-blue-300 hover:bg-blue-50 transition-colors text-left"
     >
-      <span className="text-xl">{icon}</span>
-      <span className="font-medium text-gray-700">{label}</span>
+      <div className="flex items-start gap-3 flex-1">
+        <span className="text-2xl mt-1">{icon}</span>
+        <div className="flex-1">
+          <h3 className="font-semibold text-gray-900 text-base">{title}</h3>
+          <p className="text-sm text-gray-600 mt-1">{description}</p>
+        </div>
+      </div>
+      <span className="text-gray-400 text-lg">›</span>
     </button>
   );
 }
