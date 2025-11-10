@@ -1,4 +1,21 @@
-export default () => ({
-  rules: [{ userAgent: "*", allow: "/" }],
-  sitemap: "https://www.sahneva.com/sitemap.xml",
-});
+// app/robots.js  (veya robots.ts)
+
+export default function robots() {
+  const host = "https://www.sahneva.com";
+
+  return {
+    rules: [
+      {
+        userAgent: "*",
+        allow: "/",
+
+        disallow: [
+          "/_next/",    // static build output
+          "/api/",      // server functions
+          ],
+      },
+    ],
+
+    sitemap: [`${host}/sitemap.xml`],
+  };
+}
