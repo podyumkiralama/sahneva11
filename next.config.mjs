@@ -157,6 +157,8 @@ const nextConfig = {
   generateEtags: true,
   productionBrowserSourceMaps: false,
   trailingSlash: false,
+  turbopackMinify: true,
+  turbopack: {},
 
   images: {
     deviceSizes: [320, 420, 640, 750, 828, 1080, 1200, 1920],
@@ -179,6 +181,15 @@ const nextConfig = {
   compiler: {
     removeConsole: isProd ? { exclude: ["error", "warn"] } : false,
     reactRemoveProperties: isProd ? { properties: ["^data-testid$"] } : false,
+  },
+
+  webpack(config, { dev }) {
+    if (!dev) {
+      config.optimization ??= {};
+      config.optimization.minimize = true;
+    }
+
+    return config;
   },
 
   experimental: {
