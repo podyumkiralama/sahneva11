@@ -94,7 +94,7 @@ const jsonLd = {
         telephone: "+905453048671",
         address: { "@type": "PostalAddress", addressLocality: "İstanbul", addressCountry: "TR" },
         url: ORIGIN,
-        logo: `${ORIGIN}/logo.png`,
+        logo: `${ORIGIN}/img/logo.png`,
       },
       serviceType: "EventProduction",
       url: `${ORIGIN}/kurumsal-organizasyon`,

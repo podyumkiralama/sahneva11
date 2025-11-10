@@ -1224,7 +1224,7 @@ function JsonLd() {
             addressCountry: "TR" 
           },
           url: ORIGIN,
-          logo: `${ORIGIN}/logo.png`,
+          logo: `${ORIGIN}/img/logo.png`,
         },
         areaServed: "TR",
         serviceType: "EventProduction",
