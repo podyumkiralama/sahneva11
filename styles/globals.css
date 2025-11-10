@@ -200,7 +200,22 @@ html.hc a{ color:#00eaff; text-decoration:underline; text-decoration-thickness:2
 }
 @media (min-width:768px){ .full-bleed{ min-height:70vh; } }
 
-/* ==========================================================================
-   Çakışma Temizliği
-   - Kaldırıldı: .container{...}  → Tailwind container util'i kullanılıyor.
-   ========================================================================== */
+
+/* Utility Bar CSS Classes */
+.hc { /* high contrast styles */ }
+.ub-ul a { text-decoration: underline !important; }
+.ub-readable { /* improved readability styles */ }
+.ub-font-readable { /* readable font family */ }
+.ub-left { text-align: left !important; }
+.ub-center { text-align: center !important; }
+.ub-just { text-align: justify !important; }
+.ub-dark { /* dark theme */ }
+.ub-light { /* light theme */ }
+.ub-gray { filter: grayscale(100%) !important; }
+.ub-desat { filter: saturate(0.5) !important; }
+.ub-sat { filter: saturate(1.5) !important; }
+.ub-invert { filter: invert(1) !important; }
+.ub-headings h1, .ub-headings h2, .ub-headings h3 { /* highlight headings */ }
+.ub-focusmode { /* focus mode styles */ }
+.ub-hideimg img { display: none !important; }
+.ub-readmode { /* reading mode styles */ }
