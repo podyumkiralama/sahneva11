@@ -2,8 +2,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["sahneva/*"], 
-      "@/components/*": ["sahneva/components/*"]
+      "@/*": ["*"],
+      "@/components/*": ["components/*"],
+      "@/public/*": ["public/*"]
     }
   }
 }
