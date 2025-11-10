@@ -1,902 +1,874 @@
-// components/UtilityBar.js
+// components/AccessibilityBar.js
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 
-// Site rotaları
 const ROUTES = [
-  { href: "/", label: "Anasayfa", title: "Sahneva Ana Sayfa", icon: "🏠" },
-  { href: "/hakkimizda", label: "Hakkımızda", title: "Sahneva Hakkında", icon: "👥" },
-  { href: "/iletisim", label: "İletişim", title: "Sahneva İletişim", icon: "📞" },
-  { href: "/podyum-kiralama", label: "Podyum", title: "Podyum Kiralama", icon: "👑" },
-  { href: "/led-ekran-kiralama", label: "LED Ekran", title: "LED Ekran Kiralama", icon: "🖥️" },
-  { href: "/ses-isik-sistemleri", label: "Ses & Işık", title: "Ses ve Işık Sistemleri", icon: "🎭" },
-  { href: "/cadir-kiralama", label: "Çadır", title: "Çadır Kiralama", icon: "⛺" },
-  { href: "/masa-sandalye-kiralama", label: "Masa Sandalye", title: "Masa Sandalye Kiralama", icon: "🪑" },
-  { href: "/sahne-kiralama", label: "Sahne", title: "Sahne Kiralama", icon: "🎪" },
+  { href: "/", label: "Anasayfa", icon: "🏠" },
+  { href: "/hakkimizda", label: "Hakkımızda", icon: "👥" },
+  { href: "/iletisim", label: "İletişim", icon: "📞" },
+  { href: "/podyum-kiralama", label: "Podyum", icon: "👑" },
+  { href: "/led-ekran-kiralama", label: "LED Ekran", icon: "🖥️" },
+  { href: "/ses-isik-sistemleri", label: "Ses & Işık", icon: "🎭" },
+  { href: "/cadir-kiralama", label: "Çadır", icon: "⛺" },
+  { href: "/masa-sandalye-kiralama", label: "Masa Sandalye", icon: "🪑" },
+  { href: "/sahne-kiralama", label: "Sahne", icon: "🎪" },
 ];
 
 // LocalStorage anahtarları
-const LS = {
-  HC: "ub.hc.v1",
-  COLLAPSED: "ub.collapsed.v1",
-  UL: "ub.ul.v1",
-  RM: "ub.rm.v1",
-  READABLE: "ub.readable.v1",
-  POS: "ub.pos.v1",
-  FS: "ub.fs.v1",
-  // Yeni özellikler için
-  LEFT: "ub.left.v1",
-  CENTER: "ub.center.v1",
-  JUST: "ub.just.v1",
-  DARK: "ub.dark.v1",
-  LIGHT: "ub.light.v1",
-  GRAY: "ub.gray.v1",
-  DESAT: "ub.desat.v1",
-  SAT: "ub.sat.v1",
-  INV: "ub.inv.v1",
-  HEAD: "ub.head.v1",
-  FOCUS: "ub.focus.v1",
-  HIDEIMG: "ub.hideimg.v1",
-  READMODE: "ub.readmode.v1",
-  BIGCUR_B: "ub.bigcur.b.v1",
-  BIGCUR_W: "ub.bigcur.w.v1",
-  FONT_READABLE: "ub.font.read.v1",
+const LS_KEYS = {
+  ACTIVE: "acc_active",
+  PROFILE: "acc_profile",
+  FONT_SIZE: "acc_font_size",
+  LINE_HEIGHT: "acc_line_height",
+  LETTER_SPACING: "acc_letter_spacing",
+  WORD_SPACING: "acc_word_spacing",
+  HIGH_CONTRAST: "acc_high_contrast",
+  INVERT_COLORS: "acc_invert_colors",
+  GRAYSCALE: "acc_grayscale",
+  SATURATION: "acc_saturation",
+  UNDERLINE_LINKS: "acc_underline_links",
+  TEXT_ALIGN: "acc_text_align",
+  DYSLEXIC_FONT: "acc_dyslexic_font",
+  BIG_CURSOR: "acc_big_cursor",
+  READING_GUIDE: "acc_reading_guide",
+  IMAGE_ALT: "acc_image_alt",
+  STOP_ANIMATIONS: "acc_stop_animations",
+  MUTE_SOUNDS: "acc_mute_sounds",
+  HIDE_IMAGES: "acc_hide_images",
+  HIGHLIGHT_HEADINGS: "acc_highlight_headings",
+  HIGHLIGHT_LINKS: "acc_highlight_links",
+  TOOLTIPS: "acc_tooltips",
+  PAGE_STRUCTURE: "acc_page_structure",
 };
 
-export default function UtilityBar() {
+const PROFILES = {
+  SEIZURE_SAFE: "seizure-safe",
+  VISION_IMPAIRED: "vision-impaired",
+  ADHD_FRIENDLY: "adhd-friendly",
+  COGNITIVE_DISABILITY: "cognitive",
+  BLIND_USERS: "blind-users",
+  KEYBOARD_NAV: "keyboard-nav",
+};
+
+export default function AccessibilityBar() {
   // Ana durumlar
-  const [isSearchOpen, setSearchOpen] = useState(false);
-  const [query, setQuery] = useState("");
-  const [activeTool, setActiveTool] = useState(null);
-  const [panelOpen, setPanelOpen] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+  const [activeProfile, setActiveProfile] = useState(null);
+  const [fontSize, setFontSize] = useState(16);
   const [activeTab, setActiveTab] = useState("profiles");
-
-  // Temel durumlar
-  const [isHighContrast, setHighContrast] = useState(false);
-  const [underlineLinks, setUnderlineLinks] = useState(false);
-  const [reduceMotion, setReduceMotion] = useState(false);
-  const [readableText, setReadableText] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
-  const [position, setPosition] = useState("right");
-
-  // Yeni durumlar
-  const [fontReadable, setFontReadable] = useState(false);
-  const [alignLeft, setAlignLeft] = useState(false);
-  const [alignCenter, setAlignCenter] = useState(false);
-  const [alignJust, setAlignJust] = useState(false);
-  const [dark, setDark] = useState(false);
-  const [light, setLight] = useState(false);
-  const [gray, setGray] = useState(false);
-  const [desat, setDesat] = useState(false);
-  const [sat, setSat] = useState(false);
-  const [invert, setInvert] = useState(false);
-  const [headings, setHeadings] = useState(false);
-  const [focusMode, setFocusMode] = useState(false);
-  const [hideImages, setHideImages] = useState(false);
-  const [readMode, setReadMode] = useState(false);
-  const [bigCurB, setBigCurB] = useState(false);
-  const [bigCurW, setBigCurW] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Refs
-  const dialogRef = useRef(null);
-  const toolsRef = useRef(null);
-  const lastFocusRef = useRef(null);
-  const stopStyleRef = useRef(null);
-  const bigCurStyleRef = useRef(null);
+  const styleRef = useRef(null);
+  const guideRef = useRef(null);
+  const animationStyleRef = useRef(null);
 
   // Yardımcı fonksiyonlar
-  const setLS = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
-  const delLS = (k) => { try { localStorage.removeItem(k); } catch {} };
-  const toggleClass = (cls, on) => document.documentElement.classList.toggle(cls, on);
+  const setLS = (key, value) => {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (e) {}
+  };
 
-  // Animasyon kontrolü
-  const enableStopAnimations = useCallback(() => {
-    if (stopStyleRef.current) return;
-    const style = document.createElement("style");
-    style.id = "ub-stop-anims";
-    style.textContent = `*{animation:none !important;transition:none !important;scroll-behavior:auto !important}`;
-    document.head.appendChild(style);
-    stopStyleRef.current = style;
+  const getLS = (key, defaultValue) => {
+    try {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : defaultValue;
+    } catch (e) {
+      return defaultValue;
+    }
+  };
+
+  // CSS stilini uygula
+  const applyStyles = useCallback(() => {
+    if (!styleRef.current) {
+      styleRef.current = document.createElement('style');
+      document.head.appendChild(styleRef.current);
+    }
+
+    const styles = `
+      .accessibility-active {
+        --acc-font-size: ${fontSize}px;
+        --acc-line-height: ${getLS(LS_KEYS.LINE_HEIGHT, 1.6)};
+        --acc-letter-spacing: ${getLS(LS_KEYS.LETTER_SPACING, 0)}px;
+        --acc-word-spacing: ${getLS(LS_KEYS.WORD_SPACING, 0)}px;
+      }
+
+      .accessibility-active body {
+        font-size: var(--acc-font-size) !important;
+        line-height: var(--acc-line-height) !important;
+        letter-spacing: var(--acc-letter-spacing) !important;
+        word-spacing: var(--acc-word-spacing) !important;
+      }
+
+      ${getLS(LS_KEYS.HIGH_CONTRAST, false) ? `
+        .accessibility-active {
+          --acc-bg: #000000 !important;
+          --acc-text: #ffffff !important;
+          --acc-primary: #ffff00 !important;
+        }
+        .accessibility-active * {
+          background: var(--acc-bg) !important;
+          color: var(--acc-text) !important;
+          border-color: var(--acc-primary) !important;
+        }
+        .accessibility-active a {
+          color: var(--acc-primary) !important;
+          text-decoration: underline !important;
+        }
+      ` : ''}
+
+      ${getLS(LS_KEYS.INVERT_COLORS, false) ? `
+        .accessibility-active {
+          filter: invert(1) hue-rotate(180deg) !important;
+        }
+      ` : ''}
+
+      ${getLS(LS_KEYS.GRAYSCALE, false) ? `
+        .accessibility-active {
+          filter: grayscale(1) !important;
+        }
+      ` : ''}
+
+      ${getLS(LS_KEYS.UNDERLINE_LINKS, false) ? `
+        .accessibility-active a {
+          text-decoration: underline !important;
+          text-decoration-skip-ink: none !important;
+        }
+      ` : ''}
+
+      ${getLS(LS_KEYS.DYSLEXIC_FONT, false) ? `
+        .accessibility-active * {
+          font-family: "OpenDyslexic", "Comic Sans MS", sans-serif !important;
+        }
+      ` : ''}
+
+      ${getLS(LS_KEYS.HIGHLIGHT_HEADINGS, false) ? `
+        .accessibility-active h1,
+        .accessibility-active h2,
+        .accessibility-active h3,
+        .accessibility-active h4,
+        .accessibility-active h5,
+        .accessibility-active h6 {
+          background: yellow !important;
+          color: black !important;
+          padding: 4px 8px !important;
+          border-radius: 4px !important;
+        }
+      ` : ''}
+
+      ${getLS(LS_KEYS.HIGHLIGHT_LINKS, false) ? `
+        .accessibility-active a {
+          background: #ffff00 !important;
+          color: #000000 !important;
+          padding: 2px 4px !important;
+          border-radius: 2px !important;
+          text-decoration: underline !important;
+        }
+      ` : ''}
+
+      ${getLS(LS_KEYS.BIG_CURSOR, false) ? `
+        .accessibility-active {
+          cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="black" stroke="white" stroke-width="2"/></svg>') 16 16, auto !important;
+        }
+        .accessibility-active * {
+          cursor: inherit !important;
+        }
+      ` : ''}
+
+      .reading-guide {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 800px;
+        height: 2px;
+        background: red;
+        z-index: 10000;
+        pointer-events: none;
+        display: none;
+      }
+
+      .accessibility-active .reading-guide {
+        display: block;
+      }
+    `;
+
+    styleRef.current.textContent = styles;
+  }, [fontSize]);
+
+  // Animasyonları durdur
+  const stopAnimations = useCallback(() => {
+    if (!animationStyleRef.current) {
+      animationStyleRef.current = document.createElement('style');
+      animationStyleRef.current.textContent = `
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+      `;
+      document.head.appendChild(animationStyleRef.current);
+    }
   }, []);
 
-  const disableStopAnimations = useCallback(() => {
-    stopStyleRef.current?.remove?.();
-    stopStyleRef.current = null;
+  const startAnimations = useCallback(() => {
+    if (animationStyleRef.current) {
+      animationStyleRef.current.remove();
+      animationStyleRef.current = null;
+    }
   }, []);
 
-  // Büyük imleç
-  const enableBigCursor = useCallback((color = "black") => {
-    if (bigCurStyleRef.current) bigCurStyleRef.current.remove();
-    const style = document.createElement("style");
-    style.id = "ub-big-cursor";
-    const fill = color === "white" ? "white" : "black";
-    const stroke = color === "white" ? "black" : "white";
-    const svg = encodeURIComponent(`<?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
-  <circle cx="8" cy="8" r="8" fill="${fill}" stroke="${stroke}" stroke-width="2"/>
-</svg>`);
-    style.textContent = `html{cursor:url("data:image/svg+xml,${svg}") 8 8, auto}`;
-    document.head.appendChild(style);
-    bigCurStyleRef.current = style;
-  }, []);
+  // Okuma kılavuzu
+  const initReadingGuide = useCallback(() => {
+    if (!guideRef.current) {
+      guideRef.current = document.createElement('div');
+      guideRef.current.className = 'reading-guide';
+      document.body.appendChild(guideRef.current);
+    }
 
-  const disableBigCursor = useCallback(() => {
-    bigCurStyleRef.current?.remove?.();
-    bigCurStyleRef.current = null;
+    const guide = guideRef.current;
+    let isDragging = false;
+
+    const onMouseMove = (e) => {
+      if (getLS(LS_KEYS.READING_GUIDE, false)) {
+        guide.style.top = e.clientY + 'px';
+      }
+    };
+
+    const onMouseDown = (e) => {
+      if (e.target === guide) {
+        isDragging = true;
+      }
+    };
+
+    const onMouseUp = () => {
+      isDragging = false;
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mousedown', onMouseDown);
+    document.addEventListener('mouseup', onMouseUp);
+
+    return () => {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mousedown', onMouseDown);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
   }, []);
 
   // Başlangıç yükleme
   useEffect(() => {
-    const d = document.documentElement;
+    const active = getLS(LS_KEYS.ACTIVE, false);
+    const savedFontSize = getLS(LS_KEYS.FONT_SIZE, 16);
+    const profile = getLS(LS_KEYS.PROFILE, null);
 
-    // Temel ayarlar
-    const savedHC = localStorage.getItem(LS.HC) === "1";
-    if (savedHC) d.classList.add("hc");
-    setHighContrast(savedHC);
+    setIsActive(active);
+    setFontSize(savedFontSize);
+    setActiveProfile(profile);
 
-    const savedUL = localStorage.getItem(LS.UL) === "1";
-    if (savedUL) d.classList.add("ub-ul");
-    setUnderlineLinks(savedUL);
-
-    const savedRM = localStorage.getItem(LS.RM) === "1";
-    if (savedRM) enableStopAnimations();
-    setReduceMotion(savedRM);
-
-    const savedReadable = localStorage.getItem(LS.READABLE) === "1";
-    if (savedReadable) d.classList.add("ub-readable");
-    setReadableText(savedReadable);
-
-    const savedCol = localStorage.getItem(LS.COLLAPSED) === "1";
-    setCollapsed(savedCol);
-
-    const savedPos = localStorage.getItem(LS.POS);
-    if (savedPos === "left" || savedPos === "right") setPosition(savedPos);
-
-    const savedFs = Number(localStorage.getItem(LS.FS));
-    if (!Number.isNaN(savedFs) && savedFs >= 12 && savedFs <= 20) {
-      d.style.fontSize = `${savedFs}px`;
-    }
-
-    // Yeni ayarlar
-    const savedFontReadable = localStorage.getItem(LS.FONT_READABLE) === "1";
-    if (savedFontReadable) d.classList.add("ub-font-readable");
-    setFontReadable(savedFontReadable);
-
-    const savedLeft = localStorage.getItem(LS.LEFT) === "1";
-    if (savedLeft) d.classList.add("ub-left");
-    setAlignLeft(savedLeft);
-
-    const savedCenter = localStorage.getItem(LS.CENTER) === "1";
-    if (savedCenter) d.classList.add("ub-center");
-    setAlignCenter(savedCenter);
-
-    const savedJust = localStorage.getItem(LS.JUST) === "1";
-    if (savedJust) d.classList.add("ub-just");
-    setAlignJust(savedJust);
-
-    const savedDark = localStorage.getItem(LS.DARK) === "1";
-    if (savedDark) d.classList.add("ub-dark");
-    setDark(savedDark);
-
-    const savedLight = localStorage.getItem(LS.LIGHT) === "1";
-    if (savedLight) d.classList.add("ub-light");
-    setLight(savedLight);
-
-    const savedGray = localStorage.getItem(LS.GRAY) === "1";
-    if (savedGray) d.classList.add("ub-gray");
-    setGray(savedGray);
-
-    const savedDesat = localStorage.getItem(LS.DESAT) === "1";
-    if (savedDesat) d.classList.add("ub-desat");
-    setDesat(savedDesat);
-
-    const savedSat = localStorage.getItem(LS.SAT) === "1";
-    if (savedSat) d.classList.add("ub-sat");
-    setSat(savedSat);
-
-    const savedInvert = localStorage.getItem(LS.INV) === "1";
-    if (savedInvert) d.classList.add("ub-invert");
-    setInvert(savedInvert);
-
-    const savedHead = localStorage.getItem(LS.HEAD) === "1";
-    if (savedHead) d.classList.add("ub-headings");
-    setHeadings(savedHead);
-
-    const savedFocus = localStorage.getItem(LS.FOCUS) === "1";
-    if (savedFocus) d.classList.add("ub-focusmode");
-    setFocusMode(savedFocus);
-
-    const savedHideImg = localStorage.getItem(LS.HIDEIMG) === "1";
-    if (savedHideImg) d.classList.add("ub-hideimg");
-    setHideImages(savedHideImg);
-
-    const savedReadMode = localStorage.getItem(LS.READMODE) === "1";
-    if (savedReadMode) d.classList.add("ub-readmode");
-    setReadMode(savedReadMode);
-
-    const savedBigCurB = localStorage.getItem(LS.BIGCUR_B) === "1";
-    if (savedBigCurB) enableBigCursor("black");
-    setBigCurB(savedBigCurB);
-
-    const savedBigCurW = localStorage.getItem(LS.BIGCUR_W) === "1";
-    if (savedBigCurW) enableBigCursor("white");
-    setBigCurW(savedBigCurW);
-  }, [enableStopAnimations, enableBigCursor]);
-
-  // ESC ve dış tıklama
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === "Escape") {
-        setSearchOpen(false);
-        setActiveTool(null);
-        setPanelOpen(false);
-        lastFocusRef.current?.focus?.();
+    if (active) {
+      document.documentElement.classList.add('accessibility-active');
+      applyStyles();
+      
+      if (getLS(LS_KEYS.STOP_ANIMATIONS, false)) {
+        stopAnimations();
       }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
-
-  useEffect(() => {
-    const onClick = (e) => {
-      if (toolsRef.current && !toolsRef.current.contains(e.target)) setActiveTool(null);
-      if (isSearchOpen && dialogRef.current && !dialogRef.current.contains(e.target)) {
-        setSearchOpen(false);
-        lastFocusRef.current?.focus?.();
+      
+      if (getLS(LS_KEYS.READING_GUIDE, false)) {
+        initReadingGuide();
       }
-    };
-    document.addEventListener("mousedown", onClick);
-    return () => document.removeEventListener("mousedown", onClick);
-  }, [isSearchOpen]);
-
-  // Arama filtresi
-  const filtered = useMemo(() => {
-    const trimmed = query.trim();
-    if (!trimmed) return ROUTES;
-    const lower = trimmed.toLowerCase();
-    return ROUTES.filter((r) => r.label.toLowerCase().includes(lower));
-  }, [query]);
-
-  // Font işlemleri
-  const setBaseFont = useCallback((px) => {
-    const root = document.documentElement;
-    root.style.fontSize = `${px}px`;
-    setLS(LS.FS, String(px));
-  }, []);
-
-  const bumpFont = useCallback((delta) => {
-    const root = document.documentElement;
-    const current = parseFloat(getComputedStyle(root).fontSize) || 16;
-    const next = Math.min(20, Math.max(12, current + delta));
-    setBaseFont(next);
-  }, [setBaseFont]);
-
-  const resetFont = useCallback(() => {
-    const root = document.documentElement;
-    root.style.fontSize = "";
-    delLS(LS.FS);
-  }, []);
-
-  // Toggle helper
-  const toggleSetting = (cls, key, setter) => {
-    const willEnable = !document.documentElement.classList.contains(cls);
-    toggleClass(cls, willEnable);
-    setLS(key, willEnable ? "1" : "0");
-    setter(willEnable);
-  };
-
-  // Temel toggle'lar
-  const toggleContrast = () => toggleSetting("hc", LS.HC, setHighContrast);
-  const toggleUnderline = () => toggleSetting("ub-ul", LS.UL, setUnderlineLinks);
-  const toggleReadable = () => toggleSetting("ub-readable", LS.READABLE, setReadableText);
-  const toggleFontReadable = () => toggleSetting("ub-font-readable", LS.FONT_READABLE, setFontReadable);
-
-  // Yeni toggle'lar
-  const toggleLeft = () => toggleSetting("ub-left", LS.LEFT, setAlignLeft);
-  const toggleCenter = () => toggleSetting("ub-center", LS.CENTER, setAlignCenter);
-  const toggleJust = () => toggleSetting("ub-just", LS.JUST, setAlignJust);
-  const toggleDark = () => toggleSetting("ub-dark", LS.DARK, setDark);
-  const toggleLight = () => toggleSetting("ub-light", LS.LIGHT, setLight);
-  const toggleGray = () => toggleSetting("ub-gray", LS.GRAY, setGray);
-  const toggleDesat = () => toggleSetting("ub-desat", LS.DESAT, setDesat);
-  const toggleSat = () => toggleSetting("ub-sat", LS.SAT, setSat);
-  const toggleInvert = () => toggleSetting("ub-invert", LS.INV, setInvert);
-  const toggleHeadings = () => toggleSetting("ub-headings", LS.HEAD, setHeadings);
-  const toggleFocusMode = () => toggleSetting("ub-focusmode", LS.FOCUS, setFocusMode);
-  const toggleHideImages = () => toggleSetting("ub-hideimg", LS.HIDEIMG, setHideImages);
-  const toggleReadMode = () => toggleSetting("ub-readmode", LS.READMODE, setReadMode);
-
-  const toggleReduceMotion = useCallback(() => {
-    const willEnable = !reduceMotion;
-    if (willEnable) {
-      enableStopAnimations();
-      setLS(LS.RM, "1");
-    } else {
-      disableStopAnimations();
-      setLS(LS.RM, "0");
     }
-    setReduceMotion(willEnable);
-  }, [reduceMotion, enableStopAnimations, disableStopAnimations]);
+  }, [applyStyles, stopAnimations, initReadingGuide]);
 
-  const toggleBigCursorBlack = () => {
-    const next = !bigCurB;
-    if (next) {
-      enableBigCursor("black");
-      setLS(LS.BIGCUR_B, "1");
-      delLS(LS.BIGCUR_W);
-      setBigCurW(false);
+  // Aktif durum değiştiğinde
+  useEffect(() => {
+    if (isActive) {
+      document.documentElement.classList.add('accessibility-active');
+      setLS(LS_KEYS.ACTIVE, true);
+      applyStyles();
     } else {
-      disableBigCursor();
-      delLS(LS.BIGCUR_B);
+      document.documentElement.classList.remove('accessibility-active');
+      setLS(LS_KEYS.ACTIVE, false);
+      startAnimations();
     }
-    setBigCurB(next);
-  };
+  }, [isActive, applyStyles, startAnimations]);
 
-  const toggleBigCursorWhite = () => {
-    const next = !bigCurW;
-    if (next) {
-      enableBigCursor("white");
-      setLS(LS.BIGCUR_W, "1");
-      delLS(LS.BIGCUR_B);
-      setBigCurB(false);
-    } else {
-      disableBigCursor();
-      delLS(LS.BIGCUR_W);
+  // Profil uygula
+  const applyProfile = useCallback((profile) => {
+    setActiveProfile(profile);
+    setLS(LS_KEYS.PROFILE, profile);
+
+    switch (profile) {
+      case PROFILES.SEIZURE_SAFE:
+        setLS(LS_KEYS.STOP_ANIMATIONS, true);
+        setLS(LS_KEYS.MUTE_SOUNDS, true);
+        stopAnimations();
+        break;
+
+      case PROFILES.VISION_IMPAIRED:
+        setLS(LS_KEYS.HIGH_CONTRAST, true);
+        setLS(LS_KEYS.UNDERLINE_LINKS, true);
+        setLS(LS_KEYS.BIG_CURSOR, true);
+        setFontSize(18);
+        setLS(LS_KEYS.FONT_SIZE, 18);
+        break;
+
+      case PROFILES.ADHD_FRIENDLY:
+        setLS(LS_KEYS.STOP_ANIMATIONS, true);
+        setLS(LS_KEYS.HIDE_IMAGES, false);
+        setLS(LS_KEYS.READING_GUIDE, true);
+        stopAnimations();
+        initReadingGuide();
+        break;
+
+      case PROFILES.COGNITIVE_DISABILITY:
+        setLS(LS_KEYS.DYSLEXIC_FONT, true);
+        setLS(LS_KEYS.READING_GUIDE, true);
+        setLS(LS_KEYS.HIGHLIGHT_HEADINGS, true);
+        setLS(LS_KEYS.HIGHLIGHT_LINKS, true);
+        setFontSize(18);
+        setLS(LS_KEYS.FONT_SIZE, 18);
+        initReadingGuide();
+        break;
+
+      case PROFILES.BLIND_USERS:
+        setLS(LS_KEYS.IMAGE_ALT, true);
+        setLS(LS_KEYS.PAGE_STRUCTURE, true);
+        setLS(LS_KEYS.TOOLTIPS, true);
+        break;
+
+      case PROFILES.KEYBOARD_NAV:
+        setLS(LS_KEYS.HIGHLIGHT_LINKS, true);
+        setLS(LS_KEYS.TOOLTIPS, true);
+        break;
     }
-    setBigCurW(next);
-  };
 
-  // Profil fonksiyonları
-  const applySeizureSafe = () => {
-    toggleReduceMotion();
-  };
+    applyStyles();
+    setIsActive(true);
+  }, [applyStyles, stopAnimations, initReadingGuide]);
 
-  const applyVisionImpaired = () => {
-    if (!isHighContrast) toggleContrast();
-    if (!readableText) toggleReadable();
-    if (!underlineLinks) toggleUnderline();
-    setBaseFont(18);
-  };
-
-  const applyADHDFriendly = () => {
-    if (!reduceMotion) toggleReduceMotion();
-    if (!focusMode) toggleFocusMode();
-    if (!headings) toggleHeadings();
-  };
-
-  const applyCognitive = () => {
-    if (!readableText) toggleReadable();
-    if (!headings) toggleHeadings();
-    if (!bigCurB) toggleBigCursorBlack();
-  };
-
-  const applyKeyboardNav = () => {
-    if (!focusMode) toggleFocusMode();
-  };
-
-  const applyScreenReader = () => {
-    if (!hideImages) toggleHideImages();
-    if (!readMode) toggleReadMode();
-  };
-
-  // Reset
-  const resetAll = () => {
-    Object.values(LS).forEach(delLS);
-    const d = document.documentElement;
-    d.removeAttribute("style");
-    d.classList.remove(
-      "hc", "ub-ul", "ub-readable", "ub-font-readable",
-      "ub-left", "ub-center", "ub-just",
-      "ub-dark", "ub-light", "ub-gray", "ub-desat", "ub-sat", "ub-invert",
-      "ub-headings", "ub-focusmode", "ub-hideimg", "ub-readmode"
-    );
-    disableBigCursor();
-    disableStopAnimations();
+  // Ayarları sıfırla
+  const resetAll = useCallback(() => {
+    Object.values(LS_KEYS).forEach(key => {
+      localStorage.removeItem(key);
+    });
     
-    // State'leri sıfırla
-    setHighContrast(false);
-    setUnderlineLinks(false);
-    setReadableText(false);
-    setFontReadable(false);
-    setAlignLeft(false);
-    setAlignCenter(false);
-    setAlignJust(false);
-    setDark(false);
-    setLight(false);
-    setGray(false);
-    setDesat(false);
-    setSat(false);
-    setInvert(false);
-    setHeadings(false);
-    setFocusMode(false);
-    setHideImages(false);
-    setReadMode(false);
-    setBigCurB(false);
-    setBigCurW(false);
-    setReduceMotion(false);
-  };
+    document.documentElement.classList.remove('accessibility-active');
+    setActiveProfile(null);
+    setFontSize(16);
+    setIsActive(false);
+    startAnimations();
+    
+    if (guideRef.current) {
+      guideRef.current.remove();
+      guideRef.current = null;
+    }
+  }, [startAnimations]);
 
-  // UI işlevleri
-  const scrollTop = useCallback(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    setActiveTool(null);
-  }, []);
+  // Font boyutu ayarla
+  const setFontSizeWithSave = useCallback((size) => {
+    setFontSize(size);
+    setLS(LS_KEYS.FONT_SIZE, size);
+    applyStyles();
+  }, [applyStyles]);
 
-  const toggleTool = useCallback((toolName) => {
-    setActiveTool((prev) => (prev === toolName ? null : toolName));
-    if (toolName !== "search") setSearchOpen(false);
-  }, []);
+  // Toggle ayar
+  const toggleSetting = useCallback((key) => {
+    const current = getLS(key, false);
+    setLS(key, !current);
+    applyStyles();
+    
+    if (key === LS_KEYS.STOP_ANIMATIONS) {
+      if (!current) stopAnimations();
+      else startAnimations();
+    }
+    
+    if (key === LS_KEYS.READING_GUIDE) {
+      if (!current) initReadingGuide();
+    }
+  }, [applyStyles, stopAnimations, startAnimations, initReadingGuide]);
 
-  const openSearchModal = useCallback((e) => {
-    lastFocusRef.current = e?.currentTarget || document.activeElement;
-    setSearchOpen(true);
-    setActiveTool("search");
-    setTimeout(() => {
-      const input = dialogRef.current?.querySelector("input");
-      input?.focus();
-      input?.select();
-    }, 50);
-  }, []);
+  // Arama sonuçları
+  const searchResults = useMemo(() => {
+    if (!searchQuery.trim()) return ROUTES;
+    const query = searchQuery.toLowerCase();
+    return ROUTES.filter(route => 
+      route.label.toLowerCase().includes(query)
+    );
+  }, [searchQuery]);
 
-  const handleCollapse = useCallback(() => {
-    setCollapsed(true);
-    setLS(LS.COLLAPSED, "1");
-  }, []);
-
-  const handleExpand = useCallback(() => {
-    setCollapsed(false);
-    setLS(LS.COLLAPSED, "0");
-  }, []);
-
-  const switchSide = useCallback(() => {
-    const next = position === "right" ? "left" : "right";
-    setPosition(next);
-    setLS(LS.POS, next);
-  }, [position]);
-
-  const openPanel = useCallback(() => {
-    setPanelOpen(true);
-  }, []);
-
-  const closePanel = useCallback(() => {
-    setPanelOpen(false);
-  }, []);
-
-  // UI sabitleri
-  const isAccessibilityOpen = activeTool === "accessibility";
-  const isContactOpen = activeTool === "contact";
-  const utilityButtonBase = "relative flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 via-indigo-500 to-purple-600 text-white shadow-xl transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 motion-reduce:transform-none motion-reduce:transition-none";
-  const iconCls = "text-2xl md:text-3xl";
-
-  // Konum
-  const fixedStyle = {
-    [position]: "max(0.5rem, env(safe-area-inset-right))",
-    bottom: "calc(env(safe-area-inset-bottom) + var(--rb-bottom, 0px) + 12px)",
-  };
-
-  // Küçük açıcı (collapsed)
-  if (collapsed) {
+  // Ana bileşen
+  if (!isActive) {
     return (
       <button
-        onClick={handleExpand}
-        className="fixed z-[1000] rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-2xl outline outline-1 outline-black/5 backdrop-blur-md h-12 w-12 md:h-14 md:w-14 flex items-center justify-center hover:scale-105 transition-transform"
-        style={fixedStyle}
-        aria-label="Yardımcı araçları aç"
-        title="Araçları aç"
+        onClick={() => setIsActive(true)}
+        className="fixed bottom-8 right-8 z-50 w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-2xl flex items-center justify-center text-2xl transition-all duration-300 hover:scale-110"
+        aria-label="Erişilebilirlik ayarlarını aç"
+        title="Erişilebilirlik"
       >
-        ⋮
+        ♿
       </button>
     );
   }
 
-  // Ana UI
   return (
     <>
-      {/* Ana Toolbar */}
-      <div
-        ref={toolsRef}
-        className="fixed z-[1000] flex max-w-[80px] flex-col items-center gap-3 rounded-3xl border border-white/20 bg-white/95 p-3 text-slate-800 shadow-2xl outline outline-1 outline-black/5 backdrop-blur-lg"
-        style={fixedStyle}
-        role="region"
-        aria-label="Hızlı yardımcı araçlar"
-      >
-        {/* Üst çubuk */}
-        <div className="flex w-full items-center justify-between -mt-1 mb-1">
+      {/* Ana Panel */}
+      <div className="fixed top-0 right-0 z-[10000] w-full max-w-96 h-screen bg-white shadow-2xl border-l border-gray-200 flex flex-col">
+        
+        {/* Header */}
+        <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+              <span className="text-xl">♿</span>
+            </div>
+            <div>
+              <h2 className="font-bold text-lg">Erişilebilirlik</h2>
+              <p className="text-blue-100 text-sm">Ayarlarınızı kişiselleştirin</p>
+            </div>
+          </div>
           <button
-            onClick={switchSide}
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-            aria-label={`Konumu ${position === "right" ? "sola" : "sağa"} al`}
+            onClick={() => setIsActive(false)}
+            className="w-8 h-8 rounded-lg bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
           >
-            ↔
-          </button>
-          <button
-            onClick={handleCollapse}
-            className="group flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-            aria-label="Araçları gizle"
-          >
-            <span className="text-base leading-none group-hover:rotate-90 transition-transform">✕</span>
+            ✕
           </button>
         </div>
 
-        <div className="flex flex-col items-center gap-3">
-          {/* Erişilebilirlik Panel Butonu */}
-          <div className="relative flex justify-center">
+        {/* Tabs */}
+        <div className="flex border-b border-gray-200 bg-gray-50">
+          {[
+            { id: "profiles", label: "Profiller", icon: "👤" },
+            { id: "content", label: "İçerik", icon: "📝" },
+            { id: "color", label: "Renk", icon: "🎨" },
+            { id: "orientation", label: "Yönlendirme", icon: "🎯" },
+            { id: "tools", label: "Araçlar", icon: "🛠️" },
+          ].map(tab => (
             <button
-              className={utilityButtonBase}
-              onClick={openPanel}
-              title="Erişilebilirlik paneli"
-              aria-label="Erişilebilirlik panelini aç"
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex-1 flex flex-col items-center py-3 text-xs font-medium transition-colors ${
+                activeTab === tab.id 
+                  ? 'text-blue-600 bg-white border-b-2 border-blue-600' 
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
             >
-              <span className={iconCls} aria-hidden="true">♿</span>
+              <span className="text-lg mb-1">{tab.icon}</span>
+              {tab.label}
             </button>
-          </div>
+          ))}
+        </div>
 
-          {/* Arama */}
-          <div className="relative flex justify-center">
-            <button
-              className={`${utilityButtonBase} ${activeTool === "search" ? "scale-105" : ""}`}
-              onClick={openSearchModal}
-              title="Site içi arama"
-              aria-haspopup="dialog"
-            >
-              <span className={iconCls} aria-hidden="true">🔍</span>
-            </button>
-          </div>
+        {/* Tab Content */}
+        <div className="flex-1 overflow-y-auto p-4">
+          
+          {/* Profiller */}
+          {activeTab === "profiles" && (
+            <div className="space-y-3">
+              <ProfileCard
+                icon="⚡"
+                title="Epilepsi Güvenli"
+                description="Animasyonları ve yanıp sönen öğeleri kaldırır"
+                isActive={activeProfile === PROFILES.SEIZURE_SAFE}
+                onClick={() => applyProfile(PROFILES.SEIZURE_SAFE)}
+              />
+              
+              <ProfileCard
+                icon="👁️"
+                title="Görme Engelli"
+                description="Yüksek kontrast ve büyük yazı"
+                isActive={activeProfile === PROFILES.VISION_IMPAIRED}
+                onClick={() => applyProfile(PROFILES.VISION_IMPAIRED)}
+              />
+              
+              <ProfileCard
+                icon="🧠"
+                title="DEHB Dostu"
+                description="Dikkat dağıtıcı öğeleri azaltır"
+                isActive={activeProfile === PROFILES.ADHD_FRIENDLY}
+                onClick={() => applyProfile(PROFILES.ADHD_FRIENDLY)}
+              />
+              
+              <ProfileCard
+                icon="🎯"
+                title="Bilişsel Engelli"
+                description="Okuma ve odaklanma desteği"
+                isActive={activeProfile === PROFILES.COGNITIVE_DISABILITY}
+                onClick={() => applyProfile(PROFILES.COGNITIVE_DISABILITY)}
+              />
+              
+              <ProfileCard
+                icon="🔈"
+                title="Ekran Okuyucu"
+                description="Screen reader optimizasyonu"
+                isActive={activeProfile === PROFILES.BLIND_USERS}
+                onClick={() => applyProfile(PROFILES.BLIND_USERS)}
+              />
+              
+              <ProfileCard
+                icon="⌨️"
+                title="Klavye Navigasyonu"
+                description="Klavye kullanımı için optimize"
+                isActive={activeProfile === PROFILES.KEYBOARD_NAV}
+                onClick={() => applyProfile(PROFILES.KEYBOARD_NAV)}
+              />
+            </div>
+          )}
 
-          {/* Üste dön */}
-          <div className="relative flex justify-center">
-            <button
-              className={utilityButtonBase}
-              onClick={scrollTop}
-              title="En üste dön"
-            >
-              <span className={iconCls} aria-hidden="true">⬆️</span>
-            </button>
-          </div>
-
-          {/* İletişim */}
-          <div className="relative flex justify-center">
-            <button
-              className={`${utilityButtonBase} ${isContactOpen ? "scale-105" : ""}`}
-              onClick={() => toggleTool("contact")}
-              title="Hızlı iletişim"
-            >
-              <span className={iconCls} aria-hidden="true">📞</span>
-            </button>
-
-            {isContactOpen && (
-              <div
-                className={`absolute ${position === "right" ? "right-full mr-2" : "left-full ml-2"} top-1/2 z-[1001] -translate-y-1/2`}
-              >
-                <div className="flex w-56 flex-col gap-2 rounded-2xl border border-black/10 bg-white/95 p-4 text-sm text-slate-700 shadow-xl">
-                  <a
-                    href="tel:+905453048671"
-                    className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-3 py-2 font-medium text-white transition hover:bg-blue-500"
-                    onClick={() => setActiveTool(null)}
+          {/* İçerik */}
+          {activeTab === "content" && (
+            <div className="space-y-6">
+              {/* Yazı Boyutu */}
+              <Section title="Yazı Boyutu">
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => setFontSizeWithSave(Math.max(12, fontSize - 2))}
+                    className="flex-1 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg font-bold text-lg"
                   >
-                    📞 Hemen Ara
-                  </a>
-                  <a
-                    href="https://wa.me/905453048671"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 rounded-lg bg-emerald-500 px-3 py-2 font-medium text-white transition hover:bg-emerald-400"
-                    onClick={() => setActiveTool(null)}
+                    A-
+                  </button>
+                  <div className="flex-1 text-center py-3 bg-blue-50 text-blue-700 rounded-lg font-bold">
+                    {fontSize}px
+                  </div>
+                  <button
+                    onClick={() => setFontSizeWithSave(Math.min(24, fontSize + 2))}
+                    className="flex-1 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg font-bold text-lg"
                   >
-                    💬 WhatsApp'tan Yaz
-                  </a>
+                    A+
+                  </button>
                 </div>
+              </Section>
+
+              {/* Okunabilirlik */}
+              <Section title="Okunabilirlik">
+                <Toggle
+                  label="Disleksi Yazı Tipi"
+                  checked={getLS(LS_KEYS.DYSLEXIC_FONT, false)}
+                  onChange={() => toggleSetting(LS_KEYS.DYSLEXIC_FONT)}
+                />
+                <Toggle
+                  label="Başlıkları Vurgula"
+                  checked={getLS(LS_KEYS.HIGHLIGHT_HEADINGS, false)}
+                  onChange={() => toggleSetting(LS_KEYS.HIGHLIGHT_HEADINGS)}
+                />
+                <Toggle
+                  label="Bağlantıları Vurgula"
+                  checked={getLS(LS_KEYS.HIGHLIGHT_LINKS, false)}
+                  onChange={() => toggleSetting(LS_KEYS.HIGHLIGHT_LINKS)}
+                />
+              </Section>
+
+              {/* Metin Ayarları */}
+              <Section title="Metin Ayarları">
+                <Slider
+                  label="Satır Yüksekliği"
+                  value={getLS(LS_KEYS.LINE_HEIGHT, 1.6)}
+                  min={1.2}
+                  max={2.5}
+                  step={0.1}
+                  onChange={(value) => {
+                    setLS(LS_KEYS.LINE_HEIGHT, value);
+                    applyStyles();
+                  }}
+                />
+                <Slider
+                  label="Harf Aralığı"
+                  value={getLS(LS_KEYS.LETTER_SPACING, 0)}
+                  min={0}
+                  max={5}
+                  step={0.5}
+                  onChange={(value) => {
+                    setLS(LS_KEYS.LETTER_SPACING, value);
+                    applyStyles();
+                  }}
+                />
+              </Section>
+            </div>
+          )}
+
+          {/* Renk */}
+          {activeTab === "color" && (
+            <div className="space-y-4">
+              <Toggle
+                label="Yüksek Kontrast"
+                checked={getLS(LS_KEYS.HIGH_CONTRAST, false)}
+                onChange={() => toggleSetting(LS_KEYS.HIGH_CONTRAST)}
+              />
+              <Toggle
+                label="Renkleri Ters Çevir"
+                checked={getLS(LS_KEYS.INVERT_COLORS, false)}
+                onChange={() => toggleSetting(LS_KEYS.INVERT_COLORS)}
+              />
+              <Toggle
+                label="Siyah-Beyaz"
+                checked={getLS(LS_KEYS.GRAYSCALE, false)}
+                onChange={() => toggleSetting(LS_KEYS.GRAYSCALE)}
+              />
+              <Toggle
+                label="Bağlantıların Altını Çiz"
+                checked={getLS(LS_KEYS.UNDERLINE_LINKS, false)}
+                onChange={() => toggleSetting(LS_KEYS.UNDERLINE_LINKS)}
+              />
+              
+              <Section title="Doygunluk">
+                <div className="grid grid-cols-3 gap-2">
+                  <ColorButton
+                    label="Normal"
+                    active={!getLS(LS_KEYS.SATURATION, false)}
+                    onClick={() => {
+                      localStorage.removeItem(LS_KEYS.SATURATION);
+                      applyStyles();
+                    }}
+                  />
+                  <ColorButton
+                    label="Yüksek"
+                    active={getLS(LS_KEYS.SATURATION, 'high') === 'high'}
+                    onClick={() => {
+                      setLS(LS_KEYS.SATURATION, 'high');
+                      applyStyles();
+                    }}
+                  />
+                  <ColorButton
+                    label="Düşük"
+                    active={getLS(LS_KEYS.SATURATION, false) === 'low'}
+                    onClick={() => {
+                      setLS(LS_KEYS.SATURATION, 'low');
+                      applyStyles();
+                    }}
+                  />
+                </div>
+              </Section>
+            </div>
+          )}
+
+          {/* Yönlendirme */}
+          {activeTab === "orientation" && (
+            <div className="space-y-4">
+              <Toggle
+                label="Büyük İmleç"
+                checked={getLS(LS_KEYS.BIG_CURSOR, false)}
+                onChange={() => toggleSetting(LS_KEYS.BIG_CURSOR)}
+              />
+              <Toggle
+                label="Okuma Kılavuzu"
+                checked={getLS(LS_KEYS.READING_GUIDE, false)}
+                onChange={() => toggleSetting(LS_KEYS.READING_GUIDE)}
+              />
+              <Toggle
+                label="Animasyonları Durdur"
+                checked={getLS(LS_KEYS.STOP_ANIMATIONS, false)}
+                onChange={() => toggleSetting(LS_KEYS.STOP_ANIMATIONS)}
+              />
+              <Toggle
+                label="Sesleri Kapat"
+                checked={getLS(LS_KEYS.MUTE_SOUNDS, false)}
+                onChange={() => toggleSetting(LS_KEYS.MUTE_SOUNDS)}
+              />
+              <Toggle
+                label="Resimleri Gizle"
+                checked={getLS(LS_KEYS.HIDE_IMAGES, false)}
+                onChange={() => toggleSetting(LS_KEYS.HIDE_IMAGES)}
+              />
+            </div>
+          )}
+
+          {/* Araçlar */}
+          {activeTab === "tools" && (
+            <div className="space-y-4">
+              <ToolButton
+                icon="🔍"
+                label="Site İçi Arama"
+                onClick={() => setIsSearchOpen(true)}
+              />
+              <ToolButton
+                icon="📞"
+                label="Hızlı İletişim"
+                onClick={() => window.open('tel:+905453048671')}
+              />
+              <ToolButton
+                icon="💬"
+                label="WhatsApp"
+                onClick={() => window.open('https://wa.me/905453048671')}
+              />
+              <ToolButton
+                icon="⬆️"
+                label="Yukarı Çık"
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              />
+              
+              <div className="pt-4 border-t border-gray-200">
+                <button
+                  onClick={resetAll}
+                  className="w-full py-3 bg-red-50 text-red-600 rounded-lg font-semibold hover:bg-red-100 transition-colors"
+                >
+                  ↻ Tüm Ayarları Sıfırla
+                </button>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Erişilebilirlik Paneli */}
-      {panelOpen && (
-        <div className="fixed inset-0 z-[10001] flex">
-          <div className="flex-1 bg-black/40" onClick={closePanel} />
-          <aside className="w-full max-w-md bg-white text-slate-800 shadow-2xl border-l border-black/10 flex flex-col">
-            {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl" aria-hidden>♿</span>
-                <h2 className="text-lg font-semibold">Erişilebilirlik Ayarları</h2>
-              </div>
-              <button onClick={closePanel} className="rounded-lg px-3 py-1.5 bg-white/20 hover:bg-white/30">
-                Kapat
-              </button>
-            </div>
-
-            {/* Tabs */}
-            <nav className="grid grid-cols-5 text-sm">
-              {[
-                { id: "profiles", label: "Profiller" },
-                { id: "content", label: "İçerik" },
-                { id: "color", label: "Renk" },
-                { id: "orientation", label: "Oryantasyon" },
-                { id: "search", label: "Arama" },
-              ].map((t) => (
-                <button
-                  key={t.id}
-                  onClick={() => setActiveTab(t.id)}
-                  className={`p-3 border-b ${activeTab === t.id ? "border-indigo-600 text-indigo-700 bg-indigo-50" : "border-slate-200 hover:bg-slate-50"}`}
-                >
-                  {t.label}
-                </button>
-              ))}
-            </nav>
-
-            {/* Panel İçeriği */}
-            <div className="flex-1 overflow-y-auto p-4">
-              {activeTab === "profiles" && (
-                <div className="space-y-3">
-                  <ProfileRow label="Seizure Safe" desc="Animasyonları azaltır" on={applySeizureSafe} off={applySeizureSafe} icon="⚡" />
-                  <ProfileRow label="Vision Impaired" desc="Kontrast + okunabilirlik" on={applyVisionImpaired} off={resetAll} icon="👁️" />
-                  <ProfileRow label="ADHD Friendly" desc="Daha az dikkat dağıtıcı" on={applyADHDFriendly} off={resetAll} icon="🧠" />
-                  <ProfileRow label="Cognitive" desc="Okuma & odak desteği" on={applyCognitive} off={resetAll} icon="🎯" />
-                  <ProfileRow label="Keyboard Nav" desc="Klavye ile rahat kullanım" on={applyKeyboardNav} off={applyKeyboardNav} icon="⌨️" />
-                  <ProfileRow label="Screen Reader" desc="Ekran okuyucu dostu" on={applyScreenReader} off={resetAll} icon="🔈" />
-                </div>
-              )}
-
-              {activeTab === "content" && (
-                <div className="space-y-4">
-                  <Group title="Metin Boyutu">
-                    <div className="grid grid-cols-4 gap-2">
-                      <Btn onClick={() => bumpFont(-1)}>A-</Btn>
-                      <Btn onClick={resetFont}>A</Btn>
-                      <Btn onClick={() => bumpFont(1)}>A+</Btn>
-                      <Btn onClick={() => setBaseFont(18)}>A++</Btn>
-                    </div>
-                  </Group>
-                  <Group title="Hizalama">
-                    <div className="grid grid-cols-3 gap-2">
-                      <Toggle pressed={alignLeft} onToggle={toggleLeft} label="Sola" />
-                      <Toggle pressed={alignCenter} onToggle={toggleCenter} label="Ortala" />
-                      <Toggle pressed={alignJust} onToggle={toggleJust} label="İkiye Yan" />
-                    </div>
-                  </Group>
-                  <Group title="Okunabilirlik">
-                    <div className="grid grid-cols-2 gap-2">
-                      <Toggle pressed={readableText} onToggle={toggleReadable} label="Okuma Rahatlığı" />
-                      <Toggle pressed={underlineLinks} onToggle={toggleUnderline} label="Linkleri Vurgula" />
-                      <Toggle pressed={headings} onToggle={toggleHeadings} label="Başlıkları Vurgula" />
-                      <Toggle pressed={fontReadable} onToggle={toggleFontReadable} label="Readable Font" />
-                    </div>
-                  </Group>
-                </div>
-              )}
-
-              {activeTab === "color" && (
-                <div className="space-y-4">
-                  <Group title="Kontrast & Doygunluk">
-                    <div className="grid grid-cols-3 gap-2">
-                      <Toggle pressed={dark} onToggle={toggleDark} label="Dark" />
-                      <Toggle pressed={light} onToggle={toggleLight} label="Light" />
-                      <Toggle pressed={isHighContrast} onToggle={toggleContrast} label="High" />
-                      <Toggle pressed={sat} onToggle={toggleSat} label="High Sat" />
-                      <Toggle pressed={desat} onToggle={toggleDesat} label="Low Sat" />
-                      <Toggle pressed={gray} onToggle={toggleGray} label="Monochrome" />
-                      <Toggle pressed={invert} onToggle={toggleInvert} label="Invert" />
-                    </div>
-                  </Group>
-                </div>
-              )}
-
-              {activeTab === "orientation" && (
-                <div className="space-y-4">
-                  <Group title="Odağı Artır">
-                    <div className="grid grid-cols-3 gap-2">
-                      <Toggle pressed={reduceMotion} onToggle={toggleReduceMotion} label="Stop Anim" />
-                      <Toggle pressed={focusMode} onToggle={toggleFocusMode} label="Odak Modu" />
-                      <Toggle pressed={readMode} onToggle={toggleReadMode} label="Read Mode" />
-                    </div>
-                  </Group>
-                  <Group title="Medya & Görseller">
-                    <div className="grid grid-cols-3 gap-2">
-                      <Toggle pressed={hideImages} onToggle={toggleHideImages} label="Resimleri Gizle" />
-                    </div>
-                  </Group>
-                  <Group title="İmleç">
-                    <div className="grid grid-cols-2 gap-2">
-                      <Toggle pressed={bigCurB} onToggle={toggleBigCursorBlack} label="Big Black Cursor" />
-                      <Toggle pressed={bigCurW} onToggle={toggleBigCursorWhite} label="Big White Cursor" />
-                    </div>
-                  </Group>
-                </div>
-              )}
-
-              {activeTab === "search" && (
-                <SearchPanel />
-              )}
-            </div>
-
-            {/* Footer */}
-            <div className="flex items-center justify-between gap-2 border-t border-slate-200 p-3 bg-slate-50">
-              <button onClick={closePanel} className="rounded-lg px-4 py-2 bg-slate-700 text-white hover:bg-slate-600">
-                Kapat
-              </button>
-              <div className="flex gap-2">
-                <button onClick={switchSide} className="rounded-lg px-3 py-2 border border-slate-300 hover:bg-slate-100">
-                  Sağ/Sol
-                </button>
-                <button onClick={resetAll} className="rounded-lg px-3 py-2 border border-red-200 bg-red-50 text-red-700 hover:bg-red-100">
-                  Sıfırla
-                </button>
-              </div>
-            </div>
-          </aside>
-        </div>
-      )}
-
       {/* Arama Modalı */}
       {isSearchOpen && (
-        <SearchModal 
-          onClose={() => {
-            setSearchOpen(false);
-            setActiveTool(null);
-            lastFocusRef.current?.focus?.();
-          }} 
-          query={query}
-          setQuery={setQuery}
-          filtered={filtered}
-          dialogRef={dialogRef}
+        <SearchModal
+          query={searchQuery}
+          setQuery={setSearchQuery}
+          results={searchResults}
+          onClose={() => setIsSearchOpen(false)}
         />
       )}
     </>
   );
 }
 
-// Yardımcı bileşenler
-function Btn({ children, onClick }) {
+// Yardımcı Bileşenler
+function ProfileCard({ icon, title, description, isActive, onClick }) {
   return (
     <button
       onClick={onClick}
-      className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 hover:border-indigo-500 hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+      className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
+        isActive
+          ? 'border-blue-500 bg-blue-50 shadow-sm'
+          : 'border-gray-200 bg-white hover:border-gray-300'
+      }`}
     >
-      {children}
+      <div className="flex items-start gap-3">
+        <span className="text-2xl">{icon}</span>
+        <div className="flex-1">
+          <h3 className="font-semibold text-gray-900">{title}</h3>
+          <p className="text-sm text-gray-600 mt-1">{description}</p>
+        </div>
+        {isActive && (
+          <div className="w-3 h-3 bg-blue-500 rounded-full" />
+        )}
+      </div>
     </button>
   );
 }
 
-function Toggle({ pressed, onToggle, label }) {
+function Section({ title, children }) {
+  return (
+    <div>
+      <h3 className="font-semibold text-gray-900 mb-3 text-sm uppercase tracking-wide">
+        {title}
+      </h3>
+      {children}
+    </div>
+  );
+}
+
+function Toggle({ label, checked, onChange }) {
+  return (
+    <div className="flex items-center justify-between py-3">
+      <span className="text-gray-700 font-medium">{label}</span>
+      <button
+        onClick={onChange}
+        className={`w-12 h-6 rounded-full transition-colors ${
+          checked ? 'bg-blue-500' : 'bg-gray-300'
+        }`}
+      >
+        <div
+          className={`w-4 h-4 rounded-full bg-white transform transition-transform ${
+            checked ? 'translate-x-7' : 'translate-x-1'
+          }`}
+        />
+      </button>
+    </div>
+  );
+}
+
+function Slider({ label, value, min, max, step, onChange }) {
+  return (
+    <div className="py-3">
+      <div className="flex justify-between items-center mb-2">
+        <span className="text-gray-700 font-medium">{label}</span>
+        <span className="text-sm text-gray-500">{value}</span>
+      </div>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={(e) => onChange(parseFloat(e.target.value))}
+        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+      />
+    </div>
+  );
+}
+
+function ColorButton({ label, active, onClick }) {
   return (
     <button
-      onClick={onToggle}
-      aria-pressed={pressed}
-      className={`rounded-lg px-3 py-2 text-sm font-medium border ${pressed ? "border-indigo-500 bg-indigo-50 text-indigo-700" : "border-slate-200 text-slate-700 hover:border-indigo-500 hover:bg-slate-100"} focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500`}
+      onClick={onClick}
+      className={`py-2 rounded-lg border-2 text-sm font-medium transition-colors ${
+        active
+          ? 'border-blue-500 bg-blue-50 text-blue-700'
+          : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
+      }`}
     >
       {label}
     </button>
   );
 }
 
-function Group({ title, children }) {
+function ToolButton({ icon, label, onClick }) {
   return (
-    <div>
-      <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">{title}</div>
-      {children}
-    </div>
-  );
-}
-
-function ProfileRow({ label, desc, on, off, icon }) {
-  return (
-    <div className="flex items-center justify-between rounded-xl border border-slate-200 p-3">
-      <div className="flex items-center gap-3">
-        <div className="text-xl" aria-hidden>{icon}</div>
-        <div>
-          <div className="font-semibold text-slate-800">{label}</div>
-          <div className="text-xs text-slate-500">{desc}</div>
-        </div>
-      </div>
-      <div className="flex gap-2">
-        <button onClick={on} className="rounded-full bg-indigo-600 text-white px-3 py-1 text-xs font-semibold hover:bg-indigo-500">
-          ON
-        </button>
-        <button onClick={off} className="rounded-full bg-slate-200 text-slate-700 px-3 py-1 text-xs font-semibold hover:bg-slate-300">
-          OFF
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function SearchPanel() {
-  const [q, setQ] = useState("");
-  const results = useMemo(() => {
-    const t = q.trim().toLowerCase();
-    if (!t) return ROUTES;
-    return ROUTES.filter(r => r.label.toLowerCase().includes(t));
-  }, [q]);
-
-  return (
-    <div className="space-y-3">
-      <input 
-        value={q} 
-        onChange={(e) => setQ(e.target.value)} 
-        placeholder="Ne aramıştınız? (sahne, led ekran…)"
-        className="w-full rounded-lg border border-slate-300 bg-white py-3 px-3 text-base text-slate-700 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/20" 
-      />
-      <div className="flex flex-col gap-2 max-h-60 overflow-y-auto">
-        {results.map((r) => (
-          <Link 
-            key={r.href} 
-            href={r.href} 
-            className="flex items-center gap-3 rounded-lg border border-transparent px-4 py-3 text-slate-700 transition hover:-translate-x-0.5 hover:border-slate-200 hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-          >
-            <span className="w-6 text-lg" aria-hidden>{r.icon}</span>
-            <span className="flex-1 font-medium">{r.label}</span>
-          </Link>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function SearchModal({ onClose, query, setQuery, filtered, dialogRef }) {
-  return (
-    <div 
-      className="animate-overlay fixed inset-0 z-[10000] flex items-start justify-center bg-black/60 px-4 pt-24 pb-6 backdrop-blur-sm md:items-center" 
-      role="dialog" 
-      aria-modal="true" 
-      onClick={onClose}
+    <button
+      onClick={onClick}
+      className="w-full flex items-center gap-3 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors text-left"
     >
-      <div 
-        ref={dialogRef}
-        className="animate-modal w-full max-w-2xl overflow-hidden rounded-2xl border border-black/10 bg-white shadow-2xl" 
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="flex flex-col gap-3 border-b border-slate-200 bg-slate-50 p-5 md:flex-row md:items-center">
-          <h2 className="sr-only">Site içi arama</h2>
-          <div className="relative w-full flex-1">
-            <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-lg text-slate-500" aria-hidden="true">🔍</div>
-            <input
-              type="text"
-              className="w-full rounded-lg border border-slate-300 bg-white py-3 pl-10 pr-3 text-base text-slate-700 transition focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/20"
-              placeholder="Ne aramıştınız? (sahne, led ekran, ses sistemi...)"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              autoComplete="off"
-            />
+      <span className="text-xl">{icon}</span>
+      <span className="font-medium text-gray-700">{label}</span>
+    </button>
+  );
+}
+
+function SearchModal({ query, setQuery, results, onClose }) {
+  return (
+    <div className="fixed inset-0 z-[10001] bg-black/50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl">
+        <div className="p-4 border-b border-gray-200">
+          <div className="flex items-center gap-3">
+            <div className="flex-1 relative">
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Sayfalarda arama yapın..."
+                className="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                🔍
+              </span>
+            </div>
+            <button
+              onClick={onClose}
+              className="px-4 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+            >
+              Kapat
+            </button>
           </div>
-          <button
-            className="w-full rounded-lg bg-slate-600 px-4 py-3 text-sm font-medium text-white transition hover:bg-slate-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-500 md:w-auto"
-            onClick={onClose}
-          >
-            Kapat
-          </button>
         </div>
-
-        <div className="max-h-[420px] overflow-y-auto p-4">
-          {filtered.length === 0 ? (
-            <div className="flex flex-col items-center gap-3 py-10 text-center text-slate-500">
-              <div className="text-5xl opacity-50" aria-hidden="true">🔍</div>
-              <div className="text-lg font-semibold text-slate-700">Sonuç bulunamadı</div>
-              <div className="text-sm opacity-70">Farklı anahtar kelimeler deneyin</div>
-            </div>
-          ) : (
-            <div className="flex flex-col gap-2">
-              {filtered.map((route) => (
-                <Link
-                  key={route.href}
-                  href={route.href}
-                  className="flex items-center gap-3 rounded-lg border border-transparent px-4 py-3 text-slate-700 transition hover:-translate-x-0.5 hover:border-slate-200 hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                  onClick={onClose}
-                >
-                  <span className="w-6 text-lg" aria-hidden="true">{route.icon}</span>
-                  <span className="flex-1 font-medium">{route.label}</span>
-                </Link>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div className="border-t border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
-          <p><strong>İpucu:</strong> "sahne", "led ekran", "ses sistemi" gibi anahtar kelimeler deneyin</p>
+        
+        <div className="max-h-96 overflow-y-auto">
+          {results.map((route) => (
+            <Link
+              key={route.href}
+              href={route.href}
+              onClick={onClose}
+              className="flex items-center gap-3 p-4 hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
+            >
+              <span className="text-xl">{route.icon}</span>
+              <span className="font-medium text-gray-700">{route.label}</span>
+            </Link>
+          ))}
         </div>
       </div>
     </div>
