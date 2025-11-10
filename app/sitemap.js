@@ -47,9 +47,6 @@ const STATIC_PAGES = [
 ].map((p) => ({
   path: p,
   lastMod: NOW_ISO,
-  change: ["hakkimizda","iletisim"].includes(p.replace("/",""))
-    ? "yearly"
-    : (p === "/sss" ? "monthly" : "weekly"),
   pr: p === "/" ? 1.0 : 0.9,
 }));
 
@@ -85,7 +82,6 @@ function dynamicFromServices() {
     .map((p) => ({
       path: p,
       lastMod: NOW_ISO,
-      change: "weekly",
       pr: 0.9,
     }));
 }
@@ -116,18 +112,18 @@ export default function sitemap() {
     if (!uniq.has(path)) uniq.set(path, item);
   }
 
-  const baseWithImages = [...uniq.values()].map(({ path, lastMod, change, pr }) => ({
+  const baseWithImages = [...uniq.values()].map(({ path, lastMod, pr }) => ({
     url: abs(path),
     lastModified: new Date(lastMod).toISOString(),
-    changeFrequency: change,
+    changeFrequency: "weekly",
     priority: pr,
     images: (IMAGE_MAP[path] ?? []).map(abs),
   }));
 
-  const projectItems = proj.map(({ path, lastMod, change, pr, images }) => ({
+  const projectItems = proj.map(({ path, lastMod, pr, images }) => ({
     url: abs(path),
     lastModified: new Date(lastMod).toISOString(),
-    changeFrequency: change,
+    changeFrequency: "weekly",
     priority: pr,
     images,
   }));
