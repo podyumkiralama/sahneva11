@@ -476,35 +476,35 @@ function Packages() {
 /* ================== Galeri ================== */
 const GALLERY_IMAGES = [
   { 
-    src: "/img/podyum/1.webp", 
+    src: "/img/podyum-kiralama-1.webp", 
     alt: "Konser sahnesinde kurulmuş büyük podyum, profesyonel ışıklandırma ile aydınlatılmış" 
   },
   { 
-    src: "/img/podyum/2.webp", 
+    src: "/img/podyum-kiralama-2.webp", 
     alt: "Düğün organizasyonunda şık nikah podyumu, dekoratif süslemeler ile bezenmiş" 
   },
   { 
-    src: "/img/podyum/3.webp",
+    src: "/img/podyum-kiralama-3.webp",
     alt: "Kurumsal etkinlikte sunum podyumu, modern tasarım ve markalama" 
   },
   { 
-    src: "/img/podyum/4.webp",
+    src: "/img/podyum-kiralama-4.webp",
     alt: "Festival sahnesinde yüksek podyum, geniş performans alanı" 
   },
   { 
-    src: "/img/podyum/5.webp", 
+    src: "/img/podyum-kiralama-5.webp", 
     alt: "Açılış töreni podyumu, protokol ve konuşmacılar için hazırlanmış" 
   },
   { 
-    src: "/img/podyum/6.webp", 
+    src: "/img/podyum-kiralama-6.webp", 
     alt: "Fuar alanında modüler podyum sistemi, hızlı kurulum ve taşınabilirlik" 
   },
   { 
-    src: "/img/podyum/7.webp", 
+    src: "/img/podyum-kiralama-7.webp", 
     alt: "Fuar alanında modüler podyum sistemi, hızlı kurulum ve taşınabilirlik" 
   },
   { 
-    src: "/img/podyum/8.webp", 
+    src: "/img/podyum-kiralama-8.webp", 
     alt: "Fuar alanında modüler podyum sistemi, hızlı kurulum ve taşınabilirlik" 
   },
 ];
