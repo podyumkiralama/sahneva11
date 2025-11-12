@@ -1,4 +1,4 @@
-// next.config.mjs
+// next.config.mjs - CSP KORUNDU
 
 const ONE_DAY_IN_SECONDS = 60 * 60 * 24;
 const ONE_MONTH_IN_SECONDS = ONE_DAY_IN_SECONDS * 30;
@@ -21,7 +21,6 @@ const securityHeaders = (() => {
     "https://www.google-analytics.com",
     "https://va.vercel-scripts.com",
     "https://vercel.live",
-    "https://*.vercel.live",
   ].join(" ");
 
   // script-src-elem (JSON-LD vb. için elem seviyesinde inline serbest)
@@ -32,10 +31,8 @@ const securityHeaders = (() => {
     "https://www.google-analytics.com",
     "https://va.vercel-scripts.com",
     "https://vercel.live",
-    "https://*.vercel.live",
   ].join(" ");
 
-  // ✅ Connect-src'ye WebSocket (wss) ve Vercel Live eklendi
   const CONNECT_SRC = [
     "'self'",
     "https://vitals.vercel-insights.com",
@@ -43,29 +40,6 @@ const securityHeaders = (() => {
     "https://region1.google-analytics.com",
     "https://stats.g.doubleclick.net",
     siteUrl,
-    "wss:", // 👈 WebSocket için
-    "wss://ws-us3.pusher.com", // 👈 Pusher WebSocket
-    "wss://*.pusher.com", // 👈 Tüm Pusher WebSocket'leri
-    "https://vercel.live", // 👈 Vercel Live
-    "https://*.vercel.live", // 👈 Tüm Vercel Live subdomain'leri
-  ].join(" ");
-
-  // ✅ Font-src'ye Vercel Live eklendi
-  const FONT_SRC = [
-    "'self'",
-    "data:",
-    "https://fonts.gstatic.com",
-    "https://vercel.live", // 👈 Vercel Live fontları için
-    "https://*.vercel.live", // 👈 Tüm Vercel Live subdomain'leri
-  ].join(" ");
-
-  // ✅ Style-src'ye Vercel Live eklendi
-  const STYLE_SRC = [
-    "'self'",
-    "'unsafe-inline'", // Vercel Live inline style kullanıyor olabilir
-    "https://fonts.googleapis.com",
-    "https://vercel.live",
-    "https://*.vercel.live",
   ].join(" ");
 
   // ✅ Tüm gerekli frame kaynakları
@@ -83,16 +57,6 @@ const securityHeaders = (() => {
     "https://*.google.com",
   ].join(" ");
 
-  // ✅ Image-src'ye Vercel Live eklendi
-  const IMG_SRC = [
-    "'self'",
-    "data:",
-    "blob:",
-    "https:",
-    "https://vercel.live",
-    "https://*.vercel.live",
-  ].join(" ");
-
   const FRAME_ANCESTORS = isPreview
     ? "frame-ancestors 'self' https://vercel.live https://*.vercel.live;"
     : "frame-ancestors 'none';";
@@ -103,9 +67,9 @@ const securityHeaders = (() => {
     base-uri 'self';
     object-src 'none';
     upgrade-insecure-requests;
-    img-src ${IMG_SRC};
-    font-src ${FONT_SRC};
-    style-src ${STYLE_SRC};
+    img-src 'self' data: blob: https:;
+    font-src 'self' data: https://fonts.gstatic.com;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     script-src ${SCRIPT_SRC};
     script-src-elem ${SCRIPT_SRC_ELEM};
     script-src-attr 'none';
@@ -113,19 +77,17 @@ const securityHeaders = (() => {
     worker-src 'self' blob:;
     frame-src ${FRAME_SRC};
     form-action 'self' https://formspree.io https://wa.me;
-    media-src 'self' https:;
-    child-src 'self' blob:;
   `
     .replace(/\s{2,}/g, " ")
     .trim();
 
-  // COEP ve CORP'u kaldırdığımız için sadece diğer başlıkları koyuyoruz
+  // ✅ COEP'i TAMAMEN KALDIRIYORUZ - CORP gereksinimini ortadan kaldırır
   const base = [
     { key: "Content-Security-Policy", value: csp },
     { key: "X-Content-Type-Options", value: "nosniff" },
     { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
     { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
-    // COEP ve CORP artık yok
+    // ❌ COEP / CORP yok
     {
       key: "Permissions-Policy",
       value:
@@ -158,43 +120,48 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
   trailingSlash: false,
 
+  // ✅ Basit webpack config (Turbopack ile uyumlu)
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          default: false,
+          vendors: false,
+          commons: {
+            name: 'commons',
+            chunks: 'all',
+            minChunks: 2,
+            reuseExistingChunk: true,
+          },
+        },
+      };
+    }
+    return config;
+  },
+
   images: {
     deviceSizes: [320, 420, 640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: ONE_MONTH_IN_SECONDS,
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'vercel.live',
-      },
-      {
-        protocol: 'https',
-        hostname: '*.vercel.live',
-      }
-    ],
+    remotePatterns: [],
     dangerouslyAllowSVG: false,
   },
 
   compiler: {
     removeConsole: isProd ? { exclude: ["error", "warn"] } : false,
-    reactRemoveProperties: isProd ? { properties: ["^data-testid$"] } : false,
   },
 
+  // ✅ Deneysel özellikler
   experimental: {
     scrollRestoration: true,
     optimizePackageImports: ["lucide-react", "@headlessui/react"],
-    esmExternals: true,
-    legacyBrowsers: false,
-    browsersListForSwc: true,
   },
 
   modularizeImports: {
     "lucide-react": {
       transform: "lucide-react/icons/{{member}}",
-    },
-    "react-icons/?(((\\w*)?/?)*)": {
-      transform: "react-icons/{{ matches.[1] }}/{{member}}",
     },
   },
 
@@ -208,6 +175,7 @@ const nextConfig = {
   },
 
   output: isProd ? "standalone" : undefined,
+
   staticPageGenerationTimeout: 300,
 
   async redirects() {
@@ -229,7 +197,7 @@ const nextConfig = {
 
   async headers() {
     return [
-      // 🌐 Global güvenlik başlıkları
+      // 🌐 Global güvenlik başlıkları (CSP KORUNDU)
       { source: "/(.*)", headers: securityHeaders },
 
       // Next statik runtime dosyaları
@@ -243,7 +211,7 @@ const nextConfig = {
 
       // Public asset'ler
       {
-        source: "/(.*)\\.(ico|png|jpg|jpeg|webp|avif|svg|gif|woff2)",
+        source: "/(.*)\\.(ico|png|jpg|jpeg|webp|avif|svg|gif|woff2|css|js)",
         headers: longTermCacheHeaders,
       },
 
@@ -256,4 +224,4 @@ const nextConfig = {
   },
 };
 
-export default nextConfi
+export default nextConfig;
