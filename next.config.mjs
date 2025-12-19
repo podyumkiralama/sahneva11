@@ -170,6 +170,9 @@ const nextConfig = {
     NEXT_PUBLIC_APP_ENV: process.env.NODE_ENV ?? "development",
   },
 
+  // ✅ Turbopack için boş config (webpack ayarını sessize almak için)
+  turbopack: {},
+
   typescript: {
     ignoreBuildErrors: false,
   },
